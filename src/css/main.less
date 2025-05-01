@@ -27,6 +27,66 @@ content {
 		}
 	}
 
+	.common {
+		// background: #0001;
+		position: absolute;
+		top: 70px;
+		left: 90px;
+		width: 820px;
+		height: 430px;
+		display: flex;
+
+		.series {
+			background: #0001;
+			position: relative;
+			box-shadow: inset 0 2px 5px #0003;
+			width: 580px;
+			border-radius: 5px;
+
+			&:after {
+				content: "";
+				position: absolute;
+				bottom: -1px;
+				left: 0;
+				right: 0;
+				height: 1px;
+				background: linear-gradient(90deg, #fff0, #fff4, #fff0);
+			}
+
+			.col-1 {
+				
+			}
+
+			.col-2 {
+				
+			}
+		}
+
+		.info {
+			// background: #f001;
+			position: relative;
+			flex: 1;
+		}
+
+		.doubles {
+			background: #0001;
+			position: relative;
+			box-shadow: inset 0 2px 5px #0003;
+			width: 160px;
+			border-radius: 5px;
+
+			&:after {
+				content: "";
+				position: absolute;
+				bottom: -1px;
+				left: 0;
+				right: 0;
+				height: 1px;
+				background: linear-gradient(90deg, #fff0, #fff4, #fff0);
+			}
+		}
+	}
+
 	.rack {
 		background: url(~/gfx/rack.webp) 50% 50% no-repeat;
 		position: absolute;
