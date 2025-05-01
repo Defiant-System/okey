@@ -1,0 +1,12 @@
+<MenuBar>
+	<Menu name="Okey 101">
+		<Menu name="About Okey 101" shell="win -a"/>
+		<Menu type="divider"/>
+		<Menu name="Quit Okey 101" shell="win -c"/>
+	</Menu>
+	<Menu name="Help">
+		<Menu name="Help" click="open-help"/>
+		<Menu type="divider"/>
+		<Menu name="License" shell="win -al"/>
+	</Menu>
+</MenuBar>
