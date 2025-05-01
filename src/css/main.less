@@ -38,46 +38,52 @@ content {
 		font-size: 0;
 		font-family: "Open Sans", "Arial Black", sans-serif;
 
-		.tile {
+		> span {
 			display: inline-block;
 			position: relative;
-			// top: 5px;
-			// left: 55px;
 			width: 56px;
 			height: 73px;
 			margin-bottom: 5px;
-			border-radius: 5px;
-			background: url(~/icons/tile.png) 50% 50%/contain no-repeat;
-			// background: #f2f2f2 linear-gradient(0deg, #0002, #0000);
-			box-shadow: 0 0 0 1px #0002,
-						0 1px 2px #0005,
-						inset 0 1px 0 #fff,
-						inset 0 -1px 0 #0002;
 
-			&:before {
-				content: "";
-				position: absolute;
-				bottom: 11px;
-				left: 18px;
-				width: 20px;
-				height: 20px;
-				border-radius: 50%;
-				box-shadow: 0 1px 1px #fff,
-							0 0 1px #0002;
-			}
-
-			&:after {
-				content: "4";
+			&.tile {
+				border-radius: 5px;
 				color: #ffa800d9;
-				line-height: 1;
-				font-size: 37px;
-				position: absolute;
-				top: 3px;
-				left: 3px;
-				right: 3px;
-				text-align: center;
-				text-shadow: 0 1px 1px #fff,
-							inset 0 1px 1px #0002;
+				background: url(~/icons/tile.png) 50% 50%/contain no-repeat;
+				box-shadow: 0 0 0 1px #0002,
+							0 1px 2px #0005,
+							inset 0 1px 0 #fff,
+							inset 0 -1px 0 #0002;
+
+				&.red { color: #ba2929; }
+				&.blue { color: #03a3dc; }
+				&.black { color: #010101; }
+				&.yellow { color: #ffa800d9; } // default color
+
+				&:before {
+					content: "";
+					position: absolute;
+					bottom: 11px;
+					left: 18px;
+					width: 20px;
+					height: 20px;
+					border-radius: 50%;
+					box-shadow: 0 1px 1px #fff,
+								0 0 1px #0002;
+				}
+
+				&:after {
+					content: attr(data-v);
+					line-height: 1;
+					font-size: 37px;
+					position: absolute;
+					top: 3px;
+					left: 3px;
+					right: 3px;
+					text-align: center;
+					text-shadow: 0 1px 1px #fff,
+								0 0 0 #0009,
+								0 1px 1px #fff;
+				}
 			}
 		}
 	}
