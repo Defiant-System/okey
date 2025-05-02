@@ -53,13 +53,6 @@ content {
 				margin: 0 1px 1px 0;
 
 				&:after { font-size: 12px; }
-				// &:before {
-				// 	width: 9px;
-				// 	height: 9px;
-				// 	left: 7px;
-				// 	bottom: 4px;
-				// 	// background: #f003;
-				// }
 			}
 		}
 
@@ -140,6 +133,7 @@ content {
 		left: 53px;
 		right: 53px;
 		bottom: 161px;
+		pointer-events: none;
 
 		.inset.tiles {
 			position: absolute;
@@ -160,6 +154,7 @@ content {
 			&.player-bottom {
 				bottom: 0;
 				right: 0;
+				pointer-events: all;
 			}
 
 			&.player-left {
@@ -172,13 +167,6 @@ content {
 				height: 61px;
 
 				&:after { font-size: 31px; }
-				// &:before {
-				// 	width: 17px;
-				// 	height: 17px;
-				// 	left: 15px;
-				// 	bottom: 9px;
-				// 	// background: #f003;
-				// }
 			}
 		}
 	}
@@ -287,17 +275,18 @@ content {
 		&.black { color: #010101; }
 		&.yellow { color: #ffa800d9; } // default color
 
-		// &:before1 {
-		// 	content: "";
-		// 	position: absolute;
-		// 	bottom: 11px;
-		// 	left: 18px;
-		// 	width: 20px;
-		// 	height: 20px;
-		// 	border-radius: 50%;
-		// 	box-shadow: 0 1px 1px #fff,
-		// 				0 0 1px #0002;
-		// }
+		&.ring {
+			&:before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				pointer-events: none;
+				background: url(~/icons/tile-rings.png) 50% 50%/contain no-repeat;
+			}
+		}
 
 		&:after {
 			content: attr(data-v);
@@ -311,6 +300,17 @@ content {
 			text-shadow: 0 1px 1px #fff,
 						0 0 0 #0009,
 						0 1px 1px #fff;
+		}
+
+		&[data-v="j"] {
+			&:after {
+				content: "";
+				background: url(~/icons/icon-joker.png) 50% 50%/contain no-repeat;
+				top: 3px;
+				left: 9px;
+				width: 37px;
+				height: 37px;
+			}
 		}
 	}
 
@@ -348,6 +348,38 @@ content {
 			margin-bottom: 19px;
 			padding: 5px 0 0 5px;
 			border-radius: 10px;
+
+			&.left {
+				.tile {
+					&:before {
+						content: "";
+						background: radial-gradient(ellipse at 70% center, #eee, #ccc 100%);
+						position: absolute;
+						bottom: 9px;
+						left: 14px;
+						width: 28px;
+						height: 28px;
+						border-radius: 50%;
+						box-shadow: inset 0 2px 4px #aaa,
+									0 1px 1px #fff,
+									0 1px 1px #fff,
+									0 0 1px #0002;
+					}
+
+					&:after {
+						content: attr(data-n);
+						color: #222;
+						position: absolute;
+						top: 41px;
+						left: 13px;
+						right: 14px;
+						letter-spacing: -.5px;
+						text-align: center;
+						text-shadow: none;
+						font-size: 17px;
+					}
+				}
+			}
 
 			.tile {
 				display: block;
@@ -389,6 +421,48 @@ content {
 			
 			svg.outline {
 				display: block;
+			}
+		}
+
+		&.thinking {
+			--thinkTime: 9s;
+			min-height: 1px;
+			transition: min-height var( --thinkTime ) linear;
+		}
+
+		&[data-status="THINKING"] {
+			svg.outline {
+				display: block;
+
+				rect {
+					--outline: 365;
+					stroke-dashoffset: var( --outline );
+					filter: drop-shadow(0 0 1px var( --color ))
+							drop-shadow(0 0 3px var( --color ))
+							drop-shadow(0 0 5px var( --color ));
+					animation: var( --thinkTime ) animOutline linear forwards;
+				}
+			}
+		}
+
+		&[data-status="WINNER"] {
+			svg.outline {
+				display: block;
+				--color: #ff0;
+
+				rect {
+					stroke-dasharray: 0;
+					stroke-dashoffset: 0;
+				}
+			}
+		}
+
+		&[data-status="LOSER"] {
+			background: radial-gradient(ellipse at bottom center, #ffdddd60, transparent 90%),
+						linear-gradient(180deg, #a73333a1, #81050594);
+			
+			.name {
+				filter: sepia(1) hue-rotate(305deg) saturate(3) brightness(0.85);
 			}
 		}
 
@@ -444,7 +518,7 @@ content {
 		.name {
 			position: absolute;
 			top: 3px;
-			left: 71px;
+			left: 67px;
 			right: 0;
 			z-index: 1;
 			padding-top: 1px;
@@ -457,7 +531,7 @@ content {
 				content: "";
 				position: absolute;
 				top: -3px;
-				left: -70px;
+				left: -67px;
 				height: 53px;
 				width: 61px;
 				border-radius: 4px 0 0 4px;
@@ -477,6 +551,14 @@ content {
 		}
 	}
 }
+
+
+
+@keyframes animOutline {
+	0%   { stroke-dashoffset: var( --outline ); }
+	100% { stroke-dashoffset: 0; }
+}
+
 
 // custom fonts
 @font-face {

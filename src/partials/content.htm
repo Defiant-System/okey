@@ -20,8 +20,8 @@
 				<div class="inset tiles">
 					<span class="tile" data-v="7"></span>
 				</div>
-				<div class="inset tiles">
-					<span class="tile"></span>
+				<div class="inset tiles left">
+					<span class="tile" data-n="19"></span>
 				</div>
 			</div>
 			<div class="doubles">
@@ -47,9 +47,9 @@
 
 		<!-- players -->
 		<div class="player top">
-			<span class="seat horisontal">
-				<svg class="outline" viewBox="0 0 95 117">
-					<rect x="-1" y="-1" width="97" height="119" rx="6"/>
+			<span class="seat" data-status="WINNER">
+				<svg class="outline" viewBox="0 0 129 53">
+					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Ann"></span>
@@ -57,9 +57,9 @@
 		</div>
 
 		<div class="player left">
-			<span class="seat">
-				<svg class="outline" viewBox="0 0 95 117">
-					<rect x="-1" y="-1" width="97" height="119" rx="6"/>
+			<span class="seat" data-status="LOSER">
+				<svg class="outline" viewBox="0 0 129 53">
+					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Nina"></span>
@@ -67,9 +67,9 @@
 		</div>
 
 		<div class="player right">
-			<span class="seat">
-				<svg class="outline" viewBox="0 0 95 117">
-					<rect x="-1" y="-1" width="97" height="119" rx="6"/>
+			<span class="seat highlight">
+				<svg class="outline" viewBox="0 0 129 53">
+					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Daniel"></span>
@@ -77,9 +77,9 @@
 		</div>
 
 		<div class="player user">
-			<span class="seat highlight1 horisontal">
-				<svg class="outline" viewBox="0 0 95 117">
-					<rect x="-1" y="-1" width="97" height="119" rx="6"/>
+			<span class="seat thinking1" data-status="THINKING">
+				<svg class="outline" viewBox="0 0 129 53">
+					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Hakan"></span>
@@ -98,26 +98,26 @@
 				<span class="tile blue" data-v="11"></span>
 				<span class="tile black" data-v="12"></span>
 				<span class="tile yellow" data-v="13"></span>
-				<span class="empty"></span>
+				<span class="tile" data-v="j"></span>
 				<span class="empty"></span>
 				<span class="empty"></span>
 
-				<!-- <span class="empty"></span>
 				<span class="empty"></span>
 				<span class="empty"></span>
-				<span class="tile red" data-v="1"></span>
-				<span class="tile blue" data-v="2"></span>
-				<span class="tile black" data-v="3"></span>
-				<span class="tile yellow" data-v="4"></span>
-				<span class="tile red" data-v="5"></span>
-				<span class="tile blue" data-v="6"></span>
-				<span class="tile black" data-v="7"></span>
-				<span class="tile yellow" data-v="8"></span>
-				<span class="tile red" data-v="10"></span>
-				<span class="tile blue" data-v="11"></span>
-				<span class="tile black" data-v="12"></span>
-				<span class="tile yellow" data-v="13"></span>
-				<span class="empty"></span> -->
+				<span class="tile red ring" data-v="1"></span>
+				<span class="tile blue ring" data-v="2"></span>
+				<span class="tile black ring" data-v="3"></span>
+				<span class="tile yellow ring" data-v="4"></span>
+				<span class="tile red ring" data-v="5"></span>
+				<span class="tile blue ring" data-v="6"></span>
+				<span class="tile black ring" data-v="7"></span>
+				<span class="tile yellow ring" data-v="8"></span>
+				<span class="tile red ring" data-v="10"></span>
+				<span class="tile blue ring" data-v="11"></span>
+				<span class="tile black ring" data-v="12"></span>
+				<span class="tile yellow ring" data-v="13"></span>
+				<span class="tile ring" data-v="j"></span>
+				<span class="empty"></span>
 			</div>
 		</div>
 	</div>
