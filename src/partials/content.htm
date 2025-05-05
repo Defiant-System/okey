@@ -2,6 +2,7 @@
 	<div class="board">
 		<div class="common">
 			<div class="series">
+				<!--
 				<span class="tile red" data-v="2" style="--y: 4; --x: 1;"></span>
 				<span class="tile red" data-v="3" style="--y: 4; --x: 2;"></span>
 				<span class="tile red" data-v="4" style="--y: 4; --x: 3;"></span>
@@ -11,80 +12,102 @@
 				<span class="tile yellow" data-v="6" style="--y: 5; --x: 4;"></span>
 				<span class="tile yellow" data-v="7" style="--y: 5; --x: 5;"></span>
 				<span class="tile yellow" data-v="8" style="--y: 5; --x: 6;"></span>
+				-->
 			</div>
 			<div class="info">
-				<div class="inset">Solo</div>
-				<div class="inset on">Assisted</div>
-				<div class="inset off">Regular</div>
-				<div class="inset">1 Round</div>
+				<div class="inset"><!-- Solo --></div>
+				<div class="inset"><!-- Assisted --></div>
+				<div class="inset"><!-- Regular --></div>
+				<div class="inset"><!-- 1 Round --></div>
 				<div class="inset tiles">
-					<span class="tile" data-v="7"></span>
+					<!-- <span class="tile hidden" data-v="7"></span> -->
 				</div>
 				<div class="inset tiles left">
-					<span class="tile" data-n="19"></span>
+					<span class="tile"></span>
 				</div>
 			</div>
 			<div class="doubles">
+				<!--
 				<span class="tile red" data-v="6"></span>
 				<span class="tile red" data-v="6"></span>
+				-->
 			</div>
 		</div>
 
 		<div class="discard">
 			<div class="inset tiles player-top">
-				<span class="tile" data-v="7"></span>
+				<!-- <span class="tile" data-v="7"></span> -->
 			</div>
 			<div class="inset tiles player-right">
-				<span class="tile blue" data-v="3"></span>
+				<!-- <span class="tile blue" data-v="3"></span> -->
 			</div>
 			<div class="inset tiles player-bottom">
-				<span class="tile black" data-v="11"></span>
+				<!-- <span class="tile black" data-v="11"></span> -->
 			</div>
 			<div class="inset tiles player-left">
-				<span class="tile red" data-v="2"></span>
+				<!-- <span class="tile red" data-v="2"></span> -->
 			</div>
 		</div>
 
 		<!-- players -->
 		<div class="player top">
-			<span class="seat" data-status="WINNER">
+			<span class="seat" data-status-="WINNER">
 				<svg class="outline" viewBox="0 0 129 53">
 					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Ann"></span>
+				<div class="melded hidden">
+					<div class="dlg-bg"></div>
+					<h4>101</h4>
+				</div>
 			</span>
 		</div>
 
 		<div class="player left">
-			<span class="seat" data-status="LOSER">
+			<span class="seat" data-status-="LOSER">
 				<svg class="outline" viewBox="0 0 129 53">
 					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Nina"></span>
+				<div class="melded hidden">
+					<div class="dlg-bg"></div>
+					<h4>101</h4>
+				</div>
 			</span>
 		</div>
 
 		<div class="player right">
-			<span class="seat highlight">
+			<span class="seat highlight-">
 				<svg class="outline" viewBox="0 0 129 53">
 					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Daniel"></span>
+				<div class="melded hidden">
+					<div class="dlg-bg"></div>
+					<h4>101</h4>
+				</div>
 			</span>
 		</div>
 
 		<div class="player user">
-			<span class="seat thinking1" data-status="THINKING">
+			<span class="seat thinking1" data-status-="THINKING">
 				<svg class="outline" viewBox="0 0 129 53">
 					<rect x="-1" y="-1" width="131" height="55" rx="6"/>
 				</svg>
 				<span class="bg"></span>
 				<span class="name" data-name="Hakan"></span>
 			</span>
+
+			<div class="melded hidden">
+				<div class="dlg-bg"></div>
+				<h4>101</h4>
+			</div>
+
 			<div class="rack">
+				<!--
 				<span class="empty"></span>
 				<span class="tile red" data-v="1"></span>
 				<span class="tile blue" data-v="2"></span>
@@ -118,7 +141,32 @@
 				<span class="tile yellow ring" data-v="13"></span>
 				<span class="tile ring" data-v="j"></span>
 				<span class="empty"></span>
+				-->
 			</div>
 		</div>
+	</div>
+
+	<!-- actions dialog -->
+	<div class="actions finish hidden" data-area="dialog">
+		<div class="dlg-bg"></div>
+		<h3>Hakan Wins!</h3>
+		<h4>Some more text goes here...</h4>
+		<span class="button" data-click="new-round">Continue</span>
+	</div>
+
+	<!-- actions dialog -->
+	<div class="actions options hidden" data-area="dialog">
+		<div class="dlg-bg"></div>
+		<div class="dlg-arrow"></div>
+		<span class="button check" data-click="player-check">Check</span>
+		<span class="button call" data-click="player-call">Call</span>
+		<span class="button fold" data-click="player-fold">Fold</span>
+
+		<span class="slider">
+			<span class="handle"></span>
+			<span class="text">slide to raise</span>
+		</span>
+
+		<span class="button raise disabled" data-click="player-raise">Raise</span>
 	</div>
 </content>

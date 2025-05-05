@@ -1,4 +1,5 @@
 
+@import "./modules/engine.js"
 @import "./modules/test.js"
 
 
@@ -6,6 +7,9 @@ const okey = {
 	init() {
 		// fast references
 		this.content = window.find("content");
+
+		// init game engine
+		Engine.init();
 
 		// DEV-ONLY-START
 		Test.init(this);
