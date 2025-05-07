@@ -34,6 +34,32 @@
 		<ellipse class="st3" cx="28" cy="52" rx="9.5" ry="9.5"/>
 	</svg>
 
+	<svg id="tile-back" viewBox="0 0 56 73">
+		<style type="text/css">
+			.st0{fill:url(#SVGID_1_);}
+			.st1{fill:url(#SVGID_2_);}
+			.st2{fill:url(#SVGID_3_);}
+		</style>
+		<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="27.943" y1="3.380991e-02" x2="27.943" y2="72.9662">
+			<stop  offset="1.862645e-07" style="stop-color:#EFEFEF"/>
+			<stop  offset="1" style="stop-color:#F0F0F0"/>
+		</linearGradient>
+		<path class="st0" d="M50.6,73H5.3C2.4,73,0,70.6,0,67.7V5.3C0,2.4,2.4,0,5.3,0h45.3c2.9,0,5.3,2.4,5.3,5.3v62.4
+			C55.9,70.6,53.5,73,50.6,73z"/>
+		<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="27.943" y1="47.9387" x2="27.943" y2="72.9662">
+			<stop  offset="1.862645e-07" style="stop-color:#E4E4E4"/>
+			<stop  offset="1" style="stop-color:#D9D9D9"/>
+		</linearGradient>
+		<path class="st1" d="M42,47.9c-16.7,0-31.7,3.3-42,8.5v11c0,3,2.5,5.5,5.6,5.5h44.8c3.1,0,5.6-2.5,5.6-5.5V48.7
+			C51.4,48.2,46.8,47.9,42,47.9z"/>
+		<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="28.0571" y1="3.380991e-02" x2="28.0571" y2="29.1896">
+			<stop  offset="1.862645e-07" style="stop-color:#F1F1F1"/>
+			<stop  offset="1" style="stop-color:#ebebeb"/>
+		</linearGradient>
+		<path class="st2" d="M50.4,0H5.7C2.6,0,0.1,2.5,0.1,5.5v22.7c4.4,0.6,9,1,13.8,1c18.4,0,34.3-4.9,42.1-12.1V5.5
+			C56,2.5,53.5,0,50.4,0z"/>
+	</svg>
+
 	<svg id="tile-rings" viewBox="0 0 56 73">
 		<style type="text/css">
 			.st0{fill:none;stroke:#f00;stroke-width:1.5}

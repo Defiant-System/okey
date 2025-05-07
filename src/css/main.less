@@ -1,4 +1,6 @@
 
+overflow: visible;
+
 content {
 	position: absolute;
 	top: 0;
@@ -145,7 +147,12 @@ content {
 			height: 71px;
 			border-radius: 9px;
 
-			&.player-top {
+			&.player-1 {
+				bottom: 0;
+				left: 0;
+			}
+
+			&.player-2 {
 				top: 0;
 				left: 23px;
 				width: 51px;
@@ -157,7 +164,7 @@ content {
 				}
 			}
 
-			&.player-right {
+			&.player-3 {
 				top: 0;
 				right: 23px;
 				width: 51px;
@@ -169,15 +176,23 @@ content {
 				}
 			}
 
-			&.player-bottom {
+			&.player-4 {
 				bottom: 0;
 				right: 0;
 				pointer-events: all;
-			}
 
-			&.player-left {
-				bottom: 0;
-				left: 0;
+				&.drop:hover {
+					background: #f002;
+				}
+
+				&:before {
+					content: "";
+					position: absolute;
+					top: -20px;
+					left: -20px;
+					right: -20px;
+					bottom: -20px;
+				}
 			}
 
 			.tile {
@@ -315,7 +330,7 @@ content {
 	}
 
 	span.tile {
-		position: relative;
+		position: absolute;
 		border-radius: 5px;
 		color: #ffa800d9;
 		background: url(~/icons/tile.png) 50% 50%/contain no-repeat;
@@ -337,6 +352,25 @@ content {
 				pointer-events: none;
 				background: url(~/icons/tile-rings.png) 50% 50%/contain no-repeat;
 			}
+		}
+
+		&.okey {
+			background-image: url(~/icons/tile-back.png);
+
+			&:after { display: none; }
+		}
+
+		&.temp {
+			position: relative;
+		}
+
+		&.smooth {
+			transition: top 120ms ease-in-out,
+						left 120ms ease-in-out;
+		}
+
+		&.dragging {
+			pointer-events: none;
 		}
 
 		&:after {
