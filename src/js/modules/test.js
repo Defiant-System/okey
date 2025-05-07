@@ -42,9 +42,9 @@ let Test = {
 		Engine.restore(state);
 
 
-		setTimeout(() => {
-			let tile = APP.content.find(`.tile.yellow[data-v="2"]`);
-			Engine.discard(tile, 1);
-		}, 300);
+		// setTimeout(() => {
+		// 	let tile = APP.content.find(`.tile[data-id="101"]`);
+		// 	Engine.discard(tile, 1);
+		// }, 1000);
 	}
 };

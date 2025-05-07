@@ -55,12 +55,17 @@
 				Drag.el.css({ top, left });
 				break;
 			case "mouseup":
-				Drag.el
-					.removeClass("dragging")
-					.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
-					.css({ top: Drag.drop.top, left: Drag.drop.left });
+				// Drag.el
+				// 	.removeClass("dragging")
+				// 	.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
+				// 	.css({ top: Drag.drop.top, left: Drag.drop.left });
 
+				// reset tile 
+				Drag.el.removeClass("dragging");
+				// reset target drop zones
 				Drag.dEl.removeClass("drop");
+				// move tile via Engine
+				Engine.discard(Drag.el, 1);
 
 				// uncover content
 				Self.els.content.removeClass("cover");
