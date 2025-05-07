@@ -18,7 +18,7 @@ let Test = {
 					seat: 1,
 					name: "Hakan",
 					rack: [
-						"205", "206", "207", "", "305", "306", "307", "", "110", "210", "410", "", "", "112", "212", "312",
+						"205", "110", "207", "", "305", "306", "307", "", "110", "210", "410", "", "", "112", "212", "312",
 						"104", "105", "101", "", "302", "303", "", "", "", "", "", "402", "405", "309", "108", "313"
 					],
 				},
@@ -41,6 +41,8 @@ let Test = {
 		};
 		Engine.restore(state);
 
+
+		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 300);
 
 		// setTimeout(() => {
 		// 	let tile = APP.content.find(`.tile[data-id="101"]`);
