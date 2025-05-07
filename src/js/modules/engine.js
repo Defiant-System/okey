@@ -4,6 +4,10 @@ let Engine = (() => {
 	let APP;
 	let Colors = ["green", "red",  "blue", "yellow", "black"];
 
+	let activePlayer = 1;
+	let settingsGameLevel = 2;
+	let boardTilesVir;
+
 	let Tiles = {
 		data: [],
 		init() {
@@ -52,6 +56,9 @@ let Engine = (() => {
 		},
 		start() {
 			Tiles.shuffle();
+			// reset variables
+			activePlayer = 1;
+			boardTilesVir = [];
 		},
 		updateLeft() {
 			// update table tiles left
@@ -99,6 +106,9 @@ let Engine = (() => {
 			// table UI update
 			this.updateLeft();
 
+			// save state
+			this._state = state;
+
 			console.log(state);
 		},
 		// play(num) {},
@@ -113,10 +123,185 @@ let Engine = (() => {
 		moveTile(el, player, _top, _left, type, tableTilePos) {},
 		place(_0x5595c5, _0x17c5da, _0x4fcdf3) {},
 		moveBack(el) {},
+
+		getBoard(seat) {
+			let rack = this._state.player[seat].rack.slice();
+			// update "active player"
+			activePlayer = seat;
+			// return rack
+			return { rack };
+		},
+
 		arrange(seat, style=1) {
 			// style 1: serial
 			// style 2: double
+			var _0x415797 = [];
+			var _0x4ace7d = [];
+			var _0x8d1441 = [];
+			var _0x20d181 = [];
+			var _0x163d98 = [];
+			let { rack } = this.getBoard(seat);
+			okeyCont = 0;
+			var _0x4d7341 = 0;
+			if (activePlayer == 1) _0x4d7341 = 1;
 			
+			if (settingsGameLevel > 1 || _0x4d7341 == 1) {
+				var _0x236bec = rack.indexOf(okey);
+				if (_0x236bec != -1) {
+					rack[_0x236bec] = "800";
+					okeyCont++;
+				}
+				var _0x236bec = rack.indexOf(okey);
+				if (_0x236bec != -1) {
+					rack[_0x236bec] = "800";
+					okeyCont++;
+				}
+				var _0x236bec = rack.indexOf('000');
+				if (_0x236bec != -1) {
+					rack[_0x236bec] = String(okey);
+				}
+				var _0x236bec = rack.indexOf('000');
+				if (_0x236bec != -1) {
+					rack[_0x236bec] = String(okey);
+				}
+			}
+			var _0xabd7f7 = rack.slice();
+			var _0x4d2aea = rack.slice();
+			if (type == 1) {
+				if (checkPer(3) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = sortTiles(3, 1);
+					_0x4ace7d = _0x415797.slice();
+					rack = boardTilesVir.slice();
+					_0x415797 = sortTilesByColor(3, 1);
+					_0x8d1441 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+				} else {
+					_0x415797 = sortTilesByColor(3, 1);
+					_0x8d1441 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+					_0x415797 = sortTiles(3, 1);
+					_0x4ace7d = _0x415797.slice();
+					;
+					rack = boardTilesVir.slice();
+				}
+				_0x4ace7d.push.apply(_0x4ace7d, _0x8d1441);
+				perFull = _0x4ace7d.slice();
+				addFourth();
+				if (okeyCont > 0) {
+					addOkey(1);
+				}
+				_0x4ace7d = perFull.slice();
+				if (checkPer(2) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = sortTiles(2, 1);
+					_0x20d181 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+					_0x415797 = sortTilesByColor(2, 1);
+					_0x163d98 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+				} else {
+					_0x415797 = sortTilesByColor(2, 1);
+					_0x163d98 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+					_0x415797 = sortTiles(2, 1);
+					_0x20d181 = _0x415797.slice();
+					rack = boardTilesVir.slice();
+				}
+				_0x20d181.push.apply(_0x20d181, _0x163d98);
+				perHalf = _0x20d181.slice();
+				if (okeyCont > 0) {
+					addOkey(2);
+				}
+				if (okeyCont > 0) {
+					addOkey(3);
+				}
+				if (okeyCont > 0) {
+					addOkey(4);
+					_0x4ace7d = perFull.slice();
+				}
+				_0x20d181 = perHalf.slice();
+			}
+			if (type == 2) {
+				_0x415797 = sortDouble(0, 1);
+				_0x4ace7d = _0x415797.slice();
+				perFull = _0x4ace7d.slice();
+				boardTiles = boardTilesVir.slice();
+				if (okeyCont > 0) {
+					addOkeyDouble();
+				}
+				boardTiles = boardTilesVir.slice();
+				_0x4ace7d = perFull.slice();
+			}
+			_0x4ace7d.push.apply(_0x4ace7d, _0x20d181);
+			boardTiles = rack.filter(e => e != '');
+			var _0x17aa37 = 0;
+			var _0x1eddbe = 0;
+			var _0x52b171 = 0;
+			for (i = 0; i <= _0x4ace7d.length; i++) {
+				if (_0x4ace7d[i] == '') {
+					if (i <= 15) {
+						_0x17aa37 = _0x1eddbe;
+						_0x1eddbe = i;
+					}
+					if (i > 15 && _0x52b171 == 0) {
+						_0x52b171 = i;
+					}
+				}
+			}
+			if (_0x1eddbe) {
+				for (i = 0; i < 15 - _0x1eddbe; i++) {
+					_0x4ace7d.splice(_0x17aa37, 0, '');
+				}
+			}
+			if (_0x4ace7d[15] == '') {
+				_0x4ace7d.splice(15, 1);
+			}
+			var _0x246380 = _0x4ace7d.length * 1 + rack.length * 1;
+			for (i = 0; i < 30 - _0x246380; i++) {
+				_0x4ace7d.push('');
+			}
+			if (type == 1) {
+				priority();
+			}
+			_0x4ace7d.push.apply(_0x4ace7d, boardTiles);
+			boardTiles = _0x4ace7d.slice();
+			var _0x199fea = rack.length;
+			for (i = 30; i < _0x199fea; i++) {
+				boardTiles = removeArrayItem(boardTiles, '', 1);
+			}
+			_0x4d2aea = [];
+			boardPlacesTemp1 = boardPlaces.slice();
+			boardPlaces = Array(31).fill(0);
+			var _0x3509bd = 0;
+			for (i = 0; i < rack.length; i++) {
+				var _0x27d3db = i * 1 + 1;
+				if (rack[i] != '') {
+					var _0x545a8b = _0xabd7f7.indexOf(rack[i]);
+					_0xabd7f7[_0x545a8b] = '';
+					_0x545a8b++;
+					if (rack[i] != '') {
+						_0x4d2aea[_0x3509bd] = rack[i];
+						_0x3509bd++;
+					}
+					place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
+				} else {
+					boardPlaces[_0x27d3db] = 0;
+				}
+			}
+			
+			// if (type == 1 && check_win()) {
+			// 	if (AIStatus == 0 && activePlayer == 1) {} else {
+			// 		console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
+			// 		winnerPlayer = activePlayer;
+			// 		game_over(1);
+			// 	}
+			// }
+			// if (type == 2 && check_win_double()) {
+			// 	if (AIStatus == 0 && activePlayer == 1) {} else {
+			// 		console.log("Oyun Bitti: " + users[activePlayer] + " cift acti");
+			// 		winnerPlayer = activePlayer;
+			// 		game_over(1);
+			// 	}
+			// }
 		},
 		game_over(_0x3a9872) {},
 		game_over_message() {},
@@ -173,7 +358,6 @@ let Engine = (() => {
 		drag_stop() {},
 		check_throw(_0x225b07, _0x203a47) {},
 		update_boards() {},
-		get_board(_0x4d53dc) {},
 		checkPosition(_0x317063) {},
 		openPlace(_0x1ca1e8, _0x160545, _0x1ff05a) {},
 		movetoArea(_0x2f30f1, _0x5255cf, _0x1c04c4) {},

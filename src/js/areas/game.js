@@ -20,7 +20,11 @@
 		// console.log(event);
 		switch (event.type) {
 			// custom events
-			case "set-opponents":
+			case "engine-sort-serial":
+				Engine.arrange(1, 1);
+				break;
+			case "engine-sort-double":
+				Engine.arrange(1, 2);
 				break;
 		}
 	},
