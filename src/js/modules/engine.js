@@ -132,7 +132,7 @@ let Engine = (() => {
 			// save state
 			this._state = state;
 
-			console.log(state);
+			// console.log(state);
 		},
 		// play(num) {},
 		// setCookie(name, value, days) {},
@@ -216,14 +216,150 @@ let Engine = (() => {
 			return { rack };
 		},
 
-		arrange(seat, type=1) {
-			// style 1: serial
-			// style 2: double
-			let { rack } = this.getBoard(seat);
+		arrange(tiles, seat, type=1) {
+			console.log("in", tiles);
+			// type 1: serial
+			// type 2: double
+			var _0x415797 = [];
+			var _0x4ace7d = [];
+			var _0x8d1441 = [];
+			var _0x20d181 = [];
+			var _0x163d98 = [];
 
+			okeyCont = 0;
+			var _0x4d7341 = 0;
+			if (activePlayer == 1) _0x4d7341 = 1;
+			
+			if (settingsGameLevel > 1 || _0x4d7341 == 1) {
+				var _0x236bec = tiles.indexOf(okey);
+				if (_0x236bec != -1) {
+					tiles[_0x236bec] = "800";
+					okeyCont++;
+				}
+				var _0x236bec = tiles.indexOf(okey);
+				if (_0x236bec != -1) {
+					tiles[_0x236bec] = "800";
+					okeyCont++;
+				}
+				var _0x236bec = tiles.indexOf('000');
+				if (_0x236bec != -1) {
+					tiles[_0x236bec] = String(okey);
+				}
+				var _0x236bec = tiles.indexOf('000');
+				if (_0x236bec != -1) {
+					tiles[_0x236bec] = String(okey);
+				}
+			}
+			var _0xabd7f7 = tiles.slice();
+			var _0x4d2aea = tiles.slice();
+			let virTiles = tiles.slice();
 
+			if (type == 1) {
+				if (this.checkPer(tiles, 3) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = this.sortTiles(tiles, 3, 1);
+					_0x4ace7d = _0x415797.slice();
+					tiles = virTiles.slice();
+					_0x415797 = this.sortTilesByColor(tiles, 3, 1);
+					_0x8d1441 = _0x415797.slice();
+					tiles = virTiles.slice();
+				} else {
+					_0x415797 = this.sortTilesByColor(tiles, 3, 1);
+					_0x8d1441 = _0x415797.slice();
+					tiles = virTiles.slice();
+					_0x415797 = this.sortTiles(tiles, 3, 1);
+					_0x4ace7d = _0x415797.slice();
+					;
+					tiles = virTiles.slice();
+				}
+				_0x4ace7d.push.apply(_0x4ace7d, _0x8d1441);
+				perFull = _0x4ace7d.slice();
+				console.log("perFull", perFull);
+				tiles = this.addFourth(tiles);
+				if (okeyCont > 0) {
+					this.addOkey(1);
+				}
+				_0x4ace7d = perFull.slice();
+				if (this.checkPer(tiles, 2) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = this.sortTiles(tiles, 2, 1);
+					_0x20d181 = _0x415797.slice();
+					tiles = virTiles.slice();
+					_0x415797 = this.sortTilesByColor(tiles, 2, 1);
+					_0x163d98 = _0x415797.slice();
+					tiles = virTiles.slice();
+				} else {
+					_0x415797 = this.sortTilesByColor(tiles, 2, 1);
+					_0x163d98 = _0x415797.slice();
+					tiles = virTiles.slice();
+					_0x415797 = this.sortTiles(tiles, 2, 1);
+					_0x20d181 = _0x415797.slice();
+					tiles = virTiles.slice();
+				}
+				_0x20d181.push.apply(_0x20d181, _0x163d98);
+				perHalf = _0x20d181.slice();
+				console.log("perHalf", perHalf);
+				if (okeyCont > 0) {
+					this.addOkey(2);
+				}
+				if (okeyCont > 0) {
+					this.addOkey(3);
+				}
+				if (okeyCont > 0) {
+					this.addOkey(4);
+					_0x4ace7d = perFull.slice();
+				}
+				_0x20d181 = perHalf.slice();
+				console.log("_0x20d181", _0x20d181);
+			}
+			if (type == 2) {
+				_0x415797 = this.sortDouble(0, 1);
+				_0x4ace7d = _0x415797.slice();
+				perFull = _0x4ace7d.slice();
+				tiles = virTiles.slice();
+				if (okeyCont > 0) {
+					this.addOkeyDouble();
+				}
+				tiles = virTiles.slice();
+				_0x4ace7d = perFull.slice();
+			}
+			_0x4ace7d.push.apply(_0x4ace7d, _0x20d181);
+			tiles = tiles.filter(e => e != '');
+			var _0x17aa37 = 0;
+			var _0x1eddbe = 0;
+			var _0x52b171 = 0;
+			for (let i=0; i<=_0x4ace7d.length; i++) {
+				if (_0x4ace7d[i] == '') {
+					if (i <= 16) {
+						_0x17aa37 = _0x1eddbe;
+						_0x1eddbe = i;
+					}
+					if (i > 16 && _0x52b171 == 0) {
+						_0x52b171 = i;
+					}
+				}
+			}
+			if (_0x1eddbe) {
+				for (let i=0; i<16 - _0x1eddbe; i++) {
+					_0x4ace7d.splice(_0x17aa37, 0, '');
+				}
+			}
+			if (_0x4ace7d[16] == '') {
+				_0x4ace7d.splice(16, 1);
+			}
+			var _0x246380 = _0x4ace7d.length * 1 + tiles.length * 1;
+			for (let i=0; i<32 - _0x246380; i++) {
+				_0x4ace7d.push('');
+			}
+			if (type == 1) {
+				tiles = this.priority(tiles);
+			}
+			_0x4ace7d.push.apply(_0x4ace7d, tiles);
+			tiles = _0x4ace7d.slice();
+			var _0x199fea = tiles.length;
+			for (let i=32; i<_0x199fea; i++) {
+				tiles = this.removeArrayItem(tiles, '', 1);
+			}
 
-			console.log(rack);
+			return tiles;
 		},
 		game_over(_0x3a9872) {},
 		game_over_message() {},
@@ -235,16 +371,17 @@ let Engine = (() => {
 		moveToTable(_0x336229, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {},
 		button_active_passive(_0x282945, _0x106ed0) {},
 		collectItBack() {},
-		priority() {
-			boardTiles.sort();
-			boardTiles.sort((a, b) => a - b);
-			boardTilesVir = boardTiles.slice();
-			for (let i=1; i<boardTiles.length; i++) {
-				if (Math.abs(boardTiles[i] - boardTiles[i - 1]) == 2) {
-					boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[i]);
-					boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[i - 1]);
-					boardTilesVir.unshift(boardTiles[i]);
-					boardTilesVir.unshift(boardTiles[i - 1]);
+		priority(tiles) {
+			let bTiles = tiles.slice();
+			bTiles.sort();
+			bTiles.sort((a, b) => a - b);
+			let virTiles = bTiles.slice();
+			for (let i=1; i<bTiles.length; i++) {
+				if (Math.abs(bTiles[i] - bTiles[i - 1]) == 2) {
+					virTiles = this.removeArrayItem(virTiles, bTiles[i]);
+					virTiles = this.removeArrayItem(virTiles, bTiles[i - 1]);
+					virTiles.unshift(bTiles[i]);
+					virTiles.unshift(bTiles[i - 1]);
 				}
 			}
 			var _0x1fcc79 = 0;
@@ -252,10 +389,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 3) {
-						for (let j=0; j<boardTiles.length; j++) {
-							if ((boardTiles[j] - perFull[i - 1] == 2 || perFull[i - _0x1fcc79 + 1] - boardTiles[j] == 2) && (Math.abs(perFull[i - 1] - perFull[i - 2]) == 1 || Math.abs(perFull[i - 2] - perFull[i - 3]) == 1)) {
-								boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-								boardTilesVir.unshift(boardTiles[j]);
+						for (let j=0; j<bTiles.length; j++) {
+							if ((bTiles[j] - perFull[i - 1] == 2 || perFull[i - _0x1fcc79 + 1] - bTiles[j] == 2) && (Math.abs(perFull[i - 1] - perFull[i - 2]) == 1 || Math.abs(perFull[i - 2] - perFull[i - 3]) == 1)) {
+								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+								virTiles.unshift(bTiles[j]);
 							}
 						}
 					}
@@ -267,10 +404,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 4) {
-						for (let j=0; j<boardTiles.length; j++) {
-							if (boardTiles[j] - perFull[i - 1] == 1 || perFull[i - _0x1fcc79 + 1] - boardTiles[j] == 1) {
-								boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-								boardTilesVir.unshift(boardTiles[j]);
+						for (let j=0; j<bTiles.length; j++) {
+							if (bTiles[j] - perFull[i - 1] == 1 || perFull[i - _0x1fcc79 + 1] - bTiles[j] == 1) {
+								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+								virTiles.unshift(bTiles[j]);
 							}
 						}
 					}
@@ -282,10 +419,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 4) {
-						for (let j=0; j<boardTiles.length; j++) {
-							if (Math.abs(boardTiles[j] - perFull[i - 1]) % 100 == 0 && boardTiles[j] - perFull[i - 1] != 0 || Math.abs(perFull[i - _0x1fcc79 + 1] - boardTiles[j]) % 100 == 0 && perFull[i - _0x1fcc79 + 1] - boardTiles[j] != 0) {
-								boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-								boardTilesVir.unshift(boardTiles[j]);
+						for (let j=0; j<bTiles.length; j++) {
+							if (Math.abs(bTiles[j] - perFull[i - 1]) % 100 == 0 && bTiles[j] - perFull[i - 1] != 0 || Math.abs(perFull[i - _0x1fcc79 + 1] - bTiles[j]) % 100 == 0 && perFull[i - _0x1fcc79 + 1] - bTiles[j] != 0) {
+								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+								virTiles.unshift(bTiles[j]);
 							}
 						}
 					}
@@ -295,10 +432,10 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<boardTiles.length; j++) {
-						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) % 100 == 0 || Math.abs(boardTiles[j] - perHalf[i - 2]) % 100 == 0) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
-							boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-							boardTilesVir.unshift(boardTiles[j]);
+					for (let j=0; j<bTiles.length; j++) {
+						if ((Math.abs(bTiles[j] - perHalf[i - 1]) % 100 == 0 || Math.abs(bTiles[j] - perHalf[i - 2]) % 100 == 0) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
+							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+							virTiles.unshift(bTiles[j]);
 						}
 					}
 				}
@@ -306,10 +443,10 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<boardTiles.length; j++) {
-						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) == 1 || Math.abs(perHalf[i - 2] - boardTiles[j]) == 1) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
-							boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-							boardTilesVir.unshift(boardTiles[j]);
+					for (let j=0; j<bTiles.length; j++) {
+						if ((Math.abs(bTiles[j] - perHalf[i - 1]) == 1 || Math.abs(perHalf[i - 2] - bTiles[j]) == 1) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
+							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+							virTiles.unshift(bTiles[j]);
 						}
 					}
 				}
@@ -317,55 +454,60 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<boardTiles.length; j++) {
-						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) == 2 || Math.abs(perHalf[i - 2] - boardTiles[j]) == 2) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
-							boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[j]);
-							boardTilesVir.unshift(boardTiles[j]);
+					for (let j=0; j<bTiles.length; j++) {
+						if ((Math.abs(bTiles[j] - perHalf[i - 1]) == 2 || Math.abs(perHalf[i - 2] - bTiles[j]) == 2) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
+							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
+							virTiles.unshift(bTiles[j]);
 						}
 					}
 				}
 			}
-			boardTiles = boardTilesVir.slice();
+			return virTiles.slice();
 		},
-		addFourth() {
+		addFourth(tiles) {
+			let bTiles = tiles.slice();
+			let virTiles = tiles.slice();
 			for (let k=0; k<=1; k++) {
-			for (let i=0; i<boardTiles.length; i++) {
-				for (let j=0; j<perFull.length; j++) {
-					if (perFull[j] == '') {
-						var _0x39a913 = boardTiles[i];
-						if (settingsType == 1) {
-							if (boardTiles[i] % 100 == 1) {
-								_0x39a913 = boardTiles[i] * 1 + 13;
+				for (let i=0; i<bTiles.length; i++) {
+					for (let j=0; j<perFull.length; j++) {
+						if (perFull[j] == '') {
+							var _0x39a913 = bTiles[i];
+							if (settingsType == 1) {
+								if (bTiles[i] % 100 == 1) {
+									_0x39a913 = bTiles[i] * 1 + 13;
+								}
+							}
+							if (perFull[j - 1] * 1 + 1 == _0x39a913 && perFull[j - 2] * 1 + 2 == _0x39a913 && perFull[j - 3] * 1 + 3 == _0x39a913) {
+								perFull.splice(j, 0, bTiles[i]);
+								virTiles = this.removeArrayItem(virTiles, bTiles[i]);
+								bTiles = this.removeArrayItem(bTiles, bTiles[i]);
+								i--;
 							}
 						}
-						if (perFull[j - 1] * 1 + 1 == _0x39a913 && perFull[j - 2] * 1 + 2 == _0x39a913 && perFull[j - 3] * 1 + 3 == _0x39a913) {
-							perFull.splice(j, 0, boardTiles[i]);
-							boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[i]);
-							boardTiles = removeArrayItem(boardTiles, boardTiles[i]);
-							i--;
-						}
 					}
 				}
 			}
-		}
-		for (let i=0; i<boardTiles.length; i++) {
-			var _0x12e6a9 = 0;
-			for (let j=0; j<perFull.length; j++) {
-				_0x12e6a9++;
-				if (perFull[j] == '') {
-					if (_0x12e6a9 == 4) {
-						if (perFull[j - 3] % 100 == boardTiles[i] % 100 && perFull[j - 2] % 100 == boardTiles[i] % 100 && perFull[j - 1] % 100 == boardTiles[i] % 100 && perFull[j - 1] != boardTiles[i] && perFull[j - 2] != boardTiles[i] && perFull[j - 3] != boardTiles[i]) {
-							perFull.splice(j, 0, boardTiles[i]);
-							boardTilesVir = removeArrayItem(boardTilesVir, boardTiles[i]);
-							boardTiles = removeArrayItem(boardTiles, boardTiles[i]);
+			for (let i=0; i<bTiles.length; i++) {
+				var _0x12e6a9 = 0;
+				for (let j=0; j<perFull.length; j++) {
+					_0x12e6a9++;
+					if (perFull[j] == '') {
+						if (_0x12e6a9 == 4) {
+							if (perFull[j - 3] % 100 == bTiles[i] % 100 && perFull[j - 2] % 100 == bTiles[i] % 100 && perFull[j - 1] % 100 == bTiles[i] % 100 && perFull[j - 1] != bTiles[i] && perFull[j - 2] != bTiles[i] && perFull[j - 3] != bTiles[i]) {
+								perFull.splice(j, 0, bTiles[i]);
+								let virTiles = this.removeArrayItem(virTiles, bTiles[i]);
+								bTiles = this.removeArrayItem(bTiles, bTiles[i]);
+							}
 						}
+						_0x12e6a9 = 0;
 					}
-					_0x12e6a9 = 0;
 				}
 			}
-		}
+			return bTiles;
 		},
-		addOkey(_0x3d8919) {},
+		addOkey(seat) {
+			console.log(seat);
+		},
 		addOkeyDouble() {},
 		checkPer(tiles, num) {
 			let boardTilesVir = tiles.slice();
@@ -495,9 +637,6 @@ let Engine = (() => {
 		check_handle(_0x2019da, _0x1c59dd) {},
 		go_double() {},
 		sortDouble(_0xa76703, _0x5d64f0) {
-			if (goDouble == 0) {
-				console.log("go double");
-			}
 			boardTilesVir = boardTiles.slice();
 			boardTilesVir.sort();
 			boardTilesVir.sort((_0x24365f, _0x1fee6b) => _0x24365f % 100 > _0x1fee6b % 100 ? 1 : _0x1fee6b % 100 > _0x24365f % 100 ? -1 : 0);
