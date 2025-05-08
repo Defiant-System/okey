@@ -447,8 +447,8 @@ let Engine = (() => {
 				return sorted;
 			}
 		},
-		sortTilesByColor(num, type) {
-			boardTilesVir = boardTiles.slice();
+		sortTilesByColor(tiles, num, type) {
+			boardTilesVir = tiles.slice();
 			boardTilesVir.sort();
 			boardTilesVir.sort((a, b) => a % 100 > b % 100 ? 1 : b % 100 > a % 100 ? -1 : 0);
 			var arr1 = [];
