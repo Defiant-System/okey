@@ -45,10 +45,19 @@ let Test = {
 		Engine.restore(state);
 
 
-		console.log( Engine.sortTiles([108, 106, 107, 103], 2, 0) );
-		console.log( Engine.sortTiles([108, 106, 107, 103], 3, 0) );
-		console.log( Engine.sortTiles([108, 106, 107, 103], 2, 1) );
-		console.log( Engine.sortTiles([108, 106, 107, 103], 3, 1) );
+		// console.log( Engine.sortTiles([108, 106, 107, 103], 2, 0) );
+		// console.log( Engine.sortTiles([108, 106, 107, 103], 3, 0) );
+		// console.log( Engine.sortTiles([108, 106, 107, 103], 2, 1) );
+		// console.log( Engine.sortTiles([108, 106, 107, 103], 3, 1) );
+
+		// console.log( Engine.sortTilesByColor([108, 208, 308, 408, 103], 2, 0) );
+		// console.log( Engine.sortTilesByColor([108, 208, 308, 408, 103], 3, 0) );
+		// console.log( Engine.sortTilesByColor([108, 208, 308, 408, 103], 2, 1) );
+		// console.log( Engine.sortTilesByColor([108, 208, 308, 408, 103], 3, 1) );
+
+		let tmp = ['102', '103', '104', '', '204', '205', '206', '', '106', '107', '', '', '', '109', '110', '201', '202', '', '209', '210', '', '401', '402', '', '109', '110', '206', '213', '303', '312'];
+		console.log( Engine.checkPer(tmp, 2) ); // 71 70
+		console.log( Engine.checkPer(tmp, 3) ); // 24 6
 
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 300);
 

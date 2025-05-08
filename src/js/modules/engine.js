@@ -367,19 +367,21 @@ let Engine = (() => {
 		},
 		addOkey(_0x3d8919) {},
 		addOkeyDouble() {},
-		checkPer(num) {
-			var _0x2b6616 = boardTiles.slice();
-			var _0x29014d = this.sortTiles(num, 0);
-			boardTiles = boardTilesVir.slice();
-			var _0x45e4ae = this.sortTilesByColor(num, 0);
-			boardTiles = _0x2b6616.slice();
-			var _0x3e5c7a = this.sortTilesByColor(num, 0);
-			boardTiles = boardTilesVir.slice();
-			var _0x3bac34 = this.sortTiles(num, 0);
-			boardTiles = _0x2b6616.slice();
-			var _0x32fbad = _0x29014d * 1 + _0x45e4ae * 1;
-			var _0x5e8490 = _0x3e5c7a * 1 + _0x3bac34 * 1;
-			return _0x32fbad >= _0x5e8490 ? 1 : 0;
+		checkPer(tiles, num) {
+			let boardTilesVir = tiles.slice();
+			var arr = tiles.slice();
+			var sort1 = this.sortTiles(tiles, num, 0);
+			tiles = boardTilesVir.slice();
+			var sortC2 = this.sortTilesByColor(tiles, num, 0);
+			tiles = arr.slice();
+			var sortC2 = this.sortTilesByColor(tiles, num, 0);
+			tiles = boardTilesVir.slice();
+			var sort2 = this.sortTiles(tiles, num, 0);
+			tiles = arr.slice();
+			var score1 = sort1 * 1 + sortC2 * 1;
+			var score2 = sortC2 * 1 + sort2 * 1;
+
+			return score1 >= score2 ? 1 : 0;
 		},
 		sortTiles(tiles, num, sort) {
 			let boardTilesVir = tiles.slice();
@@ -448,7 +450,7 @@ let Engine = (() => {
 			}
 		},
 		sortTilesByColor(tiles, num, type) {
-			boardTilesVir = tiles.slice();
+			let boardTilesVir = tiles.slice();
 			boardTilesVir.sort();
 			boardTilesVir.sort((a, b) => a % 100 > b % 100 ? 1 : b % 100 > a % 100 ? -1 : 0);
 			var arr1 = [];
