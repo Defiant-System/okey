@@ -29,6 +29,9 @@ const okey = {
 			case "window.init":
 				break;
 			// custom events
+			case "set-game-engine":
+				Engine.setEngine(event.arg);
+				break;
 			case "open-help":
 				karaqu.shell("fs -u '~/help/index.md'");
 				break;
