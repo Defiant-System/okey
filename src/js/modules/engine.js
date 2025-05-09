@@ -102,6 +102,15 @@ let Engine = (() => {
 			// save state
 			this._state = state;
 
+			// set okey indicator
+			let okeyId = (this._state.table.okey-1).toString(),
+				clr = Colors[+okeyId.slice(0,1)],
+				num = new Number(okeyId.slice(1));
+			APP.content.find(`.info .tiles.okey .tile`)
+				.removeClass("red yellow blue black green")
+				.addClass(clr)
+				.data({ v: num });
+
 			// iterate players
 			state.player.map(p => {
 				if (p.seat === 1) {
@@ -362,6 +371,8 @@ let Engine = (() => {
 				boardTiles = this.removeArrayItem(boardTiles, "", 1);
 			}
 
+			// console.log(boardTiles);
+
 			let rack = APP.content.find(".player .rack"),
 				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
 				aEl = rack.append(sorted);
@@ -370,15 +381,13 @@ let Engine = (() => {
 				el.removeClass("arrange-anim");
 				el.find(".re-arranged, .empty").remove();
 			});
-			
+
 			rack.find("> .tile").map(tile => {
 				let el = $(tile),
-					target = aEl.find(`> .tile[data-id="${el.data("id")}"]`),
-					eOffset = el.offset(),
-					tOffset = target.offset(),
-					top = tOffset.top,
-					left = tOffset.left;
-				el.css({ top, left });
+					target = aEl.find(`> .tile[data-id="${el.data("id")}"]:not(.placed)`).get(0),
+					tOffset = target.offset();
+				el.css({ top: tOffset.top, left: tOffset.left });
+				target.addClass("placed");
 			});
 
 			/*
