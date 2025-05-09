@@ -335,29 +335,30 @@ let Engine = (() => {
 			var _0x8d1441 = [];
 			var _0x20d181 = [];
 			var _0x163d98 = [];
+			this.getBoard(seat);
 
 			okeyCont = 0;
 			var _0x4d7341 = 0;
 			if (activePlayer == 1) _0x4d7341 = 1;
 			
 			if (settingsGameLevel > 1 || _0x4d7341 == 1) {
-				var _0x236bec = boardTiles.indexOf(okey);
+				var _0x236bec = boardTiles.indexOf(Tiles.okey);
 				if (_0x236bec != -1) {
 					boardTiles[_0x236bec] = "800";
 					okeyCont++;
 				}
-				var _0x236bec = boardTiles.indexOf(okey);
+				var _0x236bec = boardTiles.indexOf(Tiles.okey);
 				if (_0x236bec != -1) {
 					boardTiles[_0x236bec] = "800";
 					okeyCont++;
 				}
 				var _0x236bec = boardTiles.indexOf("000");
 				if (_0x236bec != -1) {
-					boardTiles[_0x236bec] = String(okey);
+					boardTiles[_0x236bec] = String(Tiles.okey);
 				}
 				var _0x236bec = boardTiles.indexOf("000");
 				if (_0x236bec != -1) {
-					boardTiles[_0x236bec] = String(okey);
+					boardTiles[_0x236bec] = String(Tiles.okey);
 				}
 			}
 			var _0xabd7f7 = boardTiles.slice();
@@ -384,6 +385,7 @@ let Engine = (() => {
 				perFull = _0x4ace7d.slice();
 				// console.log("perFull", perFull.slice());
 				this.addFourth();
+				console.log( boardTiles.slice() );
 				if (okeyCont > 0) {
 					this.addOkey(1);
 				}
@@ -432,7 +434,6 @@ let Engine = (() => {
 			var _0x17aa37 = 0;
 			var _0x1eddbe = 0;
 			var _0x52b171 = 0;
-			console.log( boardTiles.slice() );
 			for (let i=0; i<=_0x4ace7d.length; i++) {
 				if (_0x4ace7d[i] == "") {
 					if (i <= 16) {
@@ -656,7 +657,7 @@ let Engine = (() => {
 			boardTiles.sort();
 			boardTiles.sort((a, b) => a - b);
 			boardTilesVir = boardTiles.slice();
-			if (_0x3d8919 == 1) {
+			if (seat == 1) {
 				var _0x164ff0;
 				for (let i=2; i<=boardTiles.length * 1 + 3; i++) {
 					if (boardTiles[i - 1] % 100 == 1 && settingsType == 1) {
@@ -747,7 +748,7 @@ let Engine = (() => {
 					}
 				}
 			}
-			if (_0x3d8919 == 2) {
+			if (seat == 2) {
 				var _0x164ff0;
 				for (let i=1; i<boardTiles.length; i++) {
 					if (boardTiles[i] - boardTiles[i - 1] == 2) {
@@ -783,7 +784,7 @@ let Engine = (() => {
 					}
 				}
 			}
-			if (_0x3d8919 == 3) {
+			if (seat == 3) {
 				for (let j=0; j<perHalf.length; j++) {
 					if (perHalf[j] == '' && ((settingsType == 2 || settingsType == 3) && perHalf[j - 1] % 100 != 13 || settingsType == 1)) {
 						if (perHalf[j - 1] - perHalf[j - 2] == 1) {
@@ -820,7 +821,7 @@ let Engine = (() => {
 					}
 				}
 			}
-			if (_0x3d8919 == 4) {
+			if (seat == 4) {
 				for (let j=0; j<perFull.length; j++) {
 					if (perFull[j] == '' && ((settingsType == 2 || settingsType == 3) && perFull[j - 1] % 100 != 13 || settingsType == 1)) {
 						if (perFull[j - 1] - perFull[j - 2] == 1) {
