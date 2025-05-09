@@ -126,6 +126,9 @@ let Engine = (() => {
 			// deliver tiles
 			this.deliver();
 
+			// assign active players board tiles
+			this.getBoard(activePlayer);
+
 			// set okey indicator
 			let okeyId = (Tiles.okey-1).toString(),
 				clr = Colors[+okeyId.slice(0,1)],
@@ -147,9 +150,6 @@ let Engine = (() => {
 				el.css({ top, left });
 			});
 			tiles.removeClass("temp");
-
-			// assign active players board tiles
-			// this.getBoard(activePlayer);
 		},
 		render(tiles) {
 			// console.log(tiles.slice().filter(a => !!a).sort((a, b) => a - b));
@@ -158,7 +158,8 @@ let Engine = (() => {
 			tiles.map(id => {
 				let clr = Colors[+id.slice(0,1)],
 					num = new Number(id.slice(1));
-				if (+id === okeyTile) clr += " okey";
+				if (id === okeyTile) clr += " okey";
+				if (id === "000") num = "j";
 				if (id) str.push(`<span class="temp tile ${clr}" data-v="${num}" data-id="${id}"></span>`);
 				else str.push(`<span class="temp empty"></span>`);
 			});
@@ -431,6 +432,7 @@ let Engine = (() => {
 			var _0x17aa37 = 0;
 			var _0x1eddbe = 0;
 			var _0x52b171 = 0;
+			console.log( boardTiles.slice() );
 			for (let i=0; i<=_0x4ace7d.length; i++) {
 				if (_0x4ace7d[i] == "") {
 					if (i <= 16) {
@@ -464,29 +466,27 @@ let Engine = (() => {
 				boardTiles = this.removeArrayItem(boardTiles, "", 1);
 			}
 
-			// _0x4d2aea = [];
-			// let boardPlacesTemp1 = boardPlaces.slice();
-			// boardPlaces = Array(31).fill(0);
-			// var _0x3509bd = 0;
-			// for (let i=0; i<boardTiles.length; i++) {
-			// 	var _0x27d3db = i * 1 + 1;
-			// 	if (boardTiles[i] != '') {
-			// 		var _0x545a8b = _0xabd7f7.indexOf(boardTiles[i]);
-			// 		_0xabd7f7[_0x545a8b] = '';
-			// 		_0x545a8b++;
-			// 		if (boardTiles[i] != '') {
-			// 			_0x4d2aea[_0x3509bd] = boardTiles[i];
-			// 			_0x3509bd++;
-			// 		}
-			// 		// this.place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
-			// 	} else {
-			// 		boardPlaces[_0x27d3db] = 0;
-			// 	}
-			// }
+			_0x4d2aea = [];
+			let boardPlacesTemp1 = boardPlaces.slice();
+			boardPlaces = Array(31).fill(0);
+			var _0x3509bd = 0;
+			for (let i=0; i<boardTiles.length; i++) {
+				var _0x27d3db = i * 1 + 1;
+				if (boardTiles[i] != '') {
+					var _0x545a8b = _0xabd7f7.indexOf(boardTiles[i]);
+					_0xabd7f7[_0x545a8b] = '';
+					_0x545a8b++;
+					if (boardTiles[i] != '') {
+						_0x4d2aea[_0x3509bd] = boardTiles[i];
+						_0x3509bd++;
+					}
+					this.place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
+				} else {
+					boardPlaces[_0x27d3db] = 0;
+				}
+			}
 
-			/*
-			*/
-
+			/* */
 			let rack = APP.content.find(".player .rack"),
 				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
 				aEl = rack.append(sorted);
@@ -494,6 +494,7 @@ let Engine = (() => {
 			rack.cssSequence("arrange-anim", "transitionend", el => {
 				el.removeClass("arrange-anim");
 				el.find(".re-arranged, .empty").remove();
+				el.find(".placed").removeClass("placed");
 			});
 
 			rack.find("> .tile").map(tile => {
@@ -503,23 +504,6 @@ let Engine = (() => {
 				el.css({ top: tOffset.top, left: tOffset.left });
 				target.addClass("placed");
 			});
-
-			/*
-			if (type == 1 && check_win()) {
-				if (AIStatus == 0 && activePlayer == 1) {} else {
-					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
-					winnerPlayer = activePlayer;
-					game_over(1);
-				}
-			}
-			if (type == 2 && check_win_double()) {
-				if (AIStatus == 0 && activePlayer == 1) {} else {
-					console.log("Oyun Bitti: " + users[activePlayer] + " cift acti");
-					winnerPlayer = activePlayer;
-					game_over(1);
-				}
-			}
-			*/
 			
 			return boardTiles;
 		},
@@ -669,9 +653,298 @@ let Engine = (() => {
 			return bTiles;
 		},
 		addOkey(seat) {
-			console.log(seat);
+			boardTiles.sort();
+			boardTiles.sort((a, b) => a - b);
+			boardTilesVir = boardTiles.slice();
+			if (_0x3d8919 == 1) {
+				var _0x164ff0;
+				for (let i=2; i<=boardTiles.length * 1 + 3; i++) {
+					if (boardTiles[i - 1] % 100 == 1 && settingsType == 1) {
+						_0x164ff0 = i - 1;
+					}
+					if (_0x164ff0 && boardTiles[i] - boardTiles[i - 1] == 1 && boardTiles[i * 1 + 1] - boardTiles[i] == 2 && boardTiles[i * 1 + 1] - boardTiles[_0x164ff0] == 12 && settingsType == 1) {
+						perFull.push(boardTiles[i - 1]);
+						perFull.push(boardTiles[i]);
+						perFull.push("800");
+						perFull.push(boardTiles[i * 1 + 1]);
+						perFull.push(boardTiles[_0x164ff0]);
+						perFull.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i * 1 + 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[_0x164ff0]);
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+					if (boardTiles[i - 1] - boardTiles[i - 2] == 2 && boardTiles[i] - boardTiles[i - 1] == 1 && boardTiles[i * 1 + 1] - boardTiles[i] == 1 || boardTiles[i - 1] - boardTiles[i - 2] == 1 && boardTiles[i] - boardTiles[i - 1] == 2 && boardTiles[i * 1 + 1] - boardTiles[i] == 1) {
+						perFull.push(boardTiles[i - 2]);
+						if (boardTiles[i - 1] - boardTiles[i - 2] > 1) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[i - 1]);
+						if (boardTiles[i] - boardTiles[i - 1] > 1) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[i]);
+						perFull.push(boardTiles[i * 1 + 1]);
+						perFull.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i * 1 + 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 2]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+					if (_0x164ff0 && (boardTiles[i] - boardTiles[i - 1] == 1 && boardTiles[i] - boardTiles[_0x164ff0] == 11 || boardTiles[i] - boardTiles[i - 1] == 2 && boardTiles[i] - boardTiles[_0x164ff0] == 12) && settingsType == 1) {
+						perFull.push(boardTiles[i - 1]);
+						if (boardTiles[i] - boardTiles[i - 1] == 2) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[i]);
+						if (boardTiles[i] - boardTiles[i - 1] == 1) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[_0x164ff0]);
+						perFull.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[_0x164ff0]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+					if (boardTiles[i - 1] - boardTiles[i - 2] == 2 && boardTiles[i] - boardTiles[i - 1] == 1 || boardTiles[i - 1] - boardTiles[i - 2] == 1 && boardTiles[i] - boardTiles[i - 1] == 2) {
+						perFull.push(boardTiles[i - 2]);
+						if (boardTiles[i - 1] - boardTiles[i - 2] > 1) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[i - 1]);
+						if (boardTiles[i] - boardTiles[i - 1] > 1) {
+							perFull.push("800");
+						}
+						perFull.push(boardTiles[i]);
+						perFull.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 2]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+				}
+			}
+			if (_0x3d8919 == 2) {
+				var _0x164ff0;
+				for (let i=1; i<boardTiles.length; i++) {
+					if (boardTiles[i] - boardTiles[i - 1] == 2) {
+						perHalf.push(boardTiles[i - 1]);
+						perHalf.push("800");
+						perHalf.push(boardTiles[i]);
+						perHalf.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+					if (boardTiles[i - 1] % 100 == 1 && settingsType == 1) {
+						_0x164ff0 = i - 1;
+					}
+					if (_0x164ff0 && boardTiles[i] - boardTiles[_0x164ff0] == 11 && settingsType == 1) {
+						perHalf.push(boardTiles[i]);
+						perHalf.push("800");
+						perHalf.push(boardTiles[_0x164ff0]);
+						perHalf.push('');
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[_0x164ff0]);
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						boardTiles = boardTilesVir.slice();
+						okeyCont--;
+						if (okeyCont == 0) {
+							return 0;
+						}
+					}
+				}
+			}
+			if (_0x3d8919 == 3) {
+				for (let j=0; j<perHalf.length; j++) {
+					if (perHalf[j] == '' && ((settingsType == 2 || settingsType == 3) && perHalf[j - 1] % 100 != 13 || settingsType == 1)) {
+						if (perHalf[j - 1] - perHalf[j - 2] == 1) {
+							perHalf.splice(j, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+						if (perHalf[j - 2] - perHalf[j - 1] == 12 && settingsType == 1) {
+							perHalf.splice(j - 2, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+					}
+				}
+				for (let j=0; j<perHalf.length; j++) {
+					if (perHalf[j] == '') {
+						if (perHalf[j - 1] % 100 == perHalf[j - 2] % 100 && perHalf[j - 1] != perHalf[j - 2]) {
+							perHalf.splice(j, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+					}
+				}
+			}
+			if (_0x3d8919 == 4) {
+				for (let j=0; j<perFull.length; j++) {
+					if (perFull[j] == '' && ((settingsType == 2 || settingsType == 3) && perFull[j - 1] % 100 != 13 || settingsType == 1)) {
+						if (perFull[j - 1] - perFull[j - 2] == 1) {
+							for (let i=0; i<boardTiles.length; i++) {
+								if (boardTiles[i] - perFull[j - 1] == 2) {
+									perFull.splice(j, 0, "800");
+									perFull.splice(j * 1 + 1, 0, boardTiles[i]);
+									okeyCont--;
+									boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+									boardTiles = this.removeArrayItem(boardTiles, "800");
+									boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+									boardTiles = this.removeArrayItem(boardTiles, boardTiles[i]);
+									if (okeyCont == 0) {
+										return 0;
+									}
+								}
+							}
+						}
+					}
+				}
+				for (let j=0; j<perFull.length; j++) {
+					if ((perFull[j - 1] == '' || j == 0) && perFull[j * 1 + 1] % 100 != 1) {
+						if (perFull[j * 1 + 1] - perFull[j] == 1) {
+							for (let i=0; i<boardTiles.length; i++) {
+								if (perFull[j] - boardTiles[i] == 2) {
+									perFull.splice(j, 0, "800");
+									perFull.splice(j, 0, boardTiles[i]);
+									okeyCont--;
+									boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+									boardTiles = this.removeArrayItem(boardTiles, "800");
+									boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+									boardTiles = this.removeArrayItem(boardTiles, boardTiles[i]);
+									if (okeyCont == 0) {
+										return 0;
+									}
+								}
+							}
+						}
+					}
+				}
+				for (let j=0; j<perFull.length; j++) {
+					if (perFull[j] == '' && perFull[j - 1] % 100 == 12 && settingsType == 1) {
+						if (perFull[j - 1] - perFull[j - 2] == 1) {
+							for (let i=0; i<boardTiles.length; i++) {
+								if (perFull[j - 1] - boardTiles[i] == 11) {
+									perFull.splice(j, 0, boardTiles[i]);
+									perFull.splice(j, 0, "800");
+									boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+									boardTiles = this.removeArrayItem(boardTiles, '800');
+									boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+									boardTiles = this.removeArrayItem(boardTiles, boardTiles[i]);
+									okeyCont--;
+									if (okeyCont == 0) {
+										return 0;
+									}
+								}
+							}
+						}
+					}
+				}
+				for (let j=0; j<perFull.length; j++) {
+					if (perFull[j] == '' && ((settingsType == 2 || settingsType == 3) && perFull[j - 1] % 100 != 13 || settingsType == 1)) {
+						if (perFull[j - 1] - perFull[j - 2] == 1) {
+							perFull.splice(j, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, '800');
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+					}
+				}
+				for (let j=0; j<perFull.length; j++) {
+					if ((perFull[j - 1] == '' || j == 0) && perFull[j * 1 + 1] % 100 != 1) {
+						if (perFull[j * 1 + 2] - perFull[j * 1 + 1] == 1) {
+							perFull.splice(j, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+					}
+				}
+				var _0x2c0168 = 0;
+				for (let j=0; j<perFull.length; j++) {
+					_0x2c0168++;
+					if (perFull[j] == '') {
+						if (perFull[j - 1] % 100 == perFull[j - 2] % 100 && perFull[j - 1] != perFull[j - 2] && _0x2c0168 < 5) {
+							perFull.splice(j, 0, "800");
+							okeyCont--;
+							boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+							boardTiles = this.removeArrayItem(boardTiles, "800");
+							if (okeyCont == 0) {
+								return 0;
+							}
+						}
+						_0x2c0168 = 0;
+					}
+				}
+			}
 		},
-		addOkeyDouble() {},
+		addOkeyDouble() {
+			boardTiles.sort();
+			boardTiles.sort((_0x23565a, _0x1c1ef8) => _0x23565a % 100 > _0x1c1ef8 % 100 ? 1 : _0x1c1ef8 % 100 > _0x23565a % 100 ? -1 : 0);
+			boardTiles.reverse();
+			for (let i=0; i<=boardTiles.length; i++) {
+				if (boardTiles[i] != "800") {
+					perFull.push(boardTiles[i]);
+					perFull.push("800");
+					perFull.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					boardTiles = this.removeArrayItem(boardTiles, boardTiles[i]);
+					boardTiles = this.removeArrayItem(boardTiles, "800");
+					okeyCont--;
+					if (okeyCont == 0) {
+						return 0;
+					}
+				}
+			}
+		},
 		checkPer(num) {
 			let tiles = boardTiles.slice();
 			var arr = tiles.slice();
