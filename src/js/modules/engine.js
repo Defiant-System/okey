@@ -8,6 +8,8 @@ let Engine = (() => {
 	let settingsType = 2;
 	let settingsGameLevel = 2;
 
+	let winWithDouble;
+
 	let openLimitG = 101,
 		openLimitD = 5,
 		punishOffset = 101,
@@ -514,7 +516,25 @@ let Engine = (() => {
 				target.addClass("placed");
 			});
 
-			this.checkWin();
+			
+			if (type == 1 && this.checkWin()) {
+				if (AIStatus == 0 && activePlayer == 1) {
+
+				} else {
+					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
+					winnerPlayer = activePlayer;
+					game_over(1);
+				}
+			}
+			if (type == 2 && this.checkWinDouble()) {
+				if (AIStatus == 0 && activePlayer == 1) {
+
+				} else {
+					console.log("Oyun Bitti: " + users[activePlayer] + " cift acti");
+					winnerPlayer = activePlayer;
+					game_over(1);
+				}
+			}
 
 			return boardTiles;
 		},
@@ -1076,7 +1096,90 @@ let Engine = (() => {
 			}
 			if (type == 1) return arr2;
 		},
-		checkWinDouble() {},
+		checkWinDouble() {
+			var boardTilesVir = boardTiles.slice();
+			var User1TotalDouble = 0;
+			var User2TotalDouble = 0;
+			var User3TotalDouble = 0;
+			var User4TotalDouble = 0;
+			var UserTotalDouble = 0;
+			var _0x481582 = 0;
+			var _0x1290e9 = [];
+			for (let i=0; i<boardTilesVir.length; i++) {
+				var _0x171c8e = parseInt(boardTilesVir[i]);
+				if ((boardTilesVir[i] == boardTilesVir[i * 1 + 1] || boardTilesVir[i] == okey || boardTilesVir[i * 1 + 1] == okey) && boardTilesVir[i] != '' && boardTilesVir[i * 1 + 1] != '') {
+					_0x481582++;
+					var _0xcba5d6;
+					var _0x5ad174;
+					_0xcba5d6 = boardTilesVir[i];
+					_0x5ad174 = boardTilesVir[i * 1 + 1];
+					if (boardTilesVir[i] == "000") {
+						_0xcba5d6 = okey % 100 + 800;
+					}
+					if (boardTilesVir[i * 1 + 1] == "000") {
+						_0x5ad174 = okey % 100 + 800;
+					}
+					if (boardTilesVir[i] == okey) {
+						_0xcba5d6 = _0x5ad174 % 100 + 900;
+					}
+					if (boardTilesVir[i * 1 + 1] == okey) {
+						_0x5ad174 = _0xcba5d6 % 100 + 900;
+					}
+					_0x1290e9.push(String(_0xcba5d6));
+					_0x1290e9.push(String(_0x5ad174));
+					_0x1290e9.push('');
+					i++;
+					if (settingsType == 1 || settingsType == 2 || settingsType == 3) {
+						UserTotalDouble++;
+					}
+				}
+			}
+			let User1Double = [];
+			let User2Double = [];
+			let User3Double = [];
+			let User4Double = [];
+			for (let i=0; i<_0x1290e9.length; i++) {
+				if (activePlayer == 1) {
+					User1TotalDouble = UserTotalDouble;
+					User1Double.push(_0x1290e9[i]);
+				}
+				if (activePlayer == 2) {
+					User2TotalDouble = UserTotalDouble;
+					User2Double.push(_0x1290e9[i]);
+				}
+				if (activePlayer == 3) {
+					User3TotalDouble = UserTotalDouble;
+					User3Double.push(_0x1290e9[i]);
+				}
+				if (activePlayer == 4) {
+					User4TotalDouble = UserTotalDouble;
+					User4Double.push(_0x1290e9[i]);
+				}
+			}
+			if (activePlayer == 1) {
+				let sign = APP.content.find(`.player.user .melded`);
+				if (settingsType == 2 || settingsType == 1) {
+					sign.removeClass("hidden").find("h4").html(this.countBoard(1));
+					sign.addClass("red");
+				}
+				if (settingsType == 3) {
+					if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
+						sign.removeClass("hidden").find("h4").html(User1TotalDouble);
+						sign.toggleClass("red", User1TotalDouble < openLimitDouble);
+					}
+					if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
+						sign.removeClass("hidden").find("h4").html(this.countBoard(1));
+						sign.addClass("red");
+					}
+				}
+			}
+			if (_0x481582 == 7 && settingsType == 1) {
+				winWithDouble = 1;
+				return 1;
+			} else {
+				return 0;
+			}
+		},
 		checkWin() {
 			let User1Total = 0;
 			let User2Total = 0;
@@ -1260,14 +1363,14 @@ let Engine = (() => {
 				}
 			}
 			if (activePlayer == 1) {
+				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
-					let sign = APP.content.find(`.player.user .melded`);
 					sign.removeClass("hidden").find("h4").html(User1Total);
-					sign.toggleClass("red", User1Total >= openLimitG);
+					sign.toggleClass("red", User1Total < openLimitG);
 				}
 				if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
-					//$("user1-total").innerHTML = countBoard(1);
-					//$("user1-total").style.backgroundImage = "url('img/total-user-red.svg')";
+					sign.removeClass("hidden").find("h4").html(countBoard(1));
+					sign.addClass("red");
 				}
 			}
 			if (_0x257872 == tileLimit && boardTilesVir.filter(e => e != '').length == tileLimit) {

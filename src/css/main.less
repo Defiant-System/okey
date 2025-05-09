@@ -48,6 +48,22 @@ content {
 		--c3: #fff4;
 		--w: 21px;
 		--h: 27px;
+		
+		&:before,
+		&:after {
+			content: "";
+			background: url(~/icons/logo-101.png) 50% 50%/contain no-repeat;
+			position: absolute;
+			top: 126px;
+			left: 36px;
+			width: 200px;
+			height: 100px;
+			// opacity: .75;
+		}
+
+		&:after {
+			left: 309px;
+		}
 
 		.series,
 		.doubles {
@@ -300,6 +316,7 @@ content {
 		}
 
 		.scored {
+			display: none;
 			position: absolute;
 			top: 31px;
 			left: 85px;
@@ -307,19 +324,19 @@ content {
 			filter: drop-shadow(0 0 3px #0006);
 
 			.tile {
-				width: 20px;
-				height: 26px;
+				width: 18px;
+				height: 23px;
 				border-radius: 3px;
 				box-shadow: 0 0 0 1px #0003;
 
 				&:after {
-					font-size: 15px;
+					font-size: 13px;
 					top: 1px;
 				}
 
 				&:nth-child(1) {
 					top: 2px;
-					left: -15px;
+					left: -13px;
 					transform: rotate(-11deg);
 				}
 
@@ -330,7 +347,7 @@ content {
 
 				&:nth-child(3) {
 					top: 2px;
-					left: 15px;
+					left: 13px;
 					transform: rotate(11deg);
 				}
 			}
@@ -931,6 +948,10 @@ content {
 		}
 
 		&.options {
+			top: 456px;
+			left: 224px;
+			min-height: 55px;
+
 			.dlg-arrow {
 				top: auto;
 				bottom: -5px;
@@ -1032,7 +1053,7 @@ content {
 
 		&.red {
 			background: transparent;
-			
+
 			.dlg-bg {
 				background: radial-gradient(ellipse at bottom center, #dddddd60, transparent 90%),
 							linear-gradient(180deg, #c42a2aa1, #b71212a1);
