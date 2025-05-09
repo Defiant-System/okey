@@ -7,8 +7,30 @@ let Engine = (() => {
 	let activePlayer = 1;
 	let settingsType = 2;
 	let settingsGameLevel = 2;
-	let boardTiles = [];
-	let boardPlaces = Array(31).fill(0);
+
+	let data;
+	
+	let boardTiles = [],
+		boardTiles1,
+		boardTiles2,
+		boardTiles3,
+		boardTiles4;
+
+	let boardPlaces = Array(31).fill(0),
+		boardPlaces1 = Array(31).fill(0),
+		boardPlaces2 = Array(31).fill(0),
+		boardPlaces3 = Array(31).fill(0),
+		boardPlaces4 = Array(31).fill(0);
+	
+	let tileLimit = 0;
+	if (settingsType == 1) tileLimit = 14;
+	if (settingsType == 2) tileLimit = 21;
+	if (settingsType == 3) tileLimit = 14;
+
+	let tilesLeft = [],
+		tilesLast = 0,
+		tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit];
+
 	let boardTilesVir;
 	let markOkey = 0;
 	let okeyCont = 0;
@@ -83,10 +105,6 @@ let Engine = (() => {
 
 			tileW = 56;
 		},
-		updateLeft() {
-			// update table tiles left
-			APP.content.find(`.info .tiles.left .tile`).data({ n: Tiles.left.length });
-		},
 		discard(tile, num) {
 			let target = APP.content.find(`.discard .player-${num}`),
 				tgtOffset = target.offset(".board"),
@@ -102,8 +120,14 @@ let Engine = (() => {
 			// save state
 			this._state = state;
 
+			data = this._state.table.data;
+			tilesLeft = data.slice();
+
+			// deliver tiles
+			this.deliver();
+
 			// set okey indicator
-			let okeyId = (this._state.table.okey-1).toString(),
+			let okeyId = (Tiles.okey-1).toString(),
 				clr = Colors[+okeyId.slice(0,1)],
 				num = new Number(okeyId.slice(1));
 			APP.content.find(`.info .tiles.okey .tile`)
@@ -111,14 +135,9 @@ let Engine = (() => {
 				.addClass(clr)
 				.data({ v: num });
 
-			// iterate players
-			state.player.map(p => {
-				if (p.seat === 1) {
-					// add html to rack DOM
-					let htm = this.render(p.tiles);
-					APP.content.find(".player .rack").html(htm);
-				}
-			});
+			// add html to rack DOM
+			let htm = this.render(boardTiles);
+			APP.content.find(".player .rack").html(htm);
 
 			// make tiles position absolute
 			let tiles = APP.content.find(".player .rack .temp");
@@ -129,22 +148,17 @@ let Engine = (() => {
 			});
 			tiles.removeClass("temp");
 
-			Tiles.left = state.table.left.slice();
-
-			// table UI update
-			this.updateLeft();
-
-			this.getBoard(activePlayer);
-
-			// console.log(state);
+			// assign active players board tiles
+			// this.getBoard(activePlayer);
 		},
 		render(tiles) {
+			// console.log(tiles.slice().filter(a => !!a).sort((a, b) => a - b));
 			let str = [],
-				okeyTile = this._state.table.okey;
+				okeyTile = Tiles.okey;
 			tiles.map(id => {
 				let clr = Colors[+id.slice(0,1)],
 					num = new Number(id.slice(1));
-				if (+id-1 === okeyTile) clr += " okey";
+				if (+id === okeyTile) clr += " okey";
 				if (id) str.push(`<span class="temp tile ${clr}" data-v="${num}" data-id="${id}"></span>`);
 				else str.push(`<span class="temp empty"></span>`);
 			});
@@ -154,12 +168,94 @@ let Engine = (() => {
 		// setCookie(name, value, days) {},
 		// getCookie(name) {},
 		// boyutla() {},
-		sem() {},
 		// suffleArray(arr) {},
 		// suffle() {},
-		deliver() {},
-		// updateLeftTiles(item) {},
-		moveTile(el, player, _top, _left, type, tableTilePos) {},
+		deliver() {
+			boardTiles1 = [];
+			boardTiles2 = [];
+			boardTiles3 = [];
+			boardTiles4 = [];
+			var _0x2c717f = [1, 2, 3, 4, 12, 13, 14, 15, 16, 17, 18, 27, 28, 29, 30];
+			_0x2c717f = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+			var _0x53424a = 0;
+			activePlayer = 1;
+			boardTiles = [];
+			boardPlaces = [];
+			for (let i=0; i<=tileLimit; i++) {
+				boardTiles.push(data[_0x53424a]);
+				this.updateLeftTiles(data[_0x53424a]);
+				_0x53424a++;
+				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+			}
+			boardTiles1 = boardTiles.slice();
+			boardPlaces1 = boardPlaces.slice();
+			activePlayer = 2;
+			boardTiles = [];
+			boardPlaces = [];
+			for (let i=0; i<tileLimit; i++) {
+				boardTiles.push(data[_0x53424a]);
+				this.updateLeftTiles(data[_0x53424a]);
+				_0x53424a++;
+				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+			}
+			boardTiles2 = boardTiles.slice();
+			boardPlaces2 = boardPlaces.slice();
+			activePlayer = 3;
+			boardTiles = [];
+			boardPlaces = [];
+			for (let i=0; i<tileLimit; i++) {
+				boardTiles.push(data[_0x53424a]);
+				this.updateLeftTiles(data[_0x53424a]);
+				_0x53424a++;
+				this.place('tile-' + _0x53424a, _0x2c717f[i]);
+			}
+			boardTiles3 = boardTiles.slice();
+			boardPlaces3 = boardPlaces.slice();
+			activePlayer = 4;
+			boardTiles = [];
+			boardPlaces = [];
+			for (let i=0; i<tileLimit; i++) {
+				boardTiles.push(data[_0x53424a]);
+				this.updateLeftTiles(data[_0x53424a]);
+				_0x53424a++;
+				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+			}
+			activePlayer = 1;
+			// console.log( boardTiles1.slice() );
+			// console.log( boardTiles2.slice() );
+			// console.log( boardTiles3.slice() );
+			// console.log( boardTiles4.slice() );
+
+			var _0x5f031e = 0;
+			for (let i=1; i<=8; i++) {
+				for (let j=1; j<=13; j++) {
+					var _0xf34c82 = " ";
+					var stone = parseInt(data[_0x5f031e].substr(1, 2));
+					var color1 = data[_0x5f031e].substr(0, 1);
+					if (stone == 0) stone = 'R';
+					_0x5f031e++;
+				}
+			}
+			for (let j=104; j<=105; j++) {
+				var _0xf34c82 = " ";
+				var stone = parseInt(data[_0x5f031e].substr(1, 2));
+				var color1 = data[_0x5f031e].substr(0, 1);
+				if (stone == 0) stone = 'R';
+				_0x5f031e++;
+			}
+			let x = parseInt(data[_0x5f031e - 1].substr(0, 1));
+			let y = parseInt(data[_0x5f031e - 1].substr(1, 2));
+			let okey = y * 1 + 1;
+			if (okey > 13) okey = 1;
+			if (okey < 10) okey = '0' + okey;
+			Tiles.okey = String(x) + String(okey);
+			// console.log(Tiles.okey);
+		},
+		updateLeftTiles(item) {
+			tilesLeft = this.removeArrayItem(tilesLeft, item);
+			// update table tiles left
+			APP.content.find(`.info .tiles.left .tile`).data({ n: tilesLeft.length });
+		},
 		place(tileId, pos, seat) {
 			var boardTop = 0;
 			var boardDiff = 0;
@@ -183,7 +279,7 @@ let Engine = (() => {
 				} else {
 					// $(tileId).children[0].style.display = "none";
 				}
-				var _0x363bc5 = tileId;
+				var _0x363bc5 = tileId.split("-");
 				_0x363bc5 = _0x363bc5[1] - 1;
 				if (markOkey == 1) {
 					if (data[_0x363bc5] == okey) {
@@ -198,23 +294,7 @@ let Engine = (() => {
 				boardPlaces[pos] = tileId;
 				boardTiles[pos - 1] = data[_0x363bc5];
 				if (virtualMove == 0) {
-					this.update_boards();
-					if (seat == 1) {
-						// $(tileId).style.left = _0x538492 + 'px';
-						// $(tileId).style.top = _0x4f9f29 + 'px';
-					}
-					if (seat == 2) {
-						// $(tileId).style.left = boardLeft2 + 'px';
-						// $(tileId).style.top = boardTop2 + 'px';
-					}
-					if (seat == 3) {
-						// $(tileId).style.left = boardLeft3 + 'px';
-						// $(tileId).style.top = boardTop3 + 'px';
-					}
-					if (seat == 4) {
-						// $(tileId).style.left = boardLeft4 + 'px';
-						// $(tileId).style.top = boardTop4 + 'px';
-					}
+					this.updateBoards();
 				}
 			} catch {
 				console.log("hata:" + tileId);
@@ -222,14 +302,28 @@ let Engine = (() => {
 				console.log(boardTiles);
 			}
 		},
-		moveBack(el) {},
 
 		getBoard(seat) {
-			let tiles = this._state.player[seat-1].tiles;
-			// update "active player"
-			activePlayer = seat-1;
-
-			boardTiles = tiles.slice();
+			if (seat == 1) {
+				activePlayer = 1;
+				boardTiles = boardTiles1.slice();
+				boardPlaces = boardPlaces1.slice();
+			}
+			if (seat == 2) {
+				activePlayer = 2;
+				boardTiles = boardTiles2.slice();
+				boardPlaces = boardPlaces2.slice();
+			}
+			if (seat == 3) {
+				activePlayer = 3;
+				boardTiles = boardTiles3.slice();
+				boardPlaces = boardPlaces3.slice();
+			}
+			if (seat == 4) {
+				activePlayer = 4;
+				boardTiles = boardTiles4.slice();
+				boardPlaces = boardPlaces4.slice();
+			}
 		},
 
 		arrange(seat, type=1) {
@@ -240,7 +334,6 @@ let Engine = (() => {
 			var _0x8d1441 = [];
 			var _0x20d181 = [];
 			var _0x163d98 = [];
-			this.getBoard(seat);
 
 			okeyCont = 0;
 			var _0x4d7341 = 0;
@@ -371,7 +464,28 @@ let Engine = (() => {
 				boardTiles = this.removeArrayItem(boardTiles, "", 1);
 			}
 
-			// console.log(boardTiles);
+			// _0x4d2aea = [];
+			// let boardPlacesTemp1 = boardPlaces.slice();
+			// boardPlaces = Array(31).fill(0);
+			// var _0x3509bd = 0;
+			// for (let i=0; i<boardTiles.length; i++) {
+			// 	var _0x27d3db = i * 1 + 1;
+			// 	if (boardTiles[i] != '') {
+			// 		var _0x545a8b = _0xabd7f7.indexOf(boardTiles[i]);
+			// 		_0xabd7f7[_0x545a8b] = '';
+			// 		_0x545a8b++;
+			// 		if (boardTiles[i] != '') {
+			// 			_0x4d2aea[_0x3509bd] = boardTiles[i];
+			// 			_0x3509bd++;
+			// 		}
+			// 		// this.place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
+			// 	} else {
+			// 		boardPlaces[_0x27d3db] = 0;
+			// 	}
+			// }
+
+			/*
+			*/
 
 			let rack = APP.content.find(".player .rack"),
 				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
@@ -391,26 +505,6 @@ let Engine = (() => {
 			});
 
 			/*
-			_0x4d2aea = [];
-			// boardPlacesTemp1 = boardPlaces.slice();
-			boardPlaces = Array(31).fill(0);
-			var _0x3509bd = 0;
-			for (let i=0; i<boardTiles.length; i++) {
-				var _0x27d3db = i * 1 + 1;
-				if (boardTiles[i] != '') {
-					var _0x545a8b = _0xabd7f7.indexOf(boardTiles[i]);
-					_0xabd7f7[_0x545a8b] = '';
-					_0x545a8b++;
-					if (boardTiles[i] != '') {
-						_0x4d2aea[_0x3509bd] = boardTiles[i];
-						_0x3509bd++;
-					}
-					// place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
-				} else {
-					boardPlaces[_0x27d3db] = 0;
-				}
-			}
-
 			if (type == 1 && check_win()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
@@ -429,6 +523,9 @@ let Engine = (() => {
 			
 			return boardTiles;
 		},
+		moveBack(el) {},
+		moveTile(el, player, _top, _left, type, tableTilePos) {},
+		sem() {},
 		game_over(_0x3a9872) {},
 		game_over_message() {},
 		points_table() {},
@@ -773,7 +870,24 @@ let Engine = (() => {
 		settings(name, value) {},
 		drag_stop() {},
 		check_throw(_0x225b07, _0x203a47) {},
-		update_boards() {},
+		updateBoards() {
+			if (activePlayer == 1) {
+				boardTiles1 = boardTiles.slice();
+				boardPlaces1 = boardPlaces.slice();
+			}
+			if (activePlayer == 2) {
+				boardTiles2 = boardTiles.slice();
+				boardPlaces2 = boardPlaces.slice();
+			}
+			if (activePlayer == 3) {
+				boardTiles3 = boardTiles.slice();
+				boardPlaces3 = boardPlaces.slice();
+			}
+			if (activePlayer == 4) {
+				boardTiles4 = boardTiles.slice();
+				boardPlaces4 = boardPlaces.slice();
+			}
+		},
 		checkPosition(_0x317063) {},
 		openPlace(_0x1ca1e8, _0x160545, _0x1ff05a) {},
 		movetoArea(_0x2f30f1, _0x5255cf, _0x1c04c4) {},
