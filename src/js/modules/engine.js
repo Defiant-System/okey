@@ -283,7 +283,7 @@ let Engine = (() => {
 				var _0x363bc5 = tileId.split("-");
 				_0x363bc5 = _0x363bc5[1] - 1;
 				if (markOkey == 1) {
-					if (data[_0x363bc5] == okey) {
+					if (data[_0x363bc5] == Tiles.okey) {
 						// $(tileId).children[0].style.display = "none";
 					}
 				}
@@ -298,9 +298,9 @@ let Engine = (() => {
 					this.updateBoards();
 				}
 			} catch {
-				console.log("hata:" + tileId);
-				console.log("Hata-boardTiles");
-				console.log(boardTiles);
+				// console.log("hata:" + tileId);
+				// console.log("Hata-boardTiles");
+				// console.log(boardTiles);
 			}
 		},
 
@@ -385,7 +385,6 @@ let Engine = (() => {
 				perFull = _0x4ace7d.slice();
 				// console.log("perFull", perFull.slice());
 				this.addFourth();
-				console.log( boardTiles.slice() );
 				if (okeyCont > 0) {
 					this.addOkey(1);
 				}
@@ -424,9 +423,11 @@ let Engine = (() => {
 				_0x415797 = this.sortDouble(0, 1);
 				_0x4ace7d = _0x415797.slice();
 				perFull = _0x4ace7d.slice();
+				boardTiles = boardTilesVir.slice();
 				if (okeyCont > 0) {
 					this.addOkeyDouble();
 				}
+				boardTiles = boardTilesVir.slice();
 				_0x4ace7d = perFull.slice();
 			}
 			_0x4ace7d.push.apply(_0x4ace7d, _0x20d181);
