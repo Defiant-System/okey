@@ -99,21 +99,17 @@ let Engine = (() => {
 				.css({ top, left });
 		},
 		restore(state) {
-			let str = [],
-				okeyTile = state.table.okey;
+			// save state
+			this._state = state;
+
+			// iterate players
 			state.player.map(p => {
 				if (p.seat === 1) {
-					p.rack.map(id => {
-						let clr = Colors[+id.slice(0,1)],
-							num = new Number(id.slice(1));
-						if (+id-1 === okeyTile) clr += " okey";
-						if (id) str.push(`<span class="temp tile ${clr}" data-v="${num}" data-id="${id}"></span>`);
-						else str.push(`<span class="temp empty"></span>`);
-					});
+					// add html to rack DOM
+					let htm = this.render(p.tiles);
+					APP.content.find(".player .rack").html(htm);
 				}
 			});
-			// add html to rack DOM
-			APP.content.find(".player .rack").html(str.join(""));
 
 			// make tiles position absolute
 			let tiles = APP.content.find(".player .rack .temp");
@@ -129,10 +125,21 @@ let Engine = (() => {
 			// table UI update
 			this.updateLeft();
 
-			// save state
-			this._state = state;
+			this.getBoard(activePlayer);
 
 			// console.log(state);
+		},
+		render(tiles) {
+			let str = [],
+				okeyTile = this._state.table.okey;
+			tiles.map(id => {
+				let clr = Colors[+id.slice(0,1)],
+					num = new Number(id.slice(1));
+				if (+id-1 === okeyTile) clr += " okey";
+				if (id) str.push(`<span class="temp tile ${clr}" data-v="${num}" data-id="${id}"></span>`);
+				else str.push(`<span class="temp empty"></span>`);
+			});
+			return str.join("");
 		},
 		// play(num) {},
 		// setCookie(name, value, days) {},
@@ -209,15 +216,14 @@ let Engine = (() => {
 		moveBack(el) {},
 
 		getBoard(seat) {
-			let rack = this._state.player[seat-1].rack.slice();
+			let tiles = this._state.player[seat-1].tiles;
 			// update "active player"
 			activePlayer = seat-1;
-			// return rack
-			return { rack };
+
+			boardTiles = tiles.slice();
 		},
 
-		arrange(tiles, seat, type=1) {
-			console.log("in", tiles);
+		arrange(seat, type=1) {
 			// type 1: serial
 			// type 2: double
 			var _0x415797 = [];
@@ -225,78 +231,78 @@ let Engine = (() => {
 			var _0x8d1441 = [];
 			var _0x20d181 = [];
 			var _0x163d98 = [];
+			this.getBoard(seat);
 
 			okeyCont = 0;
 			var _0x4d7341 = 0;
 			if (activePlayer == 1) _0x4d7341 = 1;
 			
 			if (settingsGameLevel > 1 || _0x4d7341 == 1) {
-				var _0x236bec = tiles.indexOf(okey);
+				var _0x236bec = boardTiles.indexOf(okey);
 				if (_0x236bec != -1) {
-					tiles[_0x236bec] = "800";
+					boardTiles[_0x236bec] = "800";
 					okeyCont++;
 				}
-				var _0x236bec = tiles.indexOf(okey);
+				var _0x236bec = boardTiles.indexOf(okey);
 				if (_0x236bec != -1) {
-					tiles[_0x236bec] = "800";
+					boardTiles[_0x236bec] = "800";
 					okeyCont++;
 				}
-				var _0x236bec = tiles.indexOf('000');
+				var _0x236bec = boardTiles.indexOf("000");
 				if (_0x236bec != -1) {
-					tiles[_0x236bec] = String(okey);
+					boardTiles[_0x236bec] = String(okey);
 				}
-				var _0x236bec = tiles.indexOf('000');
+				var _0x236bec = boardTiles.indexOf("000");
 				if (_0x236bec != -1) {
-					tiles[_0x236bec] = String(okey);
+					boardTiles[_0x236bec] = String(okey);
 				}
 			}
-			var _0xabd7f7 = tiles.slice();
-			var _0x4d2aea = tiles.slice();
-			let virTiles = tiles.slice();
+			var _0xabd7f7 = boardTiles.slice();
+			var _0x4d2aea = boardTiles.slice();
 
 			if (type == 1) {
-				if (this.checkPer(tiles, 3) || settingsGameLevel < 3 && _0x4d7341 == 0) {
-					_0x415797 = this.sortTiles(tiles, 3, 1);
+				if (this.checkPer(3) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = this.sortTiles(3, 1);
 					_0x4ace7d = _0x415797.slice();
-					tiles = virTiles.slice();
-					_0x415797 = this.sortTilesByColor(tiles, 3, 1);
+					boardTiles = boardTilesVir.slice();
+					_0x415797 = this.sortTilesByColor(3, 1);
 					_0x8d1441 = _0x415797.slice();
-					tiles = virTiles.slice();
+					boardTiles = boardTilesVir.slice();
 				} else {
-					_0x415797 = this.sortTilesByColor(tiles, 3, 1);
+					_0x415797 = this.sortTilesByColor(3, 1);
 					_0x8d1441 = _0x415797.slice();
-					tiles = virTiles.slice();
-					_0x415797 = this.sortTiles(tiles, 3, 1);
+					boardTiles = boardTilesVir.slice();
+					_0x415797 = this.sortTiles(3, 1);
 					_0x4ace7d = _0x415797.slice();
 					;
-					tiles = virTiles.slice();
+					boardTiles = boardTilesVir.slice();
 				}
 				_0x4ace7d.push.apply(_0x4ace7d, _0x8d1441);
 				perFull = _0x4ace7d.slice();
-				console.log("perFull", perFull);
-				tiles = this.addFourth(tiles);
+				// console.log("perFull", perFull.slice());
+				this.addFourth();
 				if (okeyCont > 0) {
 					this.addOkey(1);
 				}
 				_0x4ace7d = perFull.slice();
-				if (this.checkPer(tiles, 2) || settingsGameLevel < 3 && _0x4d7341 == 0) {
-					_0x415797 = this.sortTiles(tiles, 2, 1);
+				if (this.checkPer(2) || settingsGameLevel < 3 && _0x4d7341 == 0) {
+					_0x415797 = this.sortTiles(2, 1);
 					_0x20d181 = _0x415797.slice();
-					tiles = virTiles.slice();
-					_0x415797 = this.sortTilesByColor(tiles, 2, 1);
+					boardTiles = boardTilesVir.slice();
+					_0x415797 = this.sortTilesByColor(2, 1);
 					_0x163d98 = _0x415797.slice();
-					tiles = virTiles.slice();
+					boardTiles = boardTilesVir.slice();
 				} else {
-					_0x415797 = this.sortTilesByColor(tiles, 2, 1);
+					_0x415797 = this.sortTilesByColor(2, 1);
 					_0x163d98 = _0x415797.slice();
-					tiles = virTiles.slice();
-					_0x415797 = this.sortTiles(tiles, 2, 1);
+					boardTiles = boardTilesVir.slice();
+					_0x415797 = this.sortTiles(2, 1);
 					_0x20d181 = _0x415797.slice();
-					tiles = virTiles.slice();
+					boardTiles = boardTilesVir.slice();
 				}
 				_0x20d181.push.apply(_0x20d181, _0x163d98);
 				perHalf = _0x20d181.slice();
-				console.log("perHalf", perHalf);
+				// console.log("perHalf", perHalf.slice());
 				if (okeyCont > 0) {
 					this.addOkey(2);
 				}
@@ -308,26 +314,23 @@ let Engine = (() => {
 					_0x4ace7d = perFull.slice();
 				}
 				_0x20d181 = perHalf.slice();
-				console.log("_0x20d181", _0x20d181);
 			}
 			if (type == 2) {
 				_0x415797 = this.sortDouble(0, 1);
 				_0x4ace7d = _0x415797.slice();
 				perFull = _0x4ace7d.slice();
-				tiles = virTiles.slice();
 				if (okeyCont > 0) {
 					this.addOkeyDouble();
 				}
-				tiles = virTiles.slice();
 				_0x4ace7d = perFull.slice();
 			}
 			_0x4ace7d.push.apply(_0x4ace7d, _0x20d181);
-			tiles = tiles.filter(e => e != '');
+			boardTiles = boardTiles.filter(e => e != "");
 			var _0x17aa37 = 0;
 			var _0x1eddbe = 0;
 			var _0x52b171 = 0;
 			for (let i=0; i<=_0x4ace7d.length; i++) {
-				if (_0x4ace7d[i] == '') {
+				if (_0x4ace7d[i] == "") {
 					if (i <= 16) {
 						_0x17aa37 = _0x1eddbe;
 						_0x1eddbe = i;
@@ -339,27 +342,83 @@ let Engine = (() => {
 			}
 			if (_0x1eddbe) {
 				for (let i=0; i<16 - _0x1eddbe; i++) {
-					_0x4ace7d.splice(_0x17aa37, 0, '');
+					_0x4ace7d.splice(_0x17aa37, 0, "");
 				}
 			}
-			if (_0x4ace7d[16] == '') {
+			if (_0x4ace7d[16] == "") {
 				_0x4ace7d.splice(16, 1);
 			}
-			var _0x246380 = _0x4ace7d.length * 1 + tiles.length * 1;
+			var _0x246380 = _0x4ace7d.length * 1 + boardTiles.length * 1;
 			for (let i=0; i<32 - _0x246380; i++) {
-				_0x4ace7d.push('');
+				_0x4ace7d.push("");
 			}
 			if (type == 1) {
-				tiles = this.priority(tiles);
+				this.priority();
 			}
-			_0x4ace7d.push.apply(_0x4ace7d, tiles);
-			tiles = _0x4ace7d.slice();
-			var _0x199fea = tiles.length;
+			_0x4ace7d.push.apply(_0x4ace7d, boardTiles);
+			boardTiles = _0x4ace7d.slice();
+			var _0x199fea = boardTiles.length;
 			for (let i=32; i<_0x199fea; i++) {
-				tiles = this.removeArrayItem(tiles, '', 1);
+				boardTiles = this.removeArrayItem(boardTiles, "", 1);
 			}
 
-			return tiles;
+			let rack = APP.content.find(".player .rack"),
+				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
+				aEl = rack.append(sorted);
+
+			rack.cssSequence("arrange-anim", "transitionend", el => {
+				el.removeClass("arrange-anim");
+				el.find(".re-arranged, .empty").remove();
+			});
+			
+			rack.find("> .tile").map(tile => {
+				let el = $(tile),
+					target = aEl.find(`> .tile[data-id="${el.data("id")}"]`),
+					eOffset = el.offset(),
+					tOffset = target.offset(),
+					top = tOffset.top,
+					left = tOffset.left;
+				el.css({ top, left });
+			});
+
+			/*
+			_0x4d2aea = [];
+			// boardPlacesTemp1 = boardPlaces.slice();
+			boardPlaces = Array(31).fill(0);
+			var _0x3509bd = 0;
+			for (let i=0; i<boardTiles.length; i++) {
+				var _0x27d3db = i * 1 + 1;
+				if (boardTiles[i] != '') {
+					var _0x545a8b = _0xabd7f7.indexOf(boardTiles[i]);
+					_0xabd7f7[_0x545a8b] = '';
+					_0x545a8b++;
+					if (boardTiles[i] != '') {
+						_0x4d2aea[_0x3509bd] = boardTiles[i];
+						_0x3509bd++;
+					}
+					// place(boardPlacesTemp1[_0x545a8b], _0x27d3db);
+				} else {
+					boardPlaces[_0x27d3db] = 0;
+				}
+			}
+
+			if (type == 1 && check_win()) {
+				if (AIStatus == 0 && activePlayer == 1) {} else {
+					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
+					winnerPlayer = activePlayer;
+					game_over(1);
+				}
+			}
+			if (type == 2 && check_win_double()) {
+				if (AIStatus == 0 && activePlayer == 1) {} else {
+					console.log("Oyun Bitti: " + users[activePlayer] + " cift acti");
+					winnerPlayer = activePlayer;
+					game_over(1);
+				}
+			}
+			*/
+			
+			return boardTiles;
 		},
 		game_over(_0x3a9872) {},
 		game_over_message() {},
@@ -371,17 +430,16 @@ let Engine = (() => {
 		moveToTable(_0x336229, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {},
 		button_active_passive(_0x282945, _0x106ed0) {},
 		collectItBack() {},
-		priority(tiles) {
-			let bTiles = tiles.slice();
-			bTiles.sort();
-			bTiles.sort((a, b) => a - b);
-			let virTiles = bTiles.slice();
-			for (let i=1; i<bTiles.length; i++) {
-				if (Math.abs(bTiles[i] - bTiles[i - 1]) == 2) {
-					virTiles = this.removeArrayItem(virTiles, bTiles[i]);
-					virTiles = this.removeArrayItem(virTiles, bTiles[i - 1]);
-					virTiles.unshift(bTiles[i]);
-					virTiles.unshift(bTiles[i - 1]);
+		priority() {
+			boardTiles.sort();
+			boardTiles.sort((a, b) => a - b);
+			boardTilesVir = boardTiles.slice();
+			for (let i=1; i<boardTiles.length; i++) {
+				if (Math.abs(boardTiles[i] - boardTiles[i - 1]) == 2) {
+					boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[i - 1]);
+					boardTilesVir.unshift(boardTiles[i]);
+					boardTilesVir.unshift(boardTiles[i - 1]);
 				}
 			}
 			var _0x1fcc79 = 0;
@@ -389,10 +447,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 3) {
-						for (let j=0; j<bTiles.length; j++) {
-							if ((bTiles[j] - perFull[i - 1] == 2 || perFull[i - _0x1fcc79 + 1] - bTiles[j] == 2) && (Math.abs(perFull[i - 1] - perFull[i - 2]) == 1 || Math.abs(perFull[i - 2] - perFull[i - 3]) == 1)) {
-								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-								virTiles.unshift(bTiles[j]);
+						for (let j=0; j<boardTiles.length; j++) {
+							if ((boardTiles[j] - perFull[i - 1] == 2 || perFull[i - _0x1fcc79 + 1] - boardTiles[j] == 2) && (Math.abs(perFull[i - 1] - perFull[i - 2]) == 1 || Math.abs(perFull[i - 2] - perFull[i - 3]) == 1)) {
+								boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+								boardTilesVir.unshift(boardTiles[j]);
 							}
 						}
 					}
@@ -404,10 +462,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 4) {
-						for (let j=0; j<bTiles.length; j++) {
-							if (bTiles[j] - perFull[i - 1] == 1 || perFull[i - _0x1fcc79 + 1] - bTiles[j] == 1) {
-								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-								virTiles.unshift(bTiles[j]);
+						for (let j=0; j<boardTiles.length; j++) {
+							if (boardTiles[j] - perFull[i - 1] == 1 || perFull[i - _0x1fcc79 + 1] - boardTiles[j] == 1) {
+								boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+								boardTilesVir.unshift(boardTiles[j]);
 							}
 						}
 					}
@@ -419,10 +477,10 @@ let Engine = (() => {
 				_0x1fcc79++;
 				if (perFull[i] == '') {
 					if (_0x1fcc79 > 4) {
-						for (let j=0; j<bTiles.length; j++) {
-							if (Math.abs(bTiles[j] - perFull[i - 1]) % 100 == 0 && bTiles[j] - perFull[i - 1] != 0 || Math.abs(perFull[i - _0x1fcc79 + 1] - bTiles[j]) % 100 == 0 && perFull[i - _0x1fcc79 + 1] - bTiles[j] != 0) {
-								virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-								virTiles.unshift(bTiles[j]);
+						for (let j=0; j<boardTiles.length; j++) {
+							if (Math.abs(boardTiles[j] - perFull[i - 1]) % 100 == 0 && boardTiles[j] - perFull[i - 1] != 0 || Math.abs(perFull[i - _0x1fcc79 + 1] - boardTiles[j]) % 100 == 0 && perFull[i - _0x1fcc79 + 1] - boardTiles[j] != 0) {
+								boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+								boardTilesVir.unshift(boardTiles[j]);
 							}
 						}
 					}
@@ -432,10 +490,10 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<bTiles.length; j++) {
-						if ((Math.abs(bTiles[j] - perHalf[i - 1]) % 100 == 0 || Math.abs(bTiles[j] - perHalf[i - 2]) % 100 == 0) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
-							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-							virTiles.unshift(bTiles[j]);
+					for (let j=0; j<boardTiles.length; j++) {
+						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) % 100 == 0 || Math.abs(boardTiles[j] - perHalf[i - 2]) % 100 == 0) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
+							boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+							boardTilesVir.unshift(boardTiles[j]);
 						}
 					}
 				}
@@ -443,10 +501,10 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<bTiles.length; j++) {
-						if ((Math.abs(bTiles[j] - perHalf[i - 1]) == 1 || Math.abs(perHalf[i - 2] - bTiles[j]) == 1) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
-							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-							virTiles.unshift(bTiles[j]);
+					for (let j=0; j<boardTiles.length; j++) {
+						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) == 1 || Math.abs(perHalf[i - 2] - boardTiles[j]) == 1) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
+							boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+							boardTilesVir.unshift(boardTiles[j]);
 						}
 					}
 				}
@@ -454,23 +512,22 @@ let Engine = (() => {
 			var _0x1fcc79 = 0;
 			for (let i=0; i<perHalf.length; i++) {
 				if (perHalf[i] == '') {
-					for (let j=0; j<bTiles.length; j++) {
-						if ((Math.abs(bTiles[j] - perHalf[i - 1]) == 2 || Math.abs(perHalf[i - 2] - bTiles[j]) == 2) && perHalf[i - 1] != bTiles[j] && perHalf[i - 2] != bTiles[j]) {
-							virTiles = this.removeArrayItem(virTiles, bTiles[j]);
-							virTiles.unshift(bTiles[j]);
+					for (let j=0; j<boardTiles.length; j++) {
+						if ((Math.abs(boardTiles[j] - perHalf[i - 1]) == 2 || Math.abs(perHalf[i - 2] - boardTiles[j]) == 2) && perHalf[i - 1] != boardTiles[j] && perHalf[i - 2] != boardTiles[j]) {
+							boardTilesVir = this.removeArrayItem(boardTilesVir, boardTiles[j]);
+							boardTilesVir.unshift(boardTiles[j]);
 						}
 					}
 				}
 			}
-			return virTiles.slice();
+			boardTiles = boardTilesVir.slice();
 		},
-		addFourth(tiles) {
-			let bTiles = tiles.slice();
-			let virTiles = tiles.slice();
+		addFourth() {
+			let bTiles = boardTiles;
 			for (let k=0; k<=1; k++) {
 				for (let i=0; i<bTiles.length; i++) {
 					for (let j=0; j<perFull.length; j++) {
-						if (perFull[j] == '') {
+						if (perFull[j] == "") {
 							var _0x39a913 = bTiles[i];
 							if (settingsType == 1) {
 								if (bTiles[i] % 100 == 1) {
@@ -479,7 +536,7 @@ let Engine = (() => {
 							}
 							if (perFull[j - 1] * 1 + 1 == _0x39a913 && perFull[j - 2] * 1 + 2 == _0x39a913 && perFull[j - 3] * 1 + 3 == _0x39a913) {
 								perFull.splice(j, 0, bTiles[i]);
-								virTiles = this.removeArrayItem(virTiles, bTiles[i]);
+								boardTilesVir = this.removeArrayItem(boardTilesVir, bTiles[i]);
 								bTiles = this.removeArrayItem(bTiles, bTiles[i]);
 								i--;
 							}
@@ -491,11 +548,11 @@ let Engine = (() => {
 				var _0x12e6a9 = 0;
 				for (let j=0; j<perFull.length; j++) {
 					_0x12e6a9++;
-					if (perFull[j] == '') {
+					if (perFull[j] == "") {
 						if (_0x12e6a9 == 4) {
 							if (perFull[j - 3] % 100 == bTiles[i] % 100 && perFull[j - 2] % 100 == bTiles[i] % 100 && perFull[j - 1] % 100 == bTiles[i] % 100 && perFull[j - 1] != bTiles[i] && perFull[j - 2] != bTiles[i] && perFull[j - 3] != bTiles[i]) {
 								perFull.splice(j, 0, bTiles[i]);
-								let virTiles = this.removeArrayItem(virTiles, bTiles[i]);
+								boardTilesVir = this.removeArrayItem(boardTilesVir, bTiles[i]);
 								bTiles = this.removeArrayItem(bTiles, bTiles[i]);
 							}
 						}
@@ -509,24 +566,24 @@ let Engine = (() => {
 			console.log(seat);
 		},
 		addOkeyDouble() {},
-		checkPer(tiles, num) {
-			let boardTilesVir = tiles.slice();
+		checkPer(num) {
+			let tiles = boardTiles.slice();
 			var arr = tiles.slice();
-			var sort1 = this.sortTiles(tiles, num, 0);
+			var sort1 = this.sortTiles(num, 0);
 			tiles = boardTilesVir.slice();
-			var sortC2 = this.sortTilesByColor(tiles, num, 0);
+			var sortC2 = this.sortTilesByColor(num, 0);
 			tiles = arr.slice();
-			var sortC2 = this.sortTilesByColor(tiles, num, 0);
+			var sortC2 = this.sortTilesByColor(num, 0);
 			tiles = boardTilesVir.slice();
-			var sort2 = this.sortTiles(tiles, num, 0);
+			var sort2 = this.sortTiles(num, 0);
 			tiles = arr.slice();
 			var score1 = sort1 * 1 + sortC2 * 1;
 			var score2 = sortC2 * 1 + sort2 * 1;
 
 			return score1 >= score2 ? 1 : 0;
 		},
-		sortTiles(tiles, num, sort) {
-			let boardTilesVir = tiles.slice();
+		sortTiles(num, sort) {
+			boardTilesVir = boardTiles.slice();
 			boardTilesVir.sort();
 			boardTiles.sort((a, b) => a - b);
 			var asc = [];
@@ -565,7 +622,7 @@ let Engine = (() => {
 							max = 999;
 						}
 						sorted.push.apply(sorted, asc);
-						sorted.push('');
+						sorted.push("");
 						arr3++;
 					}
 					asc = [];
@@ -591,8 +648,8 @@ let Engine = (() => {
 				return sorted;
 			}
 		},
-		sortTilesByColor(tiles, num, type) {
-			let boardTilesVir = tiles.slice();
+		sortTilesByColor(num, type) {
+			boardTilesVir = boardTiles.slice();
 			boardTilesVir.sort();
 			boardTilesVir.sort((a, b) => a % 100 > b % 100 ? 1 : b % 100 > a % 100 ? -1 : 0);
 			var arr1 = [];
@@ -611,7 +668,7 @@ let Engine = (() => {
 				}
 				if (arr1.length == num) {
 					arr2.push.apply(arr2, arr1);
-					arr2.push('');
+					arr2.push("");
 					arr1 = [];
 					val1++;
 				}
@@ -653,7 +710,7 @@ let Engine = (() => {
 					if (_0x596912 == _0xe80f11) {
 						_0x23dc07.push(boardTilesVir[i]);
 						_0x71e9d5.push.apply(_0x71e9d5, _0x23dc07);
-						_0x71e9d5.push('');
+						_0x71e9d5.push("");
 						_0x23dc07 = [];
 						_0x9eb8f9++;
 					} else {

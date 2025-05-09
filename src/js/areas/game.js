@@ -21,10 +21,10 @@
 		switch (event.type) {
 			// custom events
 			case "engine-sort-serial":
-				// Engine.arrange(1, 1);
+				Engine.arrange(1, 1);
 				break;
 			case "engine-sort-double":
-				// Engine.arrange(1, 2);
+				Engine.arrange(1, 2);
 				break;
 		}
 	},
