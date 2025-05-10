@@ -33,7 +33,7 @@ const okey = {
 				Engine.setEngine(event.arg);
 				break;
 			case "open-help":
-				karaqu.shell("fs -u '~/help/index.md'");
+				karaqu.shell("fs -u '~/help/toc.md'");
 				break;
 			default:
 				el = event.el;

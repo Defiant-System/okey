@@ -2,6 +2,7 @@
 let Test = {
 	init(APP) {
 
+		APP.dispatch({ type: "open-help" });
 
 		let state = {
 				settings: { solo: true, assisted: true, regular: true, rounds: 1 },
