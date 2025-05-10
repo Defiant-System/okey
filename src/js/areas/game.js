@@ -6,6 +6,7 @@
 		// fast references
 		this.els = {
 			el: window.find(".board"),
+			rack: window.find(".player.user .rack"),
 			content: window.find("content"),
 		};
 
@@ -38,19 +39,23 @@
 				event.preventDefault();
 
 				let doc = $(document),
-					dEl = Self.els.el.find(".discard .inset.player-bottom").addClass("drop"),
+					dEl = Self.els.el.find(".discard .inset.player-1").addClass("drop"),
 					el = $(event.target).addClass("dragging"),
 					drop = el.offset(),
 					click = {
 						x: event.clientX - drop.left,
 						y: event.clientY - drop.top,
 					};
+
+				// enable drop zones
+				Self.els.rack.addClass("drop");
+				Self.els.rack.find("> .tile").addClass("drop");
 				// drag info
 				Self.drag = { doc, el, dEl, click, drop };
 				// cover content
 				Self.els.content.addClass("cover");
 				// bind event handlers
-				Self.drag.doc.on("mousemove mouseup", Self.move);
+				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
 			case "mousemove":
 				let left = (event.clientX - Drag.click.x),
@@ -58,11 +63,12 @@
 				// tile moving
 				Drag.el.css({ top, left });
 				break;
+			case "mouseover":
+				Drag.hover = $(event.srcElement);
+				// console.log(event.srcElement);
+				break;
 			case "mouseup":
-				Drag.el
-					.removeClass("dragging")
-					.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
-					.css({ top: Drag.drop.top, left: Drag.drop.left });
+				Self.move({ type: "drop-tile" });
 
 				// reset tile 
 				Drag.el.removeClass("dragging");
@@ -74,7 +80,37 @@
 				// uncover content
 				Self.els.content.removeClass("cover");
 				// unbind event handlers
-				Drag.doc.off("mousemove mouseup", Self.move);
+				Drag.doc.off("mousemove mouseover mouseup", Self.move);
+				break;
+			case "drop-tile":
+				let css,
+					tOffset = Drag.hover.offset(".board"),
+					rOffset = Self.els.rack.offset(".board");
+				if (Drag.hover.hasClass("drop")) {
+					// console.log(Drag.hover[0]);
+					switch (true) {
+						case Drag.hover.hasClass("rack"): break;
+						case Drag.hover.hasClass("tile"): break;
+						case Drag.hover.hasClass("inset"):
+							css = {
+								top: tOffset.top - rOffset.top + 5,
+								left: tOffset.left - rOffset.left + 5,
+							};
+							break;
+					}
+				} else {
+					css = {
+						top: Drag.drop.top,
+						left: Drag.drop.left
+					};
+				}
+
+				if (css) {
+					Drag.el
+						.removeClass("dragging")
+						.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
+						.css(css);
+				}
 				break;
 		}
 	}
