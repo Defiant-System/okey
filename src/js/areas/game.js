@@ -104,6 +104,11 @@
 				if (Drag.hover.hasClass("drop")) {
 					switch (true) {
 						case Drag.hover.hasClass("rack"):
+							css = {
+								top: (Drag.posY * 78) + 5,
+								left: (Drag.posX * 56) + 21,
+							};
+							break;
 						case Drag.hover.hasClass("tile"):
 							css = {
 								top: (Drag.posY * 78) + 5,
