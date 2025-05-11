@@ -169,9 +169,9 @@ content {
 				right: 0;
 				pointer-events: all;
 
-				&.drop:hover {
-					background: #f002;
-				}
+				// &.drop:hover {
+				// 	background: #f002;
+				// }
 
 				&:before {
 					content: "";
@@ -367,17 +367,10 @@ content {
 		--posY: -99;
 		--posX: -99;
 
-		&:before {
-			content: "";
-			position: absolute;
-			top: calc( calc( var( --posY ) * 79px ) - 2px );
-			left: calc( calc( var( --posX ) * 56px ) + 15px );
-			width: 0;
-			height: 0;
-			z-index: 3;
-			border-top: 12px solid red;
-			border-left: 6px solid transparent;
-			border-right: 6px solid transparent;
+		&.arranging {
+			.tile {
+				pointer-events: none;
+			}
 		}
 
 		&.arrange-anim {
@@ -410,6 +403,52 @@ content {
 				&:nth-child(20) { transition-delay: calc( 20 * 20ms ); }
 				&:nth-child(21) { transition-delay: calc( 21 * 20ms ); }
 				&:nth-child(22) { transition-delay: calc( 22 * 20ms ); }
+			}
+		}
+
+
+		// &:before {
+		// 	content: "";
+		// 	position: absolute;
+		// 	top: calc( calc( var( --posY ) * 79px ) - 2px );
+		// 	left: calc( calc( var( --posX ) * 56px ) + 15px );
+		// 	width: 0;
+		// 	height: 0;
+		// 	z-index: 3;
+		// 	border-top: 12px solid red;
+		// 	border-left: 6px solid transparent;
+		// 	border-right: 6px solid transparent;
+		// }
+
+		.tile-arrow {
+			position: absolute;
+			top: calc( calc( var( --posY ) * 79px ) - 26px );
+			left: calc( calc( var( --posX ) * 56px ) + 15px );
+			width: 12px;
+			height: 15px;
+			z-index: 3;
+			border-radius: 2px;
+			background: #fff;
+			filter: drop-shadow(0 1px 3px #0007);
+
+			&:before {
+				content: "";
+				position: absolute;
+				top: 12px;
+				left: 5px;
+				height: 15px;
+				width: 0;
+				border-left: 2px solid #fff;
+			}
+
+			&:after {
+				content: "";
+				position: absolute;
+				top: 27px;
+				left: 1px;
+				border-top: 11px solid #fff;
+				border-left: 5px solid transparent;
+				border-right: 5px solid transparent;
 			}
 		}
 

@@ -39,7 +39,6 @@
 				event.preventDefault();
 
 				let doc = $(document),
-					dEl = Self.els.el.find(".discard .inset.player-1").addClass("drop"),
 					el = $(event.target).addClass("dragging"),
 					drop = el.offset(),
 					offset = {
@@ -52,12 +51,10 @@
 					};
 
 				// enable drop zones
-				Self.els.rack.addClass("drop");
-				Self.els.rack.find("> .tile").addClass("drop");
+				Self.els.rack.addClass("drop arranging");
+				// Self.els.rack.find("> .tile").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, dEl, click, drop, offset };
-				// cover content
-				Self.els.content.addClass("cover");
+				Self.drag = { doc, el, click, drop, offset };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -87,10 +84,6 @@
 				Self.els.rack.css({ "--posY": "", "--posX": "" });
 				// reset tile 
 				Drag.el.removeClass("dragging");
-				// reset target drop zones
-				Drag.dEl.removeClass("drop");
-				// uncover content
-				Self.els.content.removeClass("cover");
 				// unbind event handlers
 				Drag.doc.off("mousemove mouseover mouseup", Self.move);
 				break;
@@ -108,15 +101,8 @@
 								top: (Drag.posY * 78) + 5,
 								left: (Drag.posX * 56) + 21,
 							};
-							break;
-						case Drag.hover.hasClass("tile"):
-							css = {
-								top: (Drag.posY * 78) + 5,
-								left: (Drag.posX * 56) + 21,
-							};
 							// decide direction to push tiles
-							let // get all tiles on the same row
-								row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === css.top),
+							let row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === css.top),
 								hovered = row.filter(tile => +tile.offsetLeft === css.left),
 								choose = {
 									left: { els: [], chain: css.left, done: false },
@@ -170,12 +156,14 @@
 									top: Drag.drop.top,
 									left: Drag.drop.left
 								};
-							} else if (choose.left.els.length >= choose.right.els.length) {
+							} else if (hovered.length && choose.left.els.length >= choose.right.els.length) {
 								choose.right.els.map(tile => tile
 									.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
 									.css({ left: +tile.prop("offsetLeft") + 56 }));
-							} else {
+							} else if (hovered.length) {
 								if (Drag.hover[0] === hovered[0]) css.left -= 56;
+								else choose.left.els.unshift(hovered);
+								
 								choose.left.els.map(tile => tile
 									.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
 									.css({ left: +tile.prop("offsetLeft") - 56 }));
@@ -195,6 +183,8 @@
 					.cssSequence("smooth", "transitionend", el => {
 						// reset dragged element
 						el.removeClass("smooth");
+						// reset rack
+						Self.els.rack.removeClass("drop arranging");
 						// reset drop zones
 						Self.els.el.find(".drop").removeClass("drop");
 					})

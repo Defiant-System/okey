@@ -149,7 +149,8 @@ let Engine = (() => {
 
 			// add html to rack DOM
 			let htm = this.render(boardTiles);
-			APP.content.find(".player .rack").html(htm);
+			APP.game.els.rack.find(".tile").remove();
+			APP.game.els.rack.append(htm);
 
 			// make tiles position absolute
 			let tiles = APP.content.find(".player .rack .temp");
@@ -510,10 +511,12 @@ let Engine = (() => {
 
 			rack.find("> .tile").map(tile => {
 				let el = $(tile),
-					target = aEl.find(`> .tile[data-id="${el.data("id")}"]:not(.placed)`).get(0),
-					tOffset = target.offset();
-				el.css({ top: tOffset.top, left: tOffset.left });
-				target.addClass("placed");
+					target = aEl.find(`> .tile[data-id="${el.data("id")}"]:not(.placed)`).get(0);
+				if (target.length) {
+					let tOffset = target.offset();
+					el.css({ top: tOffset.top, left: tOffset.left });
+					target.addClass("placed");
+				}
 			});
 
 			
