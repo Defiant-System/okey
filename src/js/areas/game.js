@@ -194,6 +194,8 @@
 						Self.els.el.find(".drop").removeClass("drop");
 					})
 					.css(css);
+				// update game engine
+				Engine.syncBoard(Self.els.rack);
 				break;
 		}
 	}
