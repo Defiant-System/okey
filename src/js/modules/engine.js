@@ -540,23 +540,6 @@ let Engine = (() => {
 
 			return boardTiles;
 		},
-		syncBoard(rack) {
-			let tiles = Array(32).fill("");
-			rack.find(".tile").map(tile => {
-				let value = tile.getAttribute("data-id"),
-					y = parseInt(tile.offsetTop / 73),
-					x = parseInt(tile.offsetLeft / 56),
-					index = (y * 16) + x;
-				tiles[index] = value;
-			});
-			// update
-			boardTiles = tiles;
-			boardTiles1 = tiles;
-
-			if (this.checkWin() || this.checkWin()) {
-				console.log("game over");
-			}
-		},
 		moveBack(el) {},
 		moveTile(el, player, _top, _left, type, tableTilePos) {},
 		sem() {},
@@ -1491,7 +1474,23 @@ let Engine = (() => {
 		message_no() {},
 		settings(name, value) {},
 		drag_stop() {},
-		check_throw(_0x225b07, _0x203a47) {},
+		checkThrow(seat, tile) {
+			let tiles = Array(32).fill("");
+			rack.find(".tile").map(tile => {
+				let value = tile.getAttribute("data-id"),
+					y = parseInt(tile.offsetTop / 73),
+					x = parseInt(tile.offsetLeft / 56),
+					index = (y * 16) + x;
+				tiles[index] = value;
+			});
+			// update
+			boardTiles = tiles;
+			boardTiles1 = tiles;
+
+			if (this.checkWin() || this.checkWin()) {
+				console.log("game over");
+			}
+		},
 		updateBoards() {
 			if (activePlayer == 1) {
 				boardTiles1 = boardTiles.slice();

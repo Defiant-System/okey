@@ -192,7 +192,7 @@
 						// reset drop zones
 						Self.els.el.find(".drop").removeClass("drop");
 						// update game engine
-						Engine.syncBoard(Self.els.rack);
+						Engine.checkThrow(1, el.data("id"));
 					})
 					.css(css);
 				break;
