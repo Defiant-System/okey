@@ -155,7 +155,7 @@ content {
 		top: 53px;
 		left: 53px;
 		right: 53px;
-		bottom: 161px;
+		bottom: 173px;
 		pointer-events: none;
 
 		.inset.tiles {
@@ -163,15 +163,16 @@ content {
 			width: 66px;
 			height: 83px;
 			border-radius: 9px;
+			background: #0012;
 
 			&.player-1 {
 				bottom: 0;
 				right: 0;
 				pointer-events: all;
 
-				// &.drop:hover {
-				// 	background: #f002;
-				// }
+				&.drop:hover {
+					background: #0013;
+				}
 
 				&:before {
 					content: "";
@@ -368,6 +369,10 @@ content {
 		--posX: -99;
 
 		&.arranging {
+			&:hover .tile-arrow {
+				display: block;
+			}
+
 			.tile {
 				pointer-events: none;
 			}
@@ -421,6 +426,7 @@ content {
 		// }
 
 		.tile-arrow {
+			display: none;
 			position: absolute;
 			top: calc( calc( var( --posY ) * 79px ) - 26px );
 			left: calc( calc( var( --posX ) * 56px ) + 15px );

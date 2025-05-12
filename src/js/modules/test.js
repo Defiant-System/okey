@@ -43,8 +43,8 @@ let Test = {
 		// console.log( Engine.arrange(1, 1) );
 		// console.log( Engine.arrange(1, 2) );
 
-		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
-		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
+		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
+		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
 
 		// setTimeout(() => {
 		// 	let tile = APP.content.find(`.tile[data-id="101"]`);

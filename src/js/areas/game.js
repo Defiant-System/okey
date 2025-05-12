@@ -31,7 +31,8 @@
 	},
 	move(event) {
 		let Self = okey.game,
-			Drag = Self.drag;
+			Drag = Self.drag,
+			pX, pY;
 		switch (event.type) {
 			// native events
 			case "mousedown":
@@ -52,7 +53,7 @@
 
 				// enable drop zones
 				Self.els.rack.addClass("drop arranging");
-				// Self.els.rack.find("> .tile").addClass("drop");
+				Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
 				Self.drag = { doc, el, click, drop, offset };
 				// bind event handlers
@@ -65,12 +66,13 @@
 				Drag.el.css({ top, left });
 
 				// position indicator
-				let pY = Math.max(Math.min(parseInt(top / Drag.drop.height, 10), 1), 0),
-					pX = Math.max(Math.min(parseInt(left / Drag.drop.width, 10), 16), 0);
+				pY = Math.max(Math.min(parseInt(top / Drag.drop.height, 10), 1), 0);
+				pX = Math.max(Math.min(parseInt(left / Drag.drop.width, 10), 16), 0);
 				if (Drag.posY !== pY || Drag.posX !== pX) {
 					Drag.posY = pY;
 					Drag.posX = pX;
 					Self.els.rack.css({ "--posY": pY, "--posX": pX });
+					// console.log(Drag.posX);
 				}
 				break;
 			case "mouseover":
@@ -78,12 +80,10 @@
 				// console.log(event.srcElement);
 				break;
 			case "mouseup":
+				// handle tile drag end
 				Self.move({ type: "drop-tile", orgEvent: event });
-
 				// reset rack
-				Self.els.rack.css({ "--posY": "", "--posX": "" });
-				// reset tile 
-				Drag.el.removeClass("dragging");
+				Self.els.rack.removeClass("drop arranging").css({ "--posY": "", "--posX": "" });
 				// unbind event handlers
 				Drag.doc.off("mousemove mouseover mouseup", Self.move);
 				break;
@@ -94,19 +94,21 @@
 					},
 					tOffset = Drag.hover.offset(".board"),
 					rOffset = Self.els.rack.offset(".board");
+				pY = Drag.posY;
+				pX = Math.min(Drag.posX, 15);
 				if (Drag.hover.hasClass("drop")) {
 					switch (true) {
 						case Drag.hover.hasClass("rack"):
 							css = {
-								top: (Drag.posY * 78) + 5,
-								left: (Drag.posX * 56) + 21,
+								top: (pY * 78) + 5,
+								left: (pX * 56) + 21,
 							};
 							// decide direction to push tiles
 							let row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === css.top),
 								hovered = row.filter(tile => +tile.offsetLeft === css.left),
 								choose = {
 									left: { els: [], chain: css.left, done: false },
-									right: { els: [hovered], chain: css.left, done: false },
+									right: { els: [], chain: css.left, done: false },
 								};
 							// if it is the first tile to the left
 							if (Drag.posX <= 0) {
@@ -114,10 +116,11 @@
 								choose.left.els.push(...Array(99).fill(0));
 							}
 							// if it is the last tile to the right
-							if (Drag.posX > 15) {
+							if (Drag.posX >= 15) {
 								choose.right.done = true;
 								choose.right.els.push(...Array(99).fill(0));
 							}
+								
 							// check all to the LEFT of the tile
 							row.filter(tile => +tile.offsetLeft < css.left)
 								.sort((a, b) => +b.offsetLeft - +a.offsetLeft)
@@ -148,22 +151,25 @@
 										choose.right.els.push(...Array(99).fill(0));
 									}
 								});
-							// console.log(choose.left.els.length);
-							// console.log(choose.right.els.length);
-							if (choose.left.els.length > 16 && choose.right.els.length > 16) {
-								// let tile fly back to origin
+
+							if (!hovered.length) {
+								// empty slot - do nothing
+							} else if (choose.left.els.length > 16 && choose.right.els.length > 16) {
+								// no empty space - let tile fly back to origin
 								css = {
 									top: Drag.drop.top,
 									left: Drag.drop.left
 								};
 							} else if (hovered.length && choose.left.els.length >= choose.right.els.length) {
+								if (hovered.length) choose.right.els.unshift(hovered);
+
 								choose.right.els.map(tile => tile
 									.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
 									.css({ left: +tile.prop("offsetLeft") + 56 }));
 							} else if (hovered.length) {
-								if (Drag.hover[0] === hovered[0]) css.left -= 56;
-								else choose.left.els.unshift(hovered);
-								
+								if (Drag.posX === 16 && hovered.length) choose.left.els.unshift(hovered);
+								if (Drag.posX < 16) css.left -= 56;
+
 								choose.left.els.map(tile => tile
 									.cssSequence("smooth", "transitionend", el => el.removeClass("smooth"))
 									.css({ left: +tile.prop("offsetLeft") - 56 }));
@@ -183,14 +189,12 @@
 					.cssSequence("smooth", "transitionend", el => {
 						// reset dragged element
 						el.removeClass("smooth");
-						// reset rack
-						Self.els.rack.removeClass("drop arranging");
 						// reset drop zones
 						Self.els.el.find(".drop").removeClass("drop");
+						// update game engine
+						Engine.syncBoard(Self.els.rack);
 					})
 					.css(css);
-				// update game engine
-				Engine.syncBoard(Self.els.rack);
 				break;
 		}
 	}
