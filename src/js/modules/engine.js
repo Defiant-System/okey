@@ -232,10 +232,6 @@ let Engine = (() => {
 				this.place("tile-" + _0x53424a, _0x2c717f[i]);
 			}
 			activePlayer = 1;
-			// console.log( boardTiles1.slice() );
-			// console.log( boardTiles2.slice() );
-			// console.log( boardTiles3.slice() );
-			// console.log( boardTiles4.slice() );
 
 			var _0x5f031e = 0;
 			for (let i=1; i<=8; i++) {
@@ -308,9 +304,9 @@ let Engine = (() => {
 					this.updateBoards();
 				}
 			} catch {
-				// console.log("hata:" + tileId);
-				// console.log("Hata-boardTiles");
-				// console.log(boardTiles);
+				console.log("hata:" + tileId);
+				console.log("Hata-boardTiles");
+				console.log(boardTiles);
 			}
 		},
 
@@ -445,22 +441,25 @@ let Engine = (() => {
 			var _0x17aa37 = 0;
 			var _0x1eddbe = 0;
 			var _0x52b171 = 0;
-			for (let i=0; i<=_0x4ace7d.length; i++) {
-				if (_0x4ace7d[i] == "") {
-					if (i <= 16) {
-						_0x17aa37 = _0x1eddbe;
-						_0x1eddbe = i;
-					}
-					if (i > 16 && _0x52b171 == 0) {
-						_0x52b171 = i;
-					}
-				}
-			}
+			// for (let i=0; i<=_0x4ace7d.length; i++) {
+			// 	if (_0x4ace7d[i] == "") {
+			// 		if (i <= 16) {
+			// 			_0x17aa37 = _0x1eddbe;
+			// 			_0x1eddbe = i;
+			// 		}
+			// 		if (i > 16 && _0x52b171 == 0) {
+			// 			_0x52b171 = i;
+			// 		}
+			// 	}
+			// }
+			_0x17aa37 =
+			_0x52b171 = _0x4ace7d.length;
 			if (_0x1eddbe) {
 				for (let i=0; i<16 - _0x1eddbe; i++) {
 					_0x4ace7d.splice(_0x17aa37, 0, "");
 				}
 			}
+				console.log(_0x4ace7d.slice());
 			if (_0x4ace7d[16] == "") {
 				_0x4ace7d.splice(16, 1);
 			}
