@@ -129,6 +129,13 @@ let Engine = (() => {
 			});
 			tiles.removeClass("temp");
 		},
+		drawTile() {
+			let id = tilesLeft[0].toString(),
+				clr = Colors[+id.slice(0,1)],
+				num = new Number(id.slice(1));
+			this.updateLeftTiles(id);
+			return { id, clr, num };
+		},
 		render(tiles) {
 			// console.log(tiles.slice().filter(a => !!a).sort((a, b) => a - b));
 			let str = [],

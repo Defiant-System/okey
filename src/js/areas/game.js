@@ -39,11 +39,21 @@
 				// prevent default behaviour
 				event.preventDefault();
 
+				let el = $(event.target),
+					rOffset = Self.els.rack.offset(".board");
+				if (el.parent().hasClass("left")) {
+					let { id, clr, num } = Engine.drawTile(),
+						lOffset = Self.els.el.find(".info .tiles.left").offset(".board"),
+						y = lOffset.top - rOffset.top + 5,
+						x = lOffset.left - rOffset.left + 5;
+					el = Self.els.rack.append(`<span class="tile ${clr} new-tile" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
+				}
+
+				el = el.addClass("dragging");
+
 				let doc = $(document),
-					el = $(event.target).addClass("dragging"),
 					drop = el.offset(".rack"),
 					tOffset = el.offset(".board"),
-					rOffset = Self.els.rack.offset(".board"),
 					diff = { x: 0, y: 0},
 					offset = {
 						y: event.offsetY,
@@ -62,6 +72,7 @@
 				click.x -= drop.left;
 
 				// enable drop zones
+				Self.els.el.addClass("drop");
 				Self.els.rack.addClass("drop arranging");
 				Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
@@ -168,6 +179,25 @@
 									top: Drag.drop.top,
 									left: Drag.drop.left
 								};
+								if (Drag.el.hasClass("new-tile")) {
+									let slot = {};
+									if (pY === 0) {
+										slot.top = 83;
+										row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === 83);
+									} else {
+										slot.top = 5;
+										row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === 5);
+									}
+									for (let i=0; i<16; i++) {
+										if (!slot.left && (!row[i] || +row[i].offsetLeft !== (i * 56) + 21)) {
+											slot.left = (i * 56) + 21;
+										}
+									}
+									css = {
+										top: slot.top,
+										left: slot.left,
+									};
+								}
 							} else if (hovered.length && choose.left.els.length >= choose.right.els.length) {
 								if (hovered.length) choose.right.els.unshift(hovered);
 
@@ -189,15 +219,21 @@
 								left: Drag.tOffset.left - Drag.rOffset.left + 5,
 							};
 							break;
+						case Drag.hover.hasClass("board"):
+							if (Drag.el.hasClass("new-tile")) {
+								console.log(Drag.hover);
+							}
+							break;
 					}
 				}
 				// soft landing of dragged tile
 				Drag.el
-					.removeClass("dragging")
+					.removeClass("dragging new-tile")
 					.cssSequence("smooth", "transitionend", el => {
 						// reset dragged element
 						el.removeClass("smooth");
 						// reset drop zones
+						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");
 						// update game engine
 						Engine.checkThrow(1, el.data("id"));
