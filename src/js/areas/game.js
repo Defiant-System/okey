@@ -11,7 +11,7 @@
 		};
 
 		// bind event handlers
-		this.els.el.on("mousedown", ".rack .tile", this.move);
+		this.els.el.on("mousedown", ".rack .tile, .tile.draggable", this.move);
 	},
 	dispatch(event) {
 		let APP = okey,
@@ -41,21 +41,31 @@
 
 				let doc = $(document),
 					el = $(event.target).addClass("dragging"),
-					drop = el.offset(),
+					drop = el.offset(".rack"),
+					tOffset = el.offset(".board"),
+					rOffset = Self.els.rack.offset(".board"),
+					diff = { x: 0, y: 0},
 					offset = {
 						y: event.offsetY,
 						x: event.offsetX,
 					},
 					click = {
-						x: event.clientX - drop.left,
-						y: event.clientY - drop.top,
+						y: event.clientY,
+						x: event.clientX,
 					};
+
+				if (!drop) {
+					drop = el.offset();
+					diff.y -= 73;
+				}
+				click.y -= drop.top;
+				click.x -= drop.left;
 
 				// enable drop zones
 				Self.els.rack.addClass("drop arranging");
 				Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, click, drop, offset };
+				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -66,8 +76,8 @@
 				Drag.el.css({ top, left });
 
 				// position indicator
-				pY = Math.max(Math.min(parseInt(top / Drag.drop.height, 10), 1), 0);
-				pX = Math.max(Math.min(parseInt(left / Drag.drop.width, 10), 16), 0);
+				pY = Math.max(Math.min(parseInt((top + Drag.diff.y) / Drag.drop.height, 10), 1), 0);
+				pX = Math.max(Math.min(parseInt((left + Drag.diff.x) / Drag.drop.width, 10), 16), 0);
 				if (Drag.posY !== pY || Drag.posX !== pX) {
 					Drag.posY = pY;
 					Drag.posX = pX;
@@ -91,9 +101,7 @@
 				let css = {
 						top: Drag.drop.top,
 						left: Drag.drop.left
-					},
-					tOffset = Drag.hover.offset(".board"),
-					rOffset = Self.els.rack.offset(".board");
+					};
 				pY = Drag.posY;
 				pX = Math.min(Drag.posX, 15);
 				if (Drag.hover.hasClass("drop")) {
@@ -177,8 +185,8 @@
 							break;
 						case Drag.hover.hasClass("inset"):
 							css = {
-								top: tOffset.top - rOffset.top + 5,
-								left: tOffset.left - rOffset.left + 5,
+								top: Drag.tOffset.top - Drag.rOffset.top + 5,
+								left: Drag.tOffset.left - Drag.rOffset.left + 5,
 							};
 							break;
 					}

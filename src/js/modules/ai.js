@@ -1,17 +1,9 @@
 
-let AI = (() => {
+let AI = {
+	init() {
 
-	let APP;
-
-	let AI = {
-		init() {
-
-		},
-		move(seat) {
-			
-		}
-	};
-
-	return AI;
-
-})();
+	},
+	move(seat) {
+		
+	}
+};

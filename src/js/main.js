@@ -1,6 +1,5 @@
 
 @import "./modules/engine.js"
-@import "./modules/ai.js"
 @import "./modules/test.js"
 
 

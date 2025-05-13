@@ -3,7 +3,6 @@ let Engine = (() => {
 
 	let APP;
 	let Colors = ["green", "red",  "blue", "yellow", "black"];
-
 	let activePlayer = 1;
 	let settingsType = 2;
 	let settingsGameLevel = 2;
@@ -50,48 +49,17 @@ let Engine = (() => {
 	let tileW;
 	let virtualMove = 0;
 
-	let Tiles = {
-		data: [],
-		init() {
-			for (let j=1; j<=4; j++) {
-				for (let i=1; i<=13; i++) {
-					let x = String(i);
-					if (i < 10) x = "0" + x;
-					this.data.push(j + x);
-				}
-				for (let i=1; i<=13; i++) {
-					let x = String(i);
-					if (i < 10) x = "0" + x;
-					this.data.push(j + x);
-				}
-			}
-			// jokers
-			this.data.push("000", "000");
-		},
-		// suffleArray(arr) {
-		// 	arr = arr.sort(() => Math.random() - 0.5);
-		// 	return arr;
-		// },
-		shuffle() {
-			let shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
-			this.left = this.data.slice();
-			this.data = shuffleArray(this.data);
-			if (this.data[105] == "000") {
-				this.shuffle();
-				return 0;
-			}
-			// remove one tile from tile stack
-			this.left = this.removeArrayItem(this.left, this.data[105]);
-			// table UI update
-			Engine.updateLeft();
-		}
-	};
+	
+	@import "./tiles.js"
+	@import "./ai.js"
+
 
 	let Engine = {
 		init() {
 			// reference to application
 			APP = okey;
-			// init tiles
+			// init sub object
+			AI.init();
 			Tiles.init();
 			// start game
 			// this.start();
@@ -1476,7 +1444,7 @@ let Engine = (() => {
 		drag_stop() {},
 		checkThrow(seat, tile) {
 			let tiles = Array(32).fill("");
-			rack.find(".tile").map(tile => {
+			APP.game.els.rack.find(".tile").map(tile => {
 				let value = tile.getAttribute("data-id"),
 					y = parseInt(tile.offsetTop / 73),
 					x = parseInt(tile.offsetLeft / 56),

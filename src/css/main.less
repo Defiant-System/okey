@@ -182,11 +182,15 @@ content {
 					right: -20px;
 					bottom: -20px;
 				}
+
+				.tile {
+					pointer-events: none;
+				}
 			}
 
 			&.player-2 {
 				top: 0;
-				right: 23px;
+				right: 37px;
 				width: 51px;
 				height: 63px;
 
@@ -198,7 +202,7 @@ content {
 
 			&.player-3 {
 				top: 0;
-				left: 23px;
+				left: 37px;
 				width: 51px;
 				height: 63px;
 
@@ -214,10 +218,10 @@ content {
 			}
 
 			.tile {
-				width: 47px;
-				height: 61px;
+				width: 56px;
+				height: 73px;
 
-				&:after { font-size: 31px; }
+				&:after { font-size: 37px; }
 			}
 		}
 	}
@@ -524,6 +528,11 @@ content {
 						left 120ms ease-in-out;
 		}
 
+		&.draggable {
+			cursor: move;
+			pointer-events: all;
+		}
+
 		&.dragging {
 			z-index: 2;
 			pointer-events: none;
@@ -597,10 +606,6 @@ content {
 
 			&.left {
 				.tile {
-					&.draggable {
-						cursor: move;
-					}
-					
 					&:before {
 						content: "";
 						background: radial-gradient(ellipse at 70% center, #eee, #ccc 100%);
@@ -777,7 +782,7 @@ content {
 
 		.name {
 			position: absolute;
-			top: 3px;
+			top: 5px;
 			left: 67px;
 			right: 0;
 			z-index: 1;
@@ -790,7 +795,7 @@ content {
 			&:after {
 				content: "";
 				position: absolute;
-				top: -3px;
+				top: -5px;
 				left: -67px;
 				height: 53px;
 				width: 61px;
