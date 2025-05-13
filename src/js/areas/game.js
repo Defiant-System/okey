@@ -189,7 +189,8 @@
 										row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === 5);
 									}
 									for (let i=0; i<16; i++) {
-										if (!slot.left && (!row[i] || +row[i].offsetLeft !== (i * 56) + 21)) {
+										let checkSlot = row.filter(tile => tile.offsetLeft === (i * 56) + 21);
+										if (!slot.left && !checkSlot.length) {
 											slot.left = (i * 56) + 21;
 										}
 									}
