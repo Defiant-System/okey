@@ -43,9 +43,11 @@
 					rOffset = Self.els.rack.offset(".board");
 				if (el.parent().hasClass("left")) {
 					let { id, clr, num } = Engine.drawTile(),
-						lOffset = Self.els.el.find(".info .tiles.left").offset(".board"),
+						lTiles = Self.els.el.find(".info .tiles.left"),
+						lOffset = lTiles.offset(".board"),
 						y = lOffset.top - rOffset.top + 5,
 						x = lOffset.left - rOffset.left + 5;
+					lTiles.find(".draggable").removeClass("draggable");
 					el = Self.els.rack.append(`<span class="tile ${clr} new-tile" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
 				}
 
@@ -54,7 +56,8 @@
 				let doc = $(document),
 					drop = el.offset(".rack"),
 					tOffset = el.offset(".board"),
-					diff = { x: 0, y: 0},
+					isDiscard = el.parent().hasClass("player-4"),
+					diff = { x: 0, y: 0 },
 					offset = {
 						y: event.offsetY,
 						x: event.offsetX,
@@ -63,6 +66,10 @@
 						y: event.clientY,
 						x: event.clientX,
 					};
+
+				if (isDiscard) {
+					drop = el.offset();
+				}
 
 				if (!drop) {
 					drop = el.offset();
@@ -74,7 +81,7 @@
 				// enable drop zones
 				Self.els.el.addClass("drop");
 				Self.els.rack.addClass("drop arranging");
-				Self.els.el.find(".discard .inset.player-1").addClass("drop");
+				if (!isDiscard) Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
 				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset };
 				// bind event handlers
@@ -180,24 +187,7 @@
 									left: Drag.drop.left
 								};
 								if (Drag.el.hasClass("new-tile")) {
-									let slot = {};
-									if (pY === 0) {
-										slot.top = 83;
-										row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === 83);
-									} else {
-										slot.top = 5;
-										row = Self.els.rack.find(".tile").filter(tile => +tile.offsetTop === 5);
-									}
-									for (let i=0; i<16; i++) {
-										let checkSlot = row.filter(tile => tile.offsetLeft === (i * 56) + 21);
-										if (!slot.left && !checkSlot.length) {
-											slot.left = (i * 56) + 21;
-										}
-									}
-									css = {
-										top: slot.top,
-										left: slot.left,
-									};
+									css = Self.getEmptySlot();
 								}
 							} else if (hovered.length && choose.left.els.length >= choose.right.els.length) {
 								if (hovered.length) choose.right.els.unshift(hovered);
@@ -219,10 +209,10 @@
 								top: Drag.tOffset.top - Drag.rOffset.top + 5,
 								left: Drag.tOffset.left - Drag.rOffset.left + 5,
 							};
-							break;
+							/* falls through */
 						case Drag.hover.hasClass("board"):
 							if (Drag.el.hasClass("new-tile")) {
-								console.log(Drag.hover);
+								css = Self.getEmptySlot();
 							}
 							break;
 					}
@@ -242,5 +232,23 @@
 					.css(css);
 				break;
 		}
+	},
+	getEmptySlot() {
+		let slot = {},
+			row;
+		if (this.drag.posY === 0) {
+			slot.top = 83;
+			row = this.els.rack.find(".tile").filter(tile => +tile.offsetTop === 83);
+		} else {
+			slot.top = 5;
+			row = this.els.rack.find(".tile").filter(tile => +tile.offsetTop === 5);
+		}
+		for (let i=0; i<16; i++) {
+			let checkSlot = row.filter(tile => tile.offsetLeft === (i * 56) + 21);
+			if (!slot.left && !checkSlot.length) {
+				slot.left = (i * 56) + 21;
+			}
+		}
+		return slot;
 	}
 }
