@@ -194,7 +194,9 @@ content {
 				}
 
 				.tile {
+					right: 7px;
 					pointer-events: none;
+					letter-spacing: -3px;
 				}
 			}
 
@@ -207,6 +209,7 @@ content {
 				.tile {
 					width: 41px;
 					height: 53px;
+					letter-spacing: -2px;
 				}
 			}
 
@@ -219,6 +222,7 @@ content {
 				.tile {
 					width: 41px;
 					height: 53px;
+					letter-spacing: -2px;
 				}
 			}
 
@@ -231,7 +235,11 @@ content {
 				width: 56px;
 				height: 73px;
 
-				&:after { font-size: 37px; }
+				&:after {
+					right: 7px;
+					font-size: 37px;
+					letter-spacing: -3px;
+				}
 			}
 		}
 	}
@@ -425,20 +433,6 @@ content {
 			}
 		}
 
-
-		// &:before {
-		// 	content: "";
-		// 	position: absolute;
-		// 	top: calc( calc( var( --posY ) * 79px ) - 2px );
-		// 	left: calc( calc( var( --posX ) * 56px ) + 15px );
-		// 	width: 0;
-		// 	height: 0;
-		// 	z-index: 3;
-		// 	border-top: 12px solid red;
-		// 	border-left: 6px solid transparent;
-		// 	border-right: 6px solid transparent;
-		// }
-
 		.tile-arrow {
 			display: none;
 			position: absolute;
@@ -492,6 +486,19 @@ content {
 				&:after {
 					right: 7px;
 					letter-spacing: -3px;
+				}
+			}
+
+			&.discard-loan {
+				&:before {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					border-radius: inherit;
+					animation: tile-pulsate 800ms ease-in-out alternate infinite;
 				}
 			}
 		}
@@ -1014,6 +1021,27 @@ content {
 		text-transform: uppercase;
 		text-shadow: 0 2px 1px rgba(#000,.35);
 
+		&.put-back {
+			top: 491px;
+			left: 155px;
+			width: auto;
+			min-height: auto;
+			cursor: pointer;
+			padding: 7px 11px 4px 13px;
+			animation: button-pulsate 800ms ease-in-out alternate infinite;
+
+			h4 {
+				position: relative;
+				z-index: 2;
+				font-size: 20px;
+			}
+
+			.dlg-arrow {
+				top: 10px;
+				transform: rotate(-83deg); 
+			}
+		}
+
 		&.finish {
 			// position: relative;
 			top: 207px;
@@ -1164,6 +1192,16 @@ content {
 	}
 }
 
+
+@keyframes button-pulsate {
+	0%   { background: #fff7; }
+	100% { background: #f009; }
+}
+
+@keyframes tile-pulsate {
+	0%   { box-shadow: 0 0 5px 3px #fff7; }
+	100% { box-shadow: 0 0 5px 3px #f009; }
+}
 
 
 @keyframes animOutline {

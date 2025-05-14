@@ -27,6 +27,22 @@
 			case "engine-sort-double":
 				Engine.arrange(1, 2);
 				break;
+			case "put-tile-back":
+				// hide button
+				event.el.addClass("hidden");
+				// animate tile back to discard pile
+				Self.els.rack.find(".discard-loan")
+					.cssSequence("smooth", "transitionend", el => {
+						// reset element
+						el.removeClass("smooth discard-loan").css({ top: "", left: "" });
+						// update DOM
+						Self.els.el.find(".discard .player-4").append(el);
+					})
+					.css({
+						top: -101,
+						left: -12,
+					});
+				break;
 		}
 	},
 	move(event) {
@@ -66,11 +82,10 @@
 						y: event.clientY,
 						x: event.clientX,
 					};
-
 				if (isDiscard) {
 					drop = el.offset();
+					diff.y -= 73;
 				}
-
 				if (!drop) {
 					drop = el.offset();
 					diff.y -= 73;
@@ -83,7 +98,7 @@
 				Self.els.rack.addClass("drop arranging");
 				if (!isDiscard) Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset };
+				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, isDiscard };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -122,7 +137,19 @@
 					};
 				pY = Drag.posY;
 				pX = Math.min(Drag.posX, 15);
+
 				if (Drag.hover.hasClass("drop")) {
+					if (Drag.isDiscard) {
+						let pEl = Drag.el.parent().offset(".board"),
+							dOffset = Drag.el.offset();
+						Self.els.el.find(".actions.put-back").removeClass("hidden");
+						Drag.el = Self.els.rack.append(Drag.el).addClass("discard-loan");
+						Drag.el.css({
+								top: pEl.top - Drag.rOffset.top + dOffset.top,
+								left: pEl.left - Drag.rOffset.left + dOffset.left,
+							});
+					}
+
 					switch (true) {
 						case Drag.hover.hasClass("rack"):
 							css = {
@@ -222,7 +249,7 @@
 					.removeClass("dragging new-tile")
 					.cssSequence("smooth", "transitionend", el => {
 						// reset dragged element
-						el.removeClass("smooth");
+						el.removeClass("smooth draggable");
 						// reset drop zones
 						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");
