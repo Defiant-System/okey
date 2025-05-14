@@ -434,7 +434,6 @@ let Engine = (() => {
 					_0x4ace7d.splice(_0x17aa37, 0, "");
 				}
 			}
-				console.log(_0x4ace7d.slice());
 			if (_0x4ace7d[16] == "") {
 				_0x4ace7d.splice(16, 1);
 			}
@@ -493,7 +492,6 @@ let Engine = (() => {
 				}
 			});
 
-			
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {
 
@@ -503,6 +501,7 @@ let Engine = (() => {
 					game_over(1);
 				}
 			}
+			
 			if (type == 2 && this.checkWinDouble()) {
 				if (AIStatus == 0 && activePlayer == 1) {
 
