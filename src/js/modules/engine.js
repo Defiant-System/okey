@@ -128,6 +128,10 @@ let Engine = (() => {
 				.addClass(clr)
 				.data({ v: num });
 
+			// temp for user player
+			boardTiles = state.player[0].board;
+			boardTiles1 = boardTiles.slice();
+
 			// add html to rack DOM
 			let htm = this.render(boardTiles);
 			APP.game.els.rack.find(".tile").remove();
@@ -141,6 +145,12 @@ let Engine = (() => {
 				el.css({ top, left });
 			});
 			tiles.removeClass("temp");
+
+			// if (this.checkWin() || this.checkWinDouble()) {
+				
+			// }
+			this.checkWin();
+			// this.checkWinDouble();
 		},
 		drawTile() {
 			let id = tilesLeft[0].toString(),
@@ -524,10 +534,10 @@ let Engine = (() => {
 					game_over(1);
 				}
 			}
-
-			return boardTiles;
 		},
-		moveBack(el) {},
+		moveBack(el) {
+			console.log(el);
+		},
 		moveTile(el, player, _top, _left, type, tableTilePos) {},
 		sem() {},
 		gameOver(_0x3a9872) {},
@@ -1450,7 +1460,9 @@ let Engine = (() => {
 		},
 		autoPlay() {},
 		writePoint() {},
-		changePoint(_0x2b8526, _0x1cee51, _0x3637f4) {},
+		changePoint(_0x2b8526, _0x1cee51, _0x3637f4) {
+			console.log(_0x2b8526, _0x1cee51, _0x3637f4);
+		},
 		checkOkeyHandle(num) {},
 		setPoint(num) {},
 		AI_ON() {},
@@ -1465,10 +1477,10 @@ let Engine = (() => {
 		dragStop(seat, tile) {
 			// a tile has been "drag and dropped"
 			let tiles = Array(32).fill("");
-			APP.game.els.rack.find(".tile").map(tile => {
-				let value = tile.getAttribute("data-id"),
-					y = parseInt(tile.offsetTop / 73),
-					x = parseInt(tile.offsetLeft / 56),
+			APP.game.els.rack.find(".tile").map(t => {
+				let value = t.getAttribute("data-id"),
+					y = parseInt(t.offsetTop / 73),
+					x = parseInt(t.offsetLeft / 56),
 					index = (y * 16) + x;
 				tiles[index] = value;
 			});
@@ -1476,7 +1488,7 @@ let Engine = (() => {
 			boardTiles = tiles;
 			boardTiles1 = tiles;
 
-			if (this.checkWin() || this.checkWin()) {
+			if (this.checkWin() || this.checkWinDouble()) {
 				return console.log("game over");
 			}
 
@@ -1553,7 +1565,9 @@ let Engine = (() => {
 		},
 		removeStempfromCenter() {},
 		dropBack() {},
-		popMessage(_0x528e32, _0x5e23e6, _0x5a5c83) {},
+		popMessage(msg, timer, type) {
+			console.log(msg, timer, type);
+		},
 	};
 
 	return Engine;

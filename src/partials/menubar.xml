@@ -8,6 +8,9 @@
 		<Menu name="51" click="set-game-engine" arg="51" check-group="game-engine"/>
 		<Menu name="101" click="set-game-engine" arg="101" check-group="game-engine" is-checked="1"/>
 		<Menu name="Classic Okey" click="set-game-engine" arg="okey" check-group="game-engine"/>
+		<Menu type="divider"/>
+		<Menu name="Sort Serial" click="engine-sort-serial"/>
+		<Menu name="Sort Double" click="engine-sort-double"/>
 	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
