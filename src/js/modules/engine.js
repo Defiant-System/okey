@@ -129,8 +129,8 @@ let Engine = (() => {
 				.data({ v: num });
 
 			// temp for user player
-			boardTiles = state.player[0].board;
-			boardTiles1 = boardTiles.slice();
+			// boardTiles = state.player[0].board;
+			// boardTiles1 = boardTiles.slice();
 
 			// add html to rack DOM
 			let htm = this.render(boardTiles);
@@ -146,11 +146,9 @@ let Engine = (() => {
 			});
 			tiles.removeClass("temp");
 
-			// if (this.checkWin() || this.checkWinDouble()) {
-				
-			// }
-			this.checkWin();
-			// this.checkWinDouble();
+			if (this.checkWin() || this.checkWinDouble()) {
+				return console.log("game over");
+			}
 		},
 		drawTile() {
 			let id = tilesLeft[0].toString(),
@@ -546,10 +544,384 @@ let Engine = (() => {
 		remainingMessage() {},
 		putOkeyToTable(_0x54d834) {},
 		getOkeyFromTable(_0x38a670, _0x3f3e09) {},
-		putToTable(_0x139c25, _0x4b4905) {},
-		moveToTable(_0x336229, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {},
-		buttonActivePassive(_0x282945, _0x106ed0) {},
-		collectItBack() {},
+		putToTable(_0x139c25, _0x4b4905) {
+			UserTotal = 0;
+			UserTotalDouble = 0;
+			diff = 0;
+			if (_0x139c25 == 1) {
+				boardTiles = boardTiles1.slice();
+				boardPlaces = boardPlaces1.slice();
+				if (_0x4b4905 == 1) {
+					check_win();
+				}
+				if (_0x4b4905 == 2) {
+					check_win_double();
+				}
+				UserSeri = User1Seri.slice();
+				UserDouble = User1Double.slice();
+				UserTotal = User1Total;
+				UserTotalDouble = User1TotalDouble;
+			}
+			if (_0x139c25 == 2) {
+				boardTiles = boardTiles2.slice();
+				boardPlaces = boardPlaces2.slice();
+				if (_0x4b4905 == 1) {
+					check_win();
+				}
+				if (_0x4b4905 == 2) {
+					check_win_double();
+				}
+				UserSeri = User2Seri.slice();
+				UserDouble = User2Double.slice();
+				UserTotal = User2Total;
+				UserTotalDouble = User2TotalDouble;
+			}
+			if (_0x139c25 == 3) {
+				boardTiles = boardTiles3.slice();
+				boardPlaces = boardPlaces3.slice();
+				if (_0x4b4905 == 1) {
+					check_win();
+				}
+				if (_0x4b4905 == 2) {
+					check_win_double();
+				}
+				UserSeri = User3Seri.slice();
+				UserDouble = User3Double.slice();
+				UserTotal = User3Total;
+				UserTotalDouble = User3TotalDouble;
+			}
+			if (_0x139c25 == 4) {
+				boardTiles = boardTiles4.slice();
+				boardPlaces = boardPlaces4.slice();
+				if (_0x4b4905 == 1) {
+					check_win();
+				}
+				if (_0x4b4905 == 2) {
+					check_win_double();
+				}
+				UserSeri = User4Seri.slice();
+				UserDouble = User4Double.slice();
+				UserTotal = User4Total;
+				UserTotalDouble = User4TotalDouble;
+			}
+			if (UserTotal == 0 && _0x4b4905 == 1 || UserTotalDouble == 0 && _0x4b4905 == 2) {
+				if (_0x4b4905 == 1 && _0x139c25 == 1 && AIStatus == 0) {
+					popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
+				}
+				if (_0x4b4905 == 2 && _0x139c25 == 1 && AIStatus == 0) {
+					popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
+				}
+				return 0;
+			}
+			var _0x488971 = UserSeri.filter(e => e != '').slice();
+			var _0x5869f9 = boardTiles.filter(e => e != '').slice();
+			if (_0x5869f9.length <= tileLimits[_0x139c25]) {
+				if (_0x139c25 == 1) {
+					popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (_0x488971.length > tileLimit) {
+				popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
+			}
+			if (_0x4b4905 == 1 && openStatusDouble[_0x139c25] == 1) {
+				if (_0x139c25 == 1 && AIStatus == 0) {
+					popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
+					openPunish[_0x139c25] = 0;
+				}
+				return 0;
+			}
+			if (_0x4b4905 == 2 && openStatusSort[_0x139c25] == 1 && handleDouble == 0) {
+				if (_0x139c25 == 1 && AIStatus == 0) {
+					popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
+				}
+				return 0;
+			}
+			if (_0x4b4905 == 1 && UserTotal < openLimit && openStatusSort[_0x139c25] == 0) {
+				if (_0x139c25 == 1 && AIStatus == 0) {
+					popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
+					openPunish[_0x139c25] = 1;
+				}
+				if (_0x139c25 != 1 || AIStatus == 1) {
+					return 0;
+				}
+			}
+			if (_0x4b4905 == 2 && UserTotalDouble < openLimitDouble && openStatusDouble[_0x139c25] == 0 && handleDouble == 0) {
+				if (_0x139c25 == 1 && AIStatus == 0) {
+					popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
+					openPunish[_0x139c25] = 1;
+				}
+				if (_0x139c25 != 1 || AIStatus == 1) {
+					return 0;
+				}
+			}
+			if (UserTotalDouble == 0 && _0x4b4905 == 2 && _0x139c25 == 1 && AIStatus == 0) {
+				popMessage("Cift acabilecek tasiniz yok!");
+			}
+			var _0x91c7d2;
+			if (_0x4b4905 == 1) {
+				if (openStatusSort[_0x139c25] == 0) {
+					popMessage(users[_0x139c25] + " seri acti: " + UserTotal);
+					if (settingsIncrease == 1) {
+						openLimitLast = openLimit;
+						openLimit = UserTotal * 1 + 1;
+						$("table-sort-score").innerHTML = openLimit;
+					}
+				}
+				openStatusSort[_0x139c25] = 1;
+				_0x91c7d2 = UserSeri.slice();
+				if (_0x139c25 == 1 && UserTotal >= openLimitLast) {
+					button_active_passive("handle-sort", 1);
+					button_active_passive("handle-double", 1);
+					firstOpenCont = 1;
+				}
+			}
+			if (_0x4b4905 == 2) {
+				if (openStatusDouble[_0x139c25] == 0) {
+					popMessage(users[_0x139c25] + " cift acti : " + UserTotalDouble);
+					if (settingsIncrease == 1 && UserTotalDouble >= openLimitDouble) {
+						openLimitDoubleLast = openLimitDouble;
+						openLimitDouble = UserTotalDouble * 1 + 1;
+						if (settingsType == 3) {
+							openLimitDouble = openLimitD;
+						}
+						$("table-double-score").innerHTML = openLimitDouble;
+					}
+				}
+				if (handleDouble == 0) {
+					openStatusDouble[_0x139c25] = 1;
+					if (_0x139c25 == 1 && UserTotalDouble >= openLimitDoubleLast) {
+						button_active_passive("handle-sort", 1);
+						button_active_passive("handle-double", 1);
+						firstOpenCont = 1;
+					}
+				}
+				_0x91c7d2 = UserDouble.slice();
+			}
+			if (!collect[0]) {
+				collect = [];
+				collectPlaces = boardPlaces.slice();
+				collectTiles = boardTiles.slice();
+			}
+			var _0x484f1e = _0x139c25;
+			if (handleDouble == 1) {
+				_0x484f1e = doubleHandleTo;
+			}
+			for (i = 0; i < _0x91c7d2.length; i++) {
+				if (_0x91c7d2[i] != '') {
+					var _0x897419 = boardTiles.indexOf(String(_0x91c7d2[i]));
+					if (_0x91c7d2[i] - _0x91c7d2[i] % 100 == 900) {
+						_0x897419 = boardTiles.indexOf(String(okey));
+					}
+					if (_0x91c7d2[i] - _0x91c7d2[i] % 100 == 800) {
+						_0x897419 = boardTiles.indexOf("000");
+					}
+					if (_0x897419 !== -1) {
+						moveToTable(_0x484f1e, _0x91c7d2[i], -1, -1, _0x4b4905);
+						tileLimits[_0x139c25]--;
+					}
+				} else {
+					if (_0x4b4905 == 1) {
+						tableH[_0x484f1e]++;
+					}
+					if (_0x4b4905 == 2) {
+						tableHdouble[_0x484f1e]++;
+					}
+					diff = 0;
+					lastStone = '';
+				}
+				var _0x4fe46a = activePlayer;
+				activePlayer = _0x139c25;
+				update_boards();
+				activePlayer = _0x4fe46a;
+			}
+			var _0x2c9a7e = boardTiles.filter(e => e != '').slice();
+			if (_0x2c9a7e.length == 0) {
+				if (_0x139c25 != 1 || AIStatus == 1) {
+					collectItBack();
+				} else {
+					popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
+				}
+			}
+			handleDouble = 0;
+			if (_0x139c25 == 1) {
+				markIt(1);
+				if (_0x4b4905 == 1) {
+					check_win();
+				}
+				if (_0x4b4905 == 2) {
+					check_win_double();
+				}
+			}
+		},
+		moveToTable(_0x336229, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {
+			var _0x2a961e = String(_0x315c85);
+			var _0x4295dd;
+			stone = parseInt(_0x2a961e.substr(1, 2));
+			color1 = _0x2a961e.substr(0, 1);
+			var _0xf1fecf = boardTiles.indexOf(String(_0x315c85));
+			var _0x5b13d2 = 0;
+			if (_0x315c85 - _0x315c85 % 100 == 900) {
+				_0xf1fecf = boardTiles.indexOf(String(okey));
+			}
+			if (_0x315c85 - _0x315c85 % 100 == 800) {
+				_0xf1fecf = boardTiles.indexOf("000");
+				_0x5b13d2 = 1;
+			}
+			if (getOkeyKont == 0) {
+				_0x4295dd = boardPlaces[_0xf1fecf * 1 + 1];
+				boardPlaces[_0xf1fecf * 1 + 1] = 0;
+				boardTiles[_0xf1fecf] = '';
+			}
+			if (_0x5486c5) {
+				sayTableTilesTemp = sayTableTiles;
+				sayTableTiles = _0x5486c5;
+				_0x4295dd = 0;
+			} else {
+				sayTableTiles++;
+			}
+			if (_0x315c85 == leftHandCont || leftHandCont == "000" && _0x5b13d2 == 1) {
+				var _0x57b199 = leftHandCont % 100;
+				_0x57b199 = _0x57b199 * 10;
+				leftHandContTemp = leftHandCont;
+				leftHandTileTemp = leftHandTile;
+				leftHandCont = 0;
+				leftHandTile = 0;
+				if (activePlayer == 1) {
+					if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+						changePoint(_0x57b199, 4, 1);
+					}
+					$("area-4").innerHTML = '';
+					$("area-4").classList.remove("drop");
+				}
+			}
+			if (mobile == 0) {
+				var _0x383df0 = tileW * 0.55;
+				var _0x3af68e = tileH * 0.55;
+			} else {
+				var _0x383df0 = tileW * 0.54;
+				var _0x3af68e = tileH * 0.54;
+			}
+			var _0x2378b2 = _0x383df0 * 0.04;
+			var _0x29cbcd = _0x3af68e * 0.04;
+			if (stone == lastStone) {
+				if (stone > 10 && _0x14df73 == 1) {
+					diff--;
+				} else {
+					diff++;
+				}
+			}
+			var _0x51fce2;
+			var _0x5a1841;
+			if (_0x14df73 == 1) {
+				_0x51fce2 = stone - 1 + diff * 1;
+				_0x5a1841 = tableH[_0x336229];
+			}
+			if (_0x14df73 == 2) {
+				_0x51fce2 = diff * 1;
+				_0x5a1841 = tableHdouble[_0x336229];
+			}
+			if (_0x5f22f9 > -1) {
+				_0x51fce2 = _0x5f22f9;
+			}
+			if (_0x4693ec > -1) {
+				_0x5a1841 = _0x4693ec;
+			}
+			if (_0x336229 == 1) {
+				if (_0x14df73 == 1) {
+					tableUser1[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableUserTiles1[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					tableDoubleUser1[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableDoubleUserTiles1[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+			}
+			if (_0x336229 == 2) {
+				if (_0x14df73 == 1) {
+					tableUser2[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableUserTiles2[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					tableDoubleUser2[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableDoubleUserTiles2[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+			}
+			if (_0x336229 == 3) {
+				if (_0x14df73 == 1) {
+					tableUser3[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableUserTiles3[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					tableDoubleUser3[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableDoubleUserTiles3[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+			}
+			if (_0x336229 == 4) {
+				if (_0x14df73 == 1) {
+					tableUser4[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableUserTiles4[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					tableDoubleUser4[_0x5a1841][_0x51fce2] = _0x315c85;
+					tableDoubleUserTiles4[_0x5a1841][_0x51fce2] = sayTableTiles;
+				}
+			}
+			if (getOkeyKont == 0) {
+				if (!_0x5486c5) {
+					collect.push(_0x336229 + ',' + "tile-mini2-" + sayTableTiles + ',' + _0x5a1841 + ',' + _0x51fce2 + ',' + _0x14df73);
+					if (activePlayer == 1) {
+						button_active_passive("collect", 1);
+					}
+				}
+				console.log(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
+				moveTile(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
+			}
+			var _0x4d23cf = null;
+			if (_0x315c85 - _0x315c85 % 100 == 800) {
+				_0x4d23cf = stone;
+				stone = 'R';
+				color1 = 0;
+			}
+			var _0x469b85;
+			if (_0x14df73 == 1) {
+				_0x469b85 = "sort";
+			}
+			if (_0x14df73 == 2) {
+				_0x469b85 = "double";
+			}
+			if (!_0x5486c5) {
+				$("user" + _0x336229 + "-table-" + _0x469b85).innerHTML += "<div id=\"tile-mini2-" + sayTableTiles + "\" class=\"tile " + color[color1] + "\">" + sayTableTiles + "</div>";
+			}
+			$("tile-mini2-" + sayTableTiles).style.left = _0x2378b2 * 1 + _0x383df0 * 0.49 * _0x51fce2 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.top = _0x29cbcd * 1 + _0x383df0 * 0.7 * _0x5a1841 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.width = _0x383df0 * 0.45 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.height = _0x3af68e * 0.45 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.lineHeight = _0x3af68e * 0.28 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.fontSize = _0x383df0 * 0.35 + 'px';
+			$("tile-mini2-" + sayTableTiles).style.borderRadius = _0x383df0 * 0.05 + 'px';
+			;
+			if (getOkeyKont == 0) {
+				$("tile-mini2-" + sayTableTiles).style.visibility = "hidden";
+			}
+			$("tile-mini2-" + sayTableTiles).innerHTML = "<div id='face-mini2-" + sayTableTiles + "' style='display:block'><div class='point2-mini'>" + "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart2-mini\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>" + "</div><div id='Letter-mini2-" + j + '-' + i + "'>" + stone + "</div></div>";
+			if (_0x315c85 - _0x315c85 % 100 == 900) {
+				$("face-mini2-" + sayTableTiles).style.display = "none";
+			}
+			if (_0x4d23cf) {
+				stone = _0x4d23cf;
+			}
+			lastStone = stone;
+			if (_0x5486c5) {
+				sayTableTiles = sayTableTilesTemp;
+			}
+		},
+		buttonActivePassive(_0x282945, _0x106ed0) {
+			console.log("buttonActivePassive");
+		},
+		collectItBack() {
+			console.log("collectItBack");
+		},
 		priority() {
 			boardTiles.sort();
 			boardTiles.sort((a, b) => a - b);
@@ -1372,6 +1744,7 @@ let Engine = (() => {
 					sign.addClass("red");
 				}
 			}
+			console.log( _0x257872 , tileLimit , boardTilesVir.filter(e => e != '').length, tileLimit );
 			if (_0x257872 == tileLimit && boardTilesVir.filter(e => e != '').length == tileLimit) {
 				return 1;
 			} else {
@@ -1397,10 +1770,537 @@ let Engine = (() => {
 			}
 			return val;
 		},
-		markIt(_0x4ff0b3) {},
-		checkHandleDouble(_0x560968) {},
-		checkHandle(_0x2019da, _0x1c59dd) {},
-		goDouble() {},
+		markIt(seat) {
+			markCont = 1;
+			this.checkHandle(_0x4ff0b3, 2);
+			this.getOkeyFromTable(_0x4ff0b3);
+			markCont = 0;
+		},
+		checkHandleDouble(_0x560968) {
+			// if (activePlayer == 1 && true) {}
+			if (_0x560968 == 1) {
+				if (this.getOkeyFromTable(1, 2)) {
+					return 0;
+				}
+			}
+			var _0x460cd2 = _0x1d32ab = boardTiles.filter(e => e != '').slice();
+			if (_0x460cd2.length <= tileLimits[_0x560968]) {
+				if (_0x560968 == 1) {
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (openStatusSort[_0x560968] == 0 && openStatusDouble[_0x560968] == 0) {
+				if (_0x560968 == 1) {
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+				}
+				return 0;
+			}
+			var _0x1d32ab = boardTiles.filter(e => e != '').slice();
+			if (_0x1d32ab.length < 3) {
+				this.markIt(_0x560968);
+				return 0;
+			}
+			if (openStatusDouble.indexOf(1) > -1) {
+				doubleHandleTo = openStatusDouble.indexOf(1);
+				handleDouble = 0;
+				this.checkWinDouble();
+				if (UserTotalDouble > 0) {
+					this.popMessage(users[_0x560968] + " cift isledi!");
+					handleDouble = 1;
+					this.putToTable(activePlayer, 2);
+				}
+			}
+		},
+		checkHandle(_0x2019da, _0x1c59dd) {
+			if (!_0x1c59dd) {
+				_0x1c59dd = 0;
+			}
+			if (activePlayer == 1 && true) {}
+			var _0x3c5f2e = [];
+			handleItems = [];
+			if (_0x2019da == 1) {
+				boardTiles = boardTiles1.slice();
+				boardPlaces = boardPlaces1.slice();
+				_0x3c5f2e = User1Seri.slice();
+				UserTotal = User1Total;
+			}
+			if (_0x2019da == 2) {
+				boardTiles = boardTiles2.slice();
+				boardPlaces = boardPlaces2.slice();
+				_0x3c5f2e = User2Seri.slice();
+				UserTotal = User2Total;
+			}
+			if (_0x2019da == 3) {
+				boardTiles = boardTiles3.slice();
+				boardPlaces = boardPlaces3.slice();
+				_0x3c5f2e = User3Seri.slice();
+				UserTotal = User3Total;
+			}
+			if (_0x2019da == 4) {
+				boardTiles = boardTiles4.slice();
+				boardPlaces = boardPlaces4.slice();
+				_0x3c5f2e = User4Seri.slice();
+				UserTotal = User4Total;
+			}
+			var _0x1fc99b = boardTiles.filter(e => e != '').slice();
+			if (_0x1fc99b.length <= tileLimits[_0x2019da] && _0x1c59dd == 0) {
+				if (_0x2019da == 1 && markCont == 0) {
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (openStatusSort[_0x2019da] == 0 && openStatusDouble[_0x2019da] == 0 && _0x1c59dd == 0) {
+				if (_0x2019da == 1) {
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (_0x2019da == 1 && _0x1c59dd == 0) {
+				if (this.getOkeyFromTable(1, 1)) {
+					return 0;
+				}
+			}
+			if (!collect[0] && _0x1c59dd == 0) {
+				collect = [];
+				collectPlaces = boardPlaces.slice();
+				collectTiles = boardTiles.slice();
+			}
+			var _0x364dc5 = [0, 0, 0, 0, 0];
+			var _0x2bbb42 = 0;
+			for (i = 0; i < boardTiles.length; i++) {
+				var _0x5e0d4d = boardTiles.filter(e => e != '').slice();
+				if (_0x5e0d4d.length == 1 && _0x1c59dd == 0) {
+					this.markIt(_0x2019da);
+					if (_0x2019da == 1) {
+						this.popMessage("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
+					}
+					return 0;
+				}
+				if (boardTiles[i]) {
+					$(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
+					$(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
+					var _0x1fc99b;
+					if (boardTiles[i] == "000") {
+						_0x1fc99b = okey;
+					} else {
+						_0x1fc99b = boardTiles[i];
+					}
+					for (j = 0; j < 7; j++) {
+						for (k = 0; k <= 13; k++) {
+							if (boardTiles[i] && boardTiles[i] != okey) {
+								var _0x49f720 = 0;
+								var _0x2fc30f = 0;
+								var _0x46b158;
+								var _0x3a83d2;
+								var _0x34dbca;
+								var _0x29577e;
+								var _0x4935d9;
+								if (tableUser1[j][k] > 0) {
+									_0x46b158 = tableUser1[j][k];
+									_0x3a83d2 = tableUser1[j][k - 1];
+									_0x34dbca = tableUser1[j][k * 1 + 1];
+									_0x29577e = tableUser1[j][k * 1 + 2];
+									_0x4935d9 = tableUser1[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
+										_0x46b158 = _0x3a83d2 * 1 + 1;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) {
+										_0x46b158 = _0x34dbca - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) {
+										_0x3a83d2 = _0x46b158 - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) {
+										_0x3a83d2 = _0x34dbca - 2;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) {
+										_0x34dbca = _0x46b158 * 1 + 1;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) {
+										_0x34dbca = _0x3a83d2 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) {
+										_0x29577e = _0x46b158 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) {
+										_0x29577e = _0x3a83d2 * 1 + 3;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) {
+										_0x4935d9 = _0x46b158 - 2;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) {
+										_0x4935d9 = _0x3a83d2 - 1;
+									}
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 1;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 1;
+									}
+									_0x46b158 = tableUser1[j][k];
+									_0x3a83d2 = tableUser1[j][k - 1];
+									_0x34dbca = tableUser1[j][k * 1 + 1];
+									_0x29577e = tableUser1[j][k * 1 + 2];
+									_0x4935d9 = tableUser1[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser1[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 1;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser1[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 1;
+									}
+								}
+								if (tableUser2[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = tableUser2[j][k];
+									_0x3a83d2 = tableUser2[j][k - 1];
+									_0x34dbca = tableUser2[j][k * 1 + 1];
+									_0x29577e = tableUser2[j][k * 1 + 2];
+									_0x4935d9 = tableUser2[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
+										_0x46b158 = _0x3a83d2 * 1 + 1;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) {
+										_0x46b158 = _0x34dbca - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) {
+										_0x3a83d2 = _0x46b158 - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) {
+										_0x3a83d2 = _0x34dbca - 2;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) {
+										_0x34dbca = _0x46b158 * 1 + 1;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) {
+										_0x34dbca = _0x3a83d2 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) {
+										_0x29577e = _0x46b158 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) {
+										_0x29577e = _0x3a83d2 * 1 + 3;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) {
+										_0x4935d9 = _0x46b158 - 2;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) {
+										_0x4935d9 = _0x3a83d2 - 1;
+									}
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 2;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 2;
+									}
+									_0x46b158 = tableUser2[j][k];
+									_0x3a83d2 = tableUser2[j][k - 1];
+									_0x34dbca = tableUser2[j][k * 1 + 1];
+									_0x29577e = tableUser2[j][k * 1 + 2];
+									_0x4935d9 = tableUser2[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser2[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 2;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser2[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 2;
+									}
+								}
+								if (tableUser3[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = tableUser3[j][k];
+									_0x3a83d2 = tableUser3[j][k - 1];
+									_0x34dbca = tableUser3[j][k * 1 + 1];
+									_0x29577e = tableUser3[j][k * 1 + 2];
+									_0x4935d9 = tableUser3[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
+										_0x46b158 = _0x3a83d2 * 1 + 1;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) {
+										_0x46b158 = _0x34dbca - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) {
+										_0x3a83d2 = _0x46b158 - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) {
+										_0x3a83d2 = _0x34dbca - 2;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) {
+										_0x34dbca = _0x46b158 * 1 + 1;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) {
+										_0x34dbca = _0x3a83d2 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) {
+										_0x29577e = _0x46b158 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) {
+										_0x29577e = _0x3a83d2 * 1 + 3;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) {
+										_0x4935d9 = _0x46b158 - 2;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) {
+										_0x4935d9 = _0x3a83d2 - 1;
+									}
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 3;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 3;
+									}
+									_0x46b158 = tableUser3[j][k];
+									_0x3a83d2 = tableUser3[j][k - 1];
+									_0x34dbca = tableUser3[j][k * 1 + 1];
+									_0x29577e = tableUser3[j][k * 1 + 2];
+									_0x4935d9 = tableUser3[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser3[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 3;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser3[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 3;
+									}
+								}
+								if (tableUser4[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = tableUser4[j][k];
+									_0x3a83d2 = tableUser4[j][k - 1];
+									_0x34dbca = tableUser4[j][k * 1 + 1];
+									_0x29577e = tableUser4[j][k * 1 + 2];
+									_0x4935d9 = tableUser4[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
+										_0x46b158 = _0x3a83d2 * 1 + 1;
+									}
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) {
+										_0x46b158 = _0x34dbca - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) {
+										_0x3a83d2 = _0x46b158 - 1;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) {
+										_0x3a83d2 = _0x34dbca - 2;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) {
+										_0x34dbca = _0x46b158 * 1 + 1;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) {
+										_0x34dbca = _0x3a83d2 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) {
+										_0x29577e = _0x46b158 * 1 + 2;
+									}
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) {
+										_0x29577e = _0x3a83d2 * 1 + 3;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) {
+										_0x4935d9 = _0x46b158 - 2;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) {
+										_0x4935d9 = _0x3a83d2 - 1;
+									}
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 4;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 4;
+									}
+									_0x46b158 = tableUser4[j][k];
+									_0x3a83d2 = tableUser4[j][k - 1];
+									_0x34dbca = tableUser4[j][k * 1 + 1];
+									_0x29577e = tableUser4[j][k * 1 + 2];
+									_0x4935d9 = tableUser4[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) {
+										_0x46b158 = okey;
+									}
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
+										_0x3a83d2 = okey;
+									}
+									if (_0x34dbca - _0x34dbca % 100 == 800) {
+										_0x34dbca = okey;
+									}
+									if (_0x29577e - _0x29577e % 100 == 800) {
+										_0x29577e = okey;
+									}
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
+										_0x4935d9 = okey;
+									}
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser4[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 4;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser4[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 4;
+									}
+								}
+								if (_0x49f720 > 0) {
+									if (_0x1c59dd == 0) {
+										if (_0x1fc99b == okey) {
+											_0x1fc99b = okey % 100 + 800;
+										}
+										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
+										this.popMessage(users[_0x2019da] + " seri isledi!");
+										tileLimits[_0x2019da]--;
+										if (activePlayer != _0x49f720) {
+											_0x364dc5[_0x49f720] += _0x1fc99b % 100 * 10;
+										}
+										var _0xaf41f9 = activePlayer;
+										activePlayer = _0x2019da;
+										this.updateBoards();
+										activePlayer = _0xaf41f9;
+										_0x2bbb42 = 1;
+									} else {
+										handleItems.push(boardTiles[i]);
+										$(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
+										$(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if (_0x2bbb42 == 0 && _0x1c59dd == 0) {
+				this.putToTable(_0x2019da);
+			}
+			if (_0x1c59dd == 0) {
+				this.markIt(_0x2019da);
+			}
+			this.checkWin();
+			if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+				if (_0x364dc5[1] > 0) {
+					this.changePoint(_0x364dc5[1], 1, 1);
+					_0x364dc5[1] = 0;
+				}
+				if (_0x364dc5[2] > 0) {
+					this.changePoint(_0x364dc5[2], 2, 1);
+					_0x364dc5[2] = 0;
+				}
+				if (_0x364dc5[3] > 0) {
+					this.changePoint(_0x364dc5[3], 3, 1);
+					_0x364dc5[3] = 0;
+				}
+				if (_0x364dc5[4] > 0) {
+					this.changePoint(_0x364dc5[4], 4, 1);
+					_0x364dc5[4] = 0;
+				}
+			}
+		},
 		sortDouble(_0xa76703, _0x5d64f0) {
 			boardTilesVir = boardTiles.slice();
 			boardTilesVir.sort();
@@ -1443,7 +2343,73 @@ let Engine = (() => {
 				return _0x71e9d5;
 			}
 		},
-		checkLeft(_0x324b05) {},
+		checkLeft(_0x324b05) {
+			var _0x218c45 = boardTiles.lastIndexOf('') * 1 + 1;
+			var _0x4c85fc = perFull.length;
+			var _0x14f884 = boardTiles.slice();
+			var _0xdcee61 = boardPlaces.slice();
+			if (_0x324b05 == 1) {
+				if (area1items.length < 1) {
+					return 0;
+				}
+				var _0x5458a2 = area1items[area1items.length - 1];
+				var _0x457d5c = 1;
+			}
+			if (_0x324b05 == 2) {
+				if (area2items.length < 1) {
+					return 0;
+				}
+				var _0x5458a2 = area2items[area2items.length - 1];
+				var _0x457d5c = 2;
+			}
+			if (_0x324b05 == 3) {
+				if (area3items.length < 1) {
+					return 0;
+				}
+				var _0x5458a2 = area3items[area3items.length - 1];
+				var _0x457d5c = 3;
+			}
+			if (_0x324b05 == 4) {
+				if (area4items.length < 1) {
+					return 0;
+				}
+				var _0x5458a2 = area4items[area4items.length - 1];
+				var _0x457d5c = 4;
+			}
+			this.place(_0x5458a2, _0x218c45);
+			this.arrange(activePlayer);
+			this.checkWin();
+			var _0x224a9d = 0;
+			if (_0x324b05 == 1) {
+				_0x224a9d = User2Total;
+			}
+			if (_0x324b05 == 2) {
+				_0x224a9d = User3Total;
+			}
+			if (_0x324b05 == 3) {
+				_0x224a9d = User4Total;
+			}
+			if (_0x324b05 == 4) {
+				_0x224a9d = User1Total;
+			}
+			var _0x19ab28 = _0x5458a2.split('-');
+			_0x19ab28 = _0x19ab28[1] - 1;
+			_0x19ab28 = data[_0x19ab28];
+			if (perFull.length > _0x4c85fc && (openStatusSort[activePlayer] == 0 && _0x224a9d > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == okey && settingsType == 1) {
+				boardTiles = _0x14f884.slice();
+				boardPlaces = _0xdcee61.slice();
+				this.updateBoards();
+				this.arrange(activePlayer);
+				return 1;
+			} else {
+				this.movetoArea(_0x5458a2, _0x457d5c, 1);
+				boardTiles = _0x14f884.slice();
+				boardPlaces = _0xdcee61.slice();
+				this.updateBoards();
+				this.arrange(activePlayer);
+				return 0;
+			}
+		},
 		removeArrayItem(arr, item, add) {
 			let index;
 			if (add != 1) index = arr.indexOf(item);
@@ -1454,9 +2420,172 @@ let Engine = (() => {
 			}
 			return arr;
 		},
-		changePlayer(_0x2ebcf1) {},
+		changePlayer(_0x2ebcf1) {
+			activePlayer = _0x2ebcf1;
+			if (activePlayer == 4) {
+				activePlayerCont = 1;
+			}
+			$("user-1").classList.remove("active");
+			$("user-2").classList.remove('active');
+			$("user-3").classList.remove("active");
+			$("user-4").classList.remove("active");
+			$("user-" + activePlayer).classList.add("active");
+			collect = [];
+			collectPlaces = [];
+			collectTiles = [];
+		},
 		AI(seat) {
-			console.log(seat);
+			if (gameOver == 1) return 0;
+	
+			AIcont = 1;
+			this.changePlayer(seat);
+			this.arrange(seat);
+			var _0xc09172 = boardTiles.filter(e => e != '').slice();
+			if (_0xc09172.length - 1 == tileLimits[seat]) {
+				if (settingsType == 2 || settingsType == 3) { // 51 or 101
+					if (openStatusDouble[seat] == 0) {
+						this.arrange(seat);
+						this.putToTable(seat, 1);
+					}
+					if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
+						this.getOkeyFromTable(seat);
+						this.arrange(seat);
+						_0xc09172 = boardTiles.filter(e => e != '').slice();
+						if (_0xc09172.length > 1) {
+							this.checkHandle(seat);
+						}
+						_0xc09172 = boardTiles.filter(e => e != '').slice();
+						if (_0xc09172.length > 1) {
+							this.arrange(seat, 2);
+						}
+						_0xc09172 = boardTiles.filter(e => e != '').slice();
+						if (_0xc09172.length > 1) {
+							this.checkHandleDouble(seat);
+						}
+					}
+					_0xc09172 = boardTiles.filter(e => e != '').slice();
+					if (_0xc09172.length > 1) {
+						this.arrange(seat, 2);
+					}
+					if (_0xc09172.length > 1) {
+						this.putToTable(seat, 1);
+					}
+					_0xc09172 = boardTiles.filter(e => e != '').slice();
+					if (_0xc09172.length == 3) {
+						this.putOkeyToTable(seat);
+					}
+					_0xc09172 = boardTiles.filter(e => e != '').slice();
+					if (_0xc09172.length > 1) {
+						this.putToTable(seat, 2);
+					}
+					_0xc09172 = boardTiles.filter(e => e != '').slice();
+					if (_0xc09172.length < 1) {
+						console.log("tas bitti - 2");
+					}
+					this.markIt(seat);
+				}
+				this.arrange(seat);
+				_0xc09172 = boardPlaces.filter(e => e != 0).slice();
+				if (_0xc09172.length > 0) {
+					selectedTile1 = _0xc09172[_0xc09172.length - 1];
+					var _0x280b69 = selectedTile1.split('-');
+					_0x280b69 = _0x280b69[1] - 1;
+					if (_0xc09172.length > 0) {
+						var _0x33ee = 0;
+						while ((data[_0x280b69] == okey || handleItems.indexOf(boardTiles[boardPlaces.indexOf(selectedTile1) - 1]) > -1) && _0xc09172.length - _0x33ee > 0) {
+							_0x33ee++;
+							selectedTile1 = _0xc09172[_0xc09172.length - _0x33ee];
+							var _0x280b69 = selectedTile1.split('-');
+							_0x280b69 = _0x280b69[1] - 1;
+						}
+					}
+					if (seat != 1) {
+						var _0x77769 = Math.ceil(Math.random() * 10);
+						if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
+							console.log("el bozuyor");
+							selectedTile1 = _0xc09172[0];
+						}
+					}
+				} else {
+					console.log("tas bitti - 1");
+				}
+				this.checkThrow(seat, selectedTile1);
+				this.arrange(seat);
+				this.markIt(1);
+				if (gameOver == 1 && tilesLeft.length > 0) {
+					if (settingsType == 1) {
+						this.gameOver(1);
+					}
+					if (settingsType == 2 || settingsType == 3) {}
+					return 0;
+				}
+			} else {
+				var _0x4b506d;
+				if (seat == 1) {
+					_0x4b506d = 4;
+				}
+				if (seat == 2) {
+					_0x4b506d = 1;
+				}
+				if (seat == 3) {
+					_0x4b506d = 2;
+				}
+				if (seat == 4) {
+					_0x4b506d = 3;
+				}
+				if (this.checkLeft(_0x4b506d) == 1) {
+					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
+					if (seat == 1) {
+						var _0x727da6 = area4items[area4items.length - 1].split('-');
+						_0x727da6 = data[_0x727da6[1] - 1] % 100;
+						_0x727da6 = _0x727da6 * 10;
+						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+							this.changePoint(_0x727da6, 4, 1);
+						}
+						this.place(area4items[area4items.length - 1], _0x54fe2a);
+						area4items = removeArrayItem(area4items, area4items[area4items.length - 1]);
+					}
+					if (seat == 2) {
+						var _0x727da6 = area1items[area1items.length - 1].split('-');
+						_0x727da6 = data[_0x727da6[1] - 1] % 100;
+						_0x727da6 = _0x727da6 * 10;
+						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+							this.changePoint(_0x727da6, 1, 1);
+						}
+						this.place(area1items[area1items.length - 1], _0x54fe2a);
+						area1items = removeArrayItem(area1items, area1items[area1items.length - 1]);
+					}
+					if (seat == 3) {
+						var _0x727da6 = area2items[area2items.length - 1].split('-');
+						_0x727da6 = data[_0x727da6[1] - 1] % 100;
+						_0x727da6 = _0x727da6 * 10;
+						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+							this.changePoint(_0x727da6, 2, 1);
+						}
+						this.place(area2items[area2items.length - 1], _0x54fe2a);
+						area2items = removeArrayItem(area2items, area2items[area2items.length - 1]);
+					}
+					if (seat == 4) {
+						var _0x727da6 = area3items[area3items.length - 1].split('-');
+						_0x727da6 = data[_0x727da6[1] - 1] % 100;
+						_0x727da6 = _0x727da6 * 10;
+						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+							this.changePoint(_0x727da6, 3, 1);
+						}
+						this.place(area3items[area3items.length - 1], _0x54fe2a);
+						area3items = removeArrayItem(area3items, area3items[area3items.length - 1]);
+					}
+				} else {
+					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
+					this.place('tile-' + tilesLast, _0x54fe2a);
+					this.removeStampfromCenter();
+				}
+				timmerAI = setTimeout(function () {
+					if (gameOver == 1) return 0;
+					this.arrange(seat);
+					this.AI(seat);
+				}, 1000);
+			}
 		},
 		autoPlay() {},
 		writePoint() {},
@@ -1563,7 +2692,7 @@ let Engine = (() => {
 		openPlace(_0x1ca1e8, _0x160545, _0x1ff05a) {},
 		movetoArea(tile, seat, _0x1c04c4) {
 		},
-		removeStempfromCenter() {},
+		removeStampfromCenter() {},
 		dropBack() {},
 		popMessage(msg, timer, type) {
 			console.log(msg, timer, type);
