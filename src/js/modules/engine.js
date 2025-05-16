@@ -100,6 +100,13 @@ let Engine = (() => {
 
 	let clickCont = 1,
 		dragCont = 0,
+		gameMoveCont = 1,
+		timePopMessage = 800,
+		timmerAI,
+		timmerNextPlayer,
+		timmerGameOver,
+		AIcont = 0,
+		AIStatus = 0,
 		selectedTile = 'tile-1',
 		selectedTile1 = '',
 		markCont = 0,
@@ -135,6 +142,9 @@ let Engine = (() => {
 	
 	let boardTilesVir;
 	let markOkey = 0;
+	let activePlayerCont = 1,
+		firstOpenCont = 0,
+		laps;
 	let okeyCont = 0;
 	let goDouble = 0;
 	let perFull = [];
@@ -2597,11 +2607,15 @@ let Engine = (() => {
 			if (activePlayer == 4) {
 				activePlayerCont = 1;
 			}
-			$("user-1").classList.remove("active");
-			$("user-2").classList.remove('active');
-			$("user-3").classList.remove("active");
-			$("user-4").classList.remove("active");
-			$("user-" + activePlayer).classList.add("active");
+			// $("user-1").classList.remove("active");
+			// $("user-2").classList.remove('active');
+			// $("user-3").classList.remove("active");
+			// $("user-4").classList.remove("active");
+			// $("user-" + activePlayer).classList.add("active");
+
+			APP.game.els.el.find(`.seat.highlight`).removeClass("highlight");
+			APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`).addClass("highlight");
+
 			collect = [];
 			collectPlaces = [];
 			collectTiles = [];
@@ -2752,7 +2766,7 @@ let Engine = (() => {
 					this.place('tile-' + tilesLast, _0x54fe2a);
 					this.removeStampfromCenter();
 				}
-				timmerAI = setTimeout(function () {
+				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
 					this.arrange(seat);
 					this.AI(seat);
@@ -3346,7 +3360,7 @@ let Engine = (() => {
 				// 								Indicator = 1;
 				// 								this.changePoint(1);
 				// 								this.playAudio(4);
-				// 								setTimeout(function () {
+				// 								setTimeout(() => {
 				// 									this.pointsTable();
 				// 								}, 1000);
 				// 							} else {
@@ -3427,19 +3441,19 @@ let Engine = (() => {
 						this.moveBack(selectedTile);
 					}
 				} else {
-					if (_0x13e5a0 > _0x382b44 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x510c78 - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
+					// if (_0x13e5a0 > _0x382b44 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x510c78 - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
 						this.checkThrow(1, selectedTile);
-					} else {
-						if (_0x13e5a0 > _0x3b7da6 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x4a828f - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
-							if ((leftHandCont > 0 || leftHandCont == '000') && leftHandTile == selectedTile) {
-								this.dropBack();
-							} else {
-								this.moveBack(selectedTile);
-							}
-						} else {
-							this.moveBack(selectedTile);
-						}
-					}
+					// } else {
+						// if (_0x13e5a0 > _0x3b7da6 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x4a828f - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
+							// if ((leftHandCont > 0 || leftHandCont == '000') && leftHandTile == selectedTile) {
+								// this.dropBack();
+							// } else {
+								// this.moveBack(selectedTile);
+							// }
+						// } else {
+							// this.moveBack(selectedTile);
+						// }
+					// }
 				}
 				this.checkWin();
 				activePlayer = _0x5e26b1;
@@ -3628,7 +3642,7 @@ let Engine = (() => {
 			}
 			if (_0x1c04c4 != 1 && gameOver == 0) {
 				gameMoveCont = 0;
-				timmerNextPlayer = setTimeout(function () {
+				timmerNextPlayer = setTimeout(() => {
 					if (gameOver == 1) {
 						return 0;
 					}
