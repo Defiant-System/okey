@@ -5,9 +5,16 @@ let Engine = (() => {
 	let Colors = ["green", "red",  "blue", "yellow", "black"];
 	let activePlayer = 1;
 	let settingsType = 2;
-	let settingsGameLevel = 2;
 
-	let winWithDouble;
+	let settingsCont = 0,
+		settingsGameLevel = 2,
+		settingsSound = 1,
+		settingsHelp = 1,
+		settingsIndicator = 1,
+		settingswithColors = 0,
+		settingsIncrease = 0,
+		settingsPunish = 0;
+
 	let pointLimit = 0,
 		points = [0, "10", "20", "30", "2", "5", "11", "21", "31", "41", "51"],
 		selectPoint = 2,
@@ -22,7 +29,79 @@ let Engine = (() => {
 		leftHandTileTemp = 0,
 		collect = [],
 		collectPlaces = [],
-		collectTiles = [];
+		collectTiles = [],
+		gosterge = 0,
+		UserTotal = 0,
+		User1Total = 0,
+		User2Total = 0,
+		User3Total = 0,
+		User4Total = 0,
+		UserTotalDouble = 0,
+		User1TotalDouble = 0,
+		User2TotalDouble = 0,
+		User3TotalDouble = 0,
+		User4TotalDouble = 0,
+		UserSeri = [],
+		UserDouble = [],
+		User1Seri = [],
+		User2Seri = [],
+		User3Seri = [],
+		User4Seri = [],
+		User1Double = [],
+		User2Double = [],
+		User3Double = [],
+		User4Double = [],
+		gameOver = 0;
+
+	let tilesLeft = [],
+		tilesLast = 0,
+		tileLimit = 0,
+		tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit],
+		tableH = [0, 0, 0, 0, 0],
+		tableHdouble = [0, 0, 0, 0, 0],
+		tableUser = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUser1 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUser2 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUser3 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUser4 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUserTiles1 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUserTiles2 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUserTiles3 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableUserTiles4 = new Array(7).fill(0).map(() => new Array(13).fill(0)),
+		tableDoubleUser1 = new Array(14).fill(0).map(() => new Array(2).fill(0)),
+		tableDoubleUser2 = new Array(14).fill(0).map(() => new Array(2).fill(0)),
+		tableDoubleUser3 = new Array(14).fill(0).map(() => new Array(2).fill(0)),
+		tableDoubleUser4 = new Array(14).fill(0).map(() => new Array(2).fill(0)),
+		tableDoubleUserTiles1 = new Array(14)
+			.fill(0)
+			.map(() => new Array(2).fill(0)),
+		tableDoubleUserTiles2 = new Array(14)
+			.fill(0)
+			.map(() => new Array(2).fill(0)),
+		tableDoubleUserTiles3 = new Array(14)
+			.fill(0)
+			.map(() => new Array(2).fill(0)),
+		tableDoubleUserTiles4 = new Array(14)
+			.fill(0)
+			.map(() => new Array(2).fill(0));
+
+	if (settingsType == 1) tileLimit = 14;
+	if (settingsType == 2) tileLimit = 21;
+	if (settingsType == 3) tileLimit = 14;
+
+	let clickCont = 1,
+		dragCont = 0,
+		selectedTile = 'tile-1',
+		selectedTile1 = '',
+		markCont = 0,
+		tileDefaultTop,
+		tileDefaultLeft,
+		gameRound = 1,
+		winWithOkey = 0,
+		winWithDouble = 0,
+		handleDouble = 0,
+		doubleHandleTo = 0,
+		handleItems = [];
 
 	let openLimitG = 101,
 		openLimitD = 5,
@@ -45,15 +124,6 @@ let Engine = (() => {
 		boardPlaces3 = Array(31).fill(0),
 		boardPlaces4 = Array(31).fill(0);
 	
-	let tileLimit = 0;
-	if (settingsType == 1) tileLimit = 14;
-	if (settingsType == 2) tileLimit = 21;
-	if (settingsType == 3) tileLimit = 14;
-
-	let tilesLeft = [],
-		tilesLast = 0,
-		tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit];
-
 	let boardTilesVir;
 	let markOkey = 0;
 	let okeyCont = 0;
@@ -146,9 +216,20 @@ let Engine = (() => {
 			});
 			tiles.removeClass("temp");
 
-			if (this.checkWin() || this.checkWinDouble()) {
-				return console.log("game over");
-			}
+			/* a tile has been "drag and dropped"
+			let tiles = Array(32).fill("");
+			APP.game.els.rack.find(".tile").map(t => {
+				let value = t.getAttribute("data-id"),
+					y = parseInt(t.offsetTop / 73),
+					x = parseInt(t.offsetLeft / 56),
+					index = (y * 16) + x;
+				tiles[index] = value;
+			});
+			*/
+
+			// if (this.checkWin() || this.checkWinDouble()) {
+			// 	return console.log("game over");
+			// }
 		},
 		drawTile() {
 			let id = tilesLeft[0].toString(),
@@ -171,12 +252,6 @@ let Engine = (() => {
 			});
 			return str.join("");
 		},
-		// play(num) {},
-		// setCookie(name, value, days) {},
-		// getCookie(name) {},
-		// boyutla() {},
-		// suffleArray(arr) {},
-		// suffle() {},
 		deliver() {
 			boardTiles1 = [];
 			boardTiles2 = [];
@@ -305,7 +380,6 @@ let Engine = (() => {
 				console.log(boardTiles);
 			}
 		},
-
 		getBoard(seat) {
 			if (seat == 1) {
 				activePlayer = 1;
@@ -328,7 +402,6 @@ let Engine = (() => {
 				boardPlaces = boardPlaces4.slice();
 			}
 		},
-
 		arrange(seat, type=1) {
 			// type 1: serial
 			// type 2: double
@@ -534,16 +607,16 @@ let Engine = (() => {
 			}
 		},
 		moveBack(el) {
-			console.log(el);
+			console.log("moveBack", el);
+			// clickCont = 0;
+			// $(el).style.transition = "all 0.5s";
+			// setTimeout(function () {
+			// 	$(el).style.zIndex = lastStamZindex;
+			// 	clickCont = 1;
+			// }, 500);
+			// $(el).style.left = lastTileLeft + 'px';
+			// $(el).style.top = lastTileTop + 'px';
 		},
-		moveTile(el, player, _top, _left, type, tableTilePos) {},
-		sem() {},
-		gameOver(_0x3a9872) {},
-		gameOverMessage() {},
-		pointsTable() {},
-		remainingMessage() {},
-		putOkeyToTable(_0x54d834) {},
-		getOkeyFromTable(_0x38a670, _0x3f3e09) {},
 		putToTable(_0x139c25, _0x4b4905) {
 			UserTotal = 0;
 			UserTotalDouble = 0;
@@ -671,8 +744,8 @@ let Engine = (() => {
 				openStatusSort[_0x139c25] = 1;
 				_0x91c7d2 = UserSeri.slice();
 				if (_0x139c25 == 1 && UserTotal >= openLimitLast) {
-					button_active_passive("handle-sort", 1);
-					button_active_passive("handle-double", 1);
+					this.buttonActivePassive("handle-sort", 1);
+					this.buttonActivePassive("handle-double", 1);
 					firstOpenCont = 1;
 				}
 			}
@@ -691,8 +764,8 @@ let Engine = (() => {
 				if (handleDouble == 0) {
 					openStatusDouble[_0x139c25] = 1;
 					if (_0x139c25 == 1 && UserTotalDouble >= openLimitDoubleLast) {
-						button_active_passive("handle-sort", 1);
-						button_active_passive("handle-double", 1);
+						this.buttonActivePassive("handle-sort", 1);
+						this.buttonActivePassive("handle-double", 1);
 						firstOpenCont = 1;
 					}
 				}
@@ -707,7 +780,7 @@ let Engine = (() => {
 			if (handleDouble == 1) {
 				_0x484f1e = doubleHandleTo;
 			}
-			for (i = 0; i < _0x91c7d2.length; i++) {
+			for (let i=0; i<_0x91c7d2.length; i++) {
 				if (_0x91c7d2[i] != '') {
 					var _0x897419 = boardTiles.indexOf(String(_0x91c7d2[i]));
 					if (_0x91c7d2[i] - _0x91c7d2[i] % 100 == 900) {
@@ -789,7 +862,7 @@ let Engine = (() => {
 				leftHandTile = 0;
 				if (activePlayer == 1) {
 					if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
-						changePoint(_0x57b199, 4, 1);
+						this.changePoint(_0x57b199, 4, 1);
 					}
 					$("area-4").innerHTML = '';
 					$("area-4").classList.remove("drop");
@@ -871,11 +944,11 @@ let Engine = (() => {
 				if (!_0x5486c5) {
 					collect.push(_0x336229 + ',' + "tile-mini2-" + sayTableTiles + ',' + _0x5a1841 + ',' + _0x51fce2 + ',' + _0x14df73);
 					if (activePlayer == 1) {
-						button_active_passive("collect", 1);
+						this.buttonActivePassive("collect", 1);
 					}
 				}
-				console.log(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
-				moveTile(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
+				// console.log(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
+				this.moveTile(_0x4295dd, _0x336229, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
 			}
 			var _0x4d23cf = null;
 			if (_0x315c85 - _0x315c85 % 100 == 800) {
@@ -920,7 +993,95 @@ let Engine = (() => {
 			console.log("buttonActivePassive");
 		},
 		collectItBack() {
-			console.log("collectItBack");
+			// return 0;
+			this.buttonActivePassive("collect", 0);
+			if (activePlayer == 1 && firstOpenCont == 1) {
+				openStatusDouble[1] = 0;
+				openStatusSort[1] = 0;
+				firstOpenCont = 0;
+				this.buttonActivePassive("handle-sort", 0);
+				this.buttonActivePassive("handle-double", 0);
+			}
+			openPunish[1] = 0;
+			if (leftHandContTemp) {
+				leftHandCont = leftHandContTemp;
+				leftHandTile = leftHandTileTemp;
+				leftHandContTemp = 0;
+				leftHandTileTemp = 0;
+				if (activePlayer == 1) {
+					$("area-4").innerHTML = "TASI GERI BIRAK";
+					$("area-4").classList.add("drop");
+				}
+			}
+			for (let i=0; i<collectTiles.length; i++) {
+				boardPlaces[i * 1 + 1] = 0;
+				boardTiles[i] = '';
+				if (collectTiles[i]) {
+					$(collectPlaces[i * 1 + 1]).style.display = "block";
+					boardPlaces[i * 1 + 1] = collectPlaces[i * 1 + 1];
+					boardTiles[i] = collectTiles[i];
+					this.place(collectPlaces[i * 1 + 1], i * 1 + 1);
+					$(collectPlaces[i * 1 + 1]).style.visibility = "visible";
+					$(collectPlaces[i * 1 + 1]).style.transform = "scale(1)";
+				}
+			}
+			for (let i=0; i<collect.length; i++) {
+				tileLimits[activePlayer]++;
+				var _0x47c5d3 = collect[i].split(',');
+				$(_0x47c5d3[1]).style.display = "none";
+				if (_0x47c5d3[4] == 1) {
+					console.log("EVAL tableUser" + _0x47c5d3[0] + '[' + _0x47c5d3[2] + '][' + _0x47c5d3[3] + ']=' + 0);
+				}
+				if (_0x47c5d3[4] == 2) {
+					console.log("EVAL tableDoubleUser" + _0x47c5d3[0] + '[' + _0x47c5d3[2] + '][' + _0x47c5d3[3] + ']=' + 0);
+				}
+			}
+			for (let i=1; i<=4; i++) {
+				var _0x4fc67e = console.log("EVAL tableUser" + i + ".slice()");
+				for (let j=6; j>=0; j--) {
+					hh = 0;
+					for (let k=0; k<13; k++) {
+						if (_0x4fc67e[j][k] != 0) {
+							hh = 1;
+							break;
+						}
+					}
+					if (hh) {
+						break;
+					}
+				}
+				tableH[i] = j;
+				tableH[i]++;
+			}
+			for (let i=1; i<=4; i++) {
+				var _0x4fc67e = console.log("EVAL tableDoubleUser" + i + ".slice()");
+				for (let j=12; j>=0; j--) {
+					hh = 0;
+					for (let k=0; k<2; k++) {
+						if (_0x4fc67e[j][k] != 0) {
+							hh = 1;
+							break;
+						}
+					}
+					if (hh) {
+						break;
+					}
+				}
+				tableHdouble[i] = j;
+				tableHdouble[i]++;
+			}
+			if (tableHdouble[1] == 0 && tableH[1] == 0) {
+				openStatusSort[1] = 0;
+				openStatusDouble[1] = 0;
+				openLimit = openLimitLast;
+				openLimitDouble = openLimitDoubleLast;
+				$("table-sort-score").innerHTML = openLimit;
+				$("table-double-score").innerHTML = openLimitDouble;
+			}
+			collect = [];
+			collectPlaces = [];
+			collectTiles = [];
+			this.markIt(1);
 		},
 		priority() {
 			boardTiles.sort();
@@ -1772,8 +1933,8 @@ let Engine = (() => {
 		},
 		markIt(seat) {
 			markCont = 1;
-			this.checkHandle(_0x4ff0b3, 2);
-			this.getOkeyFromTable(_0x4ff0b3);
+			this.checkHandle(seat, 2);
+			this.getOkeyFromTable(seat);
 			markCont = 0;
 		},
 		checkHandleDouble(_0x560968) {
@@ -1868,7 +2029,7 @@ let Engine = (() => {
 			}
 			var _0x364dc5 = [0, 0, 0, 0, 0];
 			var _0x2bbb42 = 0;
-			for (i = 0; i < boardTiles.length; i++) {
+			for (let i=0; i<boardTiles.length; i++) {
 				var _0x5e0d4d = boardTiles.filter(e => e != '').slice();
 				if (_0x5e0d4d.length == 1 && _0x1c59dd == 0) {
 					this.markIt(_0x2019da);
@@ -1878,16 +2039,16 @@ let Engine = (() => {
 					return 0;
 				}
 				if (boardTiles[i]) {
-					$(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
-					$(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
+					// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
+					// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
 					var _0x1fc99b;
 					if (boardTiles[i] == "000") {
 						_0x1fc99b = okey;
 					} else {
 						_0x1fc99b = boardTiles[i];
 					}
-					for (j = 0; j < 7; j++) {
-						for (k = 0; k <= 13; k++) {
+					for (let j=0; j<7; j++) {
+						for (let k=0; k<=13; k++) {
 							if (boardTiles[i] && boardTiles[i] != okey) {
 								var _0x49f720 = 0;
 								var _0x2fc30f = 0;
@@ -2266,8 +2427,8 @@ let Engine = (() => {
 										_0x2bbb42 = 1;
 									} else {
 										handleItems.push(boardTiles[i]);
-										$(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
-										$(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
 									}
 								}
 							}
@@ -2587,59 +2748,718 @@ let Engine = (() => {
 				}, 1000);
 			}
 		},
-		autoPlay() {},
-		writePoint() {},
 		changePoint(_0x2b8526, _0x1cee51, _0x3637f4) {
-			console.log(_0x2b8526, _0x1cee51, _0x3637f4);
-		},
-		checkOkeyHandle(num) {},
-		setPoint(num) {},
-		AI_ON() {},
-		gameType() {},
-		gameMode() {},
-		pointSelect() {},
-		pointSelectClose() {},
-		message(_0x38e4e2, _0x38f6ec) {},
-		messageOk(_0x52a48e) {},
-		messageNo() {},
-		settings(name, value) {},
-		dragStop(seat, tile) {
-			// a tile has been "drag and dropped"
-			let tiles = Array(32).fill("");
-			APP.game.els.rack.find(".tile").map(t => {
-				let value = t.getAttribute("data-id"),
-					y = parseInt(t.offsetTop / 73),
-					x = parseInt(t.offsetLeft / 56),
-					index = (y * 16) + x;
-				tiles[index] = value;
-			});
-			// update
-			boardTiles = tiles;
-			boardTiles1 = tiles;
-
-			if (this.checkWin() || this.checkWinDouble()) {
-				return console.log("game over");
+			var _0x4a9d88 = [0, 0, 0, 0, 0];
+			if (settingsType == 1) {
+				var _0x3af9e7 = ['', "<span class=\"sign\">", "<span class=\"sign\">", "<span class=\"sign\">", "<span class=\"sign\">"];
+				if (!_0x2b8526) {
+					_0x2b8526 = 2;
+				}
+				if (winWithOkey == 1) {
+					_0x2b8526 = _0x2b8526 * 2;
+				}
+				if (winWithDouble == 1) {
+					_0x2b8526 = _0x2b8526 * 2;
+				}
+				if (Math.floor(okey / 100) == 4 || Math.floor(okey / 100) == 1) {
+					_0x2b8526 = _0x2b8526 * pointMultiplier;
+				}
+				if (winnerPlayer != 1) {
+					user1Point = user1Point - _0x2b8526;
+					_0x3af9e7[1] = '<span>';
+				}
+				if (winnerPlayer != 2) {
+					user2Point = user2Point - _0x2b8526;
+					_0x3af9e7[2] = '<span>';
+				}
+				if (winnerPlayer != 3) {
+					user3Point = user3Point - _0x2b8526;
+					_0x3af9e7[3] = '<span>';
+				}
+				if (winnerPlayer != 4) {
+					user4Point = user4Point - _0x2b8526;
+					_0x3af9e7[4] = '<span>';
+				}
+				if (user1Point <= 0 || user2Point <= 0 || user3Point <= 0 || user4Point <= 0) {
+					var _0x161ed2 = 0;
+					if (user1Point > _0x161ed2) {
+						_0x161ed2 = user1Point;
+						winnerPlayer1 = 1;
+					}
+					if (user2Point > _0x161ed2) {
+						_0x161ed2 = user2Point;
+						winnerPlayer1 = 2;
+					}
+					if (user3Point > _0x161ed2) {
+						_0x161ed2 = user3Point;
+						winnerPlayer1 = 3;
+					}
+					if (user4Point > _0x161ed2) {
+						_0x161ed2 = user4Point;
+						winnerPlayer1 = 4;
+					}
+				}
+				_0x4a9d88 = [0, user1Point, user2Point, user3Point, user4Point];
+				if (winnerPlayer1 > 0) {
+					$("points-title").innerHTML = '&nbsp';
+					$("points-button-ok").innerHTML = "YENI OYUN";
+					var _0x8471d4 = [Math.abs(user1Point) * 1 + 0.1, Math.abs(user2Point) * 1 + 0.2, Math.abs(user3Point) * 1 + 0.3, Math.abs(user4Point) * 1 + 0.4];
+					if (user1Point < 0) {
+						_0x8471d4[0] *= -1;
+					}
+					if (user2Point < 0) {
+						_0x8471d4[1] *= -1;
+					}
+					if (user3Point < 0) {
+						_0x8471d4[2] *= -1;
+					}
+					if (user4Point < 0) {
+						_0x8471d4[3] *= -1;
+					}
+					_0x8471d4.sort((_0x198e6f, _0x2129fc) => _0x198e6f - _0x2129fc);
+					_0x8471d4.reverse();
+					var _0xffbe75 = [];
+					_0xffbe75.push(Math.abs((_0x8471d4[0] % 1 * 10).toFixed(0)));
+					_0xffbe75.push(Math.abs((_0x8471d4[1] % 1 * 10).toFixed(0)));
+					_0xffbe75.push(Math.abs((_0x8471d4[2] % 1 * 10).toFixed(0)));
+					_0xffbe75.push(Math.abs((_0x8471d4[3] % 1 * 10).toFixed(0)));
+					winnerPlayer1 = _0xffbe75[0];
+					if (winnerPlayer1 == 1) {
+						this.playAudio(6);
+					} else {
+						this.playAudio(7);
+					}
+					$("points-line-" + _0xffbe75[0]).children[0].setAttribute("class", '');
+					$("points-line-" + _0xffbe75[0]).children[0].classList.add("rank-1");
+					$("points-line-" + _0xffbe75[1]).children[0].setAttribute('class', '');
+					$("points-line-" + _0xffbe75[1]).children[0].classList.add("rank-2");
+					$("points-line-" + _0xffbe75[2]).children[0].setAttribute("class", '');
+					$("points-line-" + _0xffbe75[2]).children[0].classList.add("rank-3");
+					$("points-line-" + _0xffbe75[3]).children[0].setAttribute("class", '');
+					$("points-line-" + _0xffbe75[3]).children[0].classList.add('rank-4');
+				}
 			}
-
-			this.checkThrow(seat, tile);
+			if (settingsType == 2 || settingsType == 3) {
+				var _0x3af9e7 = ['', '<span>', '<span>', '<span>', '<span>'];
+				var _0x421496 = 'sign';
+				if (_0x3637f4 == 1) {
+					_0x421496 = "sign-red";
+				}
+				if (_0x1cee51 == 1) {
+					_0x4a9d88[1] = _0x2b8526;
+					user1Point += _0x4a9d88[1];
+					_0x3af9e7[1] = "<span class=\"" + _0x421496 + "\">";
+				}
+				if (_0x1cee51 == 2) {
+					_0x4a9d88[2] = _0x2b8526;
+					user2Point += _0x4a9d88[2];
+					_0x3af9e7[2] = "<span class=\"" + _0x421496 + "\">";
+				}
+				if (_0x1cee51 == 3) {
+					_0x4a9d88[3] = _0x2b8526;
+					user3Point += _0x4a9d88[3];
+					_0x3af9e7[3] = "<span class=\"" + _0x421496 + "\">";
+				}
+				if (_0x1cee51 == 4) {
+					_0x4a9d88[4] = _0x2b8526;
+					user4Point += _0x4a9d88[4];
+					_0x3af9e7[4] = "<span class=\"" + _0x421496 + "\">";
+				}
+				if (!_0x1cee51) {
+					var _0x8b561a = 1;
+					if (gameOver == 1) {
+						var _0x4dd40d = 0;
+						if (openStatusDouble[1] == 1 || openStatusSort[1] == 1) {
+							_0x4dd40d++;
+						}
+						if (openStatusDouble[2] == 1 || openStatusSort[2] == 1) {
+							_0x4dd40d++;
+						}
+						if (openStatusDouble[3] == 1 || openStatusSort[3] == 1) {
+							_0x4dd40d++;
+						}
+						if (openStatusDouble[4] == 1 || openStatusSort[4] == 1) {
+							_0x4dd40d++;
+						}
+						if (_0x4dd40d == 1) {
+							_0x8b561a = _0x8b561a * 2;
+						}
+						if (openAllHand == 1) {
+							_0x8b561a = 4;
+						}
+					}
+					if (PointOkeyCont == 1) {
+						_0x8b561a = _0x8b561a * 2;
+					}
+					if (openStatusDouble[1] == 0 && openStatusSort[1] == 0) {
+						_0x4a9d88[1] = punishOffset * _0x8b561a * 2;
+						user1Point += _0x4a9d88[1];
+					} else {
+						_0x4a9d88[1] = this.countBoard(1) * _0x8b561a;
+						if (this.countBoard(1) == 0) {
+							_0x4a9d88[1] = punishOffset * _0x8b561a * -2;
+						} else {
+							if (openStatusDouble[1] == 1) {
+								_0x4a9d88[1] = _0x4a9d88[1] * 2;
+							}
+							if (this.checkOkeyHandle(1) > 0) {
+								_0x4a9d88[1] = (_0x4a9d88[1] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(1);
+							}
+						}
+						user1Point += _0x4a9d88[1];
+					}
+					if (openStatusDouble[2] == 0 && openStatusSort[2] == 0) {
+						_0x4a9d88[2] = punishOffset * _0x8b561a * 2;
+						user2Point += _0x4a9d88[2];
+					} else {
+						_0x4a9d88[2] = this.countBoard(2) * _0x8b561a;
+						if (this.countBoard(2) == 0) {
+							_0x4a9d88[2] = punishOffset * _0x8b561a * -2;
+						} else {
+							if (openStatusDouble[2] == 1) {
+								_0x4a9d88[2] = _0x4a9d88[2] * 2;
+							}
+							if (this.checkOkeyHandle(2) > 0) {
+								_0x4a9d88[2] = (_0x4a9d88[2] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(2);
+							}
+						}
+						user2Point += _0x4a9d88[2];
+					}
+					if (openStatusDouble[3] == 0 && openStatusSort[3] == 0) {
+						_0x4a9d88[3] = punishOffset * _0x8b561a * 2;
+						user3Point += _0x4a9d88[3];
+					} else {
+						_0x4a9d88[3] = this.countBoard(3) * _0x8b561a;
+						if (this.countBoard(3) == 0) {
+							_0x4a9d88[3] = punishOffset * _0x8b561a * -2;
+						} else {
+							if (openStatusDouble[3] == 1) {
+								_0x4a9d88[3] = _0x4a9d88[3] * 2;
+							}
+							if (this.checkOkeyHandle(3) > 0) {
+								_0x4a9d88[3] = (_0x4a9d88[3] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(3);
+							}
+						}
+						user3Point += _0x4a9d88[3];
+					}
+					if (openStatusDouble[4] == 0 && openStatusSort[4] == 0) {
+						_0x4a9d88[4] = punishOffset * _0x8b561a * 2;
+						user4Point += _0x4a9d88[4];
+					} else {
+						_0x4a9d88[4] = this.countBoard(4) * _0x8b561a;
+						if (this.countBoard(4) == 0) {
+							_0x4a9d88[4] = punishOffset * _0x8b561a * -2;
+						} else {
+							if (openStatusDouble[4] == 1) {
+								_0x4a9d88[4] = _0x4a9d88[4] * 2;
+							}
+							if (this.checkOkeyHandle(4) > 0) {
+								_0x4a9d88[4] = (_0x4a9d88[4] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(4);
+							}
+						}
+						user4Point += _0x4a9d88[4];
+					}
+					if (gameOver == 1) {
+						var _0x161ed2 = 0;
+						var _0x8471d4 = [Math.abs(user1Point) * 1 + 0.1, Math.abs(user2Point) * 1 + 0.2, Math.abs(user3Point) * 1 + 0.3, Math.abs(user4Point) * 1 + 0.4];
+						if (user1Point < 0) {
+							_0x8471d4[0] *= -1;
+						}
+						if (user2Point < 0) {
+							_0x8471d4[1] *= -1;
+						}
+						if (user3Point < 0) {
+							_0x8471d4[2] *= -1;
+						}
+						if (user4Point < 0) {
+							_0x8471d4[3] *= -1;
+						}
+						_0x8471d4.sort((_0xa2c5f9, _0x3173d2) => _0xa2c5f9 - _0x3173d2);
+						var _0xffbe75 = [];
+						_0xffbe75.push(Math.abs((_0x8471d4[0] % 1 * 10).toFixed(0)));
+						_0xffbe75.push(Math.abs((_0x8471d4[1] % 1 * 10).toFixed(0)));
+						_0xffbe75.push(Math.abs((_0x8471d4[2] % 1 * 10).toFixed(0)));
+						_0xffbe75.push(Math.abs((_0x8471d4[3] % 1 * 10).toFixed(0)));
+						winnerPlayer1 = _0xffbe75[0];
+						if (winnerPlayer1 == 1) {
+							this.playAudio(6);
+						} else {
+							this.playAudio(7);
+						}
+						$("points-line-" + _0xffbe75[0]).children[0].setAttribute("class", '');
+						$("points-line-" + _0xffbe75[0]).children[0].classList.add("rank-1");
+						$("points-line-" + _0xffbe75[1]).children[0].setAttribute("class", '');
+						$("points-line-" + _0xffbe75[1]).children[0].classList.add("rank-2");
+						$("points-line-" + _0xffbe75[2]).children[0].setAttribute("class", '');
+						$("points-line-" + _0xffbe75[2]).children[0].classList.add("rank-3");
+						$("points-line-" + _0xffbe75[3]).children[0].setAttribute("class", '');
+						$("points-line-" + _0xffbe75[3]).children[0].classList.add("rank-4");
+					}
+					var _0x47d568;
+					_0x47d568 = _0x421496;
+					if (_0x4a9d88[1] < 0) {
+						_0x421496 = "sign-green";
+					}
+					_0x3af9e7[1] = "<span class=\"" + _0x421496 + "\">";
+					_0x421496 = _0x47d568;
+					if (_0x4a9d88[2] < 0) {
+						_0x421496 = "sign-green";
+					}
+					_0x3af9e7[2] = "<span class=\"" + _0x421496 + "\">";
+					_0x421496 = _0x47d568;
+					if (_0x4a9d88[3] < 0) {
+						_0x421496 = "sign-green";
+					}
+					_0x3af9e7[3] = "<span class=\"" + _0x421496 + "\">";
+					_0x421496 = _0x47d568;
+					if (_0x4a9d88[4] < 0) {
+						_0x421496 = "sign-green";
+					}
+					_0x3af9e7[4] = "<span class=\"" + _0x421496 + "\">";
+				}
+			}
+			this.writePoint();
+			$("points-detail").innerHTML = $("points-detail").innerHTML + _0x3af9e7[1] + _0x4a9d88[1] + "</span>" + _0x3af9e7[2] + _0x4a9d88[2] + "</span>" + _0x3af9e7[3] + _0x4a9d88[3] + '</span>' + _0x3af9e7[4] + _0x4a9d88[4] + "</span>";
+			$("points-last").innerHTML = '<span>' + user1Point + "</span>" + "<span>" + user2Point + "</span>" + '<span>' + user3Point + "</span>" + '<span>' + user4Point + '</span>';
+		},
+		checkOkeyHandle(seat) {
+			var val = 0;
+			if (seat == 1) {
+				boardTiles = boardTiles1.slice();
+			}
+			if (seat == 2) {
+				boardTiles = boardTiles2.slice();
+			}
+			if (seat == 3) {
+				boardTiles = boardTiles3.slice();
+			}
+			if (seat == 4) {
+				boardTiles = boardTiles4.slice();
+			}
+			for (let i=0; i<boardTiles.length; i++) {
+				if (boardTiles[i]) {
+					if (boardTiles[i] == okey) {
+						val++;
+					}
+				}
+			}
+			return val;
+		},
+		setPoint(num) {
+			selectPoint = num;
+			if (settingsType == 1) {
+				pointLimit = points[selectPoint];
+				user1Point = pointLimit;
+				user2Point = pointLimit;
+				user3Point = pointLimit;
+				user4Point = pointLimit;
+			}
+			if (settingsType == 2 || settingsType == 3) {
+				pointLimit = 0;
+				user1Point = pointLimit;
+				user2Point = pointLimit;
+				user3Point = pointLimit;
+				user4Point = pointLimit;
+			}
+			write_point();
+			for (let i=1; i<points.length; i++) {
+				$('point-' + i).innerHTML = points[i];
+				$("point-" + i).classList.remove("point-active");
+				$('point-' + i).classList.add("point-passive");
+			}
+			$('point-' + num).classList.remove("point-passive");
+			$('point-' + num).classList.add("point-active");
+			if (settingsType == 1) {
+				$("points-first").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + '</span>';
+			}
+			$("points-detail").innerHTML = '';
+			$("points-last").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>';
+			if (settingsType != 1) {
+				$("points-first").innerHTML = '';
+			}
+		},
+		message(num, _0x38f6ec) {
+			if (!_0x38f6ec) {
+				_0x38f6ec = 0;
+			}
+			msgCont = 1;
+			msgValue = num;
+			$("messageBack").style.display = 'block';
+			$("close").style.display = "none";
+			$("button-no").style.display = "inline-block";
+			$("button-ok").style.display = "inline-block";
+			$("button-ok").innerHTML = 'TAMAM';
+			$("button-no").innerHTML = "IPTAL";
+			if (num == 1) {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "OYUN BITTI";
+				$("body").innerHTML = activePlayer + ". Oyuncu Kazandi!";
+				$("button-ok").style.display = "inline-block";
+				if (settingsGameMode == 1) {
+					$("button-ok").innerHTML = "YENI OYUN";
+				}
+				if (settingsGameMode == 2) {
+					$("button-ok").innerHTML = "DEVAM";
+				}
+			}
+			if (num == 2) {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "OYUN BITTI";
+				$("body").innerHTML = "Yerde tas kalmadi!";
+				$("button-ok").style.display = "inline-block";
+				$("button-no").style.display = 'none';
+				$("button-ok").innerHTML = "YENI OYUN";
+				$("button-no").innerHTML = "IPTAL";
+			}
+			if (num == '10' || num == '11' || num == '12' || num == '13' || num == '14') {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "YENI OYUN";
+				$("body").innerHTML = "Bu ayar deqisirse oyun yeniden baslayaca emin misiniz?";
+			}
+			if (num == "new") {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "YENI OYUN";
+				$("body").innerHTML = "Oyun yeniden baslayacak!<br /> Emin misiniz?";
+			}
+			if (num == "end") {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "TEBRIKLER";
+				$("body").innerHTML = "Tebrikler!<br />Bulmacayi basariyla tamamladiniz.";
+			}
+			if (num == "goDouble") {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$("title").innerHTML = "CIFT GIT";
+				$("body").innerHTML = "Cift gitmek istediqinize emin misiniz?";
+				;
+				$("button-ok").innerHTML = "CIFT GIT";
+				$("button-no").innerHTML = "IPTAL";
+			}
+			if (num == "solve") {
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$("title").innerHTML = 'CÖZÃœM';
+				$("body").innerHTML = "Bulmaca cözumunu görmek istediqinize emin misiniz?";
+			}
+			if (num == 'mode') {
+				var _0x5054f7 = '';
+				$("message-box").style.opacity = '0';
+				$("message-box").style.visibility = "visible";
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '1';
+				$('title').innerHTML = "UYARI!";
+				if (settingsGameMode == 1) {
+					_0x5054f7 = "Puan dusmeli oyun moduna geciliyor.";
+				}
+				if (settingsGameMode == 2) {
+					_0x5054f7 = "Tek oyun moduna geciliyor.";
+					$("point-select").style.transition = "all 0s";
+					$("point-select").style.visibility = "hidden";
+				}
+				$("body").innerHTML = _0x5054f7;
+			}
+			if (num == 0) {
+				if (settingsCont == 1) {
+					return 0;
+				}
+				if (settingsGameMode == 2 && contOpen == 1 && _0x38f6ec == 1) {
+					return 0;
+				}
+				if (settingsGameMode == 2 && _0x38f6ec == 1) {
+					return 0;
+				}
+				if (_0x38f6ec == 1 && gameOver == 0 || _0x38f6ec != 1) {
+					$("points-table").style.transition = "all 0s";
+					$("points-table").style.visibility = "hidden";
+				}
+				if (gameOver == 0) {
+					$("complete").style.transition = "all 0s";
+					$("complete").style.visibility = "hidden";
+					$("messageBack").style.display = 'none';
+					$("message-box").style.visibility = "hidden";
+					$("message-box").style.transition = "all 0.5s";
+					$("message-box").style.opacity = '0';
+				} else {
+					$("button-no").style.display = "none";
+					$("button-ok").innerHTML = "YENI OYUN";
+				}
+				if ((settingsType == 2 || settingsType == 3) && gameOver == 1 && _0x38f6ec != 1) {
+					start();
+				}
+				msgCont = 0;
+				if (contOpen == 1 && !winnerPlayer1) {
+					message_ok('complete');
+					contOpen = 0;
+				}
+				if (winnerPlayer1 && settingsType == 1) {
+					game_over_message();
+				}
+			}
+		},
+		messageOk(_0x52a48e) {
+			var _0x28a1a3 = msgValue;
+			settingsCont = 0;
+			$("settings-close").style.display = "block";
+			if (msgValue == "mode") {
+				settings("gameMode", 2);
+			}
+			if (msgValue == 10) {
+				lastLevel = lastLevelTemp;
+			}
+			if (msgValue == 'new' || msgValue == 10) {
+				gameRound = 1;
+			}
+			if (settingsGameMode == 2 && _0x52a48e == "complete") {
+				gameRound++;
+				changePoint();
+			}
+			if (msgValue == "goDouble") {
+				goDouble = 1;
+				$("go-double").style.display = "none";
+				$("sort-order").style.display = "none";
+				$("show-tiles").style.display = 'block';
+				$("message-box").style.visibility = 'hidden';
+				$("message-box").style.transition = "all 0.5s";
+				$("message-box").style.opacity = '0';
+				$("messageBack").style.display = "none";
+			} else {
+				if (!winnerPlayer1) {
+					start();
+				}
+			}
+			if (settingsGameMode == 2 && _0x52a48e == "complete") {
+				if (pointsGameOver == 0) {
+					if (settingsType == 1) {
+						points_table();
+					}
+				}
+				if (pointsGameOver == 1) {
+					gameRound = 1;
+					start();
+				}
+			}
+			if (settingsType != 1) {
+				message(0);
+			}
+			msgValue = 0;
+			if (_0x28a1a3 > 9 && _0x28a1a3 < 15) {
+				$("messageBack").style.display = 'block';
+			}
+		},
+		dragStop(seat, tile) {
+			// if (dragCont == 1) {
+			// 	dragCont = 0;
+				boardTiles = boardTiles1.slice();
+				boardPlaces = boardPlaces1.slice();
+				var _0x5e26b1 = activePlayer;
+				activePlayer = 1;
+				var _0x13e5a0 = $(selectedTile).offsetLeft * 1 + $(selectedTile).offsetWidth / 2;
+				var _0x4a8d3c = $(selectedTile).offsetTop * 1;
+				var _0x542afe = $(selectedTile).offsetHeight;
+				var _0x382b44 = $("area-1").offsetLeft;
+				var _0x510c78 = $("area-1").offsetTop;
+				var _0x3b7da6 = $("area-4").offsetLeft;
+				var _0x4a828f = $('area-4').offsetTop;
+				// if (_0x13e5a0 > tileDefaultLeft - tileW * 2 && _0x13e5a0 < tileDefaultLeft * 1 + tileW * 2 && _0x4a8d3c > tileDefaultTop - _0x542afe && _0x4a8d3c < tileDefaultTop * 1 + _0x542afe * 2) {
+				// 	if (settingsType != 1) {
+				// 		this.popMessage("Bitmek icin istakada kalan son tasinizi saq tarafa atmalisiniz!");
+				// 	} else {
+				// 		var _0x158c19 = boardPlaces.indexOf(selectedTile);
+				// 		if (gameOver == 0) {
+				// 			var _0x158c19 = boardPlaces.indexOf(selectedTile);
+				// 			if (_0x158c19 !== -1) {
+				// 				var _0x511d04 = boardPlaces[_0x158c19];
+				// 				var _0x4871b4 = boardTiles[_0x158c19 - 1];
+				// 				boardPlaces[_0x158c19] = 0;
+				// 				boardTiles[_0x158c19 - 1] = '';
+				// 			}
+				// 			var _0x2c402d = selectedTile.split('-');
+				// 			_0x2c402d = _0x2c402d[1];
+				// 			if ((this.checkWin() || this.checkWinDouble()) && _0x158c19 > -1) {
+				// 				if (data[_0x2c402d - 1] == okey && winWithDouble == 1) {
+				// 					this.playAudio(4);
+				// 					winWithOkey = 1;
+				// 					this.popMessage(users[activePlayer] + " Cifte Giderken Okey Atarak Bitti!", 0, 2);
+				// 				} else {
+				// 					if (data[_0x2c402d - 1] == okey) {
+				// 						this.playAudio(4);
+				// 						this.popMessage(users[activePlayer] + " Okey Atarak Bitti!", 0, 2);
+				// 						winWithOkey = 1;
+				// 					} else {
+				// 						if (winWithDouble == 1) {
+				// 							this.playAudio(4);
+				// 							this.popMessage(users[activePlayer] + " Cifte Giderek Bitti!", 0, 2);
+				// 						}
+				// 					}
+				// 				}
+				// 				boardPlaces[_0x158c19] = 0;
+				// 				boardTiles[_0x158c19 - 1] = '';
+				// 				this.updateBoards();
+				// 				winnerPlayer = activePlayer;
+				// 				this.gameOver(1);
+				// 				return 0;
+				// 			} else {
+				// 				if (data[_0x2c402d - 1] == gosterge) {
+				// 					var _0x18ae24 = 0;
+				// 					if (Indicator != 0) {
+				// 						this.popMessage("Gösterge Zaten Yapildi!");
+				// 						_0x18ae24 = 1;
+				// 					}
+				// 					if (laps != 0 && _0x18ae24 == 0) {
+				// 						this.popMessage("Gösterge Sadece Oyunun Basinda Yapilabilir!");
+				// 						_0x18ae24 = 1;
+				// 					}
+				// 					if (settingsGameMode == 2) {
+				// 						if (_0x18ae24 == 0) {
+				// 							if (settingsIndicator == 1) {
+				// 								this.popMessage(users[activePlayer] + " Gösterge Yapti!", 0, 2);
+				// 								Indicator = 1;
+				// 								this.changePoint(1);
+				// 								this.playAudio(4);
+				// 								setTimeout(function () {
+				// 									this.pointsTable();
+				// 								}, 1000);
+				// 							} else {
+				// 								this.popMessage("Gösterge Kapali! Ayarlardan acabilirsiniz.");
+				// 							}
+				// 						}
+				// 					} else {
+				// 						this.popMessage("Sadece Puanli Oyunda Gösterge Yapabilirsiniz!");
+				// 					}
+				// 				} else {
+				// 					if (_0x158c19 > -1) {
+				// 						this.popMessage("Henuz bitemediniz!");
+				// 					}
+				// 				}
+				// 			}
+				// 			if (_0x511d04) {
+				// 				boardPlaces[_0x158c19] = _0x511d04;
+				// 				boardTiles[_0x158c19 - 1] = _0x4871b4;
+				// 			}
+				// 		}
+				// 	}
+				// }
+				if (_0x13e5a0 > boardLeft && _0x4a8d3c + _0x542afe > boardTop) {
+					var _0x5534d2 = Math.ceil((_0x13e5a0 - boardLeft) / tileW);
+					if (_0x5534d2 < 1) {
+						_0x5534d2 = 1;
+					}
+					if (_0x5534d2 > 15) {
+						_0x5534d2 = 15;
+					}
+					if (_0x4a8d3c * 1 + _0x542afe / 1.5 > boardTop * 1 + boardDiff * 1) {
+						_0x5534d2 = 15 + _0x5534d2 * 1;
+					}
+					var _0xd7d3e9 = boardTiles.filter(e => e != '').slice();
+					if (_0xd7d3e9.length > tileLimits[1] && boardPlaces.indexOf(selectedTile) < 0) {
+						this.popMessage("Istakanizda " + (tileLimits[1] * 1 + 1) + " tas var. Önce tas atmaniz gerekiyor.");
+						this.moveBack(selectedTile);
+						activePlayer = _0x5e26b1;
+						this.getBoard(activePlayer);
+						return 0;
+					}
+					var _0x2c402d = selectedTile.split('-');
+					_0x2c402d = _0x2c402d[1];
+					if (_0x2c402d == tilesLast) {
+						this.removeStampfromCenter();
+					}
+					if (area4items.indexOf(selectedTile) != -1) {
+						area4items = this.removeArrayItem(area4items, selectedTile);
+						if (settingsType == 2 || settingsType == 3) {
+							var _0x2c402d = selectedTile.split('-');
+							_0x2c402d = _0x2c402d[1];
+							_0x2c402d = data[_0x2c402d - 1];
+							if (_0x2c402d > 0 || _0x2c402d == "000") {
+								leftHandCont = _0x2c402d;
+								leftHandTile = selectedTile;
+								leftHandContTemp = 0;
+								leftHandTileTemp = 0;
+								$('area-4').innerHTML = "TASI GERI BIRAK";
+								$('area-4').classList.add("drop");
+							}
+						}
+					}
+					var _0x158c19 = boardPlaces.indexOf(selectedTile);
+					if (_0x158c19 !== -1) {
+						var _0x47abc7 = boardPlaces[_0x158c19];
+						var _0x5d197b = boardTiles[_0x158c19 - 1];
+						boardPlaces[_0x158c19] = 0;
+						boardTiles[_0x158c19 - 1] = '';
+						this.updateBoards();
+					}
+					if (this.checkPosition(_0x5534d2)) {
+						this.place(selectedTile, _0x5534d2, 1);
+						this.playAudio(3);
+					} else {
+						boardPlaces[_0x158c19] = _0x47abc7;
+						boardTiles[_0x158c19 - 1] = _0x5d197b;
+						this.updateBoards();
+						console.log(1, selectedTile);
+						this.moveBack(selectedTile);
+					}
+				} else {
+					if (_0x13e5a0 > _0x382b44 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x510c78 - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
+						this.checkThrow(1, selectedTile);
+					} else {
+						if (_0x13e5a0 > _0x3b7da6 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x4a828f - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
+							if ((leftHandCont > 0 || leftHandCont == '000') && leftHandTile == selectedTile) {
+								this.dropBack();
+							} else {
+								console.log(2, selectedTile);
+								this.moveBack(selectedTile);
+							}
+						} else {
+							console.log(3, selectedTile);
+							this.moveBack(selectedTile);
+						}
+					}
+				}
+				this.checkWin();
+				activePlayer = _0x5e26b1;
+				this.getBoard(activePlayer);
+				this.markIt(1);
+			// }
 		},
 		checkThrow(seat, tile) {
+			console.log(1);
 			if (leftHandCont) {
 				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
 				this.moveBack(tile);
 				return;
 			}
+			console.log(2);
 			var _0x335bad = boardTiles.filter(e => e != '').slice();
 			if (_0x335bad.length <= tileLimits[seat]) {
 				this.popMessage("Istakanizda " + tileLimits[seat] + " tas var, önce tas almaniz gerekiyor.");
 				this.moveBack(tile);
 				return;
 			}
+			console.log(3);
 			if (openPunish[seat] == 2) {
 				this.popMessage("Elinizi acmaniz ya da taslarinizi toplamaniz gerekiyor.");
 				this.moveBack(tile);
 				return;
 			}
+			console.log(4);
 			if (openPunish[seat] == 1 && _0x335bad.length > 1) {
 				openPunish[seat] = 2;
 				this.changePoint(punishOffset, seat, 1);
@@ -2647,6 +3467,7 @@ let Engine = (() => {
 				this.moveBack(tile);
 				return;
 			}
+			console.log(5);
 			var _0x17313c = boardPlaces.indexOf(tile);
 			if (_0x17313c !== -1) {
 				if (activePlayer == 1) {
@@ -2658,6 +3479,7 @@ let Engine = (() => {
 				boardTiles[_0x17313c - 1] = '';
 				this.movetoArea(tile, seat);
 			}
+			console.log(6);
 			var _0x335bad = boardTiles.filter(e => e != '').slice();
 			if (_0x335bad.length == 0) {
 				if (collect.length == 21) {
@@ -2669,6 +3491,7 @@ let Engine = (() => {
 				winnerPlayer = activePlayer;
 				this.gameOver(1);
 			}
+			console.log(7);
 		},
 		updateBoards() {
 			if (activePlayer == 1) {
@@ -2688,7 +3511,44 @@ let Engine = (() => {
 				boardPlaces4 = boardPlaces.slice();
 			}
 		},
-		checkPosition(_0x317063) {},
+		checkPosition(_0x317063) {
+			if (boardPlaces[_0x317063]) {
+				if (_0x317063 <= 15) {
+					for (let i=_0x317063; i<=15; i++) {
+						if (boardPlaces[i] == 0) {
+							openPlace(_0x317063, i, 1);
+							playAudio(2);
+							return 1;
+						}
+					}
+					for (let i=_0x317063; i>=0; i--) {
+						if (boardPlaces[i] == 0) {
+							openPlace(_0x317063, i, 2);
+							playAudio(2);
+							return 1;
+						}
+					}
+				}
+				if (_0x317063 > 15) {
+					for (let i=_0x317063; i<=30; i++) {
+						if (boardPlaces[i] == 0) {
+							openPlace(_0x317063, i, 1);
+							playAudio(2);
+							return 1;
+						}
+					}
+					for (let i=_0x317063; i>=15; i--) {
+						if (boardPlaces[i] == 0) {
+							openPlace(_0x317063, i, 2);
+							playAudio(2);
+							return 1;
+						}
+					}
+				}
+				return 0;
+			}
+			return 1;
+		},
 		openPlace(_0x1ca1e8, _0x160545, _0x1ff05a) {},
 		movetoArea(tile, seat, _0x1c04c4) {
 		},
@@ -2697,6 +3557,32 @@ let Engine = (() => {
 		popMessage(msg, timer, type) {
 			console.log(msg, timer, type);
 		},
+		playAudio(num) {
+			console.log("play audio", num);
+		},
+		AI_ON() {},
+		gameType() {},
+		gameMode() {},
+		pointSelect() {},
+		pointSelectClose() {},
+		autoPlay() {},
+		writePoint() {},
+		moveTile(el, player, _top, _left, type, tableTilePos) {},
+		sem() {},
+		gameOver(_0x3a9872) {},
+		gameOverMessage() {},
+		pointsTable() {},
+		remainingMessage() {},
+		putOkeyToTable(_0x54d834) {},
+		getOkeyFromTable(_0x38a670, _0x3f3e09) {},
+		// play(num) {},
+		// setCookie(name, value, days) {},
+		// getCookie(name) {},
+		// boyutla() {},
+		// suffleArray(arr) {},
+		// suffle() {},
+		// messageNo() {},
+		// settings(name, value) {},
 	};
 
 	return Engine;
