@@ -29,12 +29,12 @@ const okey = {
 			case "window.init":
 				break;
 			// custom events
-			case "set-game-engine":
-				Engine.setEngine(event.arg);
-				break;
 			case "open-help":
 				karaqu.shell("fs -u '~/help/toc.md'");
 				break;
+			// proxy events
+			case "set-game-engine":
+				return Self.game.dispatch(event);
 			default:
 				el = event.el;
 				if (!el && event.origin) el = event.origin.el;

@@ -8,6 +8,21 @@ let Engine = (() => {
 	let settingsGameLevel = 2;
 
 	let winWithDouble;
+	let pointLimit = 0,
+		points = [0, "10", "20", "30", "2", "5", "11", "21", "31", "41", "51"],
+		selectPoint = 2,
+		pointMultiplier = 1,
+		user1Point,
+		user2Point,
+		user3Point,
+		user4Point,
+		leftHandCont = 0,
+		leftHandTile = 0,
+		leftHandContTemp = 0,
+		leftHandTileTemp = 0,
+		collect = [],
+		collectPlaces = [],
+		collectTiles = [];
 
 	let openLimitG = 101,
 		openLimitD = 5,
@@ -64,10 +79,8 @@ let Engine = (() => {
 			// start game
 			// this.start();
 		},
-		setEngine(type) {
-			let types = ["51", "101", "classic"]
-			settingsType = types.indexOf(type) + 1;
-			console.log(settingsType);
+		setEngine(num) {
+			settingsType = num + 1;
 		},
 		start() {
 			Tiles.shuffle();
@@ -517,15 +530,15 @@ let Engine = (() => {
 		moveBack(el) {},
 		moveTile(el, player, _top, _left, type, tableTilePos) {},
 		sem() {},
-		game_over(_0x3a9872) {},
-		game_over_message() {},
-		points_table() {},
-		remaining_message() {},
-		put_okey_to_table(_0x54d834) {},
-		get_okey_from_table(_0x38a670, _0x3f3e09) {},
-		put_to_table(_0x139c25, _0x4b4905) {},
+		gameOver(_0x3a9872) {},
+		gameOverMessage() {},
+		pointsTable() {},
+		remainingMessage() {},
+		putOkeyToTable(_0x54d834) {},
+		getOkeyFromTable(_0x38a670, _0x3f3e09) {},
+		putToTable(_0x139c25, _0x4b4905) {},
 		moveToTable(_0x336229, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {},
-		button_active_passive(_0x282945, _0x106ed0) {},
+		buttonActivePassive(_0x282945, _0x106ed0) {},
 		collectItBack() {},
 		priority() {
 			boardTiles.sort();
@@ -1375,9 +1388,9 @@ let Engine = (() => {
 			return val;
 		},
 		markIt(_0x4ff0b3) {},
-		check_handle_double(_0x560968) {},
-		check_handle(_0x2019da, _0x1c59dd) {},
-		go_double() {},
+		checkHandleDouble(_0x560968) {},
+		checkHandle(_0x2019da, _0x1c59dd) {},
+		goDouble() {},
 		sortDouble(_0xa76703, _0x5d64f0) {
 			boardTilesVir = boardTiles.slice();
 			boardTilesVir.sort();
@@ -1431,24 +1444,27 @@ let Engine = (() => {
 			}
 			return arr;
 		},
-		change_player(_0x2ebcf1) {},
-		AI(_0x5abf1f) {},
+		changePlayer(_0x2ebcf1) {},
+		AI(seat) {
+			console.log(seat);
+		},
 		autoPlay() {},
-		write_point() {},
+		writePoint() {},
 		changePoint(_0x2b8526, _0x1cee51, _0x3637f4) {},
 		checkOkeyHandle(num) {},
 		setPoint(num) {},
 		AI_ON() {},
-		game_type() {},
-		game_mode() {},
-		point_select() {},
-		point_select_close() {},
+		gameType() {},
+		gameMode() {},
+		pointSelect() {},
+		pointSelectClose() {},
 		message(_0x38e4e2, _0x38f6ec) {},
-		message_ok(_0x52a48e) {},
-		message_no() {},
+		messageOk(_0x52a48e) {},
+		messageNo() {},
 		settings(name, value) {},
-		drag_stop() {},
+		dragStop() {},
 		checkThrow(seat, tile) {
+			/*
 			let tiles = Array(32).fill("");
 			APP.game.els.rack.find(".tile").map(tile => {
 				let value = tile.getAttribute("data-id"),
@@ -1463,6 +1479,52 @@ let Engine = (() => {
 
 			if (this.checkWin() || this.checkWin()) {
 				console.log("game over");
+			}
+			*/
+			if (leftHandCont) {
+				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
+				this.moveBack(tile);
+				return;
+			}
+			var _0x335bad = boardTiles.filter(e => e != '').slice();
+			if (_0x335bad.length <= tileLimits[seat]) {
+				this.popMessage("Istakanizda " + tileLimits[seat] + " tas var, önce tas almaniz gerekiyor.");
+				this.moveBack(tile);
+				return;
+			}
+			if (openPunish[seat] == 2) {
+				this.popMessage("Elinizi acmaniz ya da taslarinizi toplamaniz gerekiyor.");
+				this.moveBack(tile);
+				return;
+			}
+			if (openPunish[seat] == 1 && _0x335bad.length > 1) {
+				openPunish[seat] = 2;
+				this.changePoint(punishOffset, seat, 1);
+				this.popMessage("Yanlis el actiniz " + punishOffset + " puan ceza yediniz.");
+				this.moveBack(tile);
+				return;
+			}
+			var _0x17313c = boardPlaces.indexOf(tile);
+			if (_0x17313c !== -1) {
+				if (activePlayer == 1) {
+					activePlayerCont = 0;
+					buttonActivePassive("collect", 0);
+					firstOpenCont = 0;
+				}
+				boardPlaces[_0x17313c] = 0;
+				boardTiles[_0x17313c - 1] = '';
+				this.movetoArea(tile, seat);
+			}
+			var _0x335bad = boardTiles.filter(e => e != '').slice();
+			if (_0x335bad.length == 0) {
+				if (collect.length == 21) {
+					console.log("Oyuncu elden bitti!");
+					openAllHand = 1;
+				} else {
+					console.log("Oyun Bitti: Istakada Tas kalmadi");
+				}
+				winnerPlayer = activePlayer;
+				this.gameOver(1);
 			}
 		},
 		updateBoards() {
@@ -1485,9 +1547,10 @@ let Engine = (() => {
 		},
 		checkPosition(_0x317063) {},
 		openPlace(_0x1ca1e8, _0x160545, _0x1ff05a) {},
-		movetoArea(_0x2f30f1, _0x5255cf, _0x1c04c4) {},
+		movetoArea(tile, seat, _0x1c04c4) {
+		},
 		removeStempfromCenter() {},
-		drop_back() {},
+		dropBack() {},
 		popMessage(_0x528e32, _0x5e23e6, _0x5a5c83) {},
 	};
 

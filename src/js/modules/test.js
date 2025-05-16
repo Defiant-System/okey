@@ -26,6 +26,8 @@ let Test = {
 			};
 		Engine.restore(state);
 
+		// setTimeout(() => APP.game.dispatch({ type: "put-tile-back" }), 200);
+
 
 		// console.log( Engine.sortTiles(2, 0) );
 		// console.log( Engine.sortTiles(3, 0) );

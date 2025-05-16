@@ -16,11 +16,17 @@
 	dispatch(event) {
 		let APP = okey,
 			Self = APP.game,
-			value,
 			el;
 		// console.log(event);
 		switch (event.type) {
 			// custom events
+			case "set-game-engine":
+				let types = ["51", "101", "okey"],
+					num = types.indexOf(event.arg);
+				Engine.setEngine(num);
+				// update board attribute
+				Self.els.el.data({ engine: types[num] });
+				break;
 			case "engine-sort-serial":
 				Engine.arrange(1, 1);
 				break;
@@ -28,6 +34,12 @@
 				Engine.arrange(1, 2);
 				break;
 			case "put-tile-back":
+				let dOffset = Self.els.el.find(".discard .player-4").offset(".board"),
+					rOffset = Self.els.rack.offset(".board"),
+					css = {
+						top: dOffset.top - rOffset.top + 5,
+						left: dOffset.left - rOffset.left + 5,
+					}
 				// hide button
 				event.el.addClass("hidden");
 				// animate tile back to discard pile
@@ -38,10 +50,7 @@
 						// update DOM
 						Self.els.el.find(".discard .player-4").append(el);
 					})
-					.css({
-						top: -101,
-						left: -12,
-					});
+					.css(css);
 				break;
 		}
 	},
@@ -236,6 +245,7 @@
 								top: Drag.tOffset.top - Drag.rOffset.top + 5,
 								left: Drag.tOffset.left - Drag.rOffset.left + 5,
 							};
+							return console.log(Drag.hover[0]);
 							/* falls through */
 						case Drag.hover.hasClass("board"):
 							if (Drag.el.hasClass("new-tile")) {
@@ -254,7 +264,7 @@
 						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");
 						// update game engine
-						Engine.checkThrow(1, el.data("id"));
+						// Engine.checkThrow(1, el.data("id"));
 					})
 					.css(css);
 				break;
