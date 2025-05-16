@@ -8,6 +8,12 @@
 			el: window.find(".board"),
 			rack: window.find(".player.user .rack"),
 			content: window.find("content"),
+			discard: {
+				player1: window.find(".discard .player-1"),
+				player2: window.find(".discard .player-2"),
+				player3: window.find(".discard .player-3"),
+				player4: window.find(".discard .player-4"),
+			},
 		};
 
 		// bind event handlers
@@ -81,6 +87,7 @@
 				let doc = $(document),
 					drop = el.offset(".rack"),
 					tOffset = el.offset(".board"),
+					dOffset = Self.els.discard.player1.offset(".board"),
 					isDiscard = el.parent().hasClass("player-4"),
 					diff = { x: 0, y: 0 },
 					offset = {
@@ -107,7 +114,7 @@
 				Self.els.rack.addClass("drop arranging");
 				if (!isDiscard) Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, isDiscard };
+				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, dOffset, isDiscard };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -241,12 +248,13 @@
 							}
 							break;
 						case Drag.hover.hasClass("inset"):
+							Drag.isThrow = true;
+							// sof land position
 							css = {
-								top: Drag.tOffset.top - Drag.rOffset.top + 5,
-								left: Drag.tOffset.left - Drag.rOffset.left + 5,
+								top: Drag.dOffset.top - Drag.rOffset.top + 5,
+								left: Drag.dOffset.left - Drag.rOffset.left + 5,
 							};
-							return console.log(Drag.hover[0]);
-							/* falls through */
+							break;
 						case Drag.hover.hasClass("board"):
 							if (Drag.el.hasClass("new-tile")) {
 								css = Self.getEmptySlot();
@@ -264,7 +272,7 @@
 						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");
 						// update game engine
-						// Engine.checkThrow(1, el.data("id"));
+						if (Drag.isThrow) Engine.dragStop(1, el.data("id"));
 					})
 					.css(css);
 				break;

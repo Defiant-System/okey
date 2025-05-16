@@ -1462,9 +1462,8 @@ let Engine = (() => {
 		messageOk(_0x52a48e) {},
 		messageNo() {},
 		settings(name, value) {},
-		dragStop() {},
-		checkThrow(seat, tile) {
-			/*
+		dragStop(seat, tile) {
+			// a tile has been "drag and dropped"
 			let tiles = Array(32).fill("");
 			APP.game.els.rack.find(".tile").map(tile => {
 				let value = tile.getAttribute("data-id"),
@@ -1478,9 +1477,12 @@ let Engine = (() => {
 			boardTiles1 = tiles;
 
 			if (this.checkWin() || this.checkWin()) {
-				console.log("game over");
+				return console.log("game over");
 			}
-			*/
+
+			this.checkThrow(seat, tile);
+		},
+		checkThrow(seat, tile) {
 			if (leftHandCont) {
 				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
 				this.moveBack(tile);
@@ -1508,7 +1510,7 @@ let Engine = (() => {
 			if (_0x17313c !== -1) {
 				if (activePlayer == 1) {
 					activePlayerCont = 0;
-					buttonActivePassive("collect", 0);
+					this.buttonActivePassive("collect", 0);
 					firstOpenCont = 0;
 				}
 				boardPlaces[_0x17313c] = 0;
