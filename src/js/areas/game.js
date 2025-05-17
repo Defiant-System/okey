@@ -8,6 +8,10 @@
 			el: window.find(".board"),
 			rack: window.find(".player.user .rack"),
 			content: window.find("content"),
+			common: {
+				series: window.find(".common .series"),
+				doubles: window.find(".common .doubles"),
+			},
 			discard: {
 				player1: window.find(".discard .player-1"),
 				player2: window.find(".discard .player-2"),
@@ -22,6 +26,7 @@
 	dispatch(event) {
 		let APP = okey,
 			Self = APP.game,
+			str,
 			pEl,
 			el;
 		// console.log(event);
@@ -93,6 +98,20 @@
 						Self.els.el.find(".discard .player-4").append(el);
 					})
 					.css(css);
+				break;
+			case "meld-tiles":
+				str = [];
+				event.rows.map((row, y) => {
+					let i;
+					row.map((col, x) => {
+						let { id, clr, num } = Engine.toParts(col);
+						if (!i) {
+							i = num - 1;
+						};
+						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i};"></span>`);
+					});
+				});
+				Self.els.common.series.append(str.join(""));
 				break;
 		}
 	},

@@ -38,6 +38,25 @@ let Test = {
 		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 3 }), 1000);
 		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
 
+		setTimeout(() => {
+			let rows = [
+				[106, 107, 108, 109],
+				[210, 211, 212],
+				[113, 813, 313, 413],
+				[112, 312, 412],
+				[111, 311, 411],
+				[110, 310, 410, 210],
+			];
+			APP.game.dispatch({ type: "meld-tiles", seat: 4, rows });
+		}, 500);
+
+		// setTimeout(() => {
+		// 	let Self = APP.game,
+		// 		el = Self.els.el.find(`.tile[data-id="201"]`);
+		// 	Self.els.discard.player1.append(el.css({ top: "", left: "" }));
+		// 	Engine.dragStop(1, el.data("id"));
+		// }, 500);
+
 		// setTimeout(() => APP.game.dispatch({ type: "put-tile-back" }), 200);
 
 
