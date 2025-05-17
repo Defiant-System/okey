@@ -22,6 +22,7 @@
 	dispatch(event) {
 		let APP = okey,
 			Self = APP.game,
+			pEl,
 			el;
 		// console.log(event);
 		switch (event.type) {
@@ -42,9 +43,31 @@
 				Engine.updateRack();
 				break;
 			case "draw-stack-tile":
-				Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).cssSequence("draw-tile", "transitionend", el => {
-					el.removeClass("draw-tile");
+				Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`)
+					.cssSequence("draw-tile", "transitionend", el => el.removeClass("draw-tile"));
+				break;
+			case "discard-tile":
+				let eventTile = Engine.toParts(event.tile);
+				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("discard-tile");
+				el = pEl.find(".tile").removeClass("blank").addClass(eventTile.clr).data({ v: eventTile.num });
+				pEl.cssSequence("discard-anim", "transitionend", elem => {
+					elem.removeClass("discard-tile");
+					// insert tile into discard hole
+					let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
+					// reset original tile
+					el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
 				});
+				break;
+			case "get-discarded-tile":
+				el = Self.els.discard[`player${event.from}`].find(".tile").get(0);
+				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("get-discarded");
+				pEl.append(el);
+				setTimeout(() => {
+					pEl.cssSequence("get-anim", "transitionend", elem => {
+						elem.removeClass("get-anim get-discarded")
+						el.remove();
+					});
+				}, 10);
 				break;
 			case "put-tile-back":
 				let dOffset = Self.els.el.find(".discard .player-4").offset(".board"),

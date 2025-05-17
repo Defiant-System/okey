@@ -365,9 +365,51 @@ content {
 				top: 13px;
 				left: 325px;
 
-				.hole .tile {
-					top: 369px;
-					left: 247px;
+				.hole {
+					.tile {
+						top: 359px;
+						left: 198px;
+					}
+
+					&.discard-tile {
+						.tile {
+							top: 0;
+							left: 0;
+							width: 41px;
+							height: 53px;
+
+							&:after {
+								right: 5px;
+								font-size: 26px;
+								letter-spacing: -2px;
+							}
+						}
+
+						&.discard-anim {
+							.tile {
+								top: 35px;
+								left: -429px;
+								visibility: visible;
+								opacity: 1;
+							}
+						}
+					}
+
+					&.get-discarded {
+						.tile:last-child {
+							top: 35px;
+							left: 420px;
+							visibility: visible;
+							opacity: 1;
+						}
+
+						&.get-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
+					}
 				}
 			}
 
@@ -387,9 +429,51 @@ content {
 				top: 123px;
 				left: 16px;
 
-				.hole .tile {
-					top: 159px;
-					left: 706px;
+				.hole {
+					.tile {
+						top: 149px;
+						left: 657px;
+					}
+
+					&.discard-tile {
+						.tile {
+							top: 0;
+							left: 0;
+						}
+
+						&.discard-anim {
+							.tile {
+								top: 208px;
+								left: -7px;
+								visibility: visible;
+								opacity: 1;
+							}
+						}
+					}
+
+					&.get-discarded {
+						.tile:last-child {
+							top: -175px;
+							left: 30px;
+							width: 41px;
+							height: 53px;
+							visibility: visible;
+							opacity: 1;
+
+							&:after {
+								right: 5px;
+								font-size: 26px;
+								letter-spacing: -2px;
+							}
+						}
+
+						&.get-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
+					}
 				}
 			}
 
@@ -409,9 +493,59 @@ content {
 				top: 123px;
 				left: -124px;
 
-				.hole .tile {
-					top: 159px;
-					left: -214px;
+				.hole {
+					.tile {
+						top: 149px;
+						left: -263px;
+					}
+
+					&.discard-tile {
+						.tile {
+							top: 0;
+							left: 0;
+							width: 41px;
+							height: 53px;
+
+							&:after {
+								right: 5px;
+								font-size: 26px;
+								letter-spacing: -2px;
+							}
+						}
+
+						&.discard-anim {
+							.tile {
+								top: -175px;
+								left: -41px;
+								visibility: visible;
+								opacity: 1;
+							}
+						}
+					}
+
+					&.get-discarded {
+						.tile:last-child {
+							top: 208px;
+							left: -19px;
+							width: 56px;
+							height: 73px;
+							visibility: visible;
+							opacity: 1;
+
+							&:after {
+								right: 7px;
+								font-size: 37px;
+								letter-spacing: -3px;
+							}
+						}
+
+						&.get-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
+					}
 				}
 			}
 
@@ -429,6 +563,11 @@ content {
 				min-height: 0;
 				transition: min-height var( --dur ) ease-in-out;
 
+				&.get-anim,
+				&.discard-anim {
+					min-height: 1px;
+				}
+
 				&.draw-tile {
 					min-height: 1px;
 
@@ -442,7 +581,7 @@ content {
 			}
 
 			.tile {
-				// pointer-events: none;
+				pointer-events: none;
 				visibility: hidden;
 				opacity: 0;
 				position: absolute;
@@ -849,6 +988,18 @@ content {
 			.name {
 				filter: sepia(1) hue-rotate(305deg) saturate(3) brightness(0.85);
 			}
+		}
+
+		.hole {
+			// background: #0005;
+			position: absolute;
+			top: 10px;
+			left: 49px;
+			width: 41px;
+			height: 53px;
+			z-index: 3;
+			border-radius: 4px;
+			pointer-events: none;
 		}
 
 		svg.outline {

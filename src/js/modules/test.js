@@ -26,9 +26,17 @@ let Test = {
 			};
 		Engine.restore(state);
 
-		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 2 }), 500);
-		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 3 }), 1000);
-		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
+		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 2, from: 1 }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 3, from: 2 }), 1000);
+		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 4, from: 3 }), 1500);
+
+		// setTimeout(() => APP.game.dispatch({ type: "discard-tile", seat: 2, tile: "101" }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "discard-tile", seat: 3, tile: "202" }), 1000);
+		// setTimeout(() => APP.game.dispatch({ type: "discard-tile", seat: 4, tile: "303" }), 1500);
+
+		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 2 }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 3 }), 1000);
+		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
 
 		// setTimeout(() => APP.game.dispatch({ type: "put-tile-back" }), 200);
 

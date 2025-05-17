@@ -401,10 +401,14 @@ let Engine = (() => {
 			// 	return console.log("game over");
 			// }
 		},
-		drawTile() {
-			let id = tilesLeft[0].toString(),
+		toParts(tile) {
+			let id = tile.toString(),
 				clr = Colors[+id.slice(0,1)],
 				num = new Number(id.slice(1));
+			return { id, clr, num };
+		},
+		drawTile() {
+			let { id, clr, num } = this.toParts(tilesLeft[0]);
 			this.updateLeftTiles(id);
 			return { id, clr, num };
 		},
@@ -566,7 +570,7 @@ let Engine = (() => {
 						// $(_0x5595c5).style.top = _0x4f9f29 + 'px';
 					}
 					if (seat == 2) {
-						console.log("seat 2");
+						// console.log("seat 2");
 						// $(_0x5595c5).style.left = boardLeft2 + 'px';
 						// $(_0x5595c5).style.top = boardTop2 + 'px';
 					}
@@ -2921,6 +2925,8 @@ let Engine = (() => {
 					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
 					this.place('tile-' + tilesLast, _0x54fe2a);
 					this.removeStampfromCenter();
+					// UI animation
+					APP.game.dispatch({ type: "draw-stack-tile", seat })
 				}
 				return;
 				timmerAI = setTimeout(() => {
