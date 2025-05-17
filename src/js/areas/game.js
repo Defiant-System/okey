@@ -102,11 +102,14 @@
 			case "meld-tiles":
 				str = [];
 				event.rows.map((row, y) => {
-					let i;
+					let i, il = row.length;
 					row.map((col, x) => {
 						let { id, clr, num } = Engine.toParts(col);
 						if (!i) {
-							i = num - 1;
+							// i = num - 1;
+							i = Math.min(13-il, num-1);
+							if (num == 11) i = 10-(il>>1);
+							if (num == 10) i = 9-(il>>1);
 						};
 						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i};"></span>`);
 					});
