@@ -2886,7 +2886,8 @@ let Engine = (() => {
 				if (seat == 3) discard = 2;
 				if (seat == 4) discard = 3;
 
-				if (this.checkLeft(discard) == 1) {
+				// if (this.checkLeft(discard) == 1) {
+				if (1 == 1) {
 					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
 					if (seat == 1) {
 						var _0x727da6 = area4items[area4items.length - 1].split('-');
@@ -2896,7 +2897,7 @@ let Engine = (() => {
 							this.changePoint(_0x727da6, 4, 1);
 						}
 						this.place(area4items[area4items.length - 1], _0x54fe2a);
-						area4items = removeArrayItem(area4items, area4items[area4items.length - 1]);
+						area4items = this.removeArrayItem(area4items, area4items[area4items.length - 1]);
 					}
 					if (seat == 2) {
 						var _0x727da6 = area1items[area1items.length - 1].split('-');
@@ -2905,8 +2906,11 @@ let Engine = (() => {
 						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
 							this.changePoint(_0x727da6, 1, 1);
 						}
+						// smooth animation
+						APP.game.dispatch({ type: "get-discarded-tile", seat, from: 1 });
+
 						this.place(area1items[area1items.length - 1], _0x54fe2a);
-						area1items = removeArrayItem(area1items, area1items[area1items.length - 1]);
+						area1items = this.removeArrayItem(area1items, area1items[area1items.length - 1]);
 					}
 					if (seat == 3) {
 						var _0x727da6 = area2items[area2items.length - 1].split('-');
@@ -2915,8 +2919,11 @@ let Engine = (() => {
 						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
 							this.changePoint(_0x727da6, 2, 1);
 						}
+						// smooth animation
+						APP.game.dispatch({ type: "get-discarded-tile", seat, from: 2 });
+
 						this.place(area2items[area2items.length - 1], _0x54fe2a);
-						area2items = removeArrayItem(area2items, area2items[area2items.length - 1]);
+						area2items = this.removeArrayItem(area2items, area2items[area2items.length - 1]);
 					}
 					if (seat == 4) {
 						var _0x727da6 = area3items[area3items.length - 1].split('-');
@@ -2925,8 +2932,11 @@ let Engine = (() => {
 						if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
 							this.changePoint(_0x727da6, 3, 1);
 						}
+						// smooth animation
+						APP.game.dispatch({ type: "get-discarded-tile", seat, from: 3 });
+
 						this.place(area3items[area3items.length - 1], _0x54fe2a);
-						area3items = removeArrayItem(area3items, area3items[area3items.length - 1]);
+						area3items = this.removeArrayItem(area3items, area3items[area3items.length - 1]);
 					}
 				} else {
 					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
@@ -3700,15 +3710,15 @@ let Engine = (() => {
 				if (_0x317063 <= 15) {
 					for (let i=_0x317063; i<=15; i++) {
 						if (boardPlaces[i] == 0) {
-							openPlace(_0x317063, i, 1);
-							playAudio(2);
+							this.openPlace(_0x317063, i, 1);
+							this.playAudio(2);
 							return 1;
 						}
 					}
 					for (let i=_0x317063; i>=0; i--) {
 						if (boardPlaces[i] == 0) {
-							openPlace(_0x317063, i, 2);
-							playAudio(2);
+							this.openPlace(_0x317063, i, 2);
+							this.playAudio(2);
 							return 1;
 						}
 					}
@@ -3716,15 +3726,15 @@ let Engine = (() => {
 				if (_0x317063 > 15) {
 					for (let i=_0x317063; i<=30; i++) {
 						if (boardPlaces[i] == 0) {
-							openPlace(_0x317063, i, 1);
-							playAudio(2);
+							this.openPlace(_0x317063, i, 1);
+							this.playAudio(2);
 							return 1;
 						}
 					}
 					for (let i=_0x317063; i>=15; i--) {
 						if (boardPlaces[i] == 0) {
-							openPlace(_0x317063, i, 2);
-							playAudio(2);
+							this.openPlace(_0x317063, i, 2);
+							this.playAudio(2);
 							return 1;
 						}
 					}

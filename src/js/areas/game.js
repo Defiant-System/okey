@@ -307,6 +307,11 @@
 						// reset drop zones
 						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");
+
+						if (Drag.isThrow) {
+							// move element to discard hole
+							Self.els.discard.player1.append(el.css({ top: "", left: "" }));
+						}
 						// update game engine
 						if (Drag.isThrow) Engine.dragStop(1, el.data("id"));
 					})
