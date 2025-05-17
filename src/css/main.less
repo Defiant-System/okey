@@ -366,9 +366,20 @@ content {
 				left: 325px;
 
 				.hole {
-					.tile {
-						top: 359px;
-						left: 198px;
+					&.draw-tile {
+						.tile {
+							top: 359px;
+							left: 198px;
+							visibility: visible;
+							opacity: 1;
+						}
+
+						&.draw-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
 					}
 
 					&.discard-tile {
@@ -377,6 +388,8 @@ content {
 							left: 0;
 							width: 41px;
 							height: 53px;
+							visibility: visible;
+							opacity: 1;
 
 							&:after {
 								right: 5px;
@@ -389,8 +402,6 @@ content {
 							.tile {
 								top: 35px;
 								left: -429px;
-								visibility: visible;
-								opacity: 1;
 							}
 						}
 					}
@@ -430,23 +441,34 @@ content {
 				left: 16px;
 
 				.hole {
-					.tile {
-						top: 149px;
-						left: 657px;
+					&.draw-tile {
+						.tile {
+							top: 149px;
+							left: 657px;
+							visibility: visible;
+							opacity: 1;
+						}
+
+						&.draw-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
 					}
 
 					&.discard-tile {
 						.tile {
 							top: 0;
 							left: 0;
+							visibility: visible;
+							opacity: 1;
 						}
 
 						&.discard-anim {
 							.tile {
 								top: 208px;
 								left: -7px;
-								visibility: visible;
-								opacity: 1;
 							}
 						}
 					}
@@ -494,9 +516,20 @@ content {
 				left: -124px;
 
 				.hole {
-					.tile {
-						top: 149px;
-						left: -263px;
+					&.draw-tile {
+						.tile {
+							top: 149px;
+							left: -263px;
+							visibility: visible;
+							opacity: 1;
+						}
+
+						&.draw-anim {
+							.tile {
+								top: 0;
+								left: 0;
+							}
+						}
 					}
 
 					&.discard-tile {
@@ -505,6 +538,8 @@ content {
 							left: 0;
 							width: 41px;
 							height: 53px;
+							visibility: visible;
+							opacity: 1;
 
 							&:after {
 								right: 5px;
@@ -517,8 +552,6 @@ content {
 							.tile {
 								top: -175px;
 								left: -41px;
-								visibility: visible;
-								opacity: 1;
 							}
 						}
 					}
@@ -564,19 +597,9 @@ content {
 				transition: min-height var( --dur ) ease-in-out;
 
 				&.get-anim,
-				&.discard-anim {
+				&.discard-anim,
+				&.draw-anim {
 					min-height: 1px;
-				}
-
-				&.draw-tile {
-					min-height: 1px;
-
-					.tile {
-						visibility: visible;
-						opacity: 1;
-						top: 0;
-						left: 0;
-					}
 				}
 			}
 

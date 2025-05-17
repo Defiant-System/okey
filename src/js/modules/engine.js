@@ -162,6 +162,7 @@ let Engine = (() => {
 		winnerPlayer = 1,
 		winnerPlayer1 = 0,
 		firstOpenCont = 0,
+		lastStone,
 		laps,
 		Indicator = 0;
 	let okeyCont = 0;
@@ -239,115 +240,116 @@ let Engine = (() => {
 			activePlayerCont = 1;
 			winnerPlayer1 = 0;
 			firstOpenCont = 0;
-	let openLimit = openLimitG;
-	let openLimitDouble = openLimitD;
-	let openLimitLast = openLimitG;
-	let openLimitDoubleLast = openLimitD;
-	openPunish = [0, 0, 0, 0, 0];
-	openStatusSort = [0, 0, 0, 0, 0];
-	openStatusDouble = [0, 0, 0, 0, 0];
-	getOkeyKont = 0;
-	leftHandCont = 0;
-	leftHandContTemp = 0;
-	leftHandTileTemp = 0;
-	contOpen = 0;
-	goDouble = 0;
-	markCont = 0;
-	clickCont = 1;
-	tableUser1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUser2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUser3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUser4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUserTiles1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUserTiles2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUserTiles3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableUserTiles4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
-	tableDoubleUser1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUser2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUser3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUser4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUserTiles1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUserTiles2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUserTiles3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tableDoubleUserTiles4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
-	tilesLast = 105;
-	tilesLeft = [];
-	if (settingsType == 1) tileLimit = 14;
-	if (settingsType == 2) tileLimit = 21;
-	if (settingsType == 3) tileLimit = 14;
-	tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit];
-	tableH = [0, 0, 0, 0, 0];
-	tableHdouble = [0, 0, 0, 0, 0];
-	sayTableTiles = 0;
-	Tiles.okey = 0;
-	gosterge = 0;
-	if (settingsHelp == 0) {
-		markOkey = 0;
-	}
-	if (settingsHelp == 1) {
-		markOkey = 1;
-	}
-	winWithOkey = 0;
-	winWithDouble = 0;
-	Indicator = 0;
-	handleDouble = 0;
-	okeyCont = 0;
-	boardPlaces = Array(31).fill(0);
-	boardTiles = [];
-	boardPlaces1 = Array(31).fill(0);
-	boardTiles1 = [];
-	boardPlaces2 = Array(31).fill(0);
-	boardTiles2 = [];
-	boardPlaces3 = Array(31).fill(0);
-	boardTiles3 = [];
-	boardPlaces4 = Array(31).fill(0);
-	boardTiles4 = [];
-	boardTilesVir = [];
-	area1Count = 0;
-	area1items = [];
-	area2Count = 0;
-	area2items = [];
-	area3Count = 0;
-	area3items = [];
-	area4Count = 0;
-	area4items = [];
-	gameOver = 0;
-	gameMoveCont = 1;
-	handleItems = [];
-	let tileW = 100;
-	let tileH = tileW * 1.45;
-	if (settingsType == 1) {
-		tileDefaultTop = tileH * 3.7;
-		tileDefaultLeft = tileW * 8.6;
-	} else {
-		tileDefaultTop = tileH * 4.8;
-		tileDefaultLeft = tileW * 10.5;
-	}
-	boardLeft2 = tileW * 17.2;
-	boardTop2 = tileH * 5;
-	boardLeft2 = tileW * 17.2;
-	boardTop2 = tileH * 5;
-	boardLeft3 = tileW * 8;
-	boardTop3 = -tileH;
-	boardLeft4 = -tileW;
-	boardTop4 = tileH * 5;
-	var _0x5f031e = 0;
-	for (let i=1; i<=8; i++) {
-		for (let j=1; j<=13; j++) {
-			var _0xf34c82 = " ";
-			let stone = parseInt(data[_0x5f031e].substr(1, 2));
-			let color1 = data[_0x5f031e].substr(0, 1);
-			if (stone == 0) stone = 'R';
-			_0x5f031e++;
-		}
-	}
-	for (let j=104; j<=105; j++) {
-		var _0xf34c82 = " ";
-		let stone = parseInt(data[_0x5f031e].substr(1, 2));
-		let color1 = data[_0x5f031e].substr(0, 1);
-		if (stone == 0) stone = 'R';
-		_0x5f031e++;
-	}
+
+			let openLimit = openLimitG;
+			let openLimitDouble = openLimitD;
+			let openLimitLast = openLimitG;
+			let openLimitDoubleLast = openLimitD;
+			openPunish = [0, 0, 0, 0, 0];
+			openStatusSort = [0, 0, 0, 0, 0];
+			openStatusDouble = [0, 0, 0, 0, 0];
+			getOkeyKont = 0;
+			leftHandCont = 0;
+			leftHandContTemp = 0;
+			leftHandTileTemp = 0;
+			contOpen = 0;
+			goDouble = 0;
+			markCont = 0;
+			clickCont = 1;
+			tableUser1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUser2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUser3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUser4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUserTiles1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUserTiles2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUserTiles3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableUserTiles4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+			tableDoubleUser1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUser2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUser3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUser4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUserTiles1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUserTiles2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUserTiles3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tableDoubleUserTiles4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+			tilesLast = 105;
+			tilesLeft = [];
+			if (settingsType == 1) tileLimit = 14;
+			if (settingsType == 2) tileLimit = 21;
+			if (settingsType == 3) tileLimit = 14;
+			tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit];
+			tableH = [0, 0, 0, 0, 0];
+			tableHdouble = [0, 0, 0, 0, 0];
+			sayTableTiles = 0;
+			Tiles.okey = 0;
+			gosterge = 0;
+			if (settingsHelp == 0) {
+				markOkey = 0;
+			}
+			if (settingsHelp == 1) {
+				markOkey = 1;
+			}
+			winWithOkey = 0;
+			winWithDouble = 0;
+			Indicator = 0;
+			handleDouble = 0;
+			okeyCont = 0;
+			boardPlaces = Array(31).fill(0);
+			boardTiles = [];
+			boardPlaces1 = Array(31).fill(0);
+			boardTiles1 = [];
+			boardPlaces2 = Array(31).fill(0);
+			boardTiles2 = [];
+			boardPlaces3 = Array(31).fill(0);
+			boardTiles3 = [];
+			boardPlaces4 = Array(31).fill(0);
+			boardTiles4 = [];
+			boardTilesVir = [];
+			area1Count = 0;
+			area1items = [];
+			area2Count = 0;
+			area2items = [];
+			area3Count = 0;
+			area3items = [];
+			area4Count = 0;
+			area4items = [];
+			gameOver = 0;
+			gameMoveCont = 1;
+			handleItems = [];
+			let tileW = 100;
+			let tileH = tileW * 1.45;
+			if (settingsType == 1) {
+				tileDefaultTop = tileH * 3.7;
+				tileDefaultLeft = tileW * 8.6;
+			} else {
+				tileDefaultTop = tileH * 4.8;
+				tileDefaultLeft = tileW * 10.5;
+			}
+			boardLeft2 = tileW * 17.2;
+			boardTop2 = tileH * 5;
+			boardLeft2 = tileW * 17.2;
+			boardTop2 = tileH * 5;
+			boardLeft3 = tileW * 8;
+			boardTop3 = -tileH;
+			boardLeft4 = -tileW;
+			boardTop4 = tileH * 5;
+			var _0x5f031e = 0;
+			for (let i=1; i<=8; i++) {
+				for (let j=1; j<=13; j++) {
+					var _0xf34c82 = " ";
+					let stone = parseInt(data[_0x5f031e].substr(1, 2));
+					let color1 = data[_0x5f031e].substr(0, 1);
+					if (stone == 0) stone = 'R';
+					_0x5f031e++;
+				}
+			}
+			for (let j=104; j<=105; j++) {
+				var _0xf34c82 = " ";
+				let stone = parseInt(data[_0x5f031e].substr(1, 2));
+				let color1 = data[_0x5f031e].substr(0, 1);
+				if (stone == 0) stone = 'R';
+				_0x5f031e++;
+			}
 
 			tilesLeft = data.slice();
 
@@ -808,7 +810,7 @@ let Engine = (() => {
 		putToTable(_0x139c25, _0x4b4905) {
 			UserTotal = 0;
 			UserTotalDouble = 0;
-			diff = 0;
+			let diff = 0;
 			if (_0x139c25 == 1) {
 				boardTiles = boardTiles1.slice();
 				boardPlaces = boardPlaces1.slice();
@@ -2862,6 +2864,11 @@ let Engine = (() => {
 				} else {
 					console.log("tas bitti - 1");
 				}
+
+				let index = boardPlaces.indexOf(selectedTile1),
+					tile = boardTiles[index - 1];
+				APP.game.dispatch({ type: "discard-tile", seat, tile });
+
 				this.checkThrow(seat, selectedTile1);
 				this.arrange(seat);
 				this.markIt(1);
@@ -2928,7 +2935,6 @@ let Engine = (() => {
 					// UI animation
 					APP.game.dispatch({ type: "draw-stack-tile", seat })
 				}
-				return;
 				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
 					this.arrange(seat);

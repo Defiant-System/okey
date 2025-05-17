@@ -43,20 +43,26 @@
 				Engine.updateRack();
 				break;
 			case "draw-stack-tile":
-				Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`)
-					.cssSequence("draw-tile", "transitionend", el => el.removeClass("draw-tile"));
+				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");
+				setTimeout(() => {
+					pEl.cssSequence("draw-anim", "transitionend", elem => {
+						elem.removeClass("draw-tile draw-anim");
+					});
+				}, 10);
 				break;
 			case "discard-tile":
 				let eventTile = Engine.toParts(event.tile);
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("discard-tile");
 				el = pEl.find(".tile").removeClass("blank").addClass(eventTile.clr).data({ v: eventTile.num });
-				pEl.cssSequence("discard-anim", "transitionend", elem => {
-					elem.removeClass("discard-tile");
-					// insert tile into discard hole
-					let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
-					// reset original tile
-					el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
-				});
+				setTimeout(() => {
+					pEl.cssSequence("discard-anim", "transitionend", elem => {
+						elem.removeClass("discard-tile discard-anim");
+						// insert tile into discard hole
+						let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
+						// reset original tile
+						el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
+					});
+				}, 10);
 				break;
 			case "get-discarded-tile":
 				el = Self.els.discard[`player${event.from}`].find(".tile").get(0);
