@@ -273,6 +273,28 @@ let Engine = (() => {
 			});
 			return str.join("");
 		},
+		updateRack() {
+			/* */
+			let rack = APP.content.find(".player .rack"),
+				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
+				aEl = rack.append(sorted);
+
+			rack.cssSequence("arrange-anim", "transitionend", el => {
+				el.removeClass("arrange-anim");
+				el.find(".re-arranged, .empty").remove();
+				el.find(".placed").removeClass("placed");
+			});
+
+			rack.find("> .tile").map(tile => {
+				let el = $(tile),
+					target = aEl.find(`> .tile[data-id="${el.data("id")}"]:not(.placed)`).get(0);
+				if (target.length) {
+					let tOffset = target.offset();
+					el.css({ top: tOffset.top, left: tOffset.left });
+					target.addClass("placed");
+				}
+			});
+		},
 		deliver() {
 			boardTiles1 = [];
 			boardTiles2 = [];
@@ -585,27 +607,6 @@ let Engine = (() => {
 					boardPlaces[_0x27d3db] = 0;
 				}
 			}
-
-			/* */
-			let rack = APP.content.find(".player .rack"),
-				sorted = `<div class="re-arranged">${this.render(boardTiles)}</div>`,
-				aEl = rack.append(sorted);
-
-			rack.cssSequence("arrange-anim", "transitionend", el => {
-				el.removeClass("arrange-anim");
-				el.find(".re-arranged, .empty").remove();
-				el.find(".placed").removeClass("placed");
-			});
-
-			rack.find("> .tile").map(tile => {
-				let el = $(tile),
-					target = aEl.find(`> .tile[data-id="${el.data("id")}"]:not(.placed)`).get(0);
-				if (target.length) {
-					let tOffset = target.offset();
-					el.css({ top: tOffset.top, left: tOffset.left });
-					target.addClass("placed");
-				}
-			});
 
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {
@@ -2626,8 +2627,8 @@ let Engine = (() => {
 			AIcont = 1;
 			this.changePlayer(seat);
 			this.arrange(seat);
-			var _0xc09172 = boardTiles.filter(e => e != '').slice();
-			if (_0xc09172.length - 1 == tileLimits[seat]) {
+			var aiTiles = boardTiles.filter(e => e != '').slice();
+			if (aiTiles.length - 1 == tileLimits[seat]) {
 				if (settingsType == 2 || settingsType == 3) { // 51 or 101
 					if (openStatusDouble[seat] == 0) {
 						this.arrange(seat);
@@ -2636,51 +2637,51 @@ let Engine = (() => {
 					if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
 						this.getOkeyFromTable(seat);
 						this.arrange(seat);
-						_0xc09172 = boardTiles.filter(e => e != '').slice();
-						if (_0xc09172.length > 1) {
+						aiTiles = boardTiles.filter(e => e != '').slice();
+						if (aiTiles.length > 1) {
 							this.checkHandle(seat);
 						}
-						_0xc09172 = boardTiles.filter(e => e != '').slice();
-						if (_0xc09172.length > 1) {
+						aiTiles = boardTiles.filter(e => e != '').slice();
+						if (aiTiles.length > 1) {
 							this.arrange(seat, 2);
 						}
-						_0xc09172 = boardTiles.filter(e => e != '').slice();
-						if (_0xc09172.length > 1) {
+						aiTiles = boardTiles.filter(e => e != '').slice();
+						if (aiTiles.length > 1) {
 							this.checkHandleDouble(seat);
 						}
 					}
-					_0xc09172 = boardTiles.filter(e => e != '').slice();
-					if (_0xc09172.length > 1) {
+					aiTiles = boardTiles.filter(e => e != '').slice();
+					if (aiTiles.length > 1) {
 						this.arrange(seat, 2);
 					}
-					if (_0xc09172.length > 1) {
+					if (aiTiles.length > 1) {
 						this.putToTable(seat, 1);
 					}
-					_0xc09172 = boardTiles.filter(e => e != '').slice();
-					if (_0xc09172.length == 3) {
+					aiTiles = boardTiles.filter(e => e != '').slice();
+					if (aiTiles.length == 3) {
 						this.putOkeyToTable(seat);
 					}
-					_0xc09172 = boardTiles.filter(e => e != '').slice();
-					if (_0xc09172.length > 1) {
+					aiTiles = boardTiles.filter(e => e != '').slice();
+					if (aiTiles.length > 1) {
 						this.putToTable(seat, 2);
 					}
-					_0xc09172 = boardTiles.filter(e => e != '').slice();
-					if (_0xc09172.length < 1) {
+					aiTiles = boardTiles.filter(e => e != '').slice();
+					if (aiTiles.length < 1) {
 						console.log("tas bitti - 2");
 					}
 					this.markIt(seat);
 				}
 				this.arrange(seat);
-				_0xc09172 = boardPlaces.filter(e => e != 0).slice();
-				if (_0xc09172.length > 0) {
-					selectedTile1 = _0xc09172[_0xc09172.length - 1];
+				aiTiles = boardPlaces.filter(e => e != 0).slice();
+				if (aiTiles.length > 0) {
+					selectedTile1 = aiTiles[aiTiles.length - 1];
 					var _0x280b69 = selectedTile1.split('-');
 					_0x280b69 = _0x280b69[1] - 1;
-					if (_0xc09172.length > 0) {
+					if (aiTiles.length > 0) {
 						var _0x33ee = 0;
-						while ((data[_0x280b69] == okey || handleItems.indexOf(boardTiles[boardPlaces.indexOf(selectedTile1) - 1]) > -1) && _0xc09172.length - _0x33ee > 0) {
+						while ((data[_0x280b69] == okey || handleItems.indexOf(boardTiles[boardPlaces.indexOf(selectedTile1) - 1]) > -1) && aiTiles.length - _0x33ee > 0) {
 							_0x33ee++;
-							selectedTile1 = _0xc09172[_0xc09172.length - _0x33ee];
+							selectedTile1 = aiTiles[aiTiles.length - _0x33ee];
 							var _0x280b69 = selectedTile1.split('-');
 							_0x280b69 = _0x280b69[1] - 1;
 						}
@@ -2689,7 +2690,7 @@ let Engine = (() => {
 						var _0x77769 = Math.ceil(Math.random() * 10);
 						if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
 							console.log("el bozuyor");
-							selectedTile1 = _0xc09172[0];
+							selectedTile1 = aiTiles[0];
 						}
 					}
 				} else {
@@ -2706,20 +2707,20 @@ let Engine = (() => {
 					return 0;
 				}
 			} else {
-				var _0x4b506d;
+				var discard;
 				if (seat == 1) {
-					_0x4b506d = 4;
+					discard = 4;
 				}
 				if (seat == 2) {
-					_0x4b506d = 1;
+					discard = 1;
 				}
 				if (seat == 3) {
-					_0x4b506d = 2;
+					discard = 2;
 				}
 				if (seat == 4) {
-					_0x4b506d = 3;
+					discard = 3;
 				}
-				if (this.checkLeft(_0x4b506d) == 1) {
+				if (this.checkLeft(discard) == 1) {
 					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
 					if (seat == 1) {
 						var _0x727da6 = area4items[area4items.length - 1].split('-');
@@ -2766,6 +2767,7 @@ let Engine = (() => {
 					this.place('tile-' + tilesLast, _0x54fe2a);
 					this.removeStampfromCenter();
 				}
+				return;
 				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
 					this.arrange(seat);
@@ -3863,7 +3865,10 @@ let Engine = (() => {
 		playAudio(num) {
 			console.log("play audio", num);
 		},
-		removeStampfromCenter() {},
+		removeStampfromCenter() {
+			tilesLast--;
+			this.updateLeftTiles(data[tilesLast]);
+		},
 		AI_ON() {},
 		gameType() {},
 		gameMode() {},

@@ -35,9 +35,11 @@
 				break;
 			case "engine-sort-serial":
 				Engine.arrange(1, 1);
+				Engine.updateRack();
 				break;
 			case "engine-sort-double":
 				Engine.arrange(1, 2);
+				Engine.updateRack();
 				break;
 			case "put-tile-back":
 				let dOffset = Self.els.el.find(".discard .player-4").offset(".board"),
