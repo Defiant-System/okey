@@ -26,6 +26,10 @@ let Test = {
 			};
 		Engine.restore(state);
 
+		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 2 }), 500);
+		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 3 }), 1000);
+		setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
+
 		// setTimeout(() => APP.game.dispatch({ type: "put-tile-back" }), 200);
 
 
@@ -50,7 +54,7 @@ let Test = {
 		// console.log( Engine.arrange(1, 1) );
 		// console.log( Engine.arrange(1, 2) );
 
-		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
+		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
 
 		// setTimeout(() => {

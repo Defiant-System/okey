@@ -22,7 +22,16 @@ let Engine = (() => {
 		area3Count = 0,
 		area3items = [],
 		area4Count = 0,
-		area4items = [];
+		area4items = [],
+		boardTop,
+		boardLeft,
+		boardDiff,
+		boardLeft2 = 0,
+		boardTop2 = 0,
+		boardLeft3 = 0,
+		boardTop3 = 0,
+		boardLeft4 = 0,
+		boardTop4 = 0;
 
 	let pointLimit = 0,
 		points = [0, "10", "20", "30", "2", "5", "11", "21", "31", "41", "51"],
@@ -92,7 +101,9 @@ let Engine = (() => {
 			.map(() => new Array(2).fill(0)),
 		tableDoubleUserTiles4 = new Array(14)
 			.fill(0)
-			.map(() => new Array(2).fill(0));
+			.map(() => new Array(2).fill(0)),
+		sayTableTiles = 0,
+		sayTableTilesTemp;
 
 	if (settingsType == 1) tileLimit = 14;
 	if (settingsType == 2) tileLimit = 21;
@@ -105,6 +116,7 @@ let Engine = (() => {
 		timmerAI,
 		timmerNextPlayer,
 		timmerGameOver,
+		contOpen = 0,
 		AIcont = 0,
 		AIStatus = 0,
 		selectedTile = 'tile-1',
@@ -112,19 +124,23 @@ let Engine = (() => {
 		markCont = 0,
 		tileDefaultTop,
 		tileDefaultLeft,
+		pointsGameOver = 0,
 		gameRound = 1,
 		winWithOkey = 0,
 		winWithDouble = 0,
 		handleDouble = 0,
 		doubleHandleTo = 0,
-		handleItems = [];
+		handleItems = [],
+		getOkeyKont = 0;
 
 	let openLimitG = 101,
 		openLimitD = 5,
 		punishOffset = 101,
 		openStatusSort = [0, 0, 0, 0, 0],
 		openStatusDouble = [0, 0, 0, 0, 0],
-		openPunish = [0, 0, 0, 0, 0];
+		openPunish = [0, 0, 0, 0, 0],
+		openAllHand = 0,
+		PointOkeyCont = 1;
 
 	let data;
 	
@@ -143,13 +159,15 @@ let Engine = (() => {
 	let boardTilesVir;
 	let markOkey = 0;
 	let activePlayerCont = 1,
+		winnerPlayer = 1,
+		winnerPlayer1 = 0,
 		firstOpenCont = 0,
-		laps;
+		laps,
+		Indicator = 0;
 	let okeyCont = 0;
 	let goDouble = 0;
 	let perFull = [];
 	let perHalf = [];
-	let boardLeft;
 	let tileW;
 	let virtualMove = 0;
 
@@ -199,7 +217,138 @@ let Engine = (() => {
 			// save state
 			this._state = state;
 
+
 			data = this._state.table.data;
+
+			laps = 0;
+			virtualMove = 0;
+			if (gameRound == 1) {
+				this.setPoint(selectPoint);
+			}
+			pointsGameOver = 0;
+			clearTimeout(timmerAI);
+			clearTimeout(timmerNextPlayer);
+			clearTimeout(timmerGameOver);
+			openAllHand = 0;
+			settingsCont = 0;
+			PointOkeyCont = 0;
+			AIStatus = 0;
+			AIcont = 0;
+			activePlayer = 1;
+			winnerPlayer = 1;
+			activePlayerCont = 1;
+			winnerPlayer1 = 0;
+			firstOpenCont = 0;
+	let openLimit = openLimitG;
+	let openLimitDouble = openLimitD;
+	let openLimitLast = openLimitG;
+	let openLimitDoubleLast = openLimitD;
+	openPunish = [0, 0, 0, 0, 0];
+	openStatusSort = [0, 0, 0, 0, 0];
+	openStatusDouble = [0, 0, 0, 0, 0];
+	getOkeyKont = 0;
+	leftHandCont = 0;
+	leftHandContTemp = 0;
+	leftHandTileTemp = 0;
+	contOpen = 0;
+	goDouble = 0;
+	markCont = 0;
+	clickCont = 1;
+	tableUser1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUser2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUser3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUser4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUserTiles1 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUserTiles2 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUserTiles3 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableUserTiles4 = new Array(7).fill(0).map(() => new Array(13).fill(0));
+	tableDoubleUser1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUser2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUser3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUser4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUserTiles1 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUserTiles2 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUserTiles3 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tableDoubleUserTiles4 = new Array(14).fill(0).map(() => new Array(2).fill(0));
+	tilesLast = 105;
+	tilesLeft = [];
+	if (settingsType == 1) tileLimit = 14;
+	if (settingsType == 2) tileLimit = 21;
+	if (settingsType == 3) tileLimit = 14;
+	tileLimits = [0, tileLimit, tileLimit, tileLimit, tileLimit];
+	tableH = [0, 0, 0, 0, 0];
+	tableHdouble = [0, 0, 0, 0, 0];
+	sayTableTiles = 0;
+	Tiles.okey = 0;
+	gosterge = 0;
+	if (settingsHelp == 0) {
+		markOkey = 0;
+	}
+	if (settingsHelp == 1) {
+		markOkey = 1;
+	}
+	winWithOkey = 0;
+	winWithDouble = 0;
+	Indicator = 0;
+	handleDouble = 0;
+	okeyCont = 0;
+	boardPlaces = Array(31).fill(0);
+	boardTiles = [];
+	boardPlaces1 = Array(31).fill(0);
+	boardTiles1 = [];
+	boardPlaces2 = Array(31).fill(0);
+	boardTiles2 = [];
+	boardPlaces3 = Array(31).fill(0);
+	boardTiles3 = [];
+	boardPlaces4 = Array(31).fill(0);
+	boardTiles4 = [];
+	boardTilesVir = [];
+	area1Count = 0;
+	area1items = [];
+	area2Count = 0;
+	area2items = [];
+	area3Count = 0;
+	area3items = [];
+	area4Count = 0;
+	area4items = [];
+	gameOver = 0;
+	gameMoveCont = 1;
+	handleItems = [];
+	let tileW = 100;
+	let tileH = tileW * 1.45;
+	if (settingsType == 1) {
+		tileDefaultTop = tileH * 3.7;
+		tileDefaultLeft = tileW * 8.6;
+	} else {
+		tileDefaultTop = tileH * 4.8;
+		tileDefaultLeft = tileW * 10.5;
+	}
+	boardLeft2 = tileW * 17.2;
+	boardTop2 = tileH * 5;
+	boardLeft2 = tileW * 17.2;
+	boardTop2 = tileH * 5;
+	boardLeft3 = tileW * 8;
+	boardTop3 = -tileH;
+	boardLeft4 = -tileW;
+	boardTop4 = tileH * 5;
+	var _0x5f031e = 0;
+	for (let i=1; i<=8; i++) {
+		for (let j=1; j<=13; j++) {
+			var _0xf34c82 = " ";
+			let stone = parseInt(data[_0x5f031e].substr(1, 2));
+			let color1 = data[_0x5f031e].substr(0, 1);
+			if (stone == 0) stone = 'R';
+			_0x5f031e++;
+		}
+	}
+	for (let j=104; j<=105; j++) {
+		var _0xf34c82 = " ";
+		let stone = parseInt(data[_0x5f031e].substr(1, 2));
+		let color1 = data[_0x5f031e].substr(0, 1);
+		if (stone == 0) stone = 'R';
+		_0x5f031e++;
+	}
+
 			tilesLeft = data.slice();
 
 			// deliver tiles
@@ -378,22 +527,18 @@ let Engine = (() => {
 			APP.content.find(`.info .tiles.left .tile`).data({ n: tilesLeft.length });
 		},
 		place(tileId, pos, seat) {
-			var boardTop = 0;
-			var boardDiff = 0;
-			var _0x538492;
-			var _0x4f9f29;
-			if (!seat) {
-				seat = activePlayer;
-			}
+			// var boardTop = 0;
+			// var boardDiff = 0;
+			// var _0x538492;
+			// var _0x4f9f29;
+			if (!seat) seat = activePlayer;
+			
 			let y1 = pos;
-			if (pos > 16) {
-				y1 = pos - 16;
-			}
-			_0x538492 = boardLeft + (y1 - 1) * tileW;
-			_0x4f9f29 = boardTop;
-			if (pos > 16) {
-				_0x4f9f29 = boardTop + boardDiff;
-			}
+			if (pos > 16) y1 = pos - 16;
+			// _0x538492 = boardLeft + (y1 - 1) * tileW;
+			// _0x4f9f29 = boardTop;
+			// if (pos > 16) _0x4f9f29 = boardTop + boardDiff;
+
 			try {
 				if (seat == 1) {
 					// $(tileId).children[0].style.display = "block";
@@ -413,9 +558,26 @@ let Engine = (() => {
 					// $(tileId).style.visibility = "hidden";
 				}
 				boardPlaces[pos] = tileId;
-				boardTiles[pos - 1] = data[_0x363bc5];
+				boardTiles[pos-1] = data[_0x363bc5];
 				if (virtualMove == 0) {
 					this.updateBoards();
+					if (seat == 1) {
+						// $(_0x5595c5).style.left = _0x538492 + 'px';
+						// $(_0x5595c5).style.top = _0x4f9f29 + 'px';
+					}
+					if (seat == 2) {
+						console.log("seat 2");
+						// $(_0x5595c5).style.left = boardLeft2 + 'px';
+						// $(_0x5595c5).style.top = boardTop2 + 'px';
+					}
+					if (seat == 3) {
+						// $(_0x5595c5).style.left = boardLeft3 + 'px';
+						// $(_0x5595c5).style.top = boardTop3 + 'px';
+					}
+					if (seat == 4) {
+						// $(_0x5595c5).style.left = boardLeft4 + 'px';
+						// $(_0x5595c5).style.top = boardTop4 + 'px';
+					}
 				}
 			} catch {
 				console.log("hata:" + tileId);
@@ -647,10 +809,10 @@ let Engine = (() => {
 				boardTiles = boardTiles1.slice();
 				boardPlaces = boardPlaces1.slice();
 				if (_0x4b4905 == 1) {
-					check_win();
+					this.checkWin();
 				}
 				if (_0x4b4905 == 2) {
-					check_win_double();
+					this.checkWinDouble();
 				}
 				UserSeri = User1Seri.slice();
 				UserDouble = User1Double.slice();
@@ -661,10 +823,10 @@ let Engine = (() => {
 				boardTiles = boardTiles2.slice();
 				boardPlaces = boardPlaces2.slice();
 				if (_0x4b4905 == 1) {
-					check_win();
+					this.checkWin();
 				}
 				if (_0x4b4905 == 2) {
-					check_win_double();
+					this.checkWinDouble();
 				}
 				UserSeri = User2Seri.slice();
 				UserDouble = User2Double.slice();
@@ -675,10 +837,10 @@ let Engine = (() => {
 				boardTiles = boardTiles3.slice();
 				boardPlaces = boardPlaces3.slice();
 				if (_0x4b4905 == 1) {
-					check_win();
+					this.checkWin();
 				}
 				if (_0x4b4905 == 2) {
-					check_win_double();
+					this.checkWinDouble();
 				}
 				UserSeri = User3Seri.slice();
 				UserDouble = User3Double.slice();
@@ -689,10 +851,10 @@ let Engine = (() => {
 				boardTiles = boardTiles4.slice();
 				boardPlaces = boardPlaces4.slice();
 				if (_0x4b4905 == 1) {
-					check_win();
+					this.checkWin();
 				}
 				if (_0x4b4905 == 2) {
-					check_win_double();
+					this.checkWinDouble();
 				}
 				UserSeri = User4Seri.slice();
 				UserDouble = User4Double.slice();
@@ -701,10 +863,10 @@ let Engine = (() => {
 			}
 			if (UserTotal == 0 && _0x4b4905 == 1 || UserTotalDouble == 0 && _0x4b4905 == 2) {
 				if (_0x4b4905 == 1 && _0x139c25 == 1 && AIStatus == 0) {
-					popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
+					this.popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
 				}
 				if (_0x4b4905 == 2 && _0x139c25 == 1 && AIStatus == 0) {
-					popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
+					this.popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
 				}
 				return 0;
 			}
@@ -712,29 +874,29 @@ let Engine = (() => {
 			var _0x5869f9 = boardTiles.filter(e => e != '').slice();
 			if (_0x5869f9.length <= tileLimits[_0x139c25]) {
 				if (_0x139c25 == 1) {
-					popMessage("Önce yerden tas almaniz gerekiyor!");
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (_0x488971.length > tileLimit) {
-				popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
+				this.popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
 			}
 			if (_0x4b4905 == 1 && openStatusDouble[_0x139c25] == 1) {
 				if (_0x139c25 == 1 && AIStatus == 0) {
-					popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
+					this.popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
 					openPunish[_0x139c25] = 0;
 				}
 				return 0;
 			}
 			if (_0x4b4905 == 2 && openStatusSort[_0x139c25] == 1 && handleDouble == 0) {
 				if (_0x139c25 == 1 && AIStatus == 0) {
-					popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
+					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
 				}
 				return 0;
 			}
 			if (_0x4b4905 == 1 && UserTotal < openLimit && openStatusSort[_0x139c25] == 0) {
 				if (_0x139c25 == 1 && AIStatus == 0) {
-					popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
+					this.popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
 					openPunish[_0x139c25] = 1;
 				}
 				if (_0x139c25 != 1 || AIStatus == 1) {
@@ -743,7 +905,7 @@ let Engine = (() => {
 			}
 			if (_0x4b4905 == 2 && UserTotalDouble < openLimitDouble && openStatusDouble[_0x139c25] == 0 && handleDouble == 0) {
 				if (_0x139c25 == 1 && AIStatus == 0) {
-					popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
+					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
 					openPunish[_0x139c25] = 1;
 				}
 				if (_0x139c25 != 1 || AIStatus == 1) {
@@ -751,12 +913,12 @@ let Engine = (() => {
 				}
 			}
 			if (UserTotalDouble == 0 && _0x4b4905 == 2 && _0x139c25 == 1 && AIStatus == 0) {
-				popMessage("Cift acabilecek tasiniz yok!");
+				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
 			var _0x91c7d2;
 			if (_0x4b4905 == 1) {
 				if (openStatusSort[_0x139c25] == 0) {
-					popMessage(users[_0x139c25] + " seri acti: " + UserTotal);
+					this.popMessage(users[_0x139c25] + " seri acti: " + UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;
 						openLimit = UserTotal * 1 + 1;
@@ -773,7 +935,7 @@ let Engine = (() => {
 			}
 			if (_0x4b4905 == 2) {
 				if (openStatusDouble[_0x139c25] == 0) {
-					popMessage(users[_0x139c25] + " cift acti : " + UserTotalDouble);
+					this.popMessage(users[_0x139c25] + " cift acti : " + UserTotalDouble);
 					if (settingsIncrease == 1 && UserTotalDouble >= openLimitDouble) {
 						openLimitDoubleLast = openLimitDouble;
 						openLimitDouble = UserTotalDouble * 1 + 1;
@@ -812,7 +974,7 @@ let Engine = (() => {
 						_0x897419 = boardTiles.indexOf("000");
 					}
 					if (_0x897419 !== -1) {
-						moveToTable(_0x484f1e, _0x91c7d2[i], -1, -1, _0x4b4905);
+						this.moveToTable(_0x484f1e, _0x91c7d2[i], -1, -1, _0x4b4905);
 						tileLimits[_0x139c25]--;
 					}
 				} else {
@@ -827,25 +989,25 @@ let Engine = (() => {
 				}
 				var _0x4fe46a = activePlayer;
 				activePlayer = _0x139c25;
-				update_boards();
+				this.updateBoards();
 				activePlayer = _0x4fe46a;
 			}
 			var _0x2c9a7e = boardTiles.filter(e => e != '').slice();
 			if (_0x2c9a7e.length == 0) {
 				if (_0x139c25 != 1 || AIStatus == 1) {
-					collectItBack();
+					this.collectItBack();
 				} else {
-					popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
+					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
 				}
 			}
 			handleDouble = 0;
 			if (_0x139c25 == 1) {
 				markIt(1);
 				if (_0x4b4905 == 1) {
-					check_win();
+					this.checkWin();
 				}
 				if (_0x4b4905 == 2) {
-					check_win_double();
+					this.checkWinDouble();
 				}
 			}
 		},
@@ -2708,18 +2870,11 @@ let Engine = (() => {
 				}
 			} else {
 				var discard;
-				if (seat == 1) {
-					discard = 4;
-				}
-				if (seat == 2) {
-					discard = 1;
-				}
-				if (seat == 3) {
-					discard = 2;
-				}
-				if (seat == 4) {
-					discard = 3;
-				}
+				if (seat == 1) discard = 4;
+				if (seat == 2) discard = 1;
+				if (seat == 3) discard = 2;
+				if (seat == 4) discard = 3;
+
 				if (this.checkLeft(discard) == 1) {
 					var _0x54fe2a = boardTiles.lastIndexOf('') * 1 + 1;
 					if (seat == 1) {
@@ -3088,21 +3243,21 @@ let Engine = (() => {
 				user3Point = pointLimit;
 				user4Point = pointLimit;
 			}
-			write_point();
+			this.writePoint();
 			for (let i=1; i<points.length; i++) {
-				$('point-' + i).innerHTML = points[i];
-				$("point-" + i).classList.remove("point-active");
-				$('point-' + i).classList.add("point-passive");
+				// $('point-' + i).innerHTML = points[i];
+				// $("point-" + i).classList.remove("point-active");
+				// $('point-' + i).classList.add("point-passive");
 			}
-			$('point-' + num).classList.remove("point-passive");
-			$('point-' + num).classList.add("point-active");
+			// $('point-' + num).classList.remove("point-passive");
+			// $('point-' + num).classList.add("point-active");
 			if (settingsType == 1) {
-				$("points-first").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + '</span>';
+				// $("points-first").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + "</span>" + "<span>" + pointLimit + '</span>';
 			}
-			$("points-detail").innerHTML = '';
-			$("points-last").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>';
+			// $("points-detail").innerHTML = '';
+			// $("points-last").innerHTML = "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>' + "<span>" + pointLimit + '</span>';
 			if (settingsType != 1) {
-				$("points-first").innerHTML = '';
+				// $("points-first").innerHTML = '';
 			}
 		},
 		message(num, _0x38f6ec) {

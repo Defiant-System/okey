@@ -41,6 +41,11 @@
 				Engine.arrange(1, 2);
 				Engine.updateRack();
 				break;
+			case "draw-stack-tile":
+				Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).cssSequence("draw-tile", "transitionend", el => {
+					el.removeClass("draw-tile");
+				});
+				break;
 			case "put-tile-back":
 				let dOffset = Self.els.el.find(".discard .player-4").offset(".board"),
 					rOffset = Self.els.rack.offset(".board"),

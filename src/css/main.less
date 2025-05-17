@@ -364,6 +364,11 @@ content {
 			.seat {
 				top: 13px;
 				left: 325px;
+
+				.hole .tile {
+					top: 369px;
+					left: 247px;
+				}
 			}
 
 			.melded {
@@ -381,6 +386,11 @@ content {
 			.seat {
 				top: 123px;
 				left: 16px;
+
+				.hole .tile {
+					top: 159px;
+					left: 706px;
+				}
 			}
 
 			.melded {
@@ -398,11 +408,54 @@ content {
 			.seat {
 				top: 123px;
 				left: -124px;
+
+				.hole .tile {
+					top: 159px;
+					left: -214px;
+				}
 			}
 
 			.melded {
 				top: 93px;
 				left: 1px;
+			}
+		}
+
+		&.top,
+		&.left,
+		&.right {
+			.hole {
+				--dur: 350ms;
+				min-height: 0;
+				transition: min-height var( --dur ) ease-in-out;
+
+				&.draw-tile {
+					min-height: 1px;
+
+					.tile {
+						visibility: visible;
+						opacity: 1;
+						top: 0;
+						left: 0;
+					}
+				}
+			}
+
+			.tile {
+				// pointer-events: none;
+				visibility: hidden;
+				opacity: 0;
+				position: absolute;
+				z-index: 3;
+				width: 56px;
+				height: 73px;
+				box-shadow: 0 0 0 1px #0002,
+							0 1px 3px #0004,
+							0 3px 5px #0005,
+							inset 0 1px 0 #fff,
+							inset 0 -1px 0 #0002;
+				transition: top var( --dur ) ease-in-out,
+							left var( --dur ) ease-in-out;
 			}
 		}
 
@@ -620,6 +673,7 @@ content {
 			}
 		}
 
+		&.blank,
 		&.okey {
 			background-image: url(~/icons/tile-back.png);
 
