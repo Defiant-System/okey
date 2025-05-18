@@ -29,6 +29,7 @@
 			sOffset,
 			dOffset,
 			rows,
+			rI,
 			css,
 			str,
 			pEl,
@@ -114,10 +115,15 @@
 				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
 				rows = [[]];
+				rI = +(Self.els.common.series.data("rows") || 0);
+
 				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
 					else rows[rows.length-1].push(item);
 				});
+				// remove empty arrays
+				rows = rows.filter(r => r.length);
+
 				rows.map((row, y) => {
 					let i,
 						il = row.length,
@@ -132,28 +138,33 @@
 								default: i = Math.min(13-il, num-1);
 							}
 						};
-						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": str.length })
+					.data({ rows: rows.length })
 					.append(str.join(""));
 				// start anim
 				setTimeout(() =>
-					Self.els.common.series.cssSequence("anim-end", "transitionend", el =>
-						el.removeClass("anim-start anim-end").css({ "--aT": "" })), 100);
+					Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
+						el.removeClass("anim-start anim-end").css({ "--aT": "" });
+					}), 100);
 				break;
 			case "meld-doubles":
 				dOffset = Self.els.common.doubles.offset(".board");
 				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
 				rows = [[]];
+				rI = +(Self.els.common.doubles.data("rows") || 0);
 
 				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
 					else rows[rows.length-1].push(item);
 				});
+				// remove empty arrays
+				rows = rows.filter(r => r.length);
 
 				rows.map((row, y) => {
 					let i = 0,
@@ -161,17 +172,19 @@
 						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
 						let { id, clr, num } = Engine.toParts(col);
-						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
 				Self.els.common.doubles
 					.addClass("anim-start")
 					.css({ "--aT": str.length })
+					.data({ rows: rows.length })
 					.append(str.join(""));
 				// start anim
 				setTimeout(() =>
-					Self.els.common.doubles.cssSequence("anim-end", "transitionend", el =>
-						el.removeClass("anim-start anim-end").css({ "--aT": "" })), 100);
+					Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
+						el.removeClass("anim-start anim-end").css({ "--aT": "" });
+					}), 100);
 				break;
 		}
 	},

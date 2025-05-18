@@ -3,7 +3,6 @@ let Engine = (() => {
 
 	let APP;
 	let Colors = ["green", "red",  "blue", "yellow", "black"];
-
 	let users = ['', 'Hakan', 'Adam', 'Denise', 'Yasmin'];
 
 	let activePlayer = 1;
@@ -918,7 +917,6 @@ let Engine = (() => {
 				}
 			}
 
-
 			if (UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
 				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
@@ -975,7 +973,7 @@ let Engine = (() => {
 			if (handleDouble == 1) {
 				_0x484f1e = doubleHandleTo;
 			}
-
+			
 			// animate set of tiles
 			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
 			
@@ -2951,7 +2949,7 @@ let Engine = (() => {
 					// UI animation
 					APP.game.dispatch({ type: "draw-stack-tile", seat })
 				}
-				if (seat === 4) return;
+				// if (seat === 4) return;
 				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
 					this.arrange(seat);
