@@ -108,7 +108,9 @@
 				str = [];
 				event.rows.map((row, y) => {
 					let i,
-						il = row.length;
+						il = row.length,
+						fy = sOffset.top - dOffset.top,
+						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
 						let { id, clr, num } = Engine.toParts(col);
 						if (!i) {
@@ -118,8 +120,6 @@
 								default: i = Math.min(13-il, num-1);
 							}
 						};
-						let fy = sOffset.top - dOffset.top,
-							fx = sOffset.left - dOffset.left;
 						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
@@ -129,20 +129,30 @@
 					.append(str.join(""));
 				// start anim
 				setTimeout(() =>
-					Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
-						el.removeClass("anim-start anim-end").css({ "--aT": "" });
-					}), 100);
+					Self.els.common.series.cssSequence("anim-end", "transitionend", el =>
+						el.removeClass("anim-start anim-end").css({ "--aT": "" })), 100);
 				break;
 			case "meld-doubles":
+				dOffset = Self.els.common.doubles.offset(".board");
+				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
 				event.rows.map((row, y) => {
-					let i = 0;
+					let i = 0,
+						fy = sOffset.top - dOffset.top,
+						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
 						let { id, clr, num } = Engine.toParts(col);
-						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i};"></span>`);
+						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
-				Self.els.common.doubles.append(str.join(""));
+				Self.els.common.doubles
+					.addClass("anim-start")
+					.css({ "--aT": str.length })
+					.append(str.join(""));
+				// start anim
+				setTimeout(() =>
+					Self.els.common.doubles.cssSequence("anim-end", "transitionend", el =>
+						el.removeClass("anim-start anim-end").css({ "--aT": "" })), 100);
 				break;
 		}
 	},
