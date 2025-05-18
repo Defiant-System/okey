@@ -38,22 +38,21 @@ let Test = {
 		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 3 }), 1000);
 		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
 
+		
+		setTimeout(() => APP.game.dispatch({ type: "user-initial-meld", seat: 3, total: 115 }), 500);
+
+
 		// setTimeout(() => {
-		// 	let rows = [
-		// 			[106, 107, 108, 109],
-		// 			[210, 211, 212],
-		// 			[113, 813, 313, 413],
-		// 			[112, 312, 412, 212],
-		// 			[111, 311, 411, 211],
-		// 			[110, 310, 410, 210],
-		// 		];
-		// 	APP.game.dispatch({ type: "meld-series", from: 2, rows });
+		// 	let set = [106, 107, 108, 109, '', 210, 211, 212, '', 113, 813, 313, 413, '', 112, 312, 412, 212, '', 111, 311, 411, 211, '', 110, 310, 410, 210];
+		// 	APP.game.dispatch({ type: "meld-series", from: 2, set });
 		// }, 1000);
 
 		// setTimeout(() => {
-		// 	let rows = [[312, 312], [101, 101], [203, 203], [406, 406], [107, 107]];
-		// 	APP.game.dispatch({ type: "meld-doubles", from: 4, rows });
+		// 	let set = [312, 312, '', 101, 101, '', 203, 203, '', 406, 406, '', 107, 107];
+		// 	APP.game.dispatch({ type: "meld-doubles", from: 4, set });
 		// }, 1000);
+
+
 
 		// setTimeout(() => {
 		// 	let Self = APP.game,

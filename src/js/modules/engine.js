@@ -923,7 +923,9 @@ let Engine = (() => {
 			var _0x91c7d2;
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
-					console.log(users[seat] + " seri acti: " + UserTotal);
+					// UI update
+					APP.game.dispatch({ type: "user-initial-meld", seat, total: UserTotal });
+
 					this.popMessage(users[seat] + " seri acti: " + UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;

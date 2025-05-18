@@ -28,6 +28,7 @@
 			Self = APP.game,
 			sOffset,
 			dOffset,
+			rows,
 			css,
 			str,
 			pEl,
@@ -102,11 +103,22 @@
 					})
 					.css(css);
 				break;
+			case "user-initial-meld":
+				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .scored`);
+				el = pEl.find(".tile");
+				event.total.toString().split("").map((v, i) => el.get(i).data({ v }));
+				pEl.removeClass("hidden").addClass("pop-tiles");
+				break;
 			case "meld-series":
 				dOffset = Self.els.common.series.offset(".board");
 				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
-				event.rows.map((row, y) => {
+				rows = [[]];
+				event.set.map(item => {
+					if (item == "") rows.push([]);
+					else rows[rows.length-1].push(item);
+				});
+				rows.map((row, y) => {
 					let i,
 						il = row.length,
 						fy = sOffset.top - dOffset.top,
@@ -136,7 +148,14 @@
 				dOffset = Self.els.common.doubles.offset(".board");
 				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
-				event.rows.map((row, y) => {
+				rows = [[]];
+
+				event.set.map(item => {
+					if (item == "") rows.push([]);
+					else rows[rows.length-1].push(item);
+				});
+
+				rows.map((row, y) => {
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
