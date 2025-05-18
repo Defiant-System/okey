@@ -39,7 +39,7 @@ let Test = {
 		// setTimeout(() => APP.game.dispatch({ type: "draw-stack-tile", seat: 4 }), 1500);
 
 		
-		setTimeout(() => APP.game.dispatch({ type: "user-initial-meld", seat: 3, total: 115 }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "user-initial-meld", seat: 3, total: 115 }), 500);
 
 
 		// setTimeout(() => {

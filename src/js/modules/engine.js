@@ -873,7 +873,7 @@ let Engine = (() => {
 				}
 				return 0;
 			}
-			console.log(seat, UserTotal, sortType);
+			// console.log(seat, UserTotal, sortType);
 
 			var _0x488971 = UserSeri.filter(e => e != '').slice();
 			var _0x5869f9 = boardTiles.filter(e => e != '').slice();
@@ -920,13 +920,13 @@ let Engine = (() => {
 			if (UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
 				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
-			var _0x91c7d2;
+			var setTiles;
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
 					// UI update
 					APP.game.dispatch({ type: "user-initial-meld", seat, total: UserTotal });
 
-					this.popMessage(users[seat] + " seri acti: " + UserTotal);
+					// this.popMessage(users[seat] + " seri acti: " + UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;
 						openLimit = UserTotal * 1 + 1;
@@ -934,7 +934,7 @@ let Engine = (() => {
 					}
 				}
 				openStatusSort[seat] = 1;
-				_0x91c7d2 = UserSeri.slice();
+				setTiles = UserSeri.slice();
 				if (seat == 1 && UserTotal >= openLimitLast) {
 					this.buttonActivePassive("handle-sort", 1);
 					this.buttonActivePassive("handle-double", 1);
@@ -961,7 +961,7 @@ let Engine = (() => {
 						firstOpenCont = 1;
 					}
 				}
-				_0x91c7d2 = UserDouble.slice();
+				setTiles = UserDouble.slice();
 			}
 			if (!collect[0]) {
 				collect = [];
@@ -972,19 +972,24 @@ let Engine = (() => {
 			if (handleDouble == 1) {
 				_0x484f1e = doubleHandleTo;
 			}
-			console.log(seat, _0x91c7d2);
-			console.log(boardPlaces, boardTiles);
-			for (let i=0; i<_0x91c7d2.length; i++) {
-				if (_0x91c7d2[i] != '') {
-					var _0x897419 = boardTiles.indexOf(String(_0x91c7d2[i]));
-					if (_0x91c7d2[i] - _0x91c7d2[i] % 100 == 900) {
+
+			if (!setTiles) return;
+			
+			// animate set of tiles
+			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
+			// console.log(seat, "SET", setTiles);
+			// console.log(boardPlaces, boardTiles);
+			for (let i=0; i<setTiles.length; i++) {
+				if (setTiles[i] != '') {
+					var _0x897419 = boardTiles.indexOf(String(setTiles[i]));
+					if (setTiles[i] - setTiles[i] % 100 == 900) {
 						_0x897419 = boardTiles.indexOf(String(okey));
 					}
-					if (_0x91c7d2[i] - _0x91c7d2[i] % 100 == 800) {
+					if (setTiles[i] - setTiles[i] % 100 == 800) {
 						_0x897419 = boardTiles.indexOf("000");
 					}
 					if (_0x897419 !== -1) {
-						this.moveToTable(_0x484f1e, _0x91c7d2[i], -1, -1, sortType);
+						this.moveToTable(_0x484f1e, setTiles[i], -1, -1, sortType);
 						tileLimits[seat]--;
 					}
 				} else {

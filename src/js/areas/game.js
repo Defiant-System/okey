@@ -114,7 +114,7 @@
 				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
 				rows = [[]];
-				event.set.map(item => {
+				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
 					else rows[rows.length-1].push(item);
 				});
@@ -150,7 +150,7 @@
 				str = [];
 				rows = [[]];
 
-				event.set.map(item => {
+				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
 					else rows[rows.length-1].push(item);
 				});
