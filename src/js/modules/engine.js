@@ -917,9 +917,12 @@ let Engine = (() => {
 					return 0;
 				}
 			}
+
+
 			if (UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
 				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
+
 			var setTiles;
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
@@ -973,12 +976,9 @@ let Engine = (() => {
 				_0x484f1e = doubleHandleTo;
 			}
 
-			if (!setTiles) return;
-			
 			// animate set of tiles
 			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
-			// console.log(seat, "SET", setTiles);
-			// console.log(boardPlaces, boardTiles);
+			
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
 					var _0x897419 = boardTiles.indexOf(String(setTiles[i]));
@@ -2633,7 +2633,7 @@ let Engine = (() => {
 				}
 			}
 			if (_0x2bbb42 == 0 && _0x1c59dd == 0) {
-				this.putToTable(_0x2019da);
+				this.putOkeyToTable(_0x2019da);
 			}
 			if (_0x1c59dd == 0) {
 				this.markIt(_0x2019da);
