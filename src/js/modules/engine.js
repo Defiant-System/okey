@@ -974,6 +974,7 @@ let Engine = (() => {
 				_0x484f1e = doubleHandleTo;
 			}
 			
+			if (seat === 4) console.log(setTiles);
 			// animate set of tiles
 			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
 			
@@ -2787,7 +2788,16 @@ let Engine = (() => {
 			// $("user-" + activePlayer).classList.add("active");
 
 			APP.game.els.el.find(`.seat.highlight`).removeClass("highlight");
-			APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`).addClass("highlight");
+			if (activePlayer === 1) {
+				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
+					.data({ status: "THINKING" })
+					.cssSequence("thinking", "transitionend", el => {
+						console.log("force move");
+					});
+			} else {
+				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
+					.addClass("highlight");
+			}
 
 			collect = [];
 			collectPlaces = [];
