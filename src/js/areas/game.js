@@ -26,6 +26,9 @@
 	dispatch(event) {
 		let APP = okey,
 			Self = APP.game,
+			sOffset,
+			dOffset,
+			css,
 			str,
 			pEl,
 			el;
@@ -81,12 +84,12 @@
 				}, 10);
 				break;
 			case "put-tile-back":
-				let dOffset = Self.els.el.find(".discard .player-4").offset(".board"),
-					rOffset = Self.els.rack.offset(".board"),
-					css = {
-						top: dOffset.top - rOffset.top + 5,
-						left: dOffset.left - rOffset.left + 5,
-					}
+				dOffset = Self.els.el.find(".discard .player-4").offset(".board");
+				rOffset = Self.els.rack.offset(".board");
+				css = {
+					top: dOffset.top - rOffset.top + 5,
+					left: dOffset.left - rOffset.left + 5,
+				}
 				// hide button
 				event.el.addClass("hidden");
 				// animate tile back to discard pile
@@ -99,22 +102,47 @@
 					})
 					.css(css);
 				break;
-			case "meld-tiles":
+			case "meld-series":
+				dOffset = Self.els.common.series.offset(".board");
+				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
 				str = [];
 				event.rows.map((row, y) => {
-					let i, il = row.length;
+					let i,
+						il = row.length;
 					row.map((col, x) => {
 						let { id, clr, num } = Engine.toParts(col);
 						if (!i) {
-							// i = num - 1;
-							i = Math.min(13-il, num-1);
-							if (num == 11) i = 10-(il>>1);
-							if (num == 10) i = 9-(il>>1);
+							switch (num) {
+								case 10: i = 9-(il>>1); break;
+								case 11: i = 10-(il>>1); break;
+								default: i = Math.min(13-il, num-1);
+							}
 						};
+						let fy = sOffset.top - dOffset.top,
+							fx = sOffset.left - dOffset.left;
+						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
+					});
+				});
+				Self.els.common.series
+					.addClass("anim-start")
+					.css({ "--aT": str.length })
+					.append(str.join(""));
+				// start anim
+				setTimeout(() =>
+					Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
+						el.removeClass("anim-start anim-end").css({ "--aT": "" });
+					}), 100);
+				break;
+			case "meld-doubles":
+				str = [];
+				event.rows.map((row, y) => {
+					let i = 0;
+					row.map((col, x) => {
+						let { id, clr, num } = Engine.toParts(col);
 						str.push(`<span class="tile ${clr}" data-v="${num}" style="--y: ${y}; --x: ${x+i};"></span>`);
 					});
 				});
-				Self.els.common.series.append(str.join(""));
+				Self.els.common.doubles.append(str.join(""));
 				break;
 		}
 	},
