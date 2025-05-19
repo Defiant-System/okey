@@ -1,5 +1,5 @@
 
-let Engine = (() => {
+let { Engine, Tiles, AI } = (() => {
 
 	let APP;
 	let Colors = ["green", "red",  "blue", "yellow", "black"];
@@ -149,6 +149,7 @@ let Engine = (() => {
 		PointOkeyCont = 1;
 
 	let data;
+	let tileIndex = 0;
 	
 	let boardTiles = [],
 		boardTiles1,
@@ -225,9 +226,6 @@ let Engine = (() => {
 		restore(state) {
 			// save state
 			this._state = state;
-
-
-			data = this._state.table.data;
 
 			laps = 0;
 			virtualMove = 0;
@@ -341,24 +339,9 @@ let Engine = (() => {
 			boardTop3 = -tileH;
 			boardLeft4 = -tileW;
 			boardTop4 = tileH * 5;
-			var _0x5f031e = 0;
-			for (let i=1; i<=8; i++) {
-				for (let j=1; j<=13; j++) {
-					var _0xf34c82 = " ";
-					let stone = parseInt(data[_0x5f031e].substr(1, 2));
-					let color1 = data[_0x5f031e].substr(0, 1);
-					if (stone == 0) stone = 'R';
-					_0x5f031e++;
-				}
-			}
-			for (let j=104; j<=105; j++) {
-				var _0xf34c82 = " ";
-				let stone = parseInt(data[_0x5f031e].substr(1, 2));
-				let color1 = data[_0x5f031e].substr(0, 1);
-				if (stone == 0) stone = 'R';
-				_0x5f031e++;
-			}
 
+
+			data = this._state.table.data;
 			tilesLeft = data.slice();
 
 			// deliver tiles
@@ -395,21 +378,6 @@ let Engine = (() => {
 			tiles.removeClass("temp");
 
 			this.sem();
-
-			/* a tile has been "drag and dropped"
-			let tiles = Array(32).fill("");
-			APP.game.els.rack.find(".tile").map(t => {
-				let value = t.getAttribute("data-id"),
-					y = parseInt(t.offsetTop / 73),
-					x = parseInt(t.offsetLeft / 56),
-					index = (y * 16) + x;
-				tiles[index] = value;
-			});
-			*/
-
-			// if (this.checkWin() || this.checkWinDouble()) {
-			// 	return console.log("game over");
-			// }
 		},
 		toParts(tile) {
 			let id = tile.toString(),
@@ -472,15 +440,15 @@ let Engine = (() => {
 			boardTiles4 = [];
 			var _0x2c717f = [1, 2, 3, 4, 12, 13, 14, 15, 16, 17, 18, 27, 28, 29, 30];
 			_0x2c717f = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-			var _0x53424a = 0;
+			tileIndex = 0;
 			activePlayer = 1;
 			boardTiles = [];
 			boardPlaces = [];
 			for (let i=0; i<=tileLimit; i++) {
-				boardTiles.push(data[_0x53424a]);
-				this.updateLeftTiles(data[_0x53424a]);
-				_0x53424a++;
-				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+				boardTiles.push(data[tileIndex]);
+				this.updateLeftTiles(data[tileIndex]);
+				tileIndex++;
+				this.place("tile-"+ tileIndex, _0x2c717f[i]);
 			}
 			boardTiles1 = boardTiles.slice();
 			boardPlaces1 = boardPlaces.slice();
@@ -488,10 +456,10 @@ let Engine = (() => {
 			boardTiles = [];
 			boardPlaces = [];
 			for (let i=0; i<tileLimit; i++) {
-				boardTiles.push(data[_0x53424a]);
-				this.updateLeftTiles(data[_0x53424a]);
-				_0x53424a++;
-				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+				boardTiles.push(data[tileIndex]);
+				this.updateLeftTiles(data[tileIndex]);
+				tileIndex++;
+				this.place("tile-"+ tileIndex, _0x2c717f[i]);
 			}
 			boardTiles2 = boardTiles.slice();
 			boardPlaces2 = boardPlaces.slice();
@@ -499,10 +467,10 @@ let Engine = (() => {
 			boardTiles = [];
 			boardPlaces = [];
 			for (let i=0; i<tileLimit; i++) {
-				boardTiles.push(data[_0x53424a]);
-				this.updateLeftTiles(data[_0x53424a]);
-				_0x53424a++;
-				this.place('tile-' + _0x53424a, _0x2c717f[i]);
+				boardTiles.push(data[tileIndex]);
+				this.updateLeftTiles(data[tileIndex]);
+				tileIndex++;
+				this.place("tile-"+ tileIndex, _0x2c717f[i]);
 			}
 			boardTiles3 = boardTiles.slice();
 			boardPlaces3 = boardPlaces.slice();
@@ -510,10 +478,10 @@ let Engine = (() => {
 			boardTiles = [];
 			boardPlaces = [];
 			for (let i=0; i<tileLimit; i++) {
-				boardTiles.push(data[_0x53424a]);
-				this.updateLeftTiles(data[_0x53424a]);
-				_0x53424a++;
-				this.place("tile-" + _0x53424a, _0x2c717f[i]);
+				boardTiles.push(data[tileIndex]);
+				this.updateLeftTiles(data[tileIndex]);
+				tileIndex++;
+				this.place("tile-"+ tileIndex, _0x2c717f[i]);
 			}
 			activePlayer = 1;
 
@@ -812,6 +780,7 @@ let Engine = (() => {
 		},
 		moveBack(el) {
 			console.log("moveBack", el);
+			throw "debug";
 			// clickCont = 0;
 			// $(el).style.transition = "all 0.5s";
 			// setTimeout(function () {
@@ -977,9 +946,6 @@ let Engine = (() => {
 				_0x484f1e = doubleHandleTo;
 			}
 			
-			// animate set of tiles
-			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
-			
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
 					var _0x897419 = boardTiles.indexOf(String(setTiles[i]));
@@ -1026,6 +992,8 @@ let Engine = (() => {
 					this.checkWinDouble();
 				}
 			}
+			// animate set of tiles
+			return APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
 		},
 		moveToTable(seat, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {
 			var _0x2a961e = String(_0x315c85);
@@ -2795,7 +2763,7 @@ let Engine = (() => {
 			collectPlaces = [];
 			collectTiles = [];
 		},
-		AI(seat) {
+		async AI(seat) {
 			if (gameOver == 1) return 0;
 	
 			AIcont = 1;
@@ -2806,7 +2774,7 @@ let Engine = (() => {
 				if (settingsType == 2 || settingsType == 3) { // 51 or 101
 					if (openStatusDouble[seat] == 0) {
 						this.arrange(seat);
-						this.putToTable(seat, 1);
+						await this.putToTable(seat, 1);
 					}
 					if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
 						this.getOkeyFromTable(seat);
@@ -2829,7 +2797,7 @@ let Engine = (() => {
 						this.arrange(seat, 2);
 					}
 					if (aiTiles.length > 1) {
-						this.putToTable(seat, 1);
+						await this.putToTable(seat, 1);
 					}
 					aiTiles = boardTiles.filter(e => e != '').slice();
 					if (aiTiles.length == 3) {
@@ -2837,7 +2805,7 @@ let Engine = (() => {
 					}
 					aiTiles = boardTiles.filter(e => e != '').slice();
 					if (aiTiles.length > 1) {
-						this.putToTable(seat, 2);
+						await this.putToTable(seat, 2);
 					}
 					aiTiles = boardTiles.filter(e => e != '').slice();
 					if (aiTiles.length < 1) {
@@ -3476,110 +3444,114 @@ let Engine = (() => {
 				$("messageBack").style.display = 'block';
 			}
 		},
-		dragStop(seat, tile) {
+		dragStop(seat, Drag) {
 			// if (dragCont == 1) {
 			// 	dragCont = 0;
 				boardTiles = boardTiles1.slice();
 				boardPlaces = boardPlaces1.slice();
 				var _0x5e26b1 = activePlayer;
 				activePlayer = 1;
-				var _0x13e5a0 = $(selectedTile).offsetLeft * 1 + $(selectedTile).offsetWidth / 2;
-				var _0x4a8d3c = $(selectedTile).offsetTop * 1;
-				var _0x542afe = $(selectedTile).offsetHeight;
-				var _0x382b44 = $("area-1").offsetLeft;
-				var _0x510c78 = $("area-1").offsetTop;
-				var _0x3b7da6 = $("area-4").offsetLeft;
-				var _0x4a828f = $('area-4').offsetTop;
-				if (_0x13e5a0 > tileDefaultLeft - tileW * 2 && _0x13e5a0 < tileDefaultLeft * 1 + tileW * 2 && _0x4a8d3c > tileDefaultTop - _0x542afe && _0x4a8d3c < tileDefaultTop * 1 + _0x542afe * 2) {
-					if (settingsType != 1) {
-						this.popMessage("Bitmek icin istakada kalan son tasinizi saq tarafa atmalisiniz!");
-					} else {
-						var _0x158c19 = boardPlaces.indexOf(selectedTile);
-						if (gameOver == 0) {
-							var _0x158c19 = boardPlaces.indexOf(selectedTile);
-							if (_0x158c19 !== -1) {
-								var _0x511d04 = boardPlaces[_0x158c19];
-								var _0x4871b4 = boardTiles[_0x158c19 - 1];
-								boardPlaces[_0x158c19] = 0;
-								boardTiles[_0x158c19 - 1] = '';
-							}
-							var _0x2c402d = selectedTile.split('-');
-							_0x2c402d = _0x2c402d[1];
-							if ((this.checkWin() || this.checkWinDouble()) && _0x158c19 > -1) {
-								if (data[_0x2c402d - 1] == Tiles.okey && winWithDouble == 1) {
-									this.playAudio(4);
-									winWithOkey = 1;
-									this.popMessage(users[activePlayer] + " Cifte Giderken Okey Atarak Bitti!", 0, 2);
-								} else {
-									if (data[_0x2c402d - 1] == Tiles.okey) {
-										this.playAudio(4);
-										this.popMessage(users[activePlayer] + " Okey Atarak Bitti!", 0, 2);
-										winWithOkey = 1;
-									} else {
-										if (winWithDouble == 1) {
-											this.playAudio(4);
-											this.popMessage(users[activePlayer] + " Cifte Giderek Bitti!", 0, 2);
-										}
-									}
-								}
-								boardPlaces[_0x158c19] = 0;
-								boardTiles[_0x158c19 - 1] = '';
-								this.updateBoards();
-								winnerPlayer = activePlayer;
-								this.gameOver(1);
-								return 0;
-							} else {
-								if (data[_0x2c402d - 1] == gosterge) {
-									var _0x18ae24 = 0;
-									if (Indicator != 0) {
-										this.popMessage("Gösterge Zaten Yapildi!");
-										_0x18ae24 = 1;
-									}
-									if (laps != 0 && _0x18ae24 == 0) {
-										this.popMessage("Gösterge Sadece Oyunun Basinda Yapilabilir!");
-										_0x18ae24 = 1;
-									}
-									if (settingsGameMode == 2) {
-										if (_0x18ae24 == 0) {
-											if (settingsIndicator == 1) {
-												this.popMessage(users[activePlayer] + " Gösterge Yapti!", 0, 2);
-												Indicator = 1;
-												this.changePoint(1);
-												this.playAudio(4);
-												setTimeout(() => {
-													this.pointsTable();
-												}, 1000);
-											} else {
-												this.popMessage("Gösterge Kapali! Ayarlardan acabilirsiniz.");
-											}
-										}
-									} else {
-										this.popMessage("Sadece Puanli Oyunda Gösterge Yapabilirsiniz!");
-									}
-								} else {
-									if (_0x158c19 > -1) {
-										this.popMessage("Henuz bitemediniz!");
-									}
-								}
-							}
-							if (_0x511d04) {
-								boardPlaces[_0x158c19] = _0x511d04;
-								boardTiles[_0x158c19 - 1] = _0x4871b4;
-							}
-						}
-					}
-				}
-				if (_0x13e5a0 > boardLeft && _0x4a8d3c + _0x542afe > boardTop) {
-					var _0x5534d2 = Math.ceil((_0x13e5a0 - boardLeft) / tileW);
-					if (_0x5534d2 < 1) {
-						_0x5534d2 = 1;
-					}
-					if (_0x5534d2 > 15) {
-						_0x5534d2 = 15;
-					}
-					if (_0x4a8d3c * 1 + _0x542afe / 1.5 > boardTop * 1 + boardDiff * 1) {
-						_0x5534d2 = 15 + _0x5534d2 * 1;
-					}
+				// var _0x13e5a0 = $(selectedTile).offsetLeft * 1 + $(selectedTile).offsetWidth / 2;
+				// var _0x4a8d3c = $(selectedTile).offsetTop * 1;
+				// var _0x542afe = $(selectedTile).offsetHeight;
+				// var _0x382b44 = $("area-1").offsetLeft;
+				// var _0x510c78 = $("area-1").offsetTop;
+				// var _0x3b7da6 = $("area-4").offsetLeft;
+				// var _0x4a828f = $('area-4').offsetTop;
+				// if (_0x13e5a0 > tileDefaultLeft - tileW * 2 && _0x13e5a0 < tileDefaultLeft * 1 + tileW * 2 && _0x4a8d3c > tileDefaultTop - _0x542afe && _0x4a8d3c < tileDefaultTop * 1 + _0x542afe * 2) {
+				// 	if (settingsType != 1) {
+				// 		this.popMessage("Bitmek icin istakada kalan son tasinizi saq tarafa atmalisiniz!");
+				// 	} else {
+				// 		var _0x158c19 = boardPlaces.indexOf(selectedTile);
+				// 		if (gameOver == 0) {
+				// 			var _0x158c19 = boardPlaces.indexOf(selectedTile);
+				// 			if (_0x158c19 !== -1) {
+				// 				var _0x511d04 = boardPlaces[_0x158c19];
+				// 				var _0x4871b4 = boardTiles[_0x158c19 - 1];
+				// 				boardPlaces[_0x158c19] = 0;
+				// 				boardTiles[_0x158c19 - 1] = '';
+				// 			}
+				// 			var _0x2c402d = selectedTile.split('-');
+				// 			_0x2c402d = _0x2c402d[1];
+				// 			if ((this.checkWin() || this.checkWinDouble()) && _0x158c19 > -1) {
+				// 				if (data[_0x2c402d - 1] == Tiles.okey && winWithDouble == 1) {
+				// 					this.playAudio(4);
+				// 					winWithOkey = 1;
+				// 					this.popMessage(users[activePlayer] + " Cifte Giderken Okey Atarak Bitti!", 0, 2);
+				// 				} else {
+				// 					if (data[_0x2c402d - 1] == Tiles.okey) {
+				// 						this.playAudio(4);
+				// 						this.popMessage(users[activePlayer] + " Okey Atarak Bitti!", 0, 2);
+				// 						winWithOkey = 1;
+				// 					} else {
+				// 						if (winWithDouble == 1) {
+				// 							this.playAudio(4);
+				// 							this.popMessage(users[activePlayer] + " Cifte Giderek Bitti!", 0, 2);
+				// 						}
+				// 					}
+				// 				}
+				// 				boardPlaces[_0x158c19] = 0;
+				// 				boardTiles[_0x158c19 - 1] = '';
+				// 				this.updateBoards();
+				// 				winnerPlayer = activePlayer;
+				// 				this.gameOver(1);
+				// 				return 0;
+				// 			} else {
+				// 				if (data[_0x2c402d - 1] == gosterge) {
+				// 					var _0x18ae24 = 0;
+				// 					if (Indicator != 0) {
+				// 						this.popMessage("Gösterge Zaten Yapildi!");
+				// 						_0x18ae24 = 1;
+				// 					}
+				// 					if (laps != 0 && _0x18ae24 == 0) {
+				// 						this.popMessage("Gösterge Sadece Oyunun Basinda Yapilabilir!");
+				// 						_0x18ae24 = 1;
+				// 					}
+				// 					if (settingsGameMode == 2) {
+				// 						if (_0x18ae24 == 0) {
+				// 							if (settingsIndicator == 1) {
+				// 								this.popMessage(users[activePlayer] + " Gösterge Yapti!", 0, 2);
+				// 								Indicator = 1;
+				// 								this.changePoint(1);
+				// 								this.playAudio(4);
+				// 								setTimeout(() => {
+				// 									this.pointsTable();
+				// 								}, 1000);
+				// 							} else {
+				// 								this.popMessage("Gösterge Kapali! Ayarlardan acabilirsiniz.");
+				// 							}
+				// 						}
+				// 					} else {
+				// 						this.popMessage("Sadece Puanli Oyunda Gösterge Yapabilirsiniz!");
+				// 					}
+				// 				} else {
+				// 					if (_0x158c19 > -1) {
+				// 						this.popMessage("Henuz bitemediniz!");
+				// 					}
+				// 				}
+				// 			}
+				// 			if (_0x511d04) {
+				// 				boardPlaces[_0x158c19] = _0x511d04;
+				// 				boardTiles[_0x158c19 - 1] = _0x4871b4;
+				// 			}
+				// 		}
+				// 	}
+				// }
+				// if (_0x13e5a0 > boardLeft && _0x4a8d3c + _0x542afe > boardTop) {
+				if (!Drag.isThrow) {
+					// var _0x5534d2 = Math.ceil((_0x13e5a0 - boardLeft) / tileW);
+					// if (_0x5534d2 < 1) {
+					// 	_0x5534d2 = 1;
+					// }
+					// if (_0x5534d2 > 15) {
+					// 	_0x5534d2 = 15;
+					// }
+					// if (_0x4a8d3c * 1 + _0x542afe / 1.5 > boardTop * 1 + boardDiff * 1) {
+					// 	_0x5534d2 = 15 + _0x5534d2 * 1;
+					// }
+
+					selectedTile = "tile-"+ tileIndex;
+
 					var _0xd7d3e9 = boardTiles.filter(e => e != '').slice();
 					if (_0xd7d3e9.length > tileLimits[1] && boardPlaces.indexOf(selectedTile) < 0) {
 						this.popMessage("Istakanizda " + (tileLimits[1] * 1 + 1) + " tas var. Önce tas atmaniz gerekiyor.");
@@ -3617,6 +3589,7 @@ let Engine = (() => {
 						boardTiles[_0x158c19 - 1] = '';
 						this.updateBoards();
 					}
+					let _0x5534d2 = (Drag.posY * 16) + Drag.posX;
 					if (this.checkPosition(_0x5534d2)) {
 						this.place(selectedTile, _0x5534d2, 1);
 						this.playAudio(3);
@@ -3628,6 +3601,7 @@ let Engine = (() => {
 					}
 				} else {
 					// if (_0x13e5a0 > _0x382b44 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x510c78 - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
+						selectedTile = Drag.el.data("tile");
 						this.checkThrow(1, selectedTile);
 					// } else {
 						// if (_0x13e5a0 > _0x3b7da6 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x4a828f - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
@@ -3712,35 +3686,35 @@ let Engine = (() => {
 				boardPlaces4 = boardPlaces.slice();
 			}
 		},
-		checkPosition(_0x317063) {
-			if (boardPlaces[_0x317063]) {
-				if (_0x317063 <= 15) {
-					for (let i=_0x317063; i<=15; i++) {
+		checkPosition(pos) {
+			if (boardPlaces[pos]) {
+				if (pos <= 16) {
+					for (let i=pos; i<=16; i++) {
 						if (boardPlaces[i] == 0) {
-							this.openPlace(_0x317063, i, 1);
+							this.openPlace(pos, i, 1);
 							this.playAudio(2);
 							return 1;
 						}
 					}
-					for (let i=_0x317063; i>=0; i--) {
+					for (let i=pos; i>=0; i--) {
 						if (boardPlaces[i] == 0) {
-							this.openPlace(_0x317063, i, 2);
+							this.openPlace(pos, i, 2);
 							this.playAudio(2);
 							return 1;
 						}
 					}
 				}
-				if (_0x317063 > 15) {
-					for (let i=_0x317063; i<=30; i++) {
+				if (pos > 16) {
+					for (let i=pos; i<=32; i++) {
 						if (boardPlaces[i] == 0) {
-							this.openPlace(_0x317063, i, 1);
+							this.openPlace(pos, i, 1);
 							this.playAudio(2);
 							return 1;
 						}
 					}
-					for (let i=_0x317063; i>=15; i--) {
+					for (let i=pos; i>=16; i--) {
 						if (boardPlaces[i] == 0) {
-							this.openPlace(_0x317063, i, 2);
+							this.openPlace(pos, i, 2);
 							this.playAudio(2);
 							return 1;
 						}
@@ -4044,7 +4018,7 @@ let Engine = (() => {
 			}
 		},
 		popMessage(msg, timer, type) {
-			// console.log(msg, timer, type);
+			console.log(msg, timer, type);
 		},
 		playAudio(num) {
 			console.log("play audio", num);
@@ -4077,6 +4051,6 @@ let Engine = (() => {
 		// settings(name, value) {},
 	};
 
-	return Engine;
+	return { Engine, Tiles, AI };
 
 })();

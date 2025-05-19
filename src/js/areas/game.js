@@ -11,6 +11,7 @@
 			common: {
 				series: window.find(".common .series"),
 				doubles: window.find(".common .doubles"),
+				info: window.find(".common .info"),
 			},
 			discard: {
 				player1: window.find(".discard .player-1"),
@@ -71,6 +72,13 @@
 						let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
 						// reset original tile
 						el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
+
+						if (event.seat === 4) {
+							// make last tile draggable
+							clone.addClass("draggable");
+							// make tile stack draggable
+							Self.els.common.info.find(".left .tile").addClass("draggable");
+						}
 					});
 				}, 10);
 				break;
@@ -146,11 +154,14 @@
 					.css({ "--aT": str.length })
 					.data({ rows: rows.length })
 					.append(str.join(""));
-				// start anim
-				setTimeout(() =>
-					Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
-						el.removeClass("anim-start anim-end").css({ "--aT": "" });
-					}), 100);
+				return new Promise(resolve => {
+					// start anim
+					setTimeout(() =>
+						Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
+							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							resolve();
+						}), 100);
+				});
 				break;
 			case "meld-doubles":
 				dOffset = Self.els.common.doubles.offset(".board");
@@ -199,14 +210,17 @@
 				event.preventDefault();
 
 				let el = $(event.target),
-					rOffset = Self.els.rack.offset(".board");
+					rOffset = Self.els.rack.offset(".board"),
+					isNew;
 				if (el.parent().hasClass("left")) {
 					let { id, clr, num } = Engine.drawTile(),
 						lTiles = Self.els.el.find(".info .tiles.left"),
 						lOffset = lTiles.offset(".board"),
 						y = lOffset.top - rOffset.top + 5,
 						x = lOffset.left - rOffset.left + 5;
-					lTiles.find(".draggable").removeClass("draggable");
+					//disable draggablity
+					Self.els.common.info.find(".tile.draggable").removeClass("draggable");
+					// insert new tile as dragged element
 					el = Self.els.rack.append(`<span class="tile ${clr} new-tile" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
 				}
 
@@ -242,7 +256,7 @@
 				Self.els.rack.addClass("drop arranging");
 				if (!isDiscard) Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, dOffset, isDiscard };
+				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, dOffset, isDiscard, isNew };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -405,7 +419,7 @@
 							Self.els.discard.player1.append(el.css({ top: "", left: "" }));
 						}
 						// update game engine
-						if (Drag.isThrow) Engine.dragStop(1, el.data("id"));
+						Engine.dragStop(1, Drag);
 					})
 					.css(css);
 				break;

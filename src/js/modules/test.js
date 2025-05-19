@@ -26,6 +26,8 @@ let Test = {
 			};
 		Engine.restore(state);
 
+		Tiles.restore(state.table.data);
+
 		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 2, from: 1 }), 500);
 		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 3, from: 2 }), 1000);
 		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 4, from: 3 }), 1500);
@@ -53,6 +55,9 @@ let Test = {
 		// }, 1000);
 
 
+		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
+		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
+
 
 		// setTimeout(() => {
 		// 	let Self = APP.game,
@@ -64,33 +69,5 @@ let Test = {
 		// setTimeout(() => APP.game.dispatch({ type: "put-tile-back" }), 200);
 
 
-		// console.log( Engine.sortTiles(2, 0) );
-		// console.log( Engine.sortTiles(3, 0) );
-		// console.log( Engine.sortTiles(2, 1) );
-		// console.log( Engine.sortTiles(3, 1) );
-
-		// console.log( Engine.sortTilesByColor(2, 0) );
-		// console.log( Engine.sortTilesByColor(3, 0) );
-		// console.log( Engine.sortTilesByColor(2, 1) );
-		// console.log( Engine.sortTilesByColor(3, 1) );
-
-		// let tmp = ['102', '103', '104', '', '204', '205', '206', '', '106', '107', '', '', '', '109', '110', '201', '202', '', '209', '210', '', '401', '402', '', '109', '110', '206', '213', '303', '312'];
-		// console.log( Engine.checkPer(2, tmp) ); // 71 70
-		// console.log( Engine.checkPer(3, tmp) ); // 24 6
-
-		// Engine.priority();
-		// ['401', '402', '403', '404', '', '104', '105', '', '112', '113', '', '', '', '305', '306', '407', '408', '', '411', '412', '', '109', '209', '', '107', '303', '412', '213', '301', '104']
-		// ['107', '303', '112', '105', '412', '213', '404', '305', '301', '104', '109', '', '', '', '', '', '', '', '', '104', '113', '209', '306', '401', '402', '403', '407', '408', '411', '412']
-
-		// console.log( Engine.arrange(1, 1) );
-		// console.log( Engine.arrange(1, 2) );
-
-		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
-		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
-
-		// setTimeout(() => {
-		// 	let tile = APP.content.find(`.tile[data-id="101"]`);
-		// 	Engine.discard(tile, 1);
-		// }, 1000);
 	}
 };
