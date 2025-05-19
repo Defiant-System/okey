@@ -419,6 +419,9 @@ let Engine = (() => {
 				clr = Colors[0];
 				num = "j";
 			}
+			if (+id.slice(0,1) > 8) {
+				clr = "okey";
+			}
 			return { id, clr, num };
 		},
 		drawTile() {
@@ -2699,33 +2702,33 @@ let Engine = (() => {
 				return _0x71e9d5;
 			}
 		},
-		checkLeft(_0x324b05) {
+		checkLeft(seat) {
 			var _0x218c45 = boardTiles.lastIndexOf('') * 1 + 1;
 			var _0x4c85fc = perFull.length;
 			var _0x14f884 = boardTiles.slice();
 			var _0xdcee61 = boardPlaces.slice();
-			if (_0x324b05 == 1) {
+			if (seat == 1) {
 				if (area1items.length < 1) {
 					return 0;
 				}
 				var _0x5458a2 = area1items[area1items.length - 1];
 				var _0x457d5c = 1;
 			}
-			if (_0x324b05 == 2) {
+			if (seat == 2) {
 				if (area2items.length < 1) {
 					return 0;
 				}
 				var _0x5458a2 = area2items[area2items.length - 1];
 				var _0x457d5c = 2;
 			}
-			if (_0x324b05 == 3) {
+			if (seat == 3) {
 				if (area3items.length < 1) {
 					return 0;
 				}
 				var _0x5458a2 = area3items[area3items.length - 1];
 				var _0x457d5c = 3;
 			}
-			if (_0x324b05 == 4) {
+			if (seat == 4) {
 				if (area4items.length < 1) {
 					return 0;
 				}
@@ -2735,19 +2738,13 @@ let Engine = (() => {
 			this.place(_0x5458a2, _0x218c45);
 			this.arrange(activePlayer);
 			this.checkWin();
+			
 			var _0x224a9d = 0;
-			if (_0x324b05 == 1) {
-				_0x224a9d = User2Total;
-			}
-			if (_0x324b05 == 2) {
-				_0x224a9d = User3Total;
-			}
-			if (_0x324b05 == 3) {
-				_0x224a9d = User4Total;
-			}
-			if (_0x324b05 == 4) {
-				_0x224a9d = User1Total;
-			}
+			if (seat == 1) _0x224a9d = User2Total;
+			if (seat == 2) _0x224a9d = User3Total;
+			if (seat == 3) _0x224a9d = User4Total;
+			if (seat == 4) _0x224a9d = User1Total;
+
 			var _0x19ab28 = _0x5458a2.split('-');
 			_0x19ab28 = _0x19ab28[1] - 1;
 			_0x19ab28 = data[_0x19ab28];
@@ -2806,6 +2803,8 @@ let Engine = (() => {
 		AI(seat) {
 			if (gameOver == 1) return 0;
 	
+			if (seat == 4) console.log( boardTiles4.slice() );
+
 			AIcont = 1;
 			this.changePlayer(seat);
 			this.arrange(seat);
@@ -2959,6 +2958,7 @@ let Engine = (() => {
 					// UI animation
 					APP.game.dispatch({ type: "draw-stack-tile", seat })
 				}
+			if (seat == 4) console.log( boardTiles4.slice() );
 				// if (seat === 4) return;
 				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
