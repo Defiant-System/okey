@@ -977,7 +977,6 @@ let Engine = (() => {
 				_0x484f1e = doubleHandleTo;
 			}
 			
-			if (seat === 4) console.log(setTiles);
 			// animate set of tiles
 			APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
 			
@@ -985,7 +984,7 @@ let Engine = (() => {
 				if (setTiles[i] != '') {
 					var _0x897419 = boardTiles.indexOf(String(setTiles[i]));
 					if (setTiles[i] - setTiles[i] % 100 == 900) {
-						_0x897419 = boardTiles.indexOf(String(okey));
+						_0x897419 = boardTiles.indexOf(String(Tiles.okey));
 					}
 					if (setTiles[i] - setTiles[i] % 100 == 800) {
 						_0x897419 = boardTiles.indexOf("000");
@@ -1029,7 +1028,6 @@ let Engine = (() => {
 			}
 		},
 		moveToTable(seat, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {
-			// console.log(seat, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5);
 			var _0x2a961e = String(_0x315c85);
 			var _0x4295dd;
 			let stone = parseInt(_0x2a961e.substr(1, 2));
@@ -1037,7 +1035,7 @@ let Engine = (() => {
 			var _0xf1fecf = boardTiles.indexOf(String(_0x315c85));
 			var _0x5b13d2 = 0;
 			if (_0x315c85 - _0x315c85 % 100 == 900) {
-				_0xf1fecf = boardTiles.indexOf(String(okey));
+				_0xf1fecf = boardTiles.indexOf(String(Tiles.okey));
 			}
 			if (_0x315c85 - _0x315c85 % 100 == 800) {
 				_0xf1fecf = boardTiles.indexOf("000");
@@ -1145,7 +1143,6 @@ let Engine = (() => {
 						this.buttonActivePassive("collect", 1);
 					}
 				}
-				// console.log(_0x4295dd, seat, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
 				this.moveTile(_0x4295dd, seat, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + sayTableTiles);
 			}
 			var _0x4d23cf = null;
@@ -1837,22 +1834,22 @@ let Engine = (() => {
 			var _0x1290e9 = [];
 			for (let i=0; i<boardTilesVir.length; i++) {
 				var _0x171c8e = parseInt(boardTilesVir[i]);
-				if ((boardTilesVir[i] == boardTilesVir[i * 1 + 1] || boardTilesVir[i] == okey || boardTilesVir[i * 1 + 1] == okey) && boardTilesVir[i] != '' && boardTilesVir[i * 1 + 1] != '') {
+				if ((boardTilesVir[i] == boardTilesVir[i * 1 + 1] || boardTilesVir[i] == Tiles.okey || boardTilesVir[i * 1 + 1] == Tiles.okey) && boardTilesVir[i] != '' && boardTilesVir[i * 1 + 1] != '') {
 					_0x481582++;
 					var _0xcba5d6;
 					var _0x5ad174;
 					_0xcba5d6 = boardTilesVir[i];
 					_0x5ad174 = boardTilesVir[i * 1 + 1];
 					if (boardTilesVir[i] == "000") {
-						_0xcba5d6 = okey % 100 + 800;
+						_0xcba5d6 = Tiles.okey % 100 + 800;
 					}
 					if (boardTilesVir[i * 1 + 1] == "000") {
-						_0x5ad174 = okey % 100 + 800;
+						_0x5ad174 = Tiles.okey % 100 + 800;
 					}
-					if (boardTilesVir[i] == okey) {
+					if (boardTilesVir[i] == Tiles.okey) {
 						_0xcba5d6 = _0x5ad174 % 100 + 900;
 					}
-					if (boardTilesVir[i * 1 + 1] == okey) {
+					if (boardTilesVir[i * 1 + 1] == Tiles.okey) {
 						_0x5ad174 = _0xcba5d6 % 100 + 900;
 					}
 					_0x1290e9.push(String(_0xcba5d6));
@@ -1920,7 +1917,6 @@ let Engine = (() => {
 			let  _0x5b3924 = 0;
 			let  _0x257872 = 0;
 			let temp = [];
-			let temp1 = [];
 			let temp2 = [];
 			let  _0x2b6e63 = [];
 			let  _0x47dfb5 = null;
@@ -1964,7 +1960,7 @@ let Engine = (() => {
 						_0x5b3924 = 1;
 						for (let j=0; j<temp.length; j++) {
 							if (j > 0) {
-								if (temp[j] - temp[j - 1] == 1 || j == temp.length - 1 && (temp[j - 1] - temp[j] == 12 || temp[j - 1] == okey) && settingsType == 1) {
+								if (temp[j] - temp[j - 1] == 1 || j == temp.length - 1 && (temp[j - 1] - temp[j] == 12 || temp[j - 1] == Tiles.okey) && settingsType == 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -2004,7 +2000,7 @@ let Engine = (() => {
 			_0x2b6e63 = null;
 			_0x47dfb5 = null;
 			temp = [];
-			temp1 = [];
+			let temp1 = [];
 			for (let i=0; i<=boardTilesVir.length; i++) {
 				if (boardTilesVir[i] == Tiles.okey && boardTilesVir[i * 1 + 1] && i != 14) {
 					_0x9497e = 1;
@@ -2103,7 +2099,6 @@ let Engine = (() => {
 					sign.addClass("red");
 				}
 			}
-			// console.log( _0x257872 , tileLimit , boardTilesVir.filter(e => e != '').length, tileLimit );
 			if (_0x257872 == tileLimit && boardTilesVir.filter(e => e != '').length == tileLimit) {
 				return 1;
 			} else {
@@ -2241,13 +2236,13 @@ let Engine = (() => {
 					// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
 					var _0x1fc99b;
 					if (boardTiles[i] == "000") {
-						_0x1fc99b = okey;
+						_0x1fc99b = Tiles.okey;
 					} else {
 						_0x1fc99b = boardTiles[i];
 					}
 					for (let j=0; j<7; j++) {
 						for (let k=0; k<=13; k++) {
-							if (boardTiles[i] && boardTiles[i] != okey) {
+							if (boardTiles[i] && boardTiles[i] != Tiles.okey) {
 								var _0x49f720 = 0;
 								var _0x2fc30f = 0;
 								var _0x46b158;
@@ -2262,19 +2257,19 @@ let Engine = (() => {
 									_0x29577e = tableUser1[j][k * 1 + 2];
 									_0x4935d9 = tableUser1[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
 										_0x46b158 = _0x3a83d2 * 1 + 1;
@@ -2320,19 +2315,19 @@ let Engine = (() => {
 									_0x29577e = tableUser1[j][k * 1 + 2];
 									_0x4935d9 = tableUser1[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser1[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
 										_0x2fc30f = k - 3;
@@ -2350,19 +2345,19 @@ let Engine = (() => {
 									_0x29577e = tableUser2[j][k * 1 + 2];
 									_0x4935d9 = tableUser2[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
 										_0x46b158 = _0x3a83d2 * 1 + 1;
@@ -2408,19 +2403,19 @@ let Engine = (() => {
 									_0x29577e = tableUser2[j][k * 1 + 2];
 									_0x4935d9 = tableUser2[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser2[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
 										_0x2fc30f = k - 3;
@@ -2438,19 +2433,19 @@ let Engine = (() => {
 									_0x29577e = tableUser3[j][k * 1 + 2];
 									_0x4935d9 = tableUser3[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
 										_0x46b158 = _0x3a83d2 * 1 + 1;
@@ -2496,19 +2491,19 @@ let Engine = (() => {
 									_0x29577e = tableUser3[j][k * 1 + 2];
 									_0x4935d9 = tableUser3[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser3[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
 										_0x2fc30f = k - 3;
@@ -2526,19 +2521,19 @@ let Engine = (() => {
 									_0x29577e = tableUser4[j][k * 1 + 2];
 									_0x4935d9 = tableUser4[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) {
 										_0x46b158 = _0x3a83d2 * 1 + 1;
@@ -2584,19 +2579,19 @@ let Engine = (() => {
 									_0x29577e = tableUser4[j][k * 1 + 2];
 									_0x4935d9 = tableUser4[j][k - 2];
 									if (_0x46b158 - _0x46b158 % 100 == 800) {
-										_0x46b158 = okey;
+										_0x46b158 = Tiles.okey;
 									}
 									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) {
-										_0x3a83d2 = okey;
+										_0x3a83d2 = Tiles.okey;
 									}
 									if (_0x34dbca - _0x34dbca % 100 == 800) {
-										_0x34dbca = okey;
+										_0x34dbca = Tiles.okey;
 									}
 									if (_0x29577e - _0x29577e % 100 == 800) {
-										_0x29577e = okey;
+										_0x29577e = Tiles.okey;
 									}
 									if (_0x4935d9 - _0x4935d9 % 100 == 800) {
-										_0x4935d9 = okey;
+										_0x4935d9 = Tiles.okey;
 									}
 									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && tableUser4[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
 										_0x2fc30f = k - 3;
@@ -2609,8 +2604,8 @@ let Engine = (() => {
 								}
 								if (_0x49f720 > 0) {
 									if (_0x1c59dd == 0) {
-										if (_0x1fc99b == okey) {
-											_0x1fc99b = okey % 100 + 800;
+										if (_0x1fc99b == Tiles.okey) {
+											_0x1fc99b = Tiles.okey % 100 + 800;
 										}
 										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
 										this.popMessage(users[_0x2019da] + " seri isledi!");
@@ -2748,7 +2743,7 @@ let Engine = (() => {
 			var _0x19ab28 = _0x5458a2.split('-');
 			_0x19ab28 = _0x19ab28[1] - 1;
 			_0x19ab28 = data[_0x19ab28];
-			if (perFull.length > _0x4c85fc && (openStatusSort[activePlayer] == 0 && _0x224a9d > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == okey && settingsType == 1) {
+			if (perFull.length > _0x4c85fc && (openStatusSort[activePlayer] == 0 && _0x224a9d > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
 				boardTiles = _0x14f884.slice();
 				boardPlaces = _0xdcee61.slice();
 				this.updateBoards();
@@ -2803,8 +2798,6 @@ let Engine = (() => {
 		AI(seat) {
 			if (gameOver == 1) return 0;
 	
-			if (seat == 4) console.log( boardTiles4.slice() );
-
 			AIcont = 1;
 			this.changePlayer(seat);
 			this.arrange(seat);
@@ -2860,7 +2853,7 @@ let Engine = (() => {
 					_0x280b69 = _0x280b69[1] - 1;
 					if (aiTiles.length > 0) {
 						var _0x33ee = 0;
-						while ((data[_0x280b69] == okey || handleItems.indexOf(boardTiles[boardPlaces.indexOf(selectedTile1) - 1]) > -1) && aiTiles.length - _0x33ee > 0) {
+						while ((data[_0x280b69] == Tiles.okey || handleItems.indexOf(boardTiles[boardPlaces.indexOf(selectedTile1) - 1]) > -1) && aiTiles.length - _0x33ee > 0) {
 							_0x33ee++;
 							selectedTile1 = aiTiles[aiTiles.length - _0x33ee];
 							var _0x280b69 = selectedTile1.split('-');
@@ -2958,7 +2951,6 @@ let Engine = (() => {
 					// UI animation
 					APP.game.dispatch({ type: "draw-stack-tile", seat })
 				}
-			if (seat == 4) console.log( boardTiles4.slice() );
 				// if (seat === 4) return;
 				timmerAI = setTimeout(() => {
 					if (gameOver == 1) return 0;
@@ -2980,7 +2972,7 @@ let Engine = (() => {
 				if (winWithDouble == 1) {
 					_0x2b8526 = _0x2b8526 * 2;
 				}
-				if (Math.floor(okey / 100) == 4 || Math.floor(okey / 100) == 1) {
+				if (Math.floor(Tiles.okey / 100) == 4 || Math.floor(Tiles.okey / 100) == 1) {
 					_0x2b8526 = _0x2b8526 * pointMultiplier;
 				}
 				if (winnerPlayer != 1) {
@@ -3122,7 +3114,7 @@ let Engine = (() => {
 								_0x4a9d88[1] = _0x4a9d88[1] * 2;
 							}
 							if (this.checkOkeyHandle(1) > 0) {
-								_0x4a9d88[1] = (_0x4a9d88[1] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(1);
+								_0x4a9d88[1] = (_0x4a9d88[1] - Tiles.okey % 100) * 1 + punishOffset * this.checkOkeyHandle(1);
 							}
 						}
 						user1Point += _0x4a9d88[1];
@@ -3139,7 +3131,7 @@ let Engine = (() => {
 								_0x4a9d88[2] = _0x4a9d88[2] * 2;
 							}
 							if (this.checkOkeyHandle(2) > 0) {
-								_0x4a9d88[2] = (_0x4a9d88[2] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(2);
+								_0x4a9d88[2] = (_0x4a9d88[2] - Tiles.okey % 100) * 1 + punishOffset * this.checkOkeyHandle(2);
 							}
 						}
 						user2Point += _0x4a9d88[2];
@@ -3156,7 +3148,7 @@ let Engine = (() => {
 								_0x4a9d88[3] = _0x4a9d88[3] * 2;
 							}
 							if (this.checkOkeyHandle(3) > 0) {
-								_0x4a9d88[3] = (_0x4a9d88[3] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(3);
+								_0x4a9d88[3] = (_0x4a9d88[3] - Tiles.okey % 100) * 1 + punishOffset * this.checkOkeyHandle(3);
 							}
 						}
 						user3Point += _0x4a9d88[3];
@@ -3173,7 +3165,7 @@ let Engine = (() => {
 								_0x4a9d88[4] = _0x4a9d88[4] * 2;
 							}
 							if (this.checkOkeyHandle(4) > 0) {
-								_0x4a9d88[4] = (_0x4a9d88[4] - okey % 100) * 1 + punishOffset * this.checkOkeyHandle(4);
+								_0x4a9d88[4] = (_0x4a9d88[4] - Tiles.okey % 100) * 1 + punishOffset * this.checkOkeyHandle(4);
 							}
 						}
 						user4Point += _0x4a9d88[4];
@@ -3257,7 +3249,7 @@ let Engine = (() => {
 			}
 			for (let i=0; i<boardTiles.length; i++) {
 				if (boardTiles[i]) {
-					if (boardTiles[i] == okey) {
+					if (boardTiles[i] == Tiles.okey) {
 						val++;
 					}
 				}
@@ -3514,12 +3506,12 @@ let Engine = (() => {
 							var _0x2c402d = selectedTile.split('-');
 							_0x2c402d = _0x2c402d[1];
 							if ((this.checkWin() || this.checkWinDouble()) && _0x158c19 > -1) {
-								if (data[_0x2c402d - 1] == okey && winWithDouble == 1) {
+								if (data[_0x2c402d - 1] == Tiles.okey && winWithDouble == 1) {
 									this.playAudio(4);
 									winWithOkey = 1;
 									this.popMessage(users[activePlayer] + " Cifte Giderken Okey Atarak Bitti!", 0, 2);
 								} else {
-									if (data[_0x2c402d - 1] == okey) {
+									if (data[_0x2c402d - 1] == Tiles.okey) {
 										this.playAudio(4);
 										this.popMessage(users[activePlayer] + " Okey Atarak Bitti!", 0, 2);
 										winWithOkey = 1;
@@ -3766,7 +3758,7 @@ let Engine = (() => {
 				this.popMessage(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
 				this.changePoint(punishOffset, activePlayer, 1);
 			}
-			if (okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
+			if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
 				if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
 					this.popMessage(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
 					this.changePoint(punishOffset, activePlayer, 1);
