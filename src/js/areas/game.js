@@ -320,7 +320,7 @@
 					if (Drag.isDiscard) {
 						let pEl = Drag.el.parent().offset(".board"),
 							dOffset = Drag.el.offset();
-						Self.els.el.find(".actions.put-back").removeClass("hidden");
+						Self.els.el.find(".dialog.put-back").removeClass("hidden");
 						Drag.el = Self.els.rack.append(Drag.el).addClass("discard-loan");
 						Drag.el.css({
 								top: pEl.top - Drag.rOffset.top + dOffset.top,

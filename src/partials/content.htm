@@ -132,14 +132,14 @@
 		</div>
 
 
-		<div class="actions put-back hidden" data-click="put-tile-back">
+		<div class="dialog put-back hidden" data-click="put-tile-back">
 			<div class="dlg-bg"></div>
 			<div class="dlg-arrow"></div>
 			<h4>Put Back</h4>
 		</div>
 
 		<!-- actions dialog -->
-		<div class="actions finish hidden">
+		<div class="dialog finish hidden">
 			<div class="dlg-bg"></div>
 			<h3>Hakan Wins!</h3>
 			<h4>Some more text goes here...</h4>
@@ -147,7 +147,7 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="actions options hidden">
+		<div class="dialog options hidden">
 			<div class="dlg-bg"></div>
 			<!-- <div class="dlg-arrow"></div> -->
 			<span class="button check" data-click="engine-sort-serial">Sort Serial</span>
@@ -163,10 +163,26 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="actions settings hidden">
+		<div class="dialog settings hidden1">
 			<div class="dlg-bg"></div>
 			<h3>Settings</h3>
-			<span class="button check">Close</span>
+			<div class="row">
+				<h4>Difficulty</h4>
+				<div class="options">
+					<span>Easy</span>
+					<span>Medium</span>
+					<span>Hard</span>
+				</div>
+			</div>
+			<div class="row">
+				<h4>Sound FX</h4>
+				<div class="toggle on"><span></span></div>
+			</div>
+			<div class="row">
+				<h4>Helpers</h4>
+				<div class="toggle off"><span></span></div>
+			</div>
+			<!-- <span class="button check">Close</span> -->
 		</div>
 	</div>
 </content>

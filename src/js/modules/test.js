@@ -28,7 +28,7 @@ let Test = {
 
 		// Tiles.restore(state.table.data);
 
-		setTimeout(() => APP.game.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 }), 500);
 
 		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 2, from: 1 }), 500);
 		// setTimeout(() => APP.game.dispatch({ type: "get-discarded-tile", seat: 3, from: 2 }), 1000);
