@@ -18,7 +18,7 @@ let Tiles = {
 		// jokers
 		this.data.push({ tile: index++, value: "000" });
 		this.data.push({ tile: index++, value: "000" });
-		this.shuffle();
+		// this.shuffle();
 	},
 	shuffle() {
 		let shuffleArray = arr => arr.sort(() => Math.random() - 0.5);

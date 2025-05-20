@@ -53,6 +53,23 @@
 				Engine.arrange(1, 2);
 				Engine.updateRack();
 				break;
+			case "deal-tiles-to":
+				pEl = Self.els.common.info.find(".inset.left");
+				dOffset = pEl.offset(".board");
+				sOffset = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).offset(".board");
+				str = [];
+				[...Array(event.num)].map(n => {
+					let y = sOffset.top - dOffset.top,
+						x = sOffset.left - dOffset.left;
+					str.push(`<span class="tile deal" style="--y: ${y}px; --x: ${x}px;"></span>`);
+				});
+				pEl.append(str.join(""));
+				setTimeout(() => {
+					pEl.cssSequence("dealing", "transitionend", el => {
+							el.removeClass(".dealing").find(".tile.deal").remove();
+						});
+				}, 100);
+				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");
 				setTimeout(() => {
@@ -191,11 +208,14 @@
 					.css({ "--aT": str.length })
 					.data({ rows: rows.length })
 					.append(str.join(""));
-				// start anim
-				setTimeout(() =>
-					Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
-						el.removeClass("anim-start anim-end").css({ "--aT": "" });
-					}), 100);
+				return new Promise(resolve => {
+					// start anim
+					setTimeout(() =>
+						Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
+							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							resolve();
+						}), 100);
+				});
 				break;
 		}
 	},
