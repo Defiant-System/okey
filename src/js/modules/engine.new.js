@@ -20,9 +20,8 @@ let { Engine, Tiles, AI } = (() => {
 			// init sub object
 			AI.init();
 			Tiles.init();
-			// start game
-			// this.start();
 		},
+		restore(state) {}
 	};
 
 	return { Engine, Tiles, AI };
