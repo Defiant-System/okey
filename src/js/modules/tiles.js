@@ -42,7 +42,7 @@ let Tiles = {
 		let id = tile.toString(),
 			clr = Colors[+id.slice(0,1)],
 			num = new Number(id.slice(1)) * 1;
-		if (+id.slice(0,1) == 8) {
+		if (+id.slice(0,1) == "0") {
 			clr = Colors[0];
 			num = "j";
 		}
