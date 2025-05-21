@@ -4,6 +4,9 @@
 @import "./modules/test.js"
 
 
+const ME = karaqu.user;
+
+
 const okey = {
 	init() {
 		// fast references
