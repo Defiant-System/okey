@@ -153,24 +153,24 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="dialog settings hidden1" data-area="dialog">
+		<div class="dialog settings hidden" data-area="dialog">
 			<div class="dlg-bg"></div>
 			<h3>Settings</h3>
 			<div class="row">
 				<h4>Difficulty</h4>
-				<div class="options">
-					<span>Easy</span>
-					<span class="on">Medium</span>
-					<span>Hard</span>
+				<div class="options" data-click="set-option" deta-arg="difficulty">
+					<span data-value="easy">Easy</span>
+					<span data-value="medium" class="on">Medium</span>
+					<span data-value="hard">Hard</span>
 				</div>
 			</div>
 			<div class="row">
 				<h4>Sound FX</h4>
-				<div class="toggle on"><span></span></div>
+				<div class="toggle on" data-click="toggle-setting" deta-arg="sound-fx"><span></span></div>
 			</div>
 			<div class="row">
 				<h4>Helpers</h4>
-				<div class="toggle off"><span></span></div>
+				<div class="toggle" data-click="toggle-setting" deta-arg="helpers"><span></span></div>
 			</div>
 			<span class="button check" data-click="close-dialog">Close</span>
 		</div>

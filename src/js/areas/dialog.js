@@ -22,6 +22,14 @@
 					event.el.parents(".dialog").addClass("hidden");
 				});
 				break;
+			case "set-option":
+				event.el.find(".on").removeClass("on");
+				$(event.target).addClass("on");
+				break;
+			case "toggle-setting":
+				el = $(event.target);
+				el.toggleClass("on", el.hasClass("on"));
+				break;
 		}
 	}
 }
