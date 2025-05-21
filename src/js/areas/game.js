@@ -55,10 +55,19 @@
 				// set dealer button
 				Self.els.el.find(".dealer").data({ pos: event.dealer });
 
-				// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 22 });
-				// await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
-				// await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
-				// await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
+				// set okey indicator
+				let iOkey = Tiles.parse(Tiles.okey);
+				APP.content.find(`.info .tiles.okey .tile`)
+					.removeClass("red yellow blue black green")
+					.addClass(iOkey.clr)
+					.data({ v: iOkey.num });
+
+				if (!event.noAnim) {
+					// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 22 });
+					await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
+					await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
+					await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
+				}
 				break;
 			case "set-game-engine":
 				let types = ["51", "101", "okey"],
@@ -96,6 +105,18 @@
 				});
 				break;
 			case "deal-user-tiles":
+				pEl = Self.els.el.find(`.player.user .rack`);
+				dOffset = pEl.offset(".board");
+				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
+				str = [];
+				event.tiles.map((tile, i) => {
+					let { id, clr, num } = Tiles.parse(tile),
+						y = (parseInt(i / 16, 10) * 78) + 5,
+						x = ((i % 16) * 56) + 21;
+					if (tile) str.push(`<span class="tile ${clr} deal" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
+				});
+				pEl.append(str.join(""));
+
 				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");

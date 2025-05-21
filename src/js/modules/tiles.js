@@ -32,6 +32,7 @@ let Tiles = {
 	},
 	restore(state) {
 		this.data = state.table.data.map((value, i) => ({ tile: i+1, value }));
+		this.okey = state.table.okey;
 		// remove one tile from tile stack
 		this.tilesLeft = this.data.slice();
 		// table UI update
