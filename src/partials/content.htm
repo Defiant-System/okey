@@ -10,7 +10,7 @@
 				<div class="inset">Regular</div>
 				<div class="inset">1 Round</div> -->
 				
-				<span class="button" data-click="show-settings">Settings</span>
+				<span class="button check" data-click="show-settings">Settings</span>
 
 				<div class="inset tiles okey">
 					<span class="tile"></span>
@@ -128,7 +128,7 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="dialog finish hidden">
+		<div class="dialog finish hidden" data-area="dialog">
 			<div class="dlg-bg"></div>
 			<h3>Hakan Wins!</h3>
 			<h4>Some more text goes here...</h4>
@@ -136,7 +136,7 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="dialog options hidden">
+		<div class="dialog options hidden" data-area="dialog">
 			<div class="dlg-bg"></div>
 			<!-- <div class="dlg-arrow"></div> -->
 			<span class="button check" data-click="engine-sort-serial">Sort Serial</span>
@@ -152,7 +152,7 @@
 		</div>
 
 		<!-- actions dialog -->
-		<div class="dialog settings hidden">
+		<div class="dialog settings hidden" data-area="dialog">
 			<div class="dlg-bg"></div>
 			<h3>Settings</h3>
 			<div class="row">
@@ -171,7 +171,7 @@
 				<h4>Helpers</h4>
 				<div class="toggle off"><span></span></div>
 			</div>
-			<!-- <span class="button check">Close</span> -->
+			<span class="button check" data-click="close-dialog">Close</span>
 		</div>
 	</div>
 </content>

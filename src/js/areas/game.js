@@ -38,6 +38,9 @@
 		// console.log(event);
 		switch (event.type) {
 			// custom events
+			case "show-settings":
+				Self.els.el.find(".dialog.settings").removeClass("hidden");
+				break;
 			case "start-game":
 				// set opponents names
 				str = Opponents.slice();
@@ -52,10 +55,10 @@
 				// set dealer button
 				Self.els.el.find(".dealer").data({ pos: event.dealer });
 
-				// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 21 });
-				await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
-				await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
-				await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
+				// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 22 });
+				// await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
+				// await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
+				// await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
 				break;
 			case "set-game-engine":
 				let types = ["51", "101", "okey"],

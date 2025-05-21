@@ -219,6 +219,13 @@ content {
 				width: auto;
 				height: auto;
 				color: #fff;
+
+				&:active:hover {
+					box-shadow: 0 0 0 1px rgba(#000,.25),
+								inset 0 1px 0 rgba(#fff,.2),
+								inset 0 -1px 0 rgba(#000,.1),
+								0 1px 1px rgba(#000,.2);
+				}
 			}
 
 			.inset.tiles {
@@ -1119,7 +1126,7 @@ content {
 		.hole {
 			// background: #0005;
 			position: absolute;
-			top: 47px;
+			top: 45px;
 			left: 49px;
 			width: 41px;
 			height: 53px;
@@ -1372,6 +1379,7 @@ content {
 
 		&:hover:active {
 			padding-top: 8px;
+			padding-bottom: 3px;
 			background-position: 0 1px;
 			box-shadow: 0 0 0 1px rgba(#000,.25),
 						inset 0 1px 0 rgba(#fff,.01),

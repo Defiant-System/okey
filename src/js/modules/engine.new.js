@@ -21,7 +21,17 @@ let { Engine, Tiles, AI } = (() => {
 			AI.init();
 			Tiles.init();
 		},
-		restore(state) {}
+		restore(state) {
+			// save state
+			this._state = state;
+			// restore Tiles object
+			Tiles.restore(state);
+		},
+		updateLeftTiles(item) {
+			Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
+			// update table tiles left
+			APP.content.find(`.info .tiles.left .tile`).data({ n: Tiles.tilesLeft.length });
+		}
 	};
 
 	return { Engine, Tiles, AI };

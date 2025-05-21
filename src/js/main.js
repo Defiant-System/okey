@@ -53,6 +53,7 @@ const okey = {
 		}
 	},
 	start: @import "./areas/start.js",
+	dialog: @import "./areas/dialog.js",
 	game: @import "./areas/game.js",
 };
 

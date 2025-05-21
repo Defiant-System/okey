@@ -27,17 +27,15 @@ let Tiles = {
 		if (this.data[105].value == "000") return this.shuffle();
 		// remove one tile from tile stack
 		// this.tilesLeft = this.removeArrayItem(this.tilesLeft, this.data.pop());
-		console.log(this.tilesLeft);
 		// table UI update
-		// Engine.updateLeftTiles();
+		Engine.updateLeftTiles();
 	},
-	restore(data) {
-		this.data = data.map((value, i) => ({ tile: i+1, value }));
+	restore(state) {
+		this.data = state.table.data.map((value, i) => ({ tile: i+1, value }));
 		// remove one tile from tile stack
 		this.tilesLeft = this.data.slice();
-		console.log(this.tilesLeft);
 		// table UI update
-		// Engine.updateLeftTiles();
+		Engine.updateLeftTiles();
 	},
 	parse(tile) {
 		let id = tile.toString(),

@@ -2,7 +2,7 @@
 let Test = {
 	init(APP) {
 
-		return setTimeout(() => APP.game.dispatch({ type: "start-game", dealer: 4 }), 500);
+		// return setTimeout(() => APP.game.dispatch({ type: "start-game", dealer: 4 }), 500);
 		
 		// APP.dispatch({ type: "open-help" });
 
