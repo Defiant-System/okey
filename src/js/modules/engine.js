@@ -2599,7 +2599,7 @@ let { Engine, Tiles, AI } = (() => {
 		},
 		async AI(seat) {
 			if (gameOver == 1) return 0;
-	
+			
 			AIcont = 1;
 			this.changePlayer(seat);
 			this.arrange(seat);
@@ -3435,7 +3435,7 @@ let { Engine, Tiles, AI } = (() => {
 					}
 				} else {
 					// if (_0x13e5a0 > _0x382b44 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x510c78 - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {
-						selectedTile = Drag.el.data("tile");
+						selectedTile = "tile-1"; Drag.el.data("tile");
 						this.checkThrow(1, selectedTile);
 					// } else {
 						// if (_0x13e5a0 > _0x3b7da6 - tileW * 3 && _0x4a8d3c + _0x542afe > _0x4a828f - _0x542afe * 1.5 && boardPlaces.indexOf(selectedTile) > -1) {

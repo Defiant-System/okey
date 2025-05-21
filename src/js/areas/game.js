@@ -439,7 +439,7 @@
 							Self.els.discard.player1.append(el.css({ top: "", left: "" }));
 						}
 						// update game engine
-						if (Drag.hover.hasClass("rack")) console.log("recalc");
+						if (Drag.hover.hasClass("rack")) Engine.checkWin();
 						else Engine.dragStop(1, Drag);
 					})
 					.css(css);
