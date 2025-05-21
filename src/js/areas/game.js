@@ -24,7 +24,7 @@
 		// bind event handlers
 		this.els.el.on("mousedown", ".rack .tile, .tile.draggable", this.move);
 	},
-	dispatch(event) {
+	async dispatch(event) {
 		let APP = okey,
 			Self = APP.game,
 			sOffset,
@@ -38,6 +38,25 @@
 		// console.log(event);
 		switch (event.type) {
 			// custom events
+			case "start-game":
+				// set opponents names
+				str = Opponents.slice();
+				Self.els.el.find(`.player:not(.user) .name`).map(elem => {
+					let el = $(elem),
+						index = Utils.randomInt(0, str.length),
+						name = str.splice(index, 1);
+					el.data({ name });
+				});
+				Self.els.el.find(`.player.user .name`).data({ name: ME.firstName });
+
+				// set dealer button
+				Self.els.el.find(".dealer").data({ pos: event.dealer });
+
+				// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 21 });
+				await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
+				await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
+				await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
+				break;
 			case "set-game-engine":
 				let types = ["51", "101", "okey"],
 					num = types.indexOf(event.arg);
@@ -64,11 +83,14 @@
 					str.push(`<span class="tile deal" style="--y: ${y}px; --x: ${x}px;"></span>`);
 				});
 				pEl.append(str.join(""));
-				setTimeout(() => {
-					pEl.cssSequence("dealing", "transitionend", el => {
-							el.removeClass(".dealing").find(".tile.deal").remove();
+				return new Promise(resolve => {
+					setTimeout(() => {
+						pEl.cssSequence("dealing", "transitionend", el => {
+							el.removeClass("dealing").find(".tile.deal").remove();
+							resolve();
 						});
-				}, 100);
+					}, 100);
+				});
 				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");

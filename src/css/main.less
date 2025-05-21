@@ -212,6 +212,15 @@ content {
 			flex: 1;
 			font-family: BebasNeueRegular, Arial, sans-serif;
 
+			.button {
+				display: block;
+				padding: 7px 0 4px;
+				margin: 0 7px;
+				width: auto;
+				height: auto;
+				color: #fff;
+			}
+
 			.inset.tiles {
 				position: absolute;
 				left: 10px;
@@ -230,15 +239,17 @@ content {
 				}
 
 				&.left {
+					--dur: 400ms;
 					bottom: 0;
 					min-height: 0;
-					transition: min-height 900ms;
+					transition: min-height 1ms;
 
 					&.dealing {
 						min-height: 1px;
+						transition: min-height calc( 920ms + var( --dur ) );
 
 						.tile.deal {
-							transform: translateY( var( --y ) ) translateX( var( --x ) );
+							transform: translateY( var( --y ) ) translateX( var( --x ) ) scale(.2);
 
 							&:nth-child(2) { transition-delay: calc( 2 * 40ms ); }
 							&:nth-child(3) { transition-delay: calc( 3 * 40ms ); }
@@ -271,12 +282,12 @@ content {
 
 					.tile {
 						&.deal {
-							transform: translateY( 15px ) translateX( 13px );
+							transform: translateY( 15px ) translateX( 13px ) scale(1);
 							width: 41px;
 							height: 53px;
 							z-index: 2;
 							background-image: url(~/icons/tile-back.png);
-							transition: transform 240ms ease-in-out;
+							transition: transform var( --dur ) ease-in-out;
 							box-shadow: 0 3px 5px #0001,
 										inset 0 -1px 0 #0001;
 
@@ -1386,6 +1397,8 @@ content {
 
 	.dealer {
 		position: absolute;
+		top: -9999px;
+		left: -9999px;
 		width: 25px;
 		height: 25px;
 		z-index: 3;
