@@ -5,6 +5,8 @@ let Test = {
 		// return;
 
 		// APP.dispatch({ type: "open-help" });
+		// return setTimeout(() => APP.content.addClass("show-dialog"), 500);
+
 
 		let state = {
 				settings: { solo: true, assisted: true, regular: true, rounds: 1 },
@@ -27,6 +29,7 @@ let Test = {
 				],
 			};
 		Engine.restore(state);
+
 
 		APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		

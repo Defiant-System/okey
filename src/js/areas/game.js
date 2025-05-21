@@ -39,7 +39,8 @@
 		switch (event.type) {
 			// custom events
 			case "show-settings":
-				Self.els.el.find(".dialog.settings").removeClass("hidden");
+				APP.content.addClass("show-dialog");
+				APP.content.find(".dialog.settings").removeClass("hidden");
 				break;
 			case "start-game":
 				// set opponents names
