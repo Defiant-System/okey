@@ -95,6 +95,8 @@
 					}, 100);
 				});
 				break;
+			case "deal-user-tiles":
+				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");
 				setTimeout(() => {
