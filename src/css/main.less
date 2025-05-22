@@ -1624,20 +1624,80 @@ content {
 
 		&.actions {
 			top: auto;
+			left: auto;
 			bottom: 171px;
-			left: 267px;
-			width: 196px;
-			min-height: 51px;
-			padding: 8px 9px 0;
+			right: 620px;
+			min-height: 1px;
+			padding: 8px 9px 3px;
+			width: 29px;
+			height: 29px;
+			transition: all 300ms ease-in-out;
+			
+			&:hover {
+				width: 196px;
+				min-height: 51px;
+
+				.menu-icon {
+					opacity: 0;
+					transition-delay: 0ms;
+				}
+
+				.row {
+					height: 59px;
+					opacity: 1;
+					transition-delay: 350ms;
+				}
+			}
+
+			.menu-icon {
+				background: url(~/icons/icon-menu.png) 50% 50%/contain no-repeat;
+				position: absolute;
+				top: 5px;
+				left: 5px;
+				width: 19px;
+				height: 19px;
+				opacity: 1;
+				pointer-events: none;
+				transition: opacity 240ms ease-in;
+				transition-delay: 250ms;
+				filter: drop-shadow(0 1px 0 #0015);
+			}
 
 			.row {
-				height: 45px;
-				display: inherit;
+				opacity: 0;
+				height: 0;
+				min-height: 0;
+				overflow: hidden;
 
-				&.hidden {
+				&.melding {
+					position: relative;
+					opacity: 0;
 					height: 0;
-					min-height: 0;
-					overflow: hidden;
+					margin-left: -7px;
+					margin-right: -7px;
+					display: inherit;
+					transition: height 200ms ease-in-out,
+								min-height 200ms ease-in-out;
+
+					&:after {
+						content: "";
+						position: absolute;
+						left: 0;
+						right: 0;
+						bottom: 9px;
+						opacity: 0;
+						border-bottom: 2px dashed #fff7;
+						transition: opacity 440ms ease-in;
+					}
+
+					&.can-meld {
+						height: 59px;
+						opacity: 1;
+
+						&:after {
+							opacity: 1;
+						}
+					}
 				}
 
 				h4 {
