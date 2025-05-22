@@ -31,7 +31,9 @@ let { Engine, Tiles, AI } = (() => {
 			Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
 			// update table tiles left
 			APP.content.find(`.info .tiles.left .tile`).data({ n: Tiles.tilesLeft.length });
-		}
+		},
+		arrange() {},
+		updateRack() {},
 	};
 
 	return { Engine, Tiles, AI };

@@ -1421,6 +1421,7 @@ content {
 		display: inline-block;
 		border-radius: 4px;
 		vertical-align: top;
+		white-space: nowrap;
 		text-align: center;
 		font-size: 17px;
 		cursor: pointer;
@@ -1437,7 +1438,7 @@ content {
 						linear-gradient(180deg, #555864, #333441 50%, #1b1d2a 50%, #1b1c2a);
 		}
 
-		&.fold {
+		&.red {
 			background: radial-gradient(circle at bottom center, #ff87878e, transparent 90%),
 						linear-gradient(180deg, #d5747a, #cf5f69 50%, #c6202c 50%, #c1212e);
 
@@ -1447,9 +1448,9 @@ content {
 			}
 		}
 
-		&.raise {
-			width: 45px;
-			height: 27px;
+		&.green {
+			// width: 45px;
+			// height: 27px;
 			background: radial-gradient(circle at bottom center, #dddddd80, transparent 90%),
 						linear-gradient(180deg, #878995, #606270 50%, #474857 50%, #545563);
 
@@ -1465,7 +1466,7 @@ content {
 			}
 		}
 
-		&.call {
+		&.gray {
 			background: radial-gradient(circle at bottom center, #aecaff77, transparent 90%),
 						linear-gradient(180deg, #70ba71, #3cab3b 50%, #249f15 50%, #249f15);
 
@@ -1475,7 +1476,7 @@ content {
 			}
 		}
 
-		&.check {
+		&.blue {
 			background: radial-gradient(circle at bottom center, #aeffc260, transparent 90%),
 						linear-gradient(180deg, #83a3e9, #5f86e5 50%, #4472e0 50%, #4973d2);
 
@@ -1621,18 +1622,74 @@ content {
 			}
 		}
 
-		&.options {
-			top: 456px;
-			left: 224px;
-			min-height: 55px;
+		&.actions {
+			top: 481px;
+			left: 624px;
+			width: 197px;
+			min-height: 53px;
+			padding: 7px 9px 0;
 
-			.dlg-arrow {
-				top: auto;
-				bottom: -5px;
-				left: 45px;
-				transform: rotate(180deg);
+			.row {
+				h4 {
+					width: 53px;
+					padding-top: 11px;
+				}
+
+				.button {
+					&.tiles {
+						height: 37px;
+						width: 62px;
+						margin-bottom: 0;
+
+						&:active .tile {
+							margin-top: 1px;
+						}
+
+						&:nth-child(2) {
+							.tile:nth-child(1) { left: 8px; top: 7px; transform: rotate(-13deg); }
+							.tile:nth-child(2) { left: 23px; top: 5px; }
+							.tile:nth-child(3) { left: 36px; top: 7px; transform: rotate(13deg); }
+						}
+
+						&:nth-child(3) {
+							width: 49px;
+							margin-right: 0;
+
+							.tile:nth-child(1) { left: 8px; top: 7px; transform: rotate(-7deg); }
+							.tile:nth-child(2) { left: 23px; top: 7px; transform: rotate(7deg); }
+						}
+
+						.tile {
+							position: absolute;
+							top: 7px;
+							left: 3px;
+							width: 18px;
+							height: 23px;
+							border-radius: 3px;
+							box-shadow: 0 0 0 1px #0003;
+							margin: 0 1px 1px 0;
+
+							&:after {
+								font-size: 12px;
+							}
+						}
+					}
+				}
 			}
 		}
+
+		// &.options {
+		// 	top: 456px;
+		// 	left: 224px;
+		// 	min-height: 55px;
+
+		// 	.dlg-arrow {
+		// 		top: auto;
+		// 		bottom: -5px;
+		// 		left: 45px;
+		// 		transform: rotate(180deg);
+		// 	}
+		// }
 
 		h3 {
 			position: relative;
