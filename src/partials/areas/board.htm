@@ -45,24 +45,38 @@
 	<!-- actions dialog -->
 	<div class="dialog actions hidden1">
 		<div class="dlg-bg"></div>
-		<div class="row">
-			<h4>Sort</h4>
-			<span class="button tiles blue" data-click="engine-sort-serial">
-				<span class="tile red" data-v="7"></span>
-				<span class="tile red" data-v="8"></span>
-				<span class="tile red" data-v="9"></span>
+		<div class="row hidden">
+			<h4>Meld</h4>
+			<span class="button tiles blue" data-click="engine-meld-serial">
+				<span>
+					<span class="tile black" data-v="7"></span>
+					<span class="tile black" data-v="8"></span>
+					<span class="tile black" data-v="9"></span>
+				</span>
 			</span>
-			<span class="button tiles blue" data-click="engine-sort-double">
-				<span class="tile red" data-v="5"></span>
-				<span class="tile red" data-v="5"></span>
+			<span class="button tiles blue" data-click="engine-meld-double">
+				<span>
+					<span class="tile black" data-v="5"></span>
+					<span class="tile black" data-v="5"></span>
+				</span>
 			</span>
 		</div>
-		<!-- <span class="button blue" data-click="engine-sort-serial">Sort Serial</span>
-		<span class="button blue" data-click="engine-sort-double">Sort Double</span>
-		<span class="button" data-click="engine-meld-serial">Meld Serial</span>
-		<span class="button" data-click="engine-meld-double">Meld Double</span>
-		<span class="button" data-click="engine-meld-serial">Add Serial</span>
-		<span class="button" data-click="engine-meld-double">Add Double</span> -->
+		<div class="row">
+			<h4>Sort</h4>
+			<span class="button tiles gray" data-click="engine-sort-serial">
+				<span>
+					<span class="tile red" data-v="7"></span>
+					<span class="tile red" data-v="8"></span>
+					<span class="tile red" data-v="9"></span>
+				</span>
+			</span>
+			<span class="button tiles gray" data-click="engine-sort-double">
+				<span>
+					<span class="tile red" data-v="5"></span>
+					<span class="tile red" data-v="5"></span>
+				</span>
+			</span>
+		</div>
 	</div>
 
 	<!-- players -->

@@ -1448,7 +1448,7 @@ content {
 			}
 		}
 
-		&.green {
+		&.gray {
 			// width: 45px;
 			// height: 27px;
 			background: radial-gradient(circle at bottom center, #dddddd80, transparent 90%),
@@ -1466,9 +1466,9 @@ content {
 			}
 		}
 
-		&.gray {
+		&.green {
 			background: radial-gradient(circle at bottom center, #aecaff77, transparent 90%),
-						linear-gradient(180deg, #70ba71, #3cab3b 50%, #249f15 50%, #249f15);
+						linear-gradient(180deg, #70ba71, #3cab3b 50%, #229a14 50%, #249f15);
 
 			&:hover {
 				background: radial-gradient(circle at bottom center, #aecaff97, transparent 90%),
@@ -1623,15 +1623,26 @@ content {
 		}
 
 		&.actions {
-			top: 481px;
-			left: 624px;
-			width: 197px;
-			min-height: 53px;
-			padding: 7px 9px 0;
+			top: auto;
+			bottom: 171px;
+			left: 267px;
+			width: 196px;
+			min-height: 51px;
+			padding: 8px 9px 0;
 
 			.row {
+				height: 45px;
+				display: inherit;
+
+				&.hidden {
+					height: 0;
+					min-height: 0;
+					overflow: hidden;
+				}
+
 				h4 {
 					width: 53px;
+					display: inline-block;
 					padding-top: 11px;
 				}
 
@@ -1643,6 +1654,13 @@ content {
 
 						&:active .tile {
 							margin-top: 1px;
+						}
+
+						> span {
+							position: absolute;
+							top: 0;
+							left: 0;
+							filter: drop-shadow(0 0 3px #0014);
 						}
 
 						&:nth-child(2) {
