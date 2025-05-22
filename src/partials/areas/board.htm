@@ -1,0 +1,127 @@
+<div class="board" data-engine="101" data-area="game" data-context="game-board">
+	<div class="common">
+		<div class="series">
+			<!-- melded series goes here -->
+		</div>
+		<div class="info">
+			<!-- <div class="inset">Solo</div>
+			<div class="inset">Assisted</div>
+			<div class="inset">Regular</div>
+			<div class="inset">1 Round</div> -->
+			
+			<span class="button check" data-click="show-settings">Settings</span>
+
+			<div class="inset tiles okey">
+				<span class="tile"></span>
+			</div>
+			<div class="inset tiles left">
+				<span class="tile" data-n="21"></span>
+			</div>
+		</div>
+		<div class="doubles">
+			<!--
+			<span class="tile red" data-v="6"></span>
+			<span class="tile red" data-v="6"></span>
+			-->
+		</div>
+	</div>
+
+	<!-- dealer button -->
+	<span class="dealer"></span>
+
+	<div class="discard">
+		<div class="inset tiles player-1">
+			<!-- <span class="tile blue" data-v="3"></span> -->
+		</div>
+		<div class="inset tiles player-2">
+			<!-- <span class="tile" data-v="7"></span> -->
+		</div>
+		<div class="inset tiles player-3">
+			<!-- <span class="tile red" data-v="2"></span> -->
+		</div>
+		<div class="inset tiles player-4">
+			<!-- <span class="tile black" data-v="11"></span> -->
+		</div>
+	</div>
+
+	<!-- players -->
+	<div class="player top">
+		<span class="seat" data-status-="WINNER" data-seat="3">
+			<svg class="outline" viewBox="0 0 129 53">
+				<rect x="-1" y="-1" width="131" height="55" rx="6"/>
+			</svg>
+			<span class="bg"></span>
+			<span class="name"></span>
+			<span class="scored hidden">
+				<span class="tile red" data-v="1"></span>
+				<span class="tile red" data-v="2"></span>
+				<span class="tile red" data-v="3"></span>
+			</span>
+			<span class="hole">
+				<span class="tile blank"></span>
+			</span>
+		</span>
+	</div>
+
+	<div class="player left">
+		<span class="seat" data-status-="LOSER" data-seat="4">
+			<svg class="outline" viewBox="0 0 129 53">
+				<rect x="-1" y="-1" width="131" height="55" rx="6"/>
+			</svg>
+			<span class="bg"></span>
+			<span class="name"></span>
+			<span class="scored hidden">
+				<span class="tile red" data-v="1"></span>
+				<span class="tile red" data-v="2"></span>
+				<span class="tile red" data-v="3"></span>
+			</span>
+			<span class="hole">
+				<span class="tile blank"></span>
+			</span>
+		</span>
+	</div>
+
+	<div class="player right">
+		<span class="seat" data-seat="2">
+			<svg class="outline" viewBox="0 0 129 53">
+				<rect x="-1" y="-1" width="131" height="55" rx="6"/>
+			</svg>
+			<span class="bg"></span>
+			<span class="name"></span>
+			<span class="scored hidden">
+				<span class="tile red" data-v="1"></span>
+				<span class="tile red" data-v="2"></span>
+				<span class="tile red" data-v="3"></span>
+			</span>
+			<span class="hole">
+				<span class="tile blank"></span>
+			</span>
+		</span>
+	</div>
+
+	<div class="player user">
+		<span class="seat" data-seat="1">
+			<svg class="outline" viewBox="0 0 129 53">
+				<rect x="-1" y="-1" width="131" height="55" rx="6"/>
+			</svg>
+			<span class="bg"></span>
+			<span class="name"></span>
+			<span class="scored hidden">
+				<span class="tile red" data-v="1"></span>
+				<span class="tile red" data-v="2"></span>
+				<span class="tile red" data-v="3"></span>
+			</span>
+		</span>
+
+		<div class="rack">
+			<div class="tile-arrow"></div>
+			<!-- tiles goes here -->
+		</div>
+	</div>
+
+	<div class="dialog put-back hidden" data-click="put-tile-back">
+		<div class="dlg-bg"></div>
+		<div class="dlg-arrow"></div>
+		<h4>Put Back</h4>
+	</div>
+</div>

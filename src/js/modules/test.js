@@ -5,7 +5,7 @@ let Test = {
 		// return;
 
 		// APP.dispatch({ type: "open-help" });
-		// return setTimeout(() => APP.content.addClass("show-dialog"), 500);
+		// return setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 500);
 
 
 		let state = {

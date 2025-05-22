@@ -1,0 +1,49 @@
+
+<div class="dlg-wrapper" data-area="dialog" data-click="close-dialog">
+	<!-- actions dialog -->
+	<div class="dialog finish hidden">
+		<div class="dlg-bg"></div>
+		<h3>Hakan Wins!</h3>
+		<h4>Some more text goes here...</h4>
+		<span class="button" data-click="new-round">Continue</span>
+	</div>
+
+	<!-- actions dialog -->
+	<div class="dialog options hidden">
+		<div class="dlg-bg"></div>
+		<!-- <div class="dlg-arrow"></div> -->
+		<span class="button check" data-click="engine-sort-serial">Sort Serial</span>
+		<span class="button call" data-click="engine-sort-double">Sort Double</span>
+		<!--
+		<span class="button fold" data-click="player-fold">Fold</span>
+		<span class="slider">
+			<span class="handle"></span>
+			<span class="text">slide to raise</span>
+		</span>
+		<span class="button raise disabled" data-click="player-raise">Raise</span>
+		-->
+	</div>
+
+	<!-- actions dialog -->
+	<div class="dialog settings hidden">
+		<div class="dlg-bg"></div>
+		<h3>Settings</h3>
+		<div class="row">
+			<h4>Difficulty</h4>
+			<div class="options" data-click="set-option" deta-arg="difficulty">
+				<span data-value="easy">Easy</span>
+				<span data-value="medium" class="on">Medium</span>
+				<span data-value="hard">Hard</span>
+			</div>
+		</div>
+		<div class="row">
+			<h4>Sound FX</h4>
+			<div class="toggle on" data-click="toggle-setting" deta-arg="sound-fx"><span></span></div>
+		</div>
+		<div class="row">
+			<h4>Helpers</h4>
+			<div class="toggle" data-click="toggle-setting" deta-arg="helpers"><span></span></div>
+		</div>
+		<!-- <span class="button check" data-click="close-dialog">Close</span> -->
+	</div>
+</div>

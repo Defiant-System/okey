@@ -17,6 +17,9 @@
 		switch (event.type) {
 			// custom events
 			case "close-dialog":
+				el = $(event.target);
+				if (el.data("click") !== "close-dialog") return;
+				
 				APP.content.cssSequence("close-dialog", "transitionend", el => {
 					el.removeClass("show-dialog close-dialog");
 					event.el.parents(".dialog").addClass("hidden");

@@ -106,18 +106,34 @@
 				});
 				break;
 			case "deal-user-tiles":
-				pEl = Self.els.el.find(`.player.user .rack`);
+				pEl = Self.els.el.find(`.player.user .rack`).addClass("dealing");
 				dOffset = pEl.offset(".board");
 				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
 				str = [];
 				event.tiles.map((tile, i) => {
 					let { id, clr, num } = Tiles.parse(tile),
-						y = (parseInt(i / 16, 10) * 78) + 5,
-						x = ((i % 16) * 56) + 21;
-					if (tile) str.push(`<span class="tile ${clr} deal" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
+						tY = (parseInt(i / 16, 10) * 78) + 5,
+						tX = ((i % 16) * 56) + 21,
+						sY = sOffset.top - dOffset.top + 5,
+						sX = sOffset.left - dOffset.left + 5;
+					if (tile) str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
 				});
 				pEl.append(str.join(""));
 
+				return new Promise(resolve => {
+					setTimeout(() => {
+						pEl.cssSequence("anim-deal", "transitionend", el => {
+							el.removeClass("dealing anim-deal");
+							el.find(".tile").map(elem => {
+								let tile = $(elem),
+									top = tile.cssProp("--tY"),
+									left = tile.cssProp("--tX");
+								tile.css({ top, left });
+							});
+							resolve();
+						});
+					}, 100);
+				});
 				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");
