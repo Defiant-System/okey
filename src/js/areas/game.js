@@ -63,8 +63,10 @@
 					.addClass(iOkey.clr)
 					.data({ v: iOkey.num });
 
-				if (!event.noAnim) {
-					// await Self.dispatch({ type: "deal-tiles-to", seat: 1, num: 22 });
+				if (event.noAnim) {
+					Self.dispatch({ type: "deal-user-tiles", tiles: Engine._state.player[0].board, noAnim: true });
+				} else {
+					await Self.dispatch({ type: "deal-user-tiles", tiles: Engine._state.player[0].board });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
@@ -96,6 +98,7 @@
 					str.push(`<span class="tile deal" style="--y: ${y}px; --x: ${x}px;"></span>`);
 				});
 				pEl.append(str.join(""));
+				// start animation
 				return new Promise(resolve => {
 					setTimeout(() => {
 						pEl.cssSequence("dealing", "transitionend", el => {
@@ -106,7 +109,7 @@
 				});
 				break;
 			case "deal-user-tiles":
-				pEl = Self.els.el.find(`.player.user .rack`).addClass("dealing");
+				pEl = Self.els.el.find(`.player.user .rack`).addClass("dealing "+ (event.noAnim ? "no-anim" : ""));
 				dOffset = pEl.offset(".board");
 				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
 				str = [];
@@ -119,7 +122,7 @@
 					if (tile) str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
 				});
 				pEl.append(str.join(""));
-
+				// start animation
 				return new Promise(resolve => {
 					setTimeout(() => {
 						pEl.cssSequence("anim-deal", "transitionend", el => {
