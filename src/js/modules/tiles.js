@@ -33,7 +33,7 @@ let Tiles = {
 	},
 	restore(state) {
 		this.data = state.table.data.map((value, i) => ({ tile: i+1, value }));
-		this.okey = state.table.okey;
+		// this.okey = state.table.okey;
 		// remove one tile from tile stack
 		this.tilesLeft = this.data.slice();
 
@@ -86,27 +86,14 @@ let Tiles = {
 			this.tileIndex++;
 		}
 
-		let index = 0;
-		for (let i=1; i<=8; i++) {
-			for (let j=1; j<=13; j++) {
-				let stone = parseInt(this.data[index].value.substr(1, 2));
-				let color1 = this.data[index].value.substr(0, 1);
-				if (stone == 0) stone = "R";
-				index++;
-			}
-		}
-		for (let j=104; j<=105; j++) {
-			let stone = parseInt(this.data[index].value.substr(1, 2));
-			let color1 = this.data[index].value.substr(0, 1);
-			if (stone == 0) stone = "R";
-			index++;
-		}
-		let x = parseInt(this.data[index - 1].value.substr(0, 1));
-		let y = parseInt(this.data[index - 1].value.substr(1, 2));
-		Tiles.okey = y * 1 + 1;
+		let x = parseInt(this.data[105].value.substr(0, 1));
+		let y = parseInt(this.data[105].value.substr(1, 2));
+		Tiles.okey = y + 1;
 		if (Tiles.okey > 13) Tiles.okey = 1;
 		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
-		Tiles.okey = String(x) + String(Tiles.okey);
+		Tiles.okey = ""+ x + Tiles.okey;
+
+		console.log( Tiles.okey );
 	},
 	shuffle() {
 		let shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
@@ -132,9 +119,9 @@ let Tiles = {
 		let sorted = [];
 		let arr3 = 0;
 		let arr4 = 0;
-		let min = parseInt(boardTilesVir[0]);
+		let min = parseInt(boardTilesVir[0].value);
 		asc.push(boardTilesVir[0]);
-		let max = 999;
+		let max = { value: "999" };
 
 		for (let i=1; i<boardTilesVir.length; i++) {
 			let _0x35e4cc = parseInt(boardTilesVir[i].value);
@@ -145,12 +132,12 @@ let Tiles = {
 			}
 			if (settingsType == 1) {
 				if (min % 100 == 1) {
-					max = String(min);
+					max = { value: String(min) };
 				}
-				if (min - max == 12) {
-					asc.push(String(max));
+				if (min - max.value == 12) {
+					asc.push(max);
 					_0x1bf143 = 2;
-					max = 999;
+					max = { value: "999" };
 				}
 			}
 			if (_0x1bf143 == 0 && _0x35e4cc != min || _0x35e4cc == min && asc.length == 0) {
@@ -159,8 +146,8 @@ let Tiles = {
 			}
 			if (asc.length == num || _0x1bf143 == 2) {
 				if (asc.length == num) {
-					if (asc[0] == String(max)) {
-						max = 999;
+					if (asc[0].value == max.value) {
+						max = { value: "999" };
 					}
 					sorted.push.apply(sorted, asc);
 					sorted.push("");
@@ -175,7 +162,7 @@ let Tiles = {
 		}
 		for (let i=0; i<sorted.length; i++) {
 			boardTilesVir = this.removeArrayItem(boardTilesVir, sorted[i]);
-			arr4 = arr4 * 1 + sorted[i].value % 100;
+			if (sorted[i]) arr4 = arr4 * 1 + sorted[i].value % 100;
 		}
 		if (sort == 0) {
 			if (settingsType == 1) return arr3;
@@ -211,7 +198,7 @@ let Tiles = {
 		for (let i=0; i<=arr2.length; i++) {
 			if (arr2[i]) {
 				boardTilesVir = this.removeArrayItem(boardTilesVir, arr2[i]);
-				val2 = val2 * 1 + arr2[i] % 100;
+				val2 = val2 * 1 + arr2[i].value % 100;
 			}
 		}
 		if (type == 0) {

@@ -86,7 +86,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (activePlayer == 1) min = 1;
 			
 			if (settingsGameLevel > 1 || min == 1) {
-				let oI = Board.tiles.indexOf(Tiles.okey);
+				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
@@ -96,11 +96,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
-				oI = Board.tiles.indexOf("000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				oI = Board.tiles.indexOf("000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
@@ -125,7 +125,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr2.push.apply(arr2, arr3);
 				perFull = arr2.slice();
 				Tiles.addFourth();
-				if (okeyCont > 0) this.addOkey(1);
+				if (okeyCont > 0) Tiles.addOkey(1);
 				
 				arr2 = perFull.slice();
 				if (Tiles.checkPer(2) || settingsGameLevel < 3 && min == 0) {
@@ -147,13 +147,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 				perHalf = arr4.slice();
 				
 				if (okeyCont > 0) {
-					this.addOkey(2);
+					Tiles.addOkey(2);
 				}
 				if (okeyCont > 0) {
-					this.addOkey(3);
+					Tiles.addOkey(3);
 				}
 				if (okeyCont > 0) {
-					this.addOkey(4);
+					Tiles.addOkey(4);
 					arr2 = perFull.slice();
 				}
 				arr4 = perHalf.slice();
@@ -163,7 +163,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr2 = arr1.slice();
 				perFull = arr2.slice();
 				Board.tiles = boardTilesVir.slice();
-				if (okeyCont > 0) this.addOkeyDouble();
+				if (okeyCont > 0) Tiles.addOkeyDouble();
 				Board.tiles = boardTilesVir.slice();
 				arr2 = perFull.slice();
 			}
@@ -183,7 +183,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			arr2.push.apply(arr2, Board.tiles);
 			Board.tiles = arr2.slice();
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
-				Board.tiles = this.removeArrayItem(Board.tiles, "", 1);
+				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
 
 			this.updateBoard();
