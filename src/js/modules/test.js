@@ -31,7 +31,7 @@ let Test = {
 		Engine.restore(state);
 
 
-		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
+		APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
 		// Tiles.restore(state.table.data);
 

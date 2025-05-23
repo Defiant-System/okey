@@ -1,5 +1,5 @@
 
-let { Engine, Tiles, AI } = (() => {
+let { Engine, Board, Tiles, AI } = (() => {
 
 	let APP;
 
@@ -224,6 +224,6 @@ let { Engine, Tiles, AI } = (() => {
 		checkWin() {},
 	};
 
-	return { Engine, Tiles, AI };
+	return { Engine, Board, Tiles, AI };
 
 })();

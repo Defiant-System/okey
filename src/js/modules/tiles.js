@@ -25,6 +25,8 @@ let Tiles = {
 		this.data = [];
 		this.tileIndex = 0;
 
+		activePlayer = 1;
+
 		if (settingsType == 1) this.tileLimit = 14;
 		if (settingsType == 2) this.tileLimit = 21;
 		if (settingsType == 3) this.tileLimit = 14;
@@ -36,6 +38,8 @@ let Tiles = {
 		this.tilesLeft = this.data.slice();
 
 		this.deliver();
+
+		console.log( Board );
 
 		// table UI update
 		// Engine.updateLeftTiles();
@@ -54,76 +58,54 @@ let Tiles = {
 		return { id, clr, num };
 	},
 	deliver() {
+		Board.tiles = [];
 		Board.tiles1 = [];
 		Board.tiles2 = [];
 		Board.tiles3 = [];
 		Board.tiles4 = [];
-		// var _0x2c717f = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 		this.tileIndex = 0;
-		activePlayer = 1;
-		Board.tiles = [];
-		// boardPlaces = [];
+
 		for (let i=0; i<=this.tileLimit; i++) {
-			Board.tiles.push(this.data[this.tileIndex]);
+			Board.tiles1.push(this.data[this.tileIndex]);
 			Engine.updateLeftTiles(this.data[this.tileIndex]);
 			this.tileIndex++;
-			// Engine.place("tile-"+ this.tileIndex, _0x2c717f[i]);
 		}
-		Board.tiles1 = Board.tiles.slice();
-		// boardPlaces1 = boardPlaces.slice();
-		activePlayer = 2;
-		Board.tiles = [];
-		// boardPlaces = [];
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles.push(this.data[this.tileIndex]);
+			Board.tiles2.push(this.data[this.tileIndex]);
 			Engine.updateLeftTiles(this.data[this.tileIndex]);
 			this.tileIndex++;
-			// Engine.place("tile-"+ this.tileIndex, _0x2c717f[i]);
 		}
-		Board.tiles2 = Board.tiles.slice();
-		// boardPlaces2 = boardPlaces.slice();
-		activePlayer = 3;
-		Board.tiles = [];
-		// boardPlaces = [];
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles.push(this.data[this.tileIndex]);
+			Board.tiles3.push(this.data[this.tileIndex]);
 			Engine.updateLeftTiles(this.data[this.tileIndex]);
 			this.tileIndex++;
-			// Engine.place("tile-"+ this.tileIndex, _0x2c717f[i]);
 		}
-		Board.tiles3 = Board.tiles.slice();
-		// boardPlaces3 = boardPlaces.slice();
-		activePlayer = 4;
-		Board.tiles = [];
-		// boardPlaces = [];
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles.push(this.data[this.tileIndex]);
+			Board.tiles4.push(this.data[this.tileIndex]);
 			Engine.updateLeftTiles(this.data[this.tileIndex]);
 			this.tileIndex++;
-			// Engine.place("tile-"+ this.tileIndex, _0x2c717f[i]);
 		}
-		activePlayer = 1;
 
 		var _0x5f031e = 0;
 		for (let i=1; i<=8; i++) {
 			for (let j=1; j<=13; j++) {
 				var stone = parseInt(this.data[_0x5f031e].value.substr(1, 2));
 				var color1 = this.data[_0x5f031e].value.substr(0, 1);
-				if (stone == 0) stone = 'R';
+				if (stone == 0) stone = "R";
 				_0x5f031e++;
 			}
 		}
 		for (let j=104; j<=105; j++) {
 			var stone = parseInt(this.data[_0x5f031e].value.substr(1, 2));
 			var color1 = this.data[_0x5f031e].value.substr(0, 1);
-			if (stone == 0) stone = 'R';
+			if (stone == 0) stone = "R";
 			_0x5f031e++;
 		}
 		let x = parseInt(this.data[_0x5f031e - 1].value.substr(0, 1));
 		let y = parseInt(this.data[_0x5f031e - 1].value.substr(1, 2));
 		Tiles.okey = y * 1 + 1;
 		if (Tiles.okey > 13) Tiles.okey = 1;
-		if (Tiles.okey < 10) Tiles.okey = '0' + Tiles.okey;
+		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
 		Tiles.okey = String(x) + String(Tiles.okey);
 	},
 	shuffle() {
