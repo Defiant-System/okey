@@ -6,6 +6,7 @@
 
 const ME = karaqu.user;
 const Opponents = ["Adam", "Denise", "Yasmin", "Sean", "Ann", "Ali"];
+const Colors = ["green", "red",  "blue", "yellow", "black"];
 
 
 const okey = {
