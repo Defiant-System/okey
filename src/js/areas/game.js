@@ -52,7 +52,6 @@
 					el.data({ name });
 				});
 				Self.els.el.find(`.player.user .name`).data({ name: ME.firstName });
-
 				// set dealer button
 				Self.els.el.find(".dealer").data({ pos: event.dealer });
 
@@ -64,9 +63,9 @@
 					.data({ v: iOkey.num });
 
 				if (event.noAnim) {
-					Self.dispatch({ type: "deal-user-tiles", tiles: Engine._state.player[0].board, noAnim: true });
+					Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1, noAnim: true });
 				} else {
-					await Self.dispatch({ type: "deal-user-tiles", tiles: Engine._state.player[0].board });
+					await Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
@@ -114,7 +113,7 @@
 				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
 				str = [];
 				event.tiles.map((tile, i) => {
-					let { id, clr, num } = Tiles.parse(tile),
+					let { id, clr, num } = Tiles.parse(tile.value),
 						tY = (parseInt(i / 16, 10) * 78) + 5,
 						tX = ((i % 16) * 56) + 21,
 						sY = sOffset.top - dOffset.top + 5,

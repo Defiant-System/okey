@@ -39,7 +39,7 @@ let Tiles = {
 
 		this.deliver();
 
-		console.log( Board );
+		// console.log( Board );
 
 		// table UI update
 		// Engine.updateLeftTiles();
@@ -86,23 +86,23 @@ let Tiles = {
 			this.tileIndex++;
 		}
 
-		var _0x5f031e = 0;
+		let index = 0;
 		for (let i=1; i<=8; i++) {
 			for (let j=1; j<=13; j++) {
-				var stone = parseInt(this.data[_0x5f031e].value.substr(1, 2));
-				var color1 = this.data[_0x5f031e].value.substr(0, 1);
+				let stone = parseInt(this.data[index].value.substr(1, 2));
+				let color1 = this.data[index].value.substr(0, 1);
 				if (stone == 0) stone = "R";
-				_0x5f031e++;
+				index++;
 			}
 		}
 		for (let j=104; j<=105; j++) {
-			var stone = parseInt(this.data[_0x5f031e].value.substr(1, 2));
-			var color1 = this.data[_0x5f031e].value.substr(0, 1);
+			let stone = parseInt(this.data[index].value.substr(1, 2));
+			let color1 = this.data[index].value.substr(0, 1);
 			if (stone == 0) stone = "R";
-			_0x5f031e++;
+			index++;
 		}
-		let x = parseInt(this.data[_0x5f031e - 1].value.substr(0, 1));
-		let y = parseInt(this.data[_0x5f031e - 1].value.substr(1, 2));
+		let x = parseInt(this.data[index - 1].value.substr(0, 1));
+		let y = parseInt(this.data[index - 1].value.substr(1, 2));
 		Tiles.okey = y * 1 + 1;
 		if (Tiles.okey > 13) Tiles.okey = 1;
 		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
@@ -114,10 +114,11 @@ let Tiles = {
 		this.tilesLeft = this.data.slice();
 		if (this.data[105].value == "000") return this.shuffle();
 	},
-	removeArrayItem(arr, item, add) {
+	removeArrayItem(arr, item, fromEnd) {
 		let index;
-		if (add != 1) index = arr.indexOf(item);
-		if (add == 1) index = arr.lastIndexOf(item);
+		let fn = typeof item === "string" ? e => e.value == item : e => e == item;
+		if (fromEnd != 1) index = arr.findIndex(fn);
+		if (fromEnd == 1) index = arr.findLastIndex(fn);
 		if (index > -1) {
 			arr.splice(index, 1);
 			return arr;
@@ -126,7 +127,7 @@ let Tiles = {
 	},
 	sortTiles(num, sort) {
 		boardTilesVir = Board.tiles.slice().sort();
-		Board.tiles.sort((a, b) => a - b);
+		Board.tiles.sort((a, b) => a.value - b.value);
 		let asc = [];
 		let sorted = [];
 		let arr3 = 0;
@@ -136,7 +137,7 @@ let Tiles = {
 		let max = 999;
 
 		for (let i=1; i<boardTilesVir.length; i++) {
-			let _0x35e4cc = parseInt(boardTilesVir[i]);
+			let _0x35e4cc = parseInt(boardTilesVir[i].value);
 			let _0x1bf143 = 0;
 			if (_0x35e4cc - 1 == min) {
 				asc.push(boardTilesVir[i]);
@@ -167,38 +168,32 @@ let Tiles = {
 				}
 				asc = [];
 			}
-			min = parseInt(boardTilesVir[i]);
+			min = parseInt(boardTilesVir[i].value);
 			if (_0x1bf143 == 2) {
 				asc.push(boardTilesVir[i]);
 			}
 		}
 		for (let i=0; i<sorted.length; i++) {
 			boardTilesVir = this.removeArrayItem(boardTilesVir, sorted[i]);
-			arr4 = arr4 * 1 + sorted[i] % 100;
+			arr4 = arr4 * 1 + sorted[i].value % 100;
 		}
 		if (sort == 0) {
-			if (settingsType == 1) {
-				return arr3;
-			}
-			if (settingsType == 2 || settingsType == 3) {
-				return arr4;
-			}
+			if (settingsType == 1) return arr3;
+			if (settingsType == 2 || settingsType == 3) return arr4;
 		}
-		if (sort == 1) {
-			return sorted;
-		}
+		if (sort == 1) return sorted;
 	},
 	sortTilesByColor(num, type) {
 		boardTilesVir = Board.tiles.slice().sort();
-		boardTilesVir.sort((a, b) => a % 100 > b % 100 ? 1 : b % 100 > a % 100 ? -1 : 0);
+		boardTilesVir.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
 		let val1 = 0;
 		let val2 = 0;
-		let min = parseInt(boardTilesVir[0]);
+		let min = parseInt(boardTilesVir[0].value);
 		arr1.push(boardTilesVir[0]);
 		for (let i=1; i<=boardTilesVir.length; i++) {
-			let tileValue = parseInt(boardTilesVir[i]);
+			let tileValue = parseInt((boardTilesVir[i] || {}).value);
 			if (tileValue % 100 == min % 100 && tileValue != min) {
 				arr1.push(boardTilesVir[i]);
 			} else if (tileValue != min) {
@@ -211,7 +206,7 @@ let Tiles = {
 				arr1 = [];
 				val1++;
 			}
-			min = parseInt(boardTilesVir[i]);
+			min = tileValue;
 		}
 		for (let i=0; i<=arr2.length; i++) {
 			if (arr2[i]) {
@@ -227,17 +222,17 @@ let Tiles = {
 	},
 	sortDouble(seat, asc) {
 		boardTilesVir = Board.tiles.slice().sort();
-		boardTilesVir.sort((a, b) => a % 100 > b % 100 ? 1 : b % 100 > a % 100 ? -1 : 0);
+		boardTilesVir.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
 		let index1 = 0;
 		let index2 = 0;
 		let min;
-		min = parseInt(boardTilesVir[0]);
+		min = parseInt(boardTilesVir[0].value);
 		arr1.push(boardTilesVir[0]);
 		for (let i=1; i<=boardTilesVir.length; i++) {
-			if (boardTilesVir[i] != "800") {
-				let _0x596912 = parseInt(boardTilesVir[i]);
+			if (boardTilesVir[i].value != "800") {
+				let _0x596912 = parseInt(boardTilesVir[i].value);
 				if (_0x596912 == min) {
 					arr1.push(boardTilesVir[i]);
 					arr2.push.apply(arr2, arr1);
@@ -250,14 +245,331 @@ let Tiles = {
 						arr1.push(boardTilesVir[i]);
 					}
 				}
-				min = parseInt(boardTilesVir[i]);
+				min = parseInt(boardTilesVir[i].value);
 			}
 		}
 		for (let i=0; i<=arr2.length; i++) {
 			boardTilesVir = this.removeArrayItem(boardTilesVir, arr2[i]);
-			index2 = index2 * 1 + arr2[i] % 100;
+			index2 = index2 * 1 + arr2[i].value % 100;
 		}
 		if (asc == 0 && ((settingsType == 1 || settingsType == 2 || settingsType == 3))) return index1;
 		if (asc == 1) return arr2;
-	}
+	},
+	checkPer(num) {
+		let tiles = Board.tiles.slice();
+		let arr = tiles.slice();
+		let sort1 = this.sortTiles(num, 0);
+		tiles = boardTilesVir.slice();
+		let sortC2 = this.sortTilesByColor(num, 0);
+		tiles = arr.slice();
+		sortC2 = this.sortTilesByColor(num, 0);
+		tiles = boardTilesVir.slice();
+		let sort2 = this.sortTiles(num, 0);
+		tiles = arr.slice();
+		let score1 = sort1 * 1 + sortC2 * 1;
+		let score2 = sortC2 * 1 + sort2 * 1;
+
+		return score1 >= score2 ? 1 : 0;
+	},
+	addFourth() {
+		let bTiles = Board.tiles;
+		for (let k=0; k<=1; k++) {
+			for (let i=0; i<bTiles.length; i++) {
+				for (let j=0; j<perFull.length; j++) {
+					if (perFull[j] == "") {
+						var _0x39a913 = bTiles[i].value;
+						if (settingsType == 1) {
+							if (bTiles[i] % 100 == 1) {
+								_0x39a913 = bTiles[i].value * 1 + 13;
+							}
+						}
+						if (perFull[j-1].value*1+1 == _0x39a913 && perFull[j-2].value*1+2 == _0x39a913 && perFull[j-3].value*1+3 == _0x39a913) {
+							perFull.splice(j, 0, bTiles[i]);
+							boardTilesVir = this.removeArrayItem(boardTilesVir, bTiles[i]);
+							bTiles = this.removeArrayItem(bTiles, bTiles[i]);
+							i--;
+						}
+					}
+				}
+			}
+		}
+		for (let i=0; i<bTiles.length; i++) {
+			var _0x12e6a9 = 0;
+			for (let j=0; j<perFull.length; j++) {
+				_0x12e6a9++;
+				if (perFull[j] == "") {
+					if (_0x12e6a9 == 4) {
+						if (perFull[j-3].value % 100 == bTiles[i].value % 100 && perFull[j-2].value % 100 == bTiles[i].value % 100 && perFull[j-1].value % 100 == bTiles[i].value % 100 && perFull[j-1].value != bTiles[i].value && perFull[j-2].value != bTiles[i].value && perFull[j-3].value != bTiles[i].value) {
+							perFull.splice(j, 0, bTiles[i]);
+							boardTilesVir = this.removeArrayItem(boardTilesVir, bTiles[i]);
+							bTiles = this.removeArrayItem(bTiles, bTiles[i]);
+						}
+					}
+					_0x12e6a9 = 0;
+				}
+			}
+		}
+		return bTiles;
+	},
+	addOkey(seat) {
+		Board.tiles.sort();
+		Board.tiles.sort((a, b) => a - b);
+		boardTilesVir = Board.tiles.slice();
+		if (seat == 1) {
+			var _0x164ff0;
+			for (let i=2; i<=Board.tiles.length * 1 + 3; i++) {
+				if (Board.tiles[i - 1] % 100 == 1 && settingsType == 1) {
+					_0x164ff0 = i - 1;
+				}
+				if (_0x164ff0 && Board.tiles[i] - Board.tiles[i - 1] == 1 && Board.tiles[i * 1 + 1] - Board.tiles[i] == 2 && Board.tiles[i * 1 + 1] - Board.tiles[_0x164ff0] == 12 && settingsType == 1) {
+					perFull.push(Board.tiles[i - 1]);
+					perFull.push(Board.tiles[i]);
+					perFull.push("800");
+					perFull.push(Board.tiles[i * 1 + 1]);
+					perFull.push(Board.tiles[_0x164ff0]);
+					perFull.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i * 1 + 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[_0x164ff0]);
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+				if (Board.tiles[i - 1] - Board.tiles[i - 2] == 2 && Board.tiles[i] - Board.tiles[i - 1] == 1 && Board.tiles[i * 1 + 1] - Board.tiles[i] == 1 || Board.tiles[i - 1] - Board.tiles[i - 2] == 1 && Board.tiles[i] - Board.tiles[i - 1] == 2 && Board.tiles[i * 1 + 1] - Board.tiles[i] == 1) {
+					perFull.push(Board.tiles[i - 2]);
+					if (Board.tiles[i - 1] - Board.tiles[i - 2] > 1) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[i - 1]);
+					if (Board.tiles[i] - Board.tiles[i - 1] > 1) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[i]);
+					perFull.push(Board.tiles[i * 1 + 1]);
+					perFull.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i * 1 + 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 2]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+				if (_0x164ff0 && (Board.tiles[i] - Board.tiles[i - 1] == 1 && Board.tiles[i] - Board.tiles[_0x164ff0] == 11 || Board.tiles[i] - Board.tiles[i - 1] == 2 && Board.tiles[i] - Board.tiles[_0x164ff0] == 12) && settingsType == 1) {
+					perFull.push(Board.tiles[i - 1]);
+					if (Board.tiles[i] - Board.tiles[i - 1] == 2) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[i]);
+					if (Board.tiles[i] - Board.tiles[i - 1] == 1) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[_0x164ff0]);
+					perFull.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[_0x164ff0]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+				if (Board.tiles[i - 1] - Board.tiles[i - 2] == 2 && Board.tiles[i] - Board.tiles[i - 1] == 1 || Board.tiles[i - 1] - Board.tiles[i - 2] == 1 && Board.tiles[i] - Board.tiles[i - 1] == 2) {
+					perFull.push(Board.tiles[i - 2]);
+					if (Board.tiles[i - 1] - Board.tiles[i - 2] > 1) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[i - 1]);
+					if (Board.tiles[i] - Board.tiles[i - 1] > 1) {
+						perFull.push("800");
+					}
+					perFull.push(Board.tiles[i]);
+					perFull.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 2]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+			}
+		}
+		if (seat == 2) {
+			var _0x164ff0;
+			for (let i=1; i<Board.tiles.length; i++) {
+				if (Board.tiles[i] - Board.tiles[i - 1] == 2) {
+					perHalf.push(Board.tiles[i - 1]);
+					perHalf.push("800");
+					perHalf.push(Board.tiles[i]);
+					perHalf.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i - 1]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+				if (Board.tiles[i - 1] % 100 == 1 && settingsType == 1) {
+					_0x164ff0 = i - 1;
+				}
+				if (_0x164ff0 && Board.tiles[i] - Board.tiles[_0x164ff0] == 11 && settingsType == 1) {
+					perHalf.push(Board.tiles[i]);
+					perHalf.push("800");
+					perHalf.push(Board.tiles[_0x164ff0]);
+					perHalf.push('');
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[_0x164ff0]);
+					boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+					Board.tiles = boardTilesVir.slice();
+					okeyCont--;
+					if (okeyCont == 0) return 0;
+				}
+			}
+		}
+		if (seat == 3) {
+			for (let j=0; j<perHalf.length; j++) {
+				if (perHalf[j] == '' && ((settingsType == 2 || settingsType == 3) && perHalf[j - 1] % 100 != 13 || settingsType == 1)) {
+					if (perHalf[j - 1] - perHalf[j - 2] == 1) {
+						perHalf.splice(j, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+					if (perHalf[j - 2] - perHalf[j - 1] == 12 && settingsType == 1) {
+						perHalf.splice(j - 2, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+				}
+			}
+			for (let j=0; j<perHalf.length; j++) {
+				if (perHalf[j] == '') {
+					if (perHalf[j - 1] % 100 == perHalf[j - 2] % 100 && perHalf[j - 1] != perHalf[j - 2]) {
+						perHalf.splice(j, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+				}
+			}
+		}
+		if (seat == 4) {
+			for (let j=0; j<perFull.length; j++) {
+				if (perFull[j] == '' && ((settingsType == 2 || settingsType == 3) && perFull[j - 1] % 100 != 13 || settingsType == 1)) {
+					if (perFull[j - 1] - perFull[j - 2] == 1) {
+						for (let i=0; i<Board.tiles.length; i++) {
+							if (Board.tiles[i] - perFull[j - 1] == 2) {
+								perFull.splice(j, 0, "800");
+								perFull.splice(j * 1 + 1, 0, Board.tiles[i]);
+								okeyCont--;
+								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+								Board.tiles = this.removeArrayItem(Board.tiles, "800");
+								boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
+								if (okeyCont == 0) return 0;
+							}
+						}
+					}
+				}
+			}
+			for (let j=0; j<perFull.length; j++) {
+				if ((perFull[j - 1] == '' || j == 0) && perFull[j * 1 + 1] % 100 != 1) {
+					if (perFull[j * 1 + 1] - perFull[j] == 1) {
+						for (let i=0; i<Board.tiles.length; i++) {
+							if (perFull[j] - Board.tiles[i] == 2) {
+								perFull.splice(j, 0, "800");
+								perFull.splice(j, 0, Board.tiles[i]);
+								okeyCont--;
+								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+								Board.tiles = this.removeArrayItem(Board.tiles, "800");
+								boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
+								if (okeyCont == 0) return 0;
+							}
+						}
+					}
+				}
+			}
+			for (let j=0; j<perFull.length; j++) {
+				if (perFull[j] == '' && perFull[j - 1] % 100 == 12 && settingsType == 1) {
+					if (perFull[j - 1] - perFull[j - 2] == 1) {
+						for (let i=0; i<Board.tiles.length; i++) {
+							if (perFull[j - 1] - Board.tiles[i] == 11) {
+								perFull.splice(j, 0, Board.tiles[i]);
+								perFull.splice(j, 0, "800");
+								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+								Board.tiles = this.removeArrayItem(Board.tiles, '800');
+								boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
+								okeyCont--;
+								if (okeyCont == 0) return 0;
+							}
+						}
+					}
+				}
+			}
+			for (let j=0; j<perFull.length; j++) {
+				if (perFull[j] == '' && ((settingsType == 2 || settingsType == 3) && perFull[j - 1] % 100 != 13 || settingsType == 1)) {
+					if (perFull[j - 1] - perFull[j - 2] == 1) {
+						perFull.splice(j, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, '800');
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+				}
+			}
+			for (let j=0; j<perFull.length; j++) {
+				if ((perFull[j - 1] == '' || j == 0) && perFull[j * 1 + 1] % 100 != 1) {
+					if (perFull[j * 1 + 2] - perFull[j * 1 + 1] == 1) {
+						perFull.splice(j, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+				}
+			}
+			var _0x2c0168 = 0;
+			for (let j=0; j<perFull.length; j++) {
+				_0x2c0168++;
+				if (perFull[j] == '') {
+					if (perFull[j - 1] % 100 == perFull[j - 2] % 100 && perFull[j - 1] != perFull[j - 2] && _0x2c0168 < 5) {
+						perFull.splice(j, 0, "800");
+						okeyCont--;
+						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+						Board.tiles = this.removeArrayItem(Board.tiles, "800");
+						if (okeyCont == 0) return 0;
+					}
+					_0x2c0168 = 0;
+				}
+			}
+		}
+	},
+	addOkeyDouble() {
+		Board.tiles.sort();
+		Board.tiles.sort((_0x23565a, _0x1c1ef8) => _0x23565a % 100 > _0x1c1ef8 % 100 ? 1 : _0x1c1ef8 % 100 > _0x23565a % 100 ? -1 : 0);
+		Board.tiles.reverse();
+		for (let i=0; i<=Board.tiles.length; i++) {
+			if (Board.tiles[i] != "800") {
+				perFull.push(Board.tiles[i]);
+				perFull.push("800");
+				perFull.push('');
+				boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
+				boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
+				Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
+				Board.tiles = this.removeArrayItem(Board.tiles, "800");
+				okeyCont--;
+				if (okeyCont == 0) return 0;
+			}
+		}
+	},
 };
