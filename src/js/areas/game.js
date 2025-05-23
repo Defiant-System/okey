@@ -56,7 +56,8 @@
 				Self.els.el.find(".dealer").data({ pos: event.dealer });
 
 				// set okey indicator
-				let iOkey = Tiles.parse(Tiles.okey);
+				let okeyNum = Tiles.okey - 1;
+				let iOkey = Tiles.parse(okeyNum);
 				APP.content.find(`.info .tiles.okey .tile`)
 					.removeClass("red yellow blue black green")
 					.addClass(iOkey.clr)
@@ -113,12 +114,14 @@
 				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
 				str = [];
 				event.tiles.map((tile, i) => {
-					let { id, clr, num } = Tiles.parse(tile.value),
-						tY = (parseInt(i / 16, 10) * 78) + 5,
-						tX = ((i % 16) * 56) + 21,
-						sY = sOffset.top - dOffset.top + 5,
-						sX = sOffset.left - dOffset.left + 5;
-					if (tile) str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
+					if (tile) {
+						let { id, clr, num } = Tiles.parse(tile.value),
+							tY = (parseInt(i / 16, 10) * 78) + 5,
+							tX = ((i % 16) * 56) + 21,
+							sY = sOffset.top - dOffset.top + 5,
+							sX = sOffset.left - dOffset.left + 5;
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
+					}
 				});
 				pEl.append(str.join(""));
 				// start animation

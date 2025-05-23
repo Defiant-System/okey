@@ -47,6 +47,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// restore Tiles object
 			Tiles.restore(state);
 
+
+			// Board.tiles = [101, 103, 102]
+			// // boardTiles = [211, 311, 411, 113, 0, 313, 106, 107, 301, 302, 104, 304, 306, 104, 201, 403, 405, 209, 403, 405, 408, 412];
+			// console.log( Tiles.sortTiles(3, 1) );
+
+
 			this.arrange(1, 1);
 			// this.updateRack();
 		},
@@ -61,6 +67,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 		getRack(seat) {
 			activePlayer = seat;
 			Board.tiles = Board["tiles"+ seat];
+		},
+		updateBoard() {
+			let seat = activePlayer;
+			Board["tiles"+ seat] = Board.tiles.slice();
 		},
 		arrange(seat, type=1) {
 			this.getRack(seat);
@@ -168,15 +178,17 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr2.push("");
 			}
 			if (type == 1) {
-				this.priority();
+				Tiles.priority();
 			}
 			arr2.push.apply(arr2, Board.tiles);
 			Board.tiles = arr2.slice();
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = this.removeArrayItem(Board.tiles, "", 1);
 			}
-			console.log( Board.tiles );
 
+			this.updateBoard();
+
+			/*
 			let arr6 = Board.tiles.slice();
 			let arr7 = [];
 			let boardTiles = Board.tiles.slice();
@@ -198,8 +210,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 			}
 
-			console.log( boardPlaces );
-
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
@@ -215,8 +225,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 					game_over(1);
 				}
 			}
+			*/
 		},
-		priority() {},
 		checkWin() {},
 	};
 
