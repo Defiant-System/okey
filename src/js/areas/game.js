@@ -82,10 +82,12 @@
 			case "engine-sort-serial":
 				Engine.arrange(1, 1);
 				// update rack
+				Self.dispatch({ type: "update-user-rack" });
 				break;
 			case "engine-sort-double":
 				Engine.arrange(1, 2);
 				// update rack
+				Self.dispatch({ type: "update-user-rack" });
 				break;
 			case "deal-tiles-to":
 				pEl = Self.els.common.info.find(".inset.left");
@@ -115,7 +117,7 @@
 				str = [];
 				event.tiles.map((tile, i) => {
 					if (tile) {
-						let { id, clr, num } = Tiles.parse(tile.value),
+						let { id, clr, num } = Tiles.parse(tile._value || tile.value),
 							tY = (parseInt(i / 16, 10) * 78) + 5,
 							tX = ((i % 16) * 56) + 21,
 							sY = sOffset.top - dOffset.top + 5,
@@ -139,6 +141,9 @@
 						});
 					}, 100);
 				});
+				break;
+			case "update-user-rack":
+				console.log(event, Board.tiles1);
 				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");

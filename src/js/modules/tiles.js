@@ -48,7 +48,7 @@ let Tiles = {
 		let id = tile.toString(),
 			clr = Colors[+id.slice(0,1)],
 			num = new Number(id.slice(1)) * 1;
-		if (+id.slice(0,1) == "0") {
+		if (+id.slice(0,1) == "0" || tile._value === "000") {
 			clr = Colors[0];
 			num = "j";
 		}
@@ -93,6 +93,9 @@ let Tiles = {
 		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
 		Tiles.okey = ""+ x + Tiles.okey;
 		// console.log( Tiles.okey );
+
+		// auto arrange "series"
+		Engine.arrange(1, 1);
 	},
 	shuffle() {
 		let shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
@@ -217,7 +220,7 @@ let Tiles = {
 		let min;
 		min = parseInt(boardTilesVir[0].value);
 		arr1.push(boardTilesVir[0]);
-		for (let i=1; i<=boardTilesVir.length; i++) {
+		for (let i=1; i<boardTilesVir.length; i++) {
 			if (boardTilesVir[i].value != "800") {
 				let _0x596912 = parseInt(boardTilesVir[i].value);
 				if (_0x596912 == min) {
@@ -235,7 +238,7 @@ let Tiles = {
 				min = parseInt(boardTilesVir[i].value);
 			}
 		}
-		for (let i=0; i<=arr2.length; i++) {
+		for (let i=0; i<arr2.length; i++) {
 			boardTilesVir = this.removeArrayItem(boardTilesVir, arr2[i]);
 			index2 = index2 * 1 + arr2[i].value % 100;
 		}
@@ -421,14 +424,14 @@ let Tiles = {
 			for (let j=0; j<perHalf.length; j++) {
 				if (perHalf[j] == "" && ((settingsType == 2 || settingsType == 3) && perHalf[j-1].value % 100 != 13 || settingsType == 1)) {
 					if (perHalf[j-1].value - perHalf[j-2].value == 1) {
-						perHalf.splice(j, 0, "800");
+						perHalf.splice(j, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
 						if (okeyCont == 0) return 0;
 					}
 					if (perHalf[j-2].value - perHalf[j-1].value == 12 && settingsType == 1) {
-						perHalf.splice(j-2, 0, "800");
+						perHalf.splice(j-2, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
@@ -439,7 +442,7 @@ let Tiles = {
 			for (let j=0; j<perHalf.length; j++) {
 				if (perHalf[j] == "") {
 					if (perHalf[j-1].value % 100 == perHalf[j-2].value % 100 && perHalf[j-1].value != perHalf[j-2].value) {
-						perHalf.splice(j, 0, "800");
+						perHalf.splice(j, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
@@ -454,7 +457,7 @@ let Tiles = {
 					if (perFull[j-1].value - perFull[j-2].value == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (Board.tiles[i].value - perFull[j-1].value == 2) {
-								perFull.splice(j, 0, "800");
+								perFull.splice(j, 0, { value: "800" });
 								perFull.splice(j + 1, 0, Board.tiles[i]);
 								okeyCont--;
 								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
@@ -472,7 +475,7 @@ let Tiles = {
 					if (perFull[j+1].value - perFull[j].value == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (perFull[j].value - Board.tiles[i].value == 2) {
-								perFull.splice(j, 0, "800");
+								perFull.splice(j, 0, { value: "800" });
 								perFull.splice(j, 0, Board.tiles[i]);
 								okeyCont--;
 								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
@@ -491,7 +494,7 @@ let Tiles = {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (perFull[j-1].value - Board.tiles[i].value == 11) {
 								perFull.splice(j, 0, Board.tiles[i]);
-								perFull.splice(j, 0, "800");
+								perFull.splice(j, 0, { value: "800" });
 								boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 								Board.tiles = this.removeArrayItem(Board.tiles, '800');
 								boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
@@ -506,7 +509,7 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && perFull[j-1].value % 100 != 13 || settingsType == 1)) {
 					if (perFull[j-1].value - perFull[j-2].value == 1) {
-						perFull.splice(j, 0, "800");
+						perFull.splice(j, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, '800');
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
@@ -517,7 +520,7 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				if ((perFull[j - 1] == "" || j == 0) && perFull[j+1].value % 100 != 1) {
 					if (perFull[j+2].value - perFull[j+1].value == 1) {
-						perFull.splice(j, 0, "800");
+						perFull.splice(j, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
@@ -530,7 +533,7 @@ let Tiles = {
 				_0x2c0168++;
 				if (perFull[j] == "") {
 					if (perFull[j-1].value % 100 == perFull[j-2].value % 100 && perFull[j-1].value != perFull[j-2].value && _0x2c0168 < 5) {
-						perFull.splice(j, 0, "800");
+						perFull.splice(j, 0, { value: "800" });
 						okeyCont--;
 						boardTilesVir = this.removeArrayItem(boardTilesVir, "800");
 						Board.tiles = this.removeArrayItem(Board.tiles, "800");
@@ -546,9 +549,9 @@ let Tiles = {
 		Board.tiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		Board.tiles.reverse();
 		for (let i=0; i<=Board.tiles.length; i++) {
-			if (Board.tiles[i] != "800") {
+			if (Board.tiles[i].value != "800") {
 				perFull.push(Board.tiles[i]);
-				perFull.push("800");
+				perFull.push({ value: "800" });
 				perFull.push("");
 				boardTilesVir = this.removeArrayItem(boardTilesVir, Board.tiles[i]);
 				boardTilesVir = this.removeArrayItem(boardTilesVir, "800");

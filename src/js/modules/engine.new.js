@@ -75,6 +75,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			okeyCont = 0;
 			if (activePlayer == 1) min = 1;
+
+			// back value of "replacement"
+			Board.tiles.map(tile => (tile.value === "000") ? tile._value = tile.value : void(0));
 			
 			if (settingsGameLevel > 1 || min == 1) {
 				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
@@ -105,6 +108,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles = boardTilesVir.slice();
 					arr1 = Tiles.sortTilesByColor(3, 1);
 					arr3 = arr1.slice();
+					// console.log(arr1.slice().map(e => e ? e.value : ""));
 					Board.tiles = boardTilesVir.slice();
 				} else {
 					arr1 = Tiles.sortTilesByColor(3, 1);
@@ -179,10 +183,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
 
-			/* 
+			/* */
 			let arr7 = [];
 			let boardTiles = Board.tiles.slice();
-			console.log(boardTiles.map(e => e ? e.value : ""));
 			let _0x3509bd = 0;
 			for (let i=0; i<Board.tiles.length; i++) {
 				let pos = i + 1;
@@ -197,7 +200,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					// this.place(Board.tiles[index], pos);
 				}
 			}
-			*/
+			
 			
 			this.updateBoard();
 
