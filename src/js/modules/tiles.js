@@ -92,8 +92,7 @@ let Tiles = {
 		if (Tiles.okey > 13) Tiles.okey = 1;
 		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
 		Tiles.okey = ""+ x + Tiles.okey;
-
-		console.log( Tiles.okey );
+		// console.log( Tiles.okey );
 	},
 	shuffle() {
 		let shuffleArray = arr => arr.sort(() => Math.random() - 0.5);
@@ -113,7 +112,7 @@ let Tiles = {
 		return arr;
 	},
 	sortTiles(num, sort) {
-		boardTilesVir = Board.tiles.slice().sort();
+		boardTilesVir = Board.tiles.slice().sort((a, b) => a.value - b.value);
 		Board.tiles.sort((a, b) => a.value - b.value);
 		let asc = [];
 		let sorted = [];
@@ -124,11 +123,11 @@ let Tiles = {
 		let max = { value: "999" };
 
 		for (let i=1; i<boardTilesVir.length; i++) {
-			let _0x35e4cc = parseInt(boardTilesVir[i].value);
-			let _0x1bf143 = 0;
-			if (_0x35e4cc - 1 == min) {
+			let value1 = parseInt(boardTilesVir[i].value);
+			let value2 = 0;
+			if (value1 - 1 == min) {
 				asc.push(boardTilesVir[i]);
-				_0x1bf143 = 1;
+				value2 = 1;
 			}
 			if (settingsType == 1) {
 				if (min % 100 == 1) {
@@ -136,15 +135,16 @@ let Tiles = {
 				}
 				if (min - max.value == 12) {
 					asc.push(max);
-					_0x1bf143 = 2;
+					value2 = 2;
 					max = { value: "999" };
 				}
 			}
-			if (_0x1bf143 == 0 && _0x35e4cc != min || _0x35e4cc == min && asc.length == 0) {
+			if (value2 == 0 && value1 != min || value1 == min && asc.length == 0) {
 				asc = [];
 				asc.push(boardTilesVir[i]);
 			}
-			if (asc.length == num || _0x1bf143 == 2) {
+			if (asc.length == num || value2 == 2) {
+				// console.log(4444, num, sort, asc.slice().map(e => e ? e.value : ""));
 				if (asc.length == num) {
 					if (asc[0].value == max.value) {
 						max = { value: "999" };
@@ -156,7 +156,7 @@ let Tiles = {
 				asc = [];
 			}
 			min = parseInt(boardTilesVir[i].value);
-			if (_0x1bf143 == 2) {
+			if (value2 == 2) {
 				asc.push(boardTilesVir[i]);
 			}
 		}
@@ -171,7 +171,7 @@ let Tiles = {
 		if (sort == 1) return sorted;
 	},
 	sortTilesByColor(num, type) {
-		boardTilesVir = Board.tiles.slice().sort();
+		boardTilesVir = Board.tiles.slice().sort((a, b) => a.value - b.value);
 		boardTilesVir.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
@@ -208,7 +208,7 @@ let Tiles = {
 		if (type == 1) return arr2;
 	},
 	sortDouble(seat, asc) {
-		boardTilesVir = Board.tiles.slice().sort();
+		boardTilesVir = Board.tiles.slice().sort((a, b) => a.value - b.value);
 		boardTilesVir.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
@@ -299,8 +299,8 @@ let Tiles = {
 		return bTiles;
 	},
 	addOkey(seat) {
-		Board.tiles.sort();
-		Board.tiles.sort((a, b) => a - b);
+		// Board.tiles.sort();
+		Board.tiles.sort((a, b) => a.value - b.value);
 		boardTilesVir = Board.tiles.slice();
 		if (seat == 1) {
 			let index;
@@ -542,8 +542,8 @@ let Tiles = {
 		}
 	},
 	addOkeyDouble() {
-		Board.tiles.sort();
-		Board.tiles.sort((_0x23565a, _0x1c1ef8) => _0x23565a % 100 > _0x1c1ef8 % 100 ? 1 : _0x1c1ef8 % 100 > _0x23565a % 100 ? -1 : 0);
+		// Board.tiles.sort();
+		Board.tiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		Board.tiles.reverse();
 		for (let i=0; i<=Board.tiles.length; i++) {
 			if (Board.tiles[i] != "800") {
@@ -560,8 +560,8 @@ let Tiles = {
 		}
 	},
 	priority() {
-		Board.tiles.sort();
-		Board.tiles.sort((a, b) => a - b);
+		// Board.tiles.sort();
+		Board.tiles.sort((a, b) => a.value - b.value);
 		boardTilesVir = Board.tiles.slice();
 		for (let i=1; i<Board.tiles.length; i++) {
 			if (Math.abs(Board.tiles[i].value - Board.tiles[i-1].value) == 2) {

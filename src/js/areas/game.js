@@ -81,11 +81,11 @@
 				break;
 			case "engine-sort-serial":
 				Engine.arrange(1, 1);
-				Engine.updateRack();
+				// update rack
 				break;
 			case "engine-sort-double":
 				Engine.arrange(1, 2);
-				Engine.updateRack();
+				// update rack
 				break;
 			case "deal-tiles-to":
 				pEl = Self.els.common.info.find(".inset.left");

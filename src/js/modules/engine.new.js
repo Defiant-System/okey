@@ -46,15 +46,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this._state = state;
 			// restore Tiles object
 			Tiles.restore(state);
-
-
-			// Board.tiles = [101, 103, 102]
-			// // boardTiles = [211, 311, 411, 113, 0, 313, 106, 107, 301, 302, 104, 304, 306, 104, 201, 403, 405, 209, 403, 405, 408, 412];
-			// console.log( Tiles.sortTiles(3, 1) );
-
-
-			this.arrange(1, 1);
-			// this.updateRack();
 		},
 		updateLeftTiles(item) {
 			Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
@@ -105,6 +96,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
 			}
+			let arr6 = Board.tiles.slice();
 			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
@@ -167,6 +159,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.tiles = boardTilesVir.slice();
 				arr2 = perFull.slice();
 			}
+
 			arr2.push.apply(arr2, arr4);
 			Board.tiles = Board.tiles.filter(e => e != "");
 			let _0x17aa37 = arr2.length;
@@ -186,16 +179,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
 
-			this.updateBoard();
-
-			/*
-			let arr6 = Board.tiles.slice();
+			/* 
 			let arr7 = [];
 			let boardTiles = Board.tiles.slice();
-			let boardPlaces = Array(31).fill(0);
+			console.log(boardTiles.map(e => e ? e.value : ""));
 			let _0x3509bd = 0;
 			for (let i=0; i<Board.tiles.length; i++) {
-				let _0x27d3db = i * 1 + 1;
+				let pos = i + 1;
 				if (Board.tiles[i] != "") {
 					let index = arr6.indexOf(Board.tiles[i]);
 					arr6[index] = "";
@@ -204,12 +194,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 						arr7[_0x3509bd] = Board.tiles[i];
 						_0x3509bd++;
 					}
-					// this.place(boardTiles[index], _0x27d3db);
-				} else {
-					boardPlaces[_0x27d3db] = 0;
+					// this.place(Board.tiles[index], pos);
 				}
 			}
+			*/
+			
+			this.updateBoard();
 
+			/* 
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
@@ -226,6 +218,17 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 			}
 			*/
+		},
+		place(tile, pos, seat) {
+			if (!seat) seat = activePlayer;
+			let y1 = pos > 16 ? pos - 16 : pos;
+			try {
+				Board.tiles[pos] = tile;
+				this.updateBoard();
+			} catch {
+				console.log("hata:", tile);
+				console.log(Board.tiles);
+			}
 		},
 		checkWin() {},
 	};
