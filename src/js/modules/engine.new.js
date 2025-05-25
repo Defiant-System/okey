@@ -73,13 +73,23 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board["tiles"+ seat] = Board.tiles.slice();
 		},
 		dragStop(seat, Drag) {
+			Board.virtualTiles = [...Array(32)].map(e => "");
 			// console.log(Board.tiles);
 			Drag.rack.find(".tile").map(elem => {
 				let el = $(elem),
 					uid = +el.data("uid"),
-					value = el.data("id");
-				// console.log({ uid, value });
+					value = el.data("id"),
+					offset = el.offset(),
+					y = (offset.top - 5) / 78,
+					x = (offset.left - 21) / 56,
+					i = (y * 16) + x;
+				Board.virtualTiles[i] = { uid, value };
+				if (value === "000") Board.virtualTiles[i]._value = "000";
 			});
+			// console.log( Board.virtualTiles );
+			Board.tiles = Board.virtualTiles;
+			// update value
+			this.checkWin();
 		},
 		arrange(seat, type=1) {
 			this.getRack(seat);

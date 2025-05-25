@@ -38,6 +38,7 @@ let Test = {
 
 		APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
+		// setTimeout(() => Engine.dragStop(1, { rack: APP.content.find(".rack ") }), 500);
 		// Tiles.restore(state.table.data);
 
 		// setTimeout(() => APP.game.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 }), 500);
