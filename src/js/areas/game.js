@@ -111,7 +111,7 @@
 				});
 				break;
 			case "deal-user-tiles":
-				pEl = Self.els.el.find(`.player.user .rack`).addClass("dealing "+ (event.noAnim ? "no-anim" : ""));
+				pEl = Self.els.rack.addClass("dealing "+ (event.noAnim ? "no-anim" : ""));
 				dOffset = pEl.offset(".board");
 				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
 				str = [];
@@ -122,7 +122,7 @@
 							tX = ((i % 16) * 56) + 21,
 							sY = sOffset.top - dOffset.top + 5,
 							sX = sOffset.left - dOffset.left + 5;
-						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}" style="--tY: ${tY}px; --tX: ${tX}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`);
 					}
 				});
 				pEl.append(str.join(""));
@@ -130,12 +130,13 @@
 				return new Promise(resolve => {
 					setTimeout(() => {
 						pEl.cssSequence("anim-deal", "transitionend", el => {
-							el.removeClass("dealing anim-deal");
+							el.removeClass("dealing anim-deal no-anim");
 							el.find(".tile").map(elem => {
 								let tile = $(elem),
 									top = tile.cssProp("--tY"),
 									left = tile.cssProp("--tX");
-								tile.css({ top, left });
+								// update style + clean up css properties
+								tile.css({ top, left, "--tY": "", "--tX": "", "--sY": "", "--sX": "" });
 							});
 							resolve();
 						});
@@ -143,7 +144,31 @@
 				});
 				break;
 			case "update-user-rack":
-				console.log(event, Board.tiles1);
+				// ignore if animation is "on-going"
+				if (Self.els.rack.hasClass("arrange-anim")) return;
+				// animation start + end frame
+				Board.tiles1.map((tile, i) => {
+					if (!tile) return;
+					Self.els.rack.find(`.tile[data-uid="${tile.uid}"]`)
+						.css({
+							top: "",
+							left: "",
+							"--tY": `${(parseInt(i / 16, 10) * 78) + 5}px`,
+							"--tX": `${((i % 16) * 56) + 21}px`,
+						});
+				});
+				// trigger animation
+				Self.els.rack.cssSequence("arrange-anim", "transitionend", el => {
+					// reset rack element
+					el.removeClass("arrange-anim");
+					// reset tile elements
+					Self.els.rack.find(`.tile`).map(elem => {
+						let el = $(elem),
+							top = el.cssProp("--tY"),
+							left = el.cssProp("--tX");
+						el.css({ top, left, "--tY": "", "--tX": "" });
+					});
+				});
 				break;
 			case "draw-stack-tile":
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("draw-tile");

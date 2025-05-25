@@ -80,21 +80,21 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board.tiles.map(tile => (tile.value === "000") ? tile._value = tile.value : void(0));
 			
 			if (settingsGameLevel > 1 || min == 1) {
-				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
+				let oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
-				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
+				oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
-				oI = Board.tiles.findIndex(e => e.value == "000");
+				oI = Board.tiles.findIndex(e => (e._value || e.value) == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				oI = Board.tiles.findIndex(e => e.value == "000");
+				oI = Board.tiles.findIndex(e => (e._value || e.value) == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
@@ -108,7 +108,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles = boardTilesVir.slice();
 					arr1 = Tiles.sortTilesByColor(3, 1);
 					arr3 = arr1.slice();
-					// console.log(arr1.slice().map(e => e ? e.value : ""));
 					Board.tiles = boardTilesVir.slice();
 				} else {
 					arr1 = Tiles.sortTilesByColor(3, 1);
@@ -178,6 +177,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Tiles.priority();
 			}
 			arr2.push.apply(arr2, Board.tiles);
+			
 			Board.tiles = arr2.slice();
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
@@ -200,8 +200,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					// this.place(Board.tiles[index], pos);
 				}
 			}
-			
-			
+
 			this.updateBoard();
 
 			/* 

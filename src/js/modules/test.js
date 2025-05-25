@@ -5,11 +5,12 @@ let Test = {
 		// return;
 
 		// APP.dispatch({ type: "open-help" });
-		// return setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 500);
+		// return 
+		setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 500);
 
 		// let arr = ['211', '311', '411', '113', '000', '313', '106', '107', '301', '302', '104', '304', '306', '104', '201', '403', '405', '209', '403', '405', '408', '412'];
 		// Board.tiles = arr.map(e => ({ value: e }));
-		// console.log( Tiles.sortTiles(2, 1).map(e => e ? e.value : "") );
+		// console.log( Tiles.sortDouble(0, 1).map(e => e ? e.value : "") );
 		// return;
 
 		let state = {
@@ -33,7 +34,7 @@ let Test = {
 				],
 			};
 		Engine.restore(state);
-		
+
 		// console.log(Board.tiles1.slice().map(t => t ? t.value : ""));
 
 		APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
@@ -71,7 +72,7 @@ let Test = {
 
 
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
-		setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
+		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
 
 
 		// setTimeout(() => {

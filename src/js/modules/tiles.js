@@ -8,17 +8,17 @@ let Tiles = {
 			for (let i=1; i<=13; i++) {
 				let x = String(i);
 				if (i < 10) x = "0" + x;
-				this.data.push({ tile: index++, value: j + x });
+				this.data.push({ uid: index++, value: j + x });
 			}
 			for (let i=1; i<=13; i++) {
 				let x = String(i);
 				if (i < 10) x = "0" + x;
-				this.data.push({ tile: index++, value: j + x });
+				this.data.push({ uid: index++, value: j + x });
 			}
 		}
 		// jokers
-		this.data.push({ tile: index++, value: "000" });
-		this.data.push({ tile: index++, value: "000" });
+		this.data.push({ uid: index++, value: "000" });
+		this.data.push({ uid: index++, value: "000" });
 		// this.shuffle();
 	},
 	reset() {
@@ -32,7 +32,7 @@ let Tiles = {
 		if (settingsType == 3) this.tileLimit = 14;
 	},
 	restore(state) {
-		this.data = state.table.data.map((value, i) => ({ tile: i+1, value }));
+		this.data = state.table.data.map((value, i) => ({ uid: i+1, value }));
 		// this.okey = state.table.okey;
 		// remove one tile from tile stack
 		this.tilesLeft = this.data.slice();
@@ -211,7 +211,8 @@ let Tiles = {
 		if (type == 1) return arr2;
 	},
 	sortDouble(seat, asc) {
-		boardTilesVir = Board.tiles.slice().sort((a, b) => a.value - b.value);
+		boardTilesVir = Board.tiles.slice().filter(e => e !== "").sort((a, b) => a.value - b.value);
+		// console.log(seat, asc, boardTilesVir.slice().map(e => e ? e.value : e));
 		boardTilesVir.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
