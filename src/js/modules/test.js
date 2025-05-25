@@ -5,8 +5,7 @@ let Test = {
 		// return;
 
 		// APP.dispatch({ type: "open-help" });
-		// return 
-		setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 500);
+		// return setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 500);
 
 		// let arr = ['211', '311', '411', '113', '000', '313', '106', '107', '301', '302', '104', '304', '306', '104', '201', '403', '405', '209', '403', '405', '408', '412'];
 		// Board.tiles = arr.map(e => ({ value: e }));

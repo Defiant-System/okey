@@ -347,6 +347,7 @@
 				el = el.addClass("dragging");
 
 				let doc = $(document),
+					rack = Self.els.rack,
 					drop = el.offset(".rack"),
 					tOffset = el.offset(".board"),
 					dOffset = Self.els.discard.player1.offset(".board"),
@@ -376,7 +377,7 @@
 				Self.els.rack.addClass("drop arranging");
 				if (!isDiscard) Self.els.el.find(".discard .inset.player-1").addClass("drop");
 				// drag info
-				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, dOffset, isDiscard, isNew };
+				Self.drag = { doc, el, click, drop, diff, offset, tOffset, rOffset, dOffset, isDiscard, isNew, rack };
 				// bind event handlers
 				Self.drag.doc.on("mousemove mouseover mouseup", Self.move);
 				break;
@@ -539,8 +540,8 @@
 							Self.els.discard.player1.append(el.css({ top: "", left: "" }));
 						}
 						// update game engine
-						if (Drag.hover.hasClass("rack")) console.log("recalc");
-						else Engine.dragStop(1, Drag);
+						Engine.dragStop(1, Drag);
+						// if (Drag.hover.hasClass("rack")) Engine.checkWin();
 					})
 					.css(css);
 				break;
