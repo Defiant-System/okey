@@ -29,7 +29,6 @@
 			Self = APP.game,
 			sOffset,
 			dOffset,
-			rows,
 			rI,
 			css,
 			str,
@@ -39,7 +38,24 @@
 		switch (event.type) {
 			// custom events
 			case "output-pgn":
-				console.log(event);
+				let state = {
+						table: {
+							okey: Tiles.okey,
+							left: Tiles.tilesLeft,
+						},
+						melded: {
+							series: [],
+							doubles: [],
+						},
+						player: [
+							{ seat: 1, discard: [], rack: [] },
+							{ seat: 2, discard: [], rack: [] },
+							{ seat: 3, discard: [], rack: [] },
+							{ seat: 4, discard: [], rack: [] }
+						]
+					};
+
+				console.log(JSON.stringify(state));
 				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");
@@ -252,15 +268,7 @@
 				dOffset = Self.els.common.series.offset(".board");
 				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
-				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
-
-				// event.set.map(item => {
-				// 	if (item == "") rows.push([]);
-				// 	else rows[rows.length-1].push(item);
-				// });
-				// // remove empty arrays
-				// rows = rows.filter(r => r.length);
 
 				event.set.map((row, y) => {
 					let i,
@@ -282,13 +290,13 @@
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: rows.length })
+					.data({ rows: event.set.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
 						Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
-							// el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							el.removeClass("anim-start anim-end").css({ "--aT": "" });
 							resolve();
 						}), 100);
 				});
@@ -297,15 +305,7 @@
 				dOffset = Self.els.common.doubles.offset(".board");
 				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
-				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
-
-				// event.set.map(item => {
-				// 	if (item == "") rows.push([]);
-				// 	else rows[rows.length-1].push(item);
-				// });
-				// // remove empty arrays
-				// rows = rows.filter(r => r.length);
 
 				event.set.map((row, y) => {
 					let i = 0,
@@ -319,13 +319,13 @@
 				Self.els.common.doubles
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: rows.length })
+					.data({ rows: event.set.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
 						Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
-							// el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							el.removeClass("anim-start anim-end").css({ "--aT": "" });
 							resolve();
 						}), 100);
 				});
