@@ -39,7 +39,9 @@
 			// custom events
 			case "output-pgn":
 				let state = {
+						settings: {},
 						table: {
+							data: Tiles.data,
 							okey: Tiles.okey,
 							left: Tiles.tilesLeft,
 						},
@@ -54,8 +56,18 @@
 							{ seat: 4, discard: [], rack: [] }
 						]
 					};
+				// loop players
+				state.player.map(player => {
+					player.rack = Board[`tiles${player.seat}`];
+					player.name = Self.els.el.find(`.seat[data-seat="${player.seat}"] .name`).data("name");
+					player.discard = Self.els.el.find(`.discard .player-${player.seat} .tile`).map(elem => {
+						let el = $(elem);
+						return { uid: el.data("uid"), value: el.data("id") }
+					});
+				});
 
-				console.log(JSON.stringify(state));
+				// console.log(JSON.stringify(state));
+				console.log(state);
 				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");
