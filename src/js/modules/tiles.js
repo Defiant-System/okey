@@ -25,24 +25,45 @@ let Tiles = {
 		this.data = [];
 		this.tileIndex = 0;
 
+		Board.tiles = [];
+		Board.tiles1 = [];
+		Board.tiles2 = [];
+		Board.tiles3 = [];
+		Board.tiles4 = [];
+
 		activePlayer = 1;
 
 		if (settingsType == 1) this.tileLimit = 14;
 		if (settingsType == 2) this.tileLimit = 21;
 		if (settingsType == 3) this.tileLimit = 14;
 	},
-	restore(state) {
-		this.data = state.table.data.map((value, i) => ({ uid: i+1, value }));
-		// this.okey = state.table.okey;
-		// remove one tile from tile stack
-		this.tilesLeft = this.data.slice();
+	restore(state) {		
+		if (state.table.left) {
+			// restore game state
+			activePlayer = state.player.findIndex(player => player.rack.length === 22) + 1;
+			this.okey = state.table.okey;
+			this.tilesLeft = state.table.left;
 
-		this.deliver();
+			state.player.map(player => {
+				// player racks
+				Board[`tiles${player.seat}`] = player.rack;
+				// player discards
+				let str = [];
+				player.discard.map(tile => {
+					let { id, clr, num } = Tiles.parse(tile.value);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}"></span>`);
+				});
+				APP.game.els.el.find(`.discard .player-${player.seat}`).html(str.join(""));
+			});
 
-		// console.log( Board );
-
-		// table UI update
-		// Engine.updateLeftTiles();
+			// table UI update
+			Engine.updateLeftTiles();
+		} else {
+			// restore simple tile array
+			this.data = state.table.data.map((value, i) => ({ uid: i+1, value }));
+			this.tilesLeft = this.data.slice();
+			this.deliver();
+		}
 	},
 	parse(tile) {
 		let id = tile.toString(),
@@ -58,13 +79,6 @@ let Tiles = {
 		return { id, clr, num };
 	},
 	deliver() {
-		Board.tiles = [];
-		Board.tiles1 = [];
-		Board.tiles2 = [];
-		Board.tiles3 = [];
-		Board.tiles4 = [];
-		this.tileIndex = 0;
-
 		for (let i=0; i<=this.tileLimit; i++) {
 			Board.tiles1.push(this.data[this.tileIndex]);
 			Engine.updateLeftTiles(this.data[this.tileIndex]);

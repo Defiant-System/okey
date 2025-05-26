@@ -11,6 +11,8 @@
 		<Menu type="divider"/>
 		<Menu name="Sort Serial" click="engine-sort-serial"/>
 		<Menu name="Sort Double" click="engine-sort-double"/>
+		<Menu type="divider"/>
+		<Menu name="Output PGN" click="output-pgn"/>
 	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>

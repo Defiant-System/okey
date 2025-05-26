@@ -38,6 +38,9 @@
 		// console.log(event);
 		switch (event.type) {
 			// custom events
+			case "output-pgn":
+				console.log(event);
+				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");
 				APP.content.find(".dialog.settings").removeClass("hidden");
@@ -540,7 +543,7 @@
 							Self.els.discard.player1.append(el.css({ top: "", left: "" }));
 						}
 						// update game engine
-						Engine.dragStop(1, Drag);
+						Engine.dragStop(Drag);
 						// if (Drag.hover.hasClass("rack")) Engine.checkWin();
 					})
 					.css(css);

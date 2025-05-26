@@ -57,25 +57,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Tiles.restore(state);
 		},
 		updateLeftTiles(item) {
-			Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
+			if (item) Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
 			// update table tiles left
 			APP.content.find(`.info .tiles.left .tile`).data({ n: Tiles.tilesLeft.length });
 		},
-		updateRack() {
-			// todo
-		},
-		getRack(seat) {
-			activePlayer = seat;
-			Board.tiles = Board["tiles"+ seat];
-		},
-		updateBoard() {
-			let seat = activePlayer;
-			Board["tiles"+ seat] = Board.tiles.slice();
-		},
-		dragStop(seat, Drag) {
+		updateRack(rack) {
 			Board.virtualTiles = [...Array(32)].map(e => "");
 			// console.log(Board.tiles);
-			Drag.rack.find(".tile").map(elem => {
+			rack.find(".tile").map(elem => {
 				let el = $(elem),
 					uid = +el.data("uid"),
 					value = el.data("id"),
@@ -85,11 +74,33 @@ let { Engine, Board, Tiles, AI } = (() => {
 					i = (y * 16) + x;
 				Board.virtualTiles[i] = { uid, value };
 				if (value === "000") Board.virtualTiles[i]._value = "000";
+				if (!Board.tiles.find(tile => tile.uid == uid)) throw "Rack is tampered with";
 			});
 			// console.log( Board.virtualTiles );
 			Board.tiles = Board.virtualTiles;
+		},
+		getRack(seat) {
+			activePlayer = seat;
+			Board.tiles = Board["tiles"+ seat];
+		},
+		updateBoard() {
+			let seat = activePlayer;
+			Board["tiles"+ seat] = Board.tiles.slice();
+		},
+		dragStop(Drag) {
+			this.updateRack(Drag.rack);
+
+			if (Drag.isThrow) {
+				this.checkThrow(Drag.el.data("tile"))
+			} else {
+				
+			}
+
 			// update value
 			this.checkWin();
+		},
+		checkThrow(seat, tile) {
+
 		},
 		arrange(seat, type=1) {
 			this.getRack(seat);
