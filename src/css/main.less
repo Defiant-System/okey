@@ -162,8 +162,8 @@ content {
 		.series,
 		.doubles {
 			--aT: 21;
-			--aF: 380ms;
-			--aD: 120ms;
+			--aF: calc( var( --aT ) * 19 );
+			--aD: calc( var( --aT ) * 5 );
 
 			&.anim-start {
 				min-height: 0;

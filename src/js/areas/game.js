@@ -57,14 +57,8 @@
 				Self.els.el.find(`.player.user .name`).data({ name: ME.firstName });
 				// set dealer button
 				Self.els.el.find(".dealer").data({ pos: event.dealer });
-
-				// set okey indicator
-				let okeyNum = Tiles.okey - 1;
-				let iOkey = Tiles.parse(okeyNum);
-				APP.content.find(`.info .tiles.okey .tile`)
-					.removeClass("red yellow blue black green")
-					.addClass(iOkey.clr)
-					.data({ v: iOkey.num });
+				// okey indicator
+				Self.dispatch({ type: "set-okey-indicator" });
 
 				if (event.noAnim) {
 					Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1, noAnim: true });
@@ -74,6 +68,22 @@
 					await Self.dispatch({ type: "deal-tiles-to", seat: 3, num: 21 });
 					await Self.dispatch({ type: "deal-tiles-to", seat: 4, num: 21 });
 				}
+				break;
+			case "restore-state":
+				Engine.restore(event.state);
+				// okey indicator
+				Self.dispatch({ type: "set-okey-indicator" });
+				// update user rack
+				Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1, noAnim: true });
+				break;
+			case "set-okey-indicator":
+				// set okey indicator
+				let okeyNum = Tiles.okey - 1;
+				let iOkey = Tiles.parse(okeyNum);
+				APP.content.find(`.info .tiles.okey .tile`)
+					.removeClass("red yellow blue black green")
+					.addClass(iOkey.clr)
+					.data({ v: iOkey.num });
 				break;
 			case "set-game-engine":
 				let types = ["51", "101", "okey"],
@@ -240,25 +250,25 @@
 				break;
 			case "meld-series":
 				dOffset = Self.els.common.series.offset(".board");
-				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
+				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
 				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
 
-				event.setTiles.map(item => {
-					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item);
-				});
-				// remove empty arrays
-				rows = rows.filter(r => r.length);
+				// event.set.map(item => {
+				// 	if (item == "") rows.push([]);
+				// 	else rows[rows.length-1].push(item);
+				// });
+				// // remove empty arrays
+				// rows = rows.filter(r => r.length);
 
-				rows.map((row, y) => {
+				event.set.map((row, y) => {
 					let i,
 						il = row.length,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
-						let { id, clr, num } = Engine.toParts(col);
+						let { id, clr, num } = Tiles.parse(col.value);
 						if (!i) {
 							switch (num) {
 								case 10: i = 9-(il>>1); break;
@@ -271,51 +281,51 @@
 				});
 				Self.els.common.series
 					.addClass("anim-start")
-					.css({ "--aT": str.length })
+					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: rows.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
 						Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
-							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							// el.removeClass("anim-start anim-end").css({ "--aT": "" });
 							resolve();
 						}), 100);
 				});
 				break;
 			case "meld-doubles":
 				dOffset = Self.els.common.doubles.offset(".board");
-				sOffset = Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board");
+				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
 				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
 
-				event.setTiles.map(item => {
-					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item);
-				});
-				// remove empty arrays
-				rows = rows.filter(r => r.length);
+				// event.set.map(item => {
+				// 	if (item == "") rows.push([]);
+				// 	else rows[rows.length-1].push(item);
+				// });
+				// // remove empty arrays
+				// rows = rows.filter(r => r.length);
 
-				rows.map((row, y) => {
+				event.set.map((row, y) => {
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
-						let { id, clr, num } = Engine.toParts(col);
+						let { id, clr, num } = Tiles.parse(col.value);
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
 				Self.els.common.doubles
 					.addClass("anim-start")
-					.css({ "--aT": str.length })
+					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: rows.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
 						Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
-							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							// el.removeClass("anim-start anim-end").css({ "--aT": "" });
 							resolve();
 						}), 100);
 				});

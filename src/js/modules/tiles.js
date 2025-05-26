@@ -43,17 +43,25 @@ let Tiles = {
 			activePlayer = state.player.findIndex(player => player.rack.length === 22) + 1;
 			this.okey = state.table.okey;
 			this.tilesLeft = state.table.left;
-
+			// dealer position
+			APP.game.els.el.find(".dealer").data({ pos: state.table.dealer });
+			// loop players
 			state.player.map(player => {
 				// player racks
 				Board[`tiles${player.seat}`] = player.rack;
+				// player names
+				APP.game.els.el.find(`.player .seat[data-seat="${player.seat}"] .name`).data({ name: player.name });
 				// player discards
 				let str = [];
 				player.discard.map(tile => {
 					let { id, clr, num } = Tiles.parse(tile.value);
-						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}"></span>`);
+					str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}"></span>`);
 				});
 				APP.game.els.el.find(`.discard .player-${player.seat}`).html(str.join(""));
+			});
+
+			Object.keys(state.melded).map(what => {
+				APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
 			});
 
 			// table UI update
