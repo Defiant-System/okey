@@ -55,6 +55,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this._state = state;
 			// restore Tiles object
 			Tiles.restore(state);
+
+			this.checkThrow();
 		},
 		updateLeftTiles(item) {
 			if (item) Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
@@ -91,16 +93,25 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.updateRack(Drag.rack);
 
 			if (Drag.isThrow) {
-				this.checkThrow(Drag.el.data("tile"))
+				this.checkThrow();
 			} else {
-				
+				// if not throw tile, anything to do?
 			}
 
 			// update value
 			this.checkWin();
 		},
-		checkThrow(seat, tile) {
-
+		checkThrow() {
+			switch (activePlayer) {
+				case 1:
+					// user
+					break;
+				case 2:
+				case 3:
+				case 4:
+					AI.think(activePlayer);
+					break;
+			}
 		},
 		arrange(seat, type=1) {
 			this.getRack(seat);

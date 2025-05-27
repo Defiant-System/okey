@@ -40,7 +40,19 @@ let Tiles = {
 	restore(state) {		
 		if (state.table.left) {
 			// restore game state
-			activePlayer = state.player.findIndex(player => player.rack.length === 22) + 1;
+			let playerTiles = state.player
+									.map(player => ({ s: player.seat, l: player.rack.length }))
+									.sort((a, b) => b.l - a.l);
+			activePlayer = playerTiles[0].l === 22 ? playerTiles[0].s : 0;
+			if (activePlayer === 0) {
+				let discard = state.player
+									.map(player => ({ s: player.seat, l: player.discard.length }))
+									.sort((a, b) => b.l - a.l);
+				activePlayer = discard[0].s;
+			}
+			activePlayer = (activePlayer + 1) % 4;
+			console.log(activePlayer);
+
 			this.okey = state.table.okey;
 			this.tilesLeft = state.table.left;
 			// dealer position

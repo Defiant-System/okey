@@ -15,7 +15,7 @@ let Test = {
 		APP.game.dispatch({ type: "restore-state", state });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
-		setTimeout(() => APP.game.dispatch({ type: "output-pgn" }), 500);
+		// setTimeout(() => APP.game.dispatch({ type: "output-pgn" }), 500);
 		// Tiles.restore(state.table.data);
 
 		// setTimeout(() => APP.game.dispatch({ type: "deal-tiles-to", seat: 2, num: 21 }), 500);
@@ -79,77 +79,84 @@ let state = {
 			// data: ["107","309","202","406","203","203","101","207","209","204","105","310","305","313","405","306","313","000","403","205","212","405","304","102","103","202","411","109","211","107","303","302","304","112","413","409","211","111","209","311","301","101","408","212","108","306","105","413","104","406","303","308","110","407","410","404","402","311","204","210","112","407","113","308","401","102","208","109","312","302","307","213","404","412","111","307","309","110","104","408","207","106","305","205","113","410","310","402","312","401","403","000","103","213","301","206","201","106","206","210","411","208","108","412","409","201"],
 			
 			left: [
-				{ uid: 91, value: "203" },
-				{ uid: 92, value: "312" },
-				{ uid: 93, value: "302" },
-				{ uid: 94, value: "410" },
-				{ uid: 95, value: "103" },
-				{ uid: 96, value: "205" },
-				{ uid: 97, value: "202" },
-				{ uid: 98, value: "207" },
-				{ uid: 99, value: "105" },
-				{ uid: 100, value: "309" },
-				{ uid: 101, value: "110" },
-				{ uid: 102, value: "408" },
-				{ uid: 103, value: "102" },
-				{ uid: 104, value: "111" },
-				{ uid: 105, value: "110" },
-				{ uid: 106, value: "204" },
-				{ uid: 107, value: "103" },
-				{ uid: 108, value: "213" },
-				{ uid: 109, value: "108" },
-				{ uid: 110, value: "203" },
-				{ uid: 111, value: "212" }
+				{ uid: 86, value: "203" },
+				{ uid: 87, value: "312" },
+				{ uid: 88, value: "302" },
+				{ uid: 89, value: "410" },
+				{ uid: 90, value: "103" },
+				{ uid: 91, value: "205" },
+				{ uid: 92, value: "202" },
+				{ uid: 93, value: "207" },
+				{ uid: 94, value: "105" },
+				{ uid: 95, value: "309" },
+				{ uid: 96, value: "110" },
+				{ uid: 97, value: "408" },
+				{ uid: 98, value: "102" },
+				{ uid: 99, value: "111" },
+				{ uid: 100, value: "110" },
+				{ uid: 101, value: "204" },
+				{ uid: 102, value: "103" },
+				{ uid: 103, value: "213" },
+				{ uid: 104, value: "108" },
+				{ uid: 105, value: "203" },
+				{ uid: 106, value: "212" }
 			],
 			okey: 213,
 			dealer: 2,
 		},
 		melded: {
 			series: [
-				[
-					{ uid: 1, value: "102" },
-					{ uid: 2, value: "103" },
-					{ uid: 3, value: "104" },
-					{ uid: 4, value: "105" },
-					{ uid: 5, value: "106" }
-				],
-				[
-					{ uid: 6, value: "108" },
-					{ uid: 7, value: "109" },
-					{ uid: 8, value: "110" },
-				],
+				// [
+				// 	{ uid: 1, value: "102" },
+				// 	{ uid: 2, value: "103" },
+				// 	{ uid: 3, value: "104" },
+				// 	{ uid: 4, value: "105" },
+				// 	{ uid: 5, value: "106" }
+				// ],
+				// [
+				// 	{ uid: 6, value: "108" },
+				// 	{ uid: 7, value: "109" },
+				// 	{ uid: 8, value: "110" },
+				// ],
 			],
 			doubles: [
-				[{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
-				[{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
+				// [{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
+				// [{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
 			],
 		},
 		player: [
-			{ seat: 1, name: "Hakan",  discard: [], rack: [
-				{ uid: 16, value: "211" },
-				{ uid: 7, value: "311" },
-				{ uid: 8, value: "411" },
-				{ uid: 13, value: "113" },
-				{ uid: 3, value: "000" },
-				{ uid: 17, value: "313" },
-				{ uid: 5, value: "106" },
-				{ uid: 11, value: "107" },
-				{ uid: 4, value: "301" },
-				{ uid: 9, value: "302" },
-				{ uid: 2, value: "104" },
-				{ uid: 15, value: "304" },
-				{ uid: 6, value: "306" },
-				{ uid: 21, value: "104" },
-				{ uid: 10, value: "201" },
-				{ uid: 18, value: "403" },
-				{ uid: 1, value: "405" },
-				{ uid: 22, value: "209" },
-				{ uid: 19, value: "403" },
-				{ uid: 20, value: "405" },
-				{ uid: 12, value: "408" },
-				{ uid: 14, value: "412" }
-			] },
-			{ seat: 2, name: "Denise", discard: [], rack: [
+			{ seat: 1, name: "Hakan",
+				discard: [
+					{ uid: 4, value: "301" },
+				],
+				rack: [
+					{ uid: 16, value: "211" },
+					{ uid: 7, value: "311" },
+					{ uid: 8, value: "411" },
+					{ uid: 13, value: "113" },
+					{ uid: 3, value: "000" },
+					{ uid: 17, value: "313" },
+					{ uid: 5, value: "106" },
+					{ uid: 11, value: "107" },
+					{ uid: 9, value: "302" },
+					{ uid: 2, value: "104" },
+					{ uid: 15, value: "304" },
+					{ uid: 6, value: "306" },
+					{ uid: 21, value: "104" },
+					{ uid: 10, value: "201" },
+					{ uid: 18, value: "403" },
+					{ uid: 1, value: "405" },
+					{ uid: 22, value: "209" },
+					{ uid: 19, value: "403" },
+					{ uid: 20, value: "405" },
+					{ uid: 12, value: "408" },
+					{ uid: 14, value: "412" }
+				] },
+			{ seat: 2, name: "Denise",
+				discard: [
+
+				],
+				rack: [
 				{ uid: 23, value: '402' },
 				{ uid: 24, value: '208' },
 				{ uid: 25, value: '303' },
@@ -172,7 +179,11 @@ let state = {
 				{ uid: 42, value: '303' },
 				{ uid: 43, value: '112' }
 			] },
-			{ seat: 3, name: "Ann",    discard: [], rack: [
+			{ seat: 3, name: "Ann",
+				discard: [
+					
+				],
+				rack: [
 				{ uid: 44, value: '102' },
 				{ uid: 45, value: '305' },
 				{ uid: 46, value: '208' },
@@ -195,7 +206,11 @@ let state = {
 				{ uid: 63, value: '109' },
 				{ uid: 64, value: '206' }
 			] },
-			{ seat: 4, name: "Yasmin",   discard: [], rack: [
+			{ seat: 4, name: "Yasmin",
+				discard: [
+					
+				],
+				rack: [
 				{ uid: 65, value: '308'} ,
 				{ uid: 66, value: '413'} ,
 				{ uid: 67, value: '406'} ,
