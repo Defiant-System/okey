@@ -15,6 +15,11 @@ let Test = {
 		APP.game.dispatch({ type: "restore-state", state });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
+		// setTimeout(() => {
+		// 	console.log( Board.tiles1.slice() );
+		// 	Engine.arrange(2, 1)
+		// 	console.log( Board.tiles.slice() );
+		// }, 1000);
 		// setTimeout(() => APP.game.dispatch({ type: "output-pgn" }), 500);
 		// Tiles.restore(state.table.data);
 
@@ -102,7 +107,7 @@ let state = {
 				{ uid: 106, value: "212" }
 			],
 			okey: 213,
-			dealer: 2,
+			dealer: 4,
 		},
 		melded: {
 			series: [
@@ -127,7 +132,6 @@ let state = {
 		player: [
 			{ seat: 1, name: "Hakan",
 				discard: [
-					{ uid: 4, value: "301" },
 				],
 				rack: [
 					{ uid: 16, value: "211" },
@@ -150,7 +154,8 @@ let state = {
 					{ uid: 19, value: "403" },
 					{ uid: 20, value: "405" },
 					{ uid: 12, value: "408" },
-					{ uid: 14, value: "412" }
+					{ uid: 14, value: "412" },
+					{ uid: 4, value: "301" },
 				] },
 			{ seat: 2, name: "Denise",
 				discard: [
@@ -177,11 +182,11 @@ let state = {
 				{ uid: 40, value: '112' },
 				{ uid: 41, value: '407' },
 				{ uid: 42, value: '303' },
-				{ uid: 43, value: '112' }
+				{ uid: 43, value: '112' },
 			] },
 			{ seat: 3, name: "Ann",
 				discard: [
-					
+
 				],
 				rack: [
 				{ uid: 44, value: '102' },
@@ -204,34 +209,34 @@ let state = {
 				{ uid: 61, value: '107' },
 				{ uid: 62, value: '308' },
 				{ uid: 63, value: '109' },
-				{ uid: 64, value: '206' }
+				{ uid: 64, value: '206' },
 			] },
 			{ seat: 4, name: "Yasmin",
 				discard: [
 					
 				],
 				rack: [
-				{ uid: 65, value: '308'} ,
-				{ uid: 66, value: '413'} ,
-				{ uid: 67, value: '406'} ,
-				{ uid: 68, value: '412'} ,
-				{ uid: 69, value: '204'} ,
-				{ uid: 70, value: '206'} ,
-				{ uid: 71, value: '207'} ,
-				{ uid: 72, value: '411'} ,
-				{ uid: 73, value: '306'} ,
-				{ uid: 74, value: '210'} ,
-				{ uid: 75, value: '312'} ,
-				{ uid: 76, value: '402'} ,
-				{ uid: 77, value: '213'} ,
-				{ uid: 78, value: '409'} ,
-				{ uid: 79, value: '101'} ,
-				{ uid: 80, value: '101'} ,
-				{ uid: 81, value: '309'} ,
-				{ uid: 82, value: '111'} ,
-				{ uid: 83, value: '307'} ,
-				{ uid: 84, value: '307'} ,
-				{ uid: 85, value: '108'} 
+				{ uid: 65, value: '308' },
+				{ uid: 66, value: '413' },
+				{ uid: 67, value: '406' },
+				{ uid: 68, value: '412' },
+				{ uid: 69, value: '204' },
+				{ uid: 70, value: '206' },
+				{ uid: 71, value: '207' },
+				{ uid: 72, value: '411' },
+				{ uid: 73, value: '306' },
+				{ uid: 74, value: '210' },
+				{ uid: 75, value: '312' },
+				{ uid: 76, value: '402' },
+				{ uid: 77, value: '213' },
+				{ uid: 78, value: '409' },
+				{ uid: 79, value: '101' },
+				{ uid: 80, value: '101' },
+				{ uid: 81, value: '309' },
+				{ uid: 82, value: '111' },
+				{ uid: 83, value: '307' },
+				{ uid: 84, value: '307' },
+				{ uid: 85, value: '108' },
 			] },
 		],
 	};

@@ -124,6 +124,7 @@
 				Engine.arrange(1, 1);
 				// update rack
 				Self.dispatch({ type: "update-user-rack" });
+				// console.log( JSON.stringify(Board.tiles1) );
 				break;
 			case "engine-sort-double":
 				Engine.arrange(1, 2);

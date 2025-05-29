@@ -13,20 +13,20 @@ let AI = {
 		} else {
 			this.evalDiscarded(seat);
 
-			// if (seat === 4) return;
+			// if (seat === 3) return;
 			// return console.log("AI again");
+			console.log("setTimeout");
 
-			clearTimeout(Engine.timerAI);
+			// clearTimeout(Engine.timerAI);
 
-			Engine.timerAI = setTimeout(() => {
-				if (Engine._gameOver == 1) return 0;
-				Engine.arrange(seat);
-				this.think(seat);
-			}, 1000);
+			// Engine.timerAI = setTimeout(() => {
+			// 	if (Engine._gameOver == 1) return 0;
+			// 	Engine.arrange(seat);
+			// 	this.think(seat);
+			// }, 1000);
 		}
 	},
 	async makeMove(aiTiles, seat) {
-		console.log("discard tile");
 		if (settingsType == 2 || settingsType == 3) { // 51 or 101
 			if (openStatusDouble[seat] == 0) {
 				Engine.arrange(seat);
@@ -74,6 +74,7 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
+		console.log(seat, activePlayer, Board.tiles.slice());
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
 		// if (aiTiles.length > 0) {

@@ -109,6 +109,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.updateRack(Drag.rack);
 
 			if (Drag.isThrow) {
+				activePlayer = (activePlayer + 1) % 4;
 				this.checkThrow();
 			} else {
 				// if not throw tile, anything to do?
@@ -361,7 +362,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 								temp2.push(temp[k]);
 								var _0x4b310e = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k]);
 								if (_0x4b310e != -1) {
-									Board.virtualTiles[_0x4b310e].value = "";
+									Board.virtualTiles[_0x4b310e] = "";
 								}
 							}
 							temp2.push("");
@@ -686,7 +687,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				return 0;
 			}
-			if (sortType == 2 && openStatusSort[seat] == 1 && handleDouble == 0) {
+			if (sortType == 2 && openStatusSort[seat] == 1 && Tiles.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
 				}
@@ -701,7 +702,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					return 0;
 				}
 			}
-			if (sortType == 2 && Tiles.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && handleDouble == 0) {
+			if (sortType == 2 && Tiles.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Tiles.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
 					openPunish[seat] = 1;
@@ -748,7 +749,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						// $("table-double-score").innerHTML = openLimitDouble;
 					}
 				}
-				if (handleDouble == 0) {
+				if (Tiles.handleDouble == 0) {
 					openStatusDouble[seat] = 1;
 					if (seat == 1 && Tiles.UserTotalDouble >= openLimitDoubleLast) {
 						this.buttonActivePassive("handle-sort", 1);
@@ -764,7 +765,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				collectTiles = Board.tiles.slice();
 			}
 			var _0x484f1e = seat;
-			if (handleDouble == 1) {
+			if (Tiles.handleDouble == 1) {
 				_0x484f1e = doubleHandleTo;
 			}
 			
@@ -804,9 +805,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
 				}
 			}
-			handleDouble = 0;
+			Tiles.handleDouble = 0;
 			if (seat == 1) {
-				markIt(1);
+				this.markIt(1);
 				if (sortType == 1) {
 					this.checkWin();
 				}

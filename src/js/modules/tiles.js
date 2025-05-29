@@ -36,7 +36,8 @@ let Tiles = {
 		if (settingsType == 2) this.tileLimit = 21;
 		if (settingsType == 3) this.tileLimit = 14;
 
-		this.tileLimits = [0, this.tileLimit, this.tileLimit, this.tileLimit, this.tileLimit]
+		this.tileLimits = [0, this.tileLimit, this.tileLimit, this.tileLimit, this.tileLimit];
+		this.handleDouble = 0;
 
 		this.UserSeri = [];
 		this.User1Seri = [];
@@ -51,18 +52,6 @@ let Tiles = {
 	},
 	restore(state) {		
 		if (state.table.left) {
-			// restore game state
-			let rackTiles = state.player
-									.map(player => ({ s: player.seat, l: player.rack.length }))
-									.sort((a, b) => b.l - a.l);
-			activePlayer = rackTiles[0].l === 22 ? rackTiles[0].s : 0;
-			if (activePlayer === 0) {
-				let discards = state.player
-									.map(player => ({ s: player.seat, l: player.discard.length }))
-									.sort((a, b) => b.l - a.l);
-				activePlayer = discards[0].s;
-			}
-			activePlayer = (activePlayer + 1) % 4;
 			// okey tile + tiles left
 			this.okey = state.table.okey;
 			this.tilesLeft = state.table.left;
@@ -89,6 +78,21 @@ let Tiles = {
 
 			// table UI update
 			Engine.updateLeftTiles();
+
+			Engine.arrange(1, 1);
+
+			// restore game state
+			let rackTiles = state.player
+									.map(player => ({ s: player.seat, l: player.rack.slice().filter(e => !!e).length }))
+									.sort((a, b) => b.l - a.l);
+			activePlayer = rackTiles[0].l === 22 ? rackTiles[0].s : 0;
+			if (activePlayer === 0) {
+				let discards = state.player
+									.map(player => ({ s: player.seat, l: player.discard.length }))
+									.sort((a, b) => b.l - a.l);
+				activePlayer = discards[0].s + 1;
+			}
+			activePlayer = (activePlayer) % 4;
 		} else {
 			// restore simple tile array
 			this.data = state.table.data.map((value, i) => ({ uid: i+1, value }));
