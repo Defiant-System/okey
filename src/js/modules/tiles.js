@@ -23,7 +23,6 @@ let Tiles = {
 	},
 	reset() {
 		this.data = [];
-		this.tileIndex = 0;
 
 		Board.tiles = [];
 		Board.tiles1 = [];
@@ -36,23 +35,35 @@ let Tiles = {
 		if (settingsType == 1) this.tileLimit = 14;
 		if (settingsType == 2) this.tileLimit = 21;
 		if (settingsType == 3) this.tileLimit = 14;
+
+		this.tileLimits = [0, this.tileLimit, this.tileLimit, this.tileLimit, this.tileLimit]
+
+		this.UserSeri = [];
+		this.User1Seri = [];
+		this.User2Seri = [];
+		this.User3Seri = [];
+		this.User4Seri = [];
+		this.UserDouble = [];
+		this.User1Double = [];
+		this.User2Double = [];
+		this.User3Double = [];
+		this.User4Double = [];
 	},
 	restore(state) {		
 		if (state.table.left) {
 			// restore game state
-			let playerTiles = state.player
+			let rackTiles = state.player
 									.map(player => ({ s: player.seat, l: player.rack.length }))
 									.sort((a, b) => b.l - a.l);
-			activePlayer = playerTiles[0].l === 22 ? playerTiles[0].s : 0;
+			activePlayer = rackTiles[0].l === 22 ? rackTiles[0].s : 0;
 			if (activePlayer === 0) {
-				let discard = state.player
+				let discards = state.player
 									.map(player => ({ s: player.seat, l: player.discard.length }))
 									.sort((a, b) => b.l - a.l);
-				activePlayer = discard[0].s;
+				activePlayer = discards[0].s;
 			}
 			activePlayer = (activePlayer + 1) % 4;
-			console.log(activePlayer);
-
+			// okey tile + tiles left
 			this.okey = state.table.okey;
 			this.tilesLeft = state.table.left;
 			// dealer position
@@ -85,6 +96,9 @@ let Tiles = {
 			this.deliver();
 		}
 	},
+	draw() {
+		return this.tilesLeft.shift();
+	},
 	parse(tile) {
 		let id = tile.toString(),
 			clr = Colors[+id.slice(0,1)],
@@ -99,25 +113,26 @@ let Tiles = {
 		return { id, clr, num };
 	},
 	deliver() {
+		let tileIndex = 0;
 		for (let i=0; i<=this.tileLimit; i++) {
-			Board.tiles1.push(this.data[this.tileIndex]);
-			Engine.updateLeftTiles(this.data[this.tileIndex]);
-			this.tileIndex++;
+			tiles1.push(this.data[this.tileIndex]);
+			updateLeftTiles(this.data[this.tileIndex]);
+			tileIndex++;
 		}
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles2.push(this.data[this.tileIndex]);
-			Engine.updateLeftTiles(this.data[this.tileIndex]);
-			this.tileIndex++;
+			tiles2.push(this.data[this.tileIndex]);
+			updateLeftTiles(this.data[this.tileIndex]);
+			tileIndex++;
 		}
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles3.push(this.data[this.tileIndex]);
-			Engine.updateLeftTiles(this.data[this.tileIndex]);
-			this.tileIndex++;
+			tiles3.push(this.data[this.tileIndex]);
+			updateLeftTiles(this.data[this.tileIndex]);
+			tileIndex++;
 		}
 		for (let i=0; i<this.tileLimit; i++) {
-			Board.tiles4.push(this.data[this.tileIndex]);
-			Engine.updateLeftTiles(this.data[this.tileIndex]);
-			this.tileIndex++;
+			tiles4.push(this.data[this.tileIndex]);
+			updateLeftTiles(this.data[this.tileIndex]);
+			tileIndex++;
 		}
 
 		let x = parseInt(this.data[105].value.substr(0, 1));

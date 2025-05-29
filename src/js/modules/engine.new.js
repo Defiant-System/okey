@@ -33,6 +33,22 @@ let { Engine, Board, Tiles, AI } = (() => {
 			tiles2: [],
 			tiles3: [],
 			tiles4: [],
+			area1Count: 0,
+			area2Count: 0,
+			area3Count: 0,
+			area4Count: 0,
+			area1items: [],
+			area2items: [],
+			area3items: [],
+			area4items: [],
+			User1Total: 0,
+			User2Total: 0,
+			User3Total: 0,
+			User4Total: 0,
+			User1TotalDouble: 0,
+			User2TotalDouble: 0,
+			User3TotalDouble: 0,
+			User4TotalDouble: 0,
 		};
 
 	let okeyCont = 0;
@@ -270,11 +286,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkWin() {
 			Board.virtualTiles = Board.tiles.slice();
-			let User1Total = 0;
-			let User2Total = 0;
-			let User3Total = 0;
-			let User4Total = 0;
-			let UserTotal = 0;
+			Tiles.User1Total = 0;
+			Tiles.User2Total = 0;
+			Tiles.User3Total = 0;
+			Tiles.User4Total = 0;
+			Tiles.UserTotal = 0;
 			let  _0x5b3924 = 0;
 			let  _0x257872 = 0;
 			let temp = [];
@@ -423,35 +439,35 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			let User1Seri = [];
-			let User2Seri = [];
-			let User3Seri = [];
-			let User4Seri = [];
+			Tiles.User1Seri = [];
+			Tiles.User2Seri = [];
+			Tiles.User3Seri = [];
+			Tiles.User4Seri = [];
 			for (let i=0; i<temp2.length; i++) {
 				switch (activePlayer) {
 					case 1:
-						User1Seri.push(temp2[i]);
-						if (temp2[i]) User1Total += temp2[i] % 100;
+						Tiles.User1Seri.push(temp2[i]);
+						if (temp2[i]) Tiles.User1Total += temp2[i] % 100;
 						break;
 					case 2:
-						User2Seri.push(temp2[i]);
-						if (temp2[i]) User2Total += temp2[i] % 100;
+						Tiles.User2Seri.push(temp2[i]);
+						if (temp2[i]) Tiles.User2Total += temp2[i] % 100;
 						break;
 					case 3:
-						User3Seri.push(temp2[i]);
-						if (temp2[i]) User3Total += temp2[i] % 100;
+						Tiles.User3Seri.push(temp2[i]);
+						if (temp2[i]) Tiles.User3Total += temp2[i] % 100;
 						break;
 					case 4:
-						User4Seri.push(temp2[i]);
-						if (temp2[i]) User4Total += temp2[i] % 100;
+						Tiles.User4Seri.push(temp2[i]);
+						if (temp2[i]) Tiles.User4Total += temp2[i] % 100;
 						break;
 				}
 			}
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
-					sign.removeClass("hidden").find("h4").html(User1Total);
-					sign.toggleClass("red", User1Total < openLimitG);
+					sign.removeClass("hidden").find("h4").html(Tiles.User1Total);
+					sign.toggleClass("red", Tiles.User1Total < openLimitG);
 				}
 				if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
 					sign.removeClass("hidden").find("h4").html(countBoard(1));
@@ -462,11 +478,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkWinDouble() {
 			Board.virtualTiles = Board.tiles.slice();
-			let User1TotalDouble = 0;
-			let User2TotalDouble = 0;
-			let User3TotalDouble = 0;
-			let User4TotalDouble = 0;
-			let UserTotalDouble = 0;
+			Tiles.User1TotalDouble = 0;
+			Tiles.User2TotalDouble = 0;
+			Tiles.User3TotalDouble = 0;
+			Tiles.User4TotalDouble = 0;
+			Tiles.UserTotalDouble = 0;
 			var _0x481582 = 0;
 			var _0x1290e9 = [];
 			for (let i=0; i<Board.virtualTiles.length; i++) {
@@ -496,30 +512,30 @@ let { Engine, Board, Tiles, AI } = (() => {
 					_0x1290e9.push("");
 					i++;
 					if (settingsType == 1 || settingsType == 2 || settingsType == 3) {
-						UserTotalDouble++;
+						Tiles.UserTotalDouble++;
 					}
 				}
 			}
-			let User1Double = [];
-			let User2Double = [];
-			let User3Double = [];
-			let User4Double = [];
+			Tiles.User1Double = [];
+			Tiles.User2Double = [];
+			Tiles.User3Double = [];
+			Tiles.User4Double = [];
 			for (let i=0; i<_0x1290e9.length; i++) {
 				if (activePlayer == 1) {
-					User1TotalDouble = UserTotalDouble;
-					User1Double.push(_0x1290e9[i]);
+					Tiles.User1TotalDouble = Tiles.UserTotalDouble;
+					Tiles.User1Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 2) {
-					User2TotalDouble = UserTotalDouble;
-					User2Double.push(_0x1290e9[i]);
+					Tiles.User2TotalDouble = Tiles.UserTotalDouble;
+					Tiles.User2Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 3) {
-					User3TotalDouble = UserTotalDouble;
-					User3Double.push(_0x1290e9[i]);
+					Tiles.User3TotalDouble = Tiles.UserTotalDouble;
+					Tiles.User3Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 4) {
-					User4TotalDouble = UserTotalDouble;
-					User4Double.push(_0x1290e9[i]);
+					Tiles.User4TotalDouble = Tiles.UserTotalDouble;
+					Tiles.User4Double.push(_0x1290e9[i]);
 				}
 			}
 			if (activePlayer == 1) {
@@ -530,8 +546,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				if (settingsType == 3) {
 					if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
-						sign.removeClass("hidden").find("h4").html(User1TotalDouble);
-						sign.toggleClass("red", User1TotalDouble < openLimitDouble);
+						sign.removeClass("hidden").find("h4").html(Tiles.User1TotalDouble);
+						sign.toggleClass("red", Tiles.User1TotalDouble < openLimitDouble);
 					}
 					if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
 						sign.removeClass("hidden").find("h4").html(this.countBoard(1));
@@ -565,6 +581,245 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			return val;
 		},
+		checkLeft(seat) {
+			let tiles = Board.tiles.lastIndexOf('') * 1 + 1;
+			let pfl = perFull.length;
+			let tilesCopy = Board.tiles.slice();
+			
+			if (Board[`area${seat}items`].length < 1) return 0;
+			let areaItemLast = Board[`area${seat}items`][Board[`area${seat}items`].length - 1];
+			let areaSeat = seat;
+
+			this.place(areaItemLast, tiles);
+			this.arrange(activePlayer);
+			this.checkWin();
+			
+			var seatTotal = Board[`User${seat}Total`];
+			var _0x19ab28 = areaItemLast.split('-');
+			_0x19ab28 = _0x19ab28[1] - 1;
+			_0x19ab28 = data[_0x19ab28];
+
+			if (perFull.length > pfl && (openStatusSort[activePlayer] == 0 && seatTotal > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
+				Board.tiles = tilesCopy.slice();
+				this.updateBoard();
+				this.arrange(activePlayer);
+				return 1;
+			} else {
+				this.movetoArea(areaItemLast, areaSeat, 1);
+				Board.tiles = tilesCopy.slice();
+				this.updateBoard();
+				this.arrange(activePlayer);
+				return 0;
+			}
+		},
+		putToTable(seat, sortType) {
+			Tiles.UserTotal = 0;
+			Tiles.UserTotalDouble = 0;
+			let diff = 0;
+			if (seat == 1) {
+				Board.tiles = Board.tiles1.slice();
+				// boardPlaces = boardPlaces1.slice();
+				if (sortType == 1) this.checkWin();
+				if (sortType == 2) this.checkWinDouble();
+				Tiles.UserSeri = Tiles.User1Seri.slice();
+				Tiles.UserDouble = Tiles.User1Double.slice();
+				Tiles.UserTotal = Tiles.User1Total;
+				Tiles.UserTotalDouble = Tiles.User1TotalDouble;
+			}
+			if (seat == 2) {
+				Board.tiles = Board.tiles2.slice();
+				// boardPlaces = boardPlaces2.slice();
+				if (sortType == 1) this.checkWin();
+				if (sortType == 2) this.checkWinDouble();
+				Tiles.UserSeri = Tiles.User2Seri.slice();
+				Tiles.UserDouble = Tiles.User2Double.slice();
+				Tiles.UserTotal = Tiles.User2Total;
+				Tiles.UserTotalDouble = Tiles.User2TotalDouble;
+			}
+			if (seat == 3) {
+				Board.tiles = Board.tiles3.slice();
+				// boardPlaces = boardPlaces3.slice();
+				if (sortType == 1) this.checkWin();
+				if (sortType == 2) this.checkWinDouble();
+				Tiles.UserSeri = Tiles.User3Seri.slice();
+				Tiles.UserDouble = Tiles.User3Double.slice();
+				Tiles.UserTotal = Tiles.User3Total;
+				Tiles.UserTotalDouble = Tiles.User3TotalDouble;
+			}
+			if (seat == 4) {
+				Board.tiles = Board.tiles4.slice();
+				// boardPlaces = boardPlaces4.slice();
+				if (sortType == 1) this.checkWin();
+				if (sortType == 2) this.checkWinDouble();
+				Tiles.UserSeri = Tiles.User4Seri.slice();
+				Tiles.UserDouble = Tiles.User4Double.slice();
+				Tiles.UserTotal = Tiles.User4Total;
+				Tiles.UserTotalDouble = Tiles.User4TotalDouble;
+			}
+
+			if (Tiles.UserTotal == 0 && sortType == 1 || Tiles.UserTotalDouble == 0 && sortType == 2) {
+				if (sortType == 1 && seat == 1 && AIStatus == 0) {
+					this.popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
+				}
+				if (sortType == 2 && seat == 1 && AIStatus == 0) {
+					this.popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
+				}
+				return 0;
+			}
+			// console.log(seat, UserTotal, sortType);
+
+			var _0x488971 = Tiles.UserSeri.filter(e => e != '').slice();
+			var _0x5869f9 = Board.tiles.filter(e => e != '').slice();
+			if (_0x5869f9.length <= Tiles.tileLimits[seat]) {
+				if (seat == 1) {
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (_0x488971.length > Tiles.tileLimit) {
+				this.popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
+			}
+			if (sortType == 1 && openStatusDouble[seat] == 1) {
+				if (seat == 1 && AIStatus == 0) {
+					this.popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
+					openPunish[seat] = 0;
+				}
+				return 0;
+			}
+			if (sortType == 2 && openStatusSort[seat] == 1 && handleDouble == 0) {
+				if (seat == 1 && AIStatus == 0) {
+					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
+				}
+				return 0;
+			}
+			if (sortType == 1 && Tiles.UserTotal < openLimit && openStatusSort[seat] == 0) {
+				if (seat == 1 && AIStatus == 0) {
+					this.popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
+					openPunish[seat] = 1;
+				}
+				if (seat != 1 || AIStatus == 1) {
+					return 0;
+				}
+			}
+			if (sortType == 2 && Tiles.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && handleDouble == 0) {
+				if (seat == 1 && AIStatus == 0) {
+					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
+					openPunish[seat] = 1;
+				}
+				if (seat != 1 || AIStatus == 1) {
+					return 0;
+				}
+			}
+
+			if (Tiles.UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
+				this.popMessage("Cift acabilecek tasiniz yok!");
+			}
+
+			var setTiles;
+			if (sortType == 1) {
+				if (openStatusSort[seat] == 0) {
+					// UI update
+					APP.game.dispatch({ type: "user-initial-meld", seat, total: Tiles.UserTotal });
+
+					console.log(seat + " seri acti: " + UserTotal);
+					if (settingsIncrease == 1) {
+						openLimitLast = openLimit;
+						openLimit = Tiles.UserTotal * 1 + 1;
+						// $("table-sort-score").innerHTML = openLimit;
+					}
+				}
+				openStatusSort[seat] = 1;
+				setTiles = Tiles.UserSeri.slice();
+				if (seat == 1 && Tiles.UserTotal >= openLimitLast) {
+					this.buttonActivePassive("handle-sort", 1);
+					this.buttonActivePassive("handle-double", 1);
+					firstOpenCont = 1;
+				}
+			}
+			if (sortType == 2) {
+				if (openStatusDouble[seat] == 0) {
+					console.log(seat + " cift acti : " + Tiles.UserTotalDouble);
+					if (settingsIncrease == 1 && Tiles.UserTotalDouble >= openLimitDouble) {
+						openLimitDoubleLast = openLimitDouble;
+						openLimitDouble = Tiles.UserTotalDouble * 1 + 1;
+						if (settingsType == 3) {
+							openLimitDouble = openLimitD;
+						}
+						// $("table-double-score").innerHTML = openLimitDouble;
+					}
+				}
+				if (handleDouble == 0) {
+					openStatusDouble[seat] = 1;
+					if (seat == 1 && Tiles.UserTotalDouble >= openLimitDoubleLast) {
+						this.buttonActivePassive("handle-sort", 1);
+						this.buttonActivePassive("handle-double", 1);
+						firstOpenCont = 1;
+					}
+				}
+				setTiles = UserDouble.slice();
+			}
+			if (!collect[0]) {
+				collect = [];
+				// collectPlaces = boardPlaces.slice();
+				collectTiles = Board.tiles.slice();
+			}
+			var _0x484f1e = seat;
+			if (handleDouble == 1) {
+				_0x484f1e = doubleHandleTo;
+			}
+			
+			for (let i=0; i<setTiles.length; i++) {
+				if (setTiles[i] != '') {
+					var _0x897419 = Board.tiles.findIndex(e => e.value == String(setTiles[i]));
+					if (setTiles[i] - setTiles[i] % 100 == 900) {
+						_0x897419 = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
+					}
+					if (setTiles[i] - setTiles[i] % 100 == 800) {
+						_0x897419 = Board.tiles.findIndex(e => e.value == "000");
+					}
+					if (_0x897419 !== -1) {
+						this.moveToTable(_0x484f1e, setTiles[i], -1, -1, sortType);
+						tileLimits[seat]--;
+					}
+				} else {
+					if (sortType == 1) {
+						tableH[_0x484f1e]++;
+					}
+					if (sortType == 2) {
+						tableHdouble[_0x484f1e]++;
+					}
+					diff = 0;
+					lastStone = '';
+				}
+				var _0x4fe46a = activePlayer;
+				activePlayer = seat;
+				this.updateBoards();
+				activePlayer = _0x4fe46a;
+			}
+			var _0x2c9a7e = Board.tiles.filter(e => !!e).slice();
+			if (_0x2c9a7e.length == 0) {
+				if (seat != 1 || AIStatus == 1) {
+					this.collectItBack();
+				} else {
+					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
+				}
+			}
+			handleDouble = 0;
+			if (seat == 1) {
+				markIt(1);
+				if (sortType == 1) {
+					this.checkWin();
+				}
+				if (sortType == 2) {
+					this.checkWinDouble();
+				}
+			}
+			// animate set of tiles
+			return APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
+		},
+		markIt() {
+			console.log("function markIt");
+		}
 	};
 
 	return { Engine, Board, Tiles, AI };

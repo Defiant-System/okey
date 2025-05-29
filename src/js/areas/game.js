@@ -220,7 +220,7 @@
 				}, 10);
 				break;
 			case "discard-tile":
-				let eventTile = Engine.toParts(event.tile);
+				let eventTile = Tiles.parse(event.tile.value);
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("discard-tile");
 				el = pEl.find(".tile").removeClass("blank").addClass(eventTile.clr).data({ v: eventTile.num });
 				setTimeout(() => {
