@@ -32,23 +32,25 @@ let Tiles = {
 
 		activePlayer = 1;
 
-		if (settingsType == 1) this.tileLimit = 14;
-		if (settingsType == 2) this.tileLimit = 21;
-		if (settingsType == 3) this.tileLimit = 14;
+		if (settingsType == 1) Board.tileLimit = 14;
+		if (settingsType == 2) Board.tileLimit = 21;
+		if (settingsType == 3) Board.tileLimit = 14;
 
-		this.tileLimits = [0, this.tileLimit, this.tileLimit, this.tileLimit, this.tileLimit];
-		this.handleDouble = 0;
+		Board.tileLimits = [0, Board.tileLimit, Board.tileLimit, Board.tileLimit, Board.tileLimit];
+		Board.handleItems = [];
+		Board.handleDouble = 0;
+		Board.markCont = 0;
 
-		this.UserSeri = [];
-		this.User1Seri = [];
-		this.User2Seri = [];
-		this.User3Seri = [];
-		this.User4Seri = [];
-		this.UserDouble = [];
-		this.User1Double = [];
-		this.User2Double = [];
-		this.User3Double = [];
-		this.User4Double = [];
+		Board.UserSeri = [];
+		Board.User1Seri = [];
+		Board.User2Seri = [];
+		Board.User3Seri = [];
+		Board.User4Seri = [];
+		Board.UserDouble = [];
+		Board.User1Double = [];
+		Board.User2Double = [];
+		Board.User3Double = [];
+		Board.User4Double = [];
 	},
 	restore(state) {		
 		if (state.table.left) {
@@ -73,12 +75,14 @@ let Tiles = {
 			});
 
 			Object.keys(state.melded).map(what => {
-				APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
+				if (state.melded[what].length) {
+					APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
+				}
 			});
 
 			// table UI update
 			Engine.updateLeftTiles();
-
+			// auto arrange user tiles
 			Engine.arrange(1, 1);
 
 			// restore game state

@@ -29,6 +29,7 @@
 			Self = APP.game,
 			sOffset,
 			dOffset,
+			rows,
 			rI,
 			css,
 			str,
@@ -281,9 +282,17 @@
 				dOffset = Self.els.common.series.offset(".board");
 				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
+				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
 
-				event.set.map((row, y) => {
+				event.setTiles.map(item => {
+					if (item == "") rows.push([]);
+					else rows[rows.length-1].push(item);
+				});
+				// remove empty arrays
+				rows = rows.filter(r => r.length);
+
+				rows.map((row, y) => {
 					let i,
 						il = row.length,
 						fy = sOffset.top - dOffset.top,
@@ -318,9 +327,17 @@
 				dOffset = Self.els.common.doubles.offset(".board");
 				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
 				str = [];
+				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
 
-				event.set.map((row, y) => {
+				event.setTiles.map(item => {
+					if (item == "") rows.push([]);
+					else rows[rows.length-1].push(item);
+				});
+				// remove empty arrays
+				rows = rows.filter(r => r.length);
+
+				rows.map((row, y) => {
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;

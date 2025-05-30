@@ -8,25 +8,25 @@ let AI = {
 		Engine.getRack(activePlayer);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
-		if (aiTiles.length - 1 == Tiles.tileLimits[seat]) {
-			await this.makeMove(aiTiles, seat);
+		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
+			await this.makeMove(seat);
 		} else {
 			this.evalDiscarded(seat);
 
 			// if (seat === 3) return;
 			// return console.log("AI again");
-			console.log("setTimeout");
 
 			// clearTimeout(Engine.timerAI);
 
-			// Engine.timerAI = setTimeout(() => {
-			// 	if (Engine._gameOver == 1) return 0;
-			// 	Engine.arrange(seat);
-			// 	this.think(seat);
-			// }, 1000);
+			Engine.timerAI = setTimeout(() => {
+				if (Engine._gameOver == 1) return 0;
+				Engine.arrange(seat);
+				this.think(seat);
+			}, 1000);
 		}
 	},
-	async makeMove(aiTiles, seat) {
+	async makeMove(seat) {
+		let aiTiles;
 		if (settingsType == 2 || settingsType == 3) { // 51 or 101
 			if (openStatusDouble[seat] == 0) {
 				Engine.arrange(seat);
@@ -36,37 +36,38 @@ let AI = {
 			if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
 				Engine.getOkeyFromTable(seat);
 				Engine.arrange(seat);
-				aiTiles = Board.tiles.filter(e => e != "").slice();
+				aiTiles = Board.tiles.filter(e => !!e).slice();
 				if (aiTiles.length > 1) {
 					Engine.checkHandle(seat);
 				}
-				aiTiles = Board.tiles.filter(e => e != "").slice();
+				aiTiles = Board.tiles.filter(e => !!e).slice();
 				if (aiTiles.length > 1) {
 					Engine.arrange(seat, 2);
 				}
-				aiTiles = Board.tiles.filter(e => e != "").slice();
+				aiTiles = Board.tiles.filter(e => !!e).slice();
 				if (aiTiles.length > 1) {
 					Engine.checkHandleDouble(seat);
 				}
 			}
-			aiTiles = Board.tiles.filter(e => e != "").slice();
+			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length > 1) {
 				Engine.arrange(seat, 2);
 			}
 			if (aiTiles.length > 1) {
+			console.log("putToTable");
 				// opens
 				await Engine.putToTable(seat, 1);
 			}
-			aiTiles = Board.tiles.filter(e => e != "").slice();
+			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length == 3) {
 				Engine.putOkeyToTable(seat);
 			}
-			aiTiles = Board.tiles.filter(e => e != "").slice();
+			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length > 1) {
 				// opens
 				await Engine.putToTable(seat, 2);
 			}
-			aiTiles = Board.tiles.filter(e => e != "").slice();
+			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length < 1) {
 				console.log("tas bitti - 2");
 			}
@@ -74,7 +75,6 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
-		console.log(seat, activePlayer, Board.tiles.slice());
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
 		// if (aiTiles.length > 0) {
@@ -99,13 +99,16 @@ let AI = {
 		// 	console.log("tas bitti - 1");
 		// }
 
+		console.log(selectedTile);
 		// let index = boardPlaces.indexOf(selectedTile),
 		// 	tile = Board.tiles[index - 1];
 		APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
 
-		Engine.checkThrow();
+		// Engine.checkThrow();
 		Engine.arrange(seat);
 		Engine.markIt(1);
+
+		activePlayer = (activePlayer + 1) % 4;
 
 		if (Engine._gameOver == 1 && tilesLeft.length > 0) {
 			if (settingsType == 1) Engine.gameOver(1);

@@ -33,6 +33,17 @@ let { Engine, Board, Tiles, AI } = (() => {
 			tiles2: [],
 			tiles3: [],
 			tiles4: [],
+			winWithOkey: 0,
+			winWithDouble: 0,
+			handleDouble: 0,
+			doubleHandleTo: 0,
+			leftHandCont: 0,
+			leftHandTile: 0,
+			leftHandContTemp: 0,
+			leftHandTileTemp: 0,
+			sayTableTiles: 0,
+			sayTableTilesTemp: 0,
+			getOkeyKont: 0,
 			area1Count: 0,
 			area2Count: 0,
 			area3Count: 0,
@@ -49,6 +60,26 @@ let { Engine, Board, Tiles, AI } = (() => {
 			User2TotalDouble: 0,
 			User3TotalDouble: 0,
 			User4TotalDouble: 0,
+			collect: [],
+			collectTiles: [],
+			tableH: [0, 0, 0, 0, 0],
+			tableHdouble: [0, 0, 0, 0, 0],
+			tableUser1: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUser2: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUser3: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUser4: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUserTiles1: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUserTiles2: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUserTiles3: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableUserTiles4: new Array(7).fill(0).map(() => new Array(13).fill(0)),
+			tableDoubleUser1: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUser2: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUser3: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUser4: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUserTiles1: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUserTiles2: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUserTiles3: new Array(14).fill(0).map(() => new Array(2).fill(0)),
+			tableDoubleUserTiles4: new Array(14).fill(0).map(() => new Array(2).fill(0)),
 		};
 
 	let okeyCont = 0;
@@ -287,14 +318,15 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkWin() {
 			Board.virtualTiles = Board.tiles.slice();
-			Tiles.User1Total = 0;
-			Tiles.User2Total = 0;
-			Tiles.User3Total = 0;
-			Tiles.User4Total = 0;
-			Tiles.UserTotal = 0;
+			Board.User1Total = 0;
+			Board.User2Total = 0;
+			Board.User3Total = 0;
+			Board.User4Total = 0;
+			Board.UserTotal = 0;
 			let  _0x5b3924 = 0;
 			let  _0x257872 = 0;
 			let temp = [];
+			let temp1 = [];
 			let temp2 = [];
 			let  _0x2b6e63 = [];
 			let  _0x47dfb5 = null;
@@ -380,7 +412,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			_0x2b6e63 = null;
 			_0x47dfb5 = null;
 			temp = [];
-			let temp1 = [];
+			temp1 = [];
 			for (let i=0; i<=Board.virtualTiles.length; i++) {
 				let t1v = Board.virtualTiles[i]; t1v = t1v ? t1v.value : "";
 				let t2v = Board.virtualTiles[i+1]; t2v = t2v ? t2v.value : "";
@@ -440,35 +472,35 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			Tiles.User1Seri = [];
-			Tiles.User2Seri = [];
-			Tiles.User3Seri = [];
-			Tiles.User4Seri = [];
+			Board.User1Seri = [];
+			Board.User2Seri = [];
+			Board.User3Seri = [];
+			Board.User4Seri = [];
 			for (let i=0; i<temp2.length; i++) {
 				switch (activePlayer) {
 					case 1:
-						Tiles.User1Seri.push(temp2[i]);
-						if (temp2[i]) Tiles.User1Total += temp2[i] % 100;
+						Board.User1Seri.push(temp2[i]);
+						if (temp2[i]) Board.User1Total += temp2[i] % 100;
 						break;
 					case 2:
-						Tiles.User2Seri.push(temp2[i]);
-						if (temp2[i]) Tiles.User2Total += temp2[i] % 100;
+						Board.User2Seri.push(temp2[i]);
+						if (temp2[i]) Board.User2Total += temp2[i] % 100;
 						break;
 					case 3:
-						Tiles.User3Seri.push(temp2[i]);
-						if (temp2[i]) Tiles.User3Total += temp2[i] % 100;
+						Board.User3Seri.push(temp2[i]);
+						if (temp2[i]) Board.User3Total += temp2[i] % 100;
 						break;
 					case 4:
-						Tiles.User4Seri.push(temp2[i]);
-						if (temp2[i]) Tiles.User4Total += temp2[i] % 100;
+						Board.User4Seri.push(temp2[i]);
+						if (temp2[i]) Board.User4Total += temp2[i] % 100;
 						break;
 				}
 			}
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
-					sign.removeClass("hidden").find("h4").html(Tiles.User1Total);
-					sign.toggleClass("red", Tiles.User1Total < openLimitG);
+					sign.removeClass("hidden").find("h4").html(Board.User1Total);
+					sign.toggleClass("red", Board.User1Total < openLimitG);
 				}
 				if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
 					sign.removeClass("hidden").find("h4").html(countBoard(1));
@@ -479,11 +511,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkWinDouble() {
 			Board.virtualTiles = Board.tiles.slice();
-			Tiles.User1TotalDouble = 0;
-			Tiles.User2TotalDouble = 0;
-			Tiles.User3TotalDouble = 0;
-			Tiles.User4TotalDouble = 0;
-			Tiles.UserTotalDouble = 0;
+			Board.User1TotalDouble = 0;
+			Board.User2TotalDouble = 0;
+			Board.User3TotalDouble = 0;
+			Board.User4TotalDouble = 0;
+			Board.UserTotalDouble = 0;
 			var _0x481582 = 0;
 			var _0x1290e9 = [];
 			for (let i=0; i<Board.virtualTiles.length; i++) {
@@ -513,30 +545,30 @@ let { Engine, Board, Tiles, AI } = (() => {
 					_0x1290e9.push("");
 					i++;
 					if (settingsType == 1 || settingsType == 2 || settingsType == 3) {
-						Tiles.UserTotalDouble++;
+						Board.UserTotalDouble++;
 					}
 				}
 			}
-			Tiles.User1Double = [];
-			Tiles.User2Double = [];
-			Tiles.User3Double = [];
-			Tiles.User4Double = [];
+			Board.User1Double = [];
+			Board.User2Double = [];
+			Board.User3Double = [];
+			Board.User4Double = [];
 			for (let i=0; i<_0x1290e9.length; i++) {
 				if (activePlayer == 1) {
-					Tiles.User1TotalDouble = Tiles.UserTotalDouble;
-					Tiles.User1Double.push(_0x1290e9[i]);
+					Board.User1TotalDouble = Board.UserTotalDouble;
+					Board.User1Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 2) {
-					Tiles.User2TotalDouble = Tiles.UserTotalDouble;
-					Tiles.User2Double.push(_0x1290e9[i]);
+					Board.User2TotalDouble = Board.UserTotalDouble;
+					Board.User2Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 3) {
-					Tiles.User3TotalDouble = Tiles.UserTotalDouble;
-					Tiles.User3Double.push(_0x1290e9[i]);
+					Board.User3TotalDouble = Board.UserTotalDouble;
+					Board.User3Double.push(_0x1290e9[i]);
 				}
 				if (activePlayer == 4) {
-					Tiles.User4TotalDouble = Tiles.UserTotalDouble;
-					Tiles.User4Double.push(_0x1290e9[i]);
+					Board.User4TotalDouble = Board.UserTotalDouble;
+					Board.User4Double.push(_0x1290e9[i]);
 				}
 			}
 			if (activePlayer == 1) {
@@ -547,8 +579,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				if (settingsType == 3) {
 					if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
-						sign.removeClass("hidden").find("h4").html(Tiles.User1TotalDouble);
-						sign.toggleClass("red", Tiles.User1TotalDouble < openLimitDouble);
+						sign.removeClass("hidden").find("h4").html(Board.User1TotalDouble);
+						sign.toggleClass("red", Board.User1TotalDouble < openLimitDouble);
 					}
 					if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
 						sign.removeClass("hidden").find("h4").html(this.countBoard(1));
@@ -614,51 +646,54 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		putToTable(seat, sortType) {
-			Tiles.UserTotal = 0;
-			Tiles.UserTotalDouble = 0;
+			Board.UserTotal = 0;
+			Board.UserTotalDouble = 0;
 			let diff = 0;
-			if (seat == 1) {
-				Board.tiles = Board.tiles1.slice();
-				// boardPlaces = boardPlaces1.slice();
-				if (sortType == 1) this.checkWin();
-				if (sortType == 2) this.checkWinDouble();
-				Tiles.UserSeri = Tiles.User1Seri.slice();
-				Tiles.UserDouble = Tiles.User1Double.slice();
-				Tiles.UserTotal = Tiles.User1Total;
-				Tiles.UserTotalDouble = Tiles.User1TotalDouble;
-			}
-			if (seat == 2) {
-				Board.tiles = Board.tiles2.slice();
-				// boardPlaces = boardPlaces2.slice();
-				if (sortType == 1) this.checkWin();
-				if (sortType == 2) this.checkWinDouble();
-				Tiles.UserSeri = Tiles.User2Seri.slice();
-				Tiles.UserDouble = Tiles.User2Double.slice();
-				Tiles.UserTotal = Tiles.User2Total;
-				Tiles.UserTotalDouble = Tiles.User2TotalDouble;
-			}
-			if (seat == 3) {
-				Board.tiles = Board.tiles3.slice();
-				// boardPlaces = boardPlaces3.slice();
-				if (sortType == 1) this.checkWin();
-				if (sortType == 2) this.checkWinDouble();
-				Tiles.UserSeri = Tiles.User3Seri.slice();
-				Tiles.UserDouble = Tiles.User3Double.slice();
-				Tiles.UserTotal = Tiles.User3Total;
-				Tiles.UserTotalDouble = Tiles.User3TotalDouble;
-			}
-			if (seat == 4) {
-				Board.tiles = Board.tiles4.slice();
-				// boardPlaces = boardPlaces4.slice();
-				if (sortType == 1) this.checkWin();
-				if (sortType == 2) this.checkWinDouble();
-				Tiles.UserSeri = Tiles.User4Seri.slice();
-				Tiles.UserDouble = Tiles.User4Double.slice();
-				Tiles.UserTotal = Tiles.User4Total;
-				Tiles.UserTotalDouble = Tiles.User4TotalDouble;
+
+			switch (seat) {
+				case 1:
+					Board.tiles = Board.tiles1.slice();
+					// boardPlaces = boardPlaces1.slice();
+					if (sortType == 1) this.checkWin();
+					if (sortType == 2) this.checkWinDouble();
+					Board.UserSeri = Board.User1Seri.slice();
+					Board.UserDouble = Board.User1Double.slice();
+					Board.UserTotal = Board.User1Total;
+					Board.UserTotalDouble = Board.User1TotalDouble;
+					break;
+				case 2:
+					Board.tiles = Board.tiles2.slice();
+					// boardPlaces = boardPlaces2.slice();
+					if (sortType == 1) this.checkWin();
+					if (sortType == 2) this.checkWinDouble();
+					Board.UserSeri = Board.User2Seri.slice();
+					Board.UserDouble = Board.User2Double.slice();
+					Board.UserTotal = Board.User2Total;
+					Board.UserTotalDouble = Board.User2TotalDouble;
+					break;
+				case 3:
+					Board.tiles = Board.tiles3.slice();
+					// boardPlaces = boardPlaces3.slice();
+					if (sortType == 1) this.checkWin();
+					if (sortType == 2) this.checkWinDouble();
+					Board.UserSeri = Board.User3Seri.slice();
+					Board.UserDouble = Board.User3Double.slice();
+					Board.UserTotal = Board.User3Total;
+					Board.UserTotalDouble = Board.User3TotalDouble;
+					break;
+				case 4:
+					Board.tiles = Board.tiles4.slice();
+					// boardPlaces = boardPlaces4.slice();
+					if (sortType == 1) this.checkWin();
+					if (sortType == 2) this.checkWinDouble();
+					Board.UserSeri = Board.User4Seri.slice();
+					Board.UserDouble = Board.User4Double.slice();
+					Board.UserTotal = Board.User4Total;
+					Board.UserTotalDouble = Board.User4TotalDouble;
+					break;
 			}
 
-			if (Tiles.UserTotal == 0 && sortType == 1 || Tiles.UserTotalDouble == 0 && sortType == 2) {
+			if (Board.UserTotal == 0 && sortType == 1 || Board.UserTotalDouble == 0 && sortType == 2) {
 				if (sortType == 1 && seat == 1 && AIStatus == 0) {
 					this.popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
 				}
@@ -669,9 +704,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			// console.log(seat, UserTotal, sortType);
 
-			var _0x488971 = Tiles.UserSeri.filter(e => e != '').slice();
+			var _0x488971 = Board.UserSeri.filter(e => e != '').slice();
 			var _0x5869f9 = Board.tiles.filter(e => e != '').slice();
-			if (_0x5869f9.length <= Tiles.tileLimits[seat]) {
+			if (_0x5869f9.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
 					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
@@ -687,13 +722,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				return 0;
 			}
-			if (sortType == 2 && openStatusSort[seat] == 1 && Tiles.handleDouble == 0) {
+			if (sortType == 2 && openStatusSort[seat] == 1 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
 				}
 				return 0;
 			}
-			if (sortType == 1 && Tiles.UserTotal < openLimit && openStatusSort[seat] == 0) {
+			if (sortType == 1 && Board.UserTotal < openLimit && openStatusSort[seat] == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
 					openPunish[seat] = 1;
@@ -702,7 +737,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 					return 0;
 				}
 			}
-			if (sortType == 2 && Tiles.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Tiles.handleDouble == 0) {
+			console.log( Board.UserTotalDouble , openLimitDouble, openStatusDouble[seat], Board.handleDouble );
+			if (sortType == 2 && Board.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
 					openPunish[seat] = 1;
@@ -712,7 +748,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 			}
 
-			if (Tiles.UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
+			if (Board.UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
 				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
 
@@ -720,18 +756,18 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
 					// UI update
-					APP.game.dispatch({ type: "user-initial-meld", seat, total: Tiles.UserTotal });
+					APP.game.dispatch({ type: "user-initial-meld", seat, total: Board.UserTotal });
 
 					console.log(seat + " seri acti: " + UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;
-						openLimit = Tiles.UserTotal * 1 + 1;
+						openLimit = Board.UserTotal * 1 + 1;
 						// $("table-sort-score").innerHTML = openLimit;
 					}
 				}
 				openStatusSort[seat] = 1;
-				setTiles = Tiles.UserSeri.slice();
-				if (seat == 1 && Tiles.UserTotal >= openLimitLast) {
+				setTiles = Board.UserSeri.slice();
+				if (seat == 1 && Board.UserTotal >= openLimitLast) {
 					this.buttonActivePassive("handle-sort", 1);
 					this.buttonActivePassive("handle-double", 1);
 					firstOpenCont = 1;
@@ -739,36 +775,36 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			if (sortType == 2) {
 				if (openStatusDouble[seat] == 0) {
-					console.log(seat + " cift acti : " + Tiles.UserTotalDouble);
-					if (settingsIncrease == 1 && Tiles.UserTotalDouble >= openLimitDouble) {
+					let userName = APP.game.els.el.find(`.player .seat[data-seat="${seat}"] .name`).data("name");
+					console.log(userName + " cift acti : " + Board.UserTotalDouble);
+					if (settingsIncrease == 1 && Board.UserTotalDouble >= openLimitDouble) {
 						openLimitDoubleLast = openLimitDouble;
-						openLimitDouble = Tiles.UserTotalDouble * 1 + 1;
+						openLimitDouble = Board.UserTotalDouble * 1 + 1;
 						if (settingsType == 3) {
 							openLimitDouble = openLimitD;
 						}
 						// $("table-double-score").innerHTML = openLimitDouble;
 					}
 				}
-				if (Tiles.handleDouble == 0) {
+				if (Board.handleDouble == 0) {
 					openStatusDouble[seat] = 1;
-					if (seat == 1 && Tiles.UserTotalDouble >= openLimitDoubleLast) {
+					if (seat == 1 && Board.UserTotalDouble >= openLimitDoubleLast) {
 						this.buttonActivePassive("handle-sort", 1);
 						this.buttonActivePassive("handle-double", 1);
 						firstOpenCont = 1;
 					}
 				}
-				setTiles = UserDouble.slice();
+				setTiles = Board.UserDouble.slice();
 			}
-			if (!collect[0]) {
-				collect = [];
+			if (!Board.collect[0]) {
+				Board.collect = [];
 				// collectPlaces = boardPlaces.slice();
-				collectTiles = Board.tiles.slice();
+				Board.collectTiles = Board.tiles.slice();
 			}
 			var _0x484f1e = seat;
-			if (Tiles.handleDouble == 1) {
-				_0x484f1e = doubleHandleTo;
+			if (Board.handleDouble == 1) {
+				_0x484f1e = Board.doubleHandleTo;
 			}
-			
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
 					var _0x897419 = Board.tiles.findIndex(e => e.value == String(setTiles[i]));
@@ -780,21 +816,21 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 					if (_0x897419 !== -1) {
 						this.moveToTable(_0x484f1e, setTiles[i], -1, -1, sortType);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 					}
 				} else {
 					if (sortType == 1) {
-						tableH[_0x484f1e]++;
+						Board.tableH[_0x484f1e]++;
 					}
 					if (sortType == 2) {
-						tableHdouble[_0x484f1e]++;
+						Board.tableHdouble[_0x484f1e]++;
 					}
 					diff = 0;
-					lastStone = '';
+					Board.lastStone = '';
 				}
 				var _0x4fe46a = activePlayer;
 				activePlayer = seat;
-				this.updateBoards();
+				this.updateBoard();
 				activePlayer = _0x4fe46a;
 			}
 			var _0x2c9a7e = Board.tiles.filter(e => !!e).slice();
@@ -805,7 +841,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
 				}
 			}
-			Tiles.handleDouble = 0;
+			Board.handleDouble = 0;
 			if (seat == 1) {
 				this.markIt(1);
 				if (sortType == 1) {
@@ -816,11 +852,822 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 			}
 			// animate set of tiles
-			return APP.game.dispatch({ type: "meld-series", from: seat, setTiles });
+			let type = sortType === 1 ? "meld-series" : "meld-doubles";
+			return APP.game.dispatch({ type, from: seat, setTiles });
 		},
-		markIt() {
-			console.log("function markIt");
-		}
+		markIt(seat) {
+			Tiles.markCont = 1;
+			this.checkHandle(seat, 2);
+			this.getOkeyFromTable(seat);
+			Tiles.markCont = 0;
+		},
+		checkHandleDouble(seat) {
+			// if (activePlayer == 1 && true) {}
+			if (seat == 1) {
+				if (this.getOkeyFromTable(1, 2)) {
+					return 0;
+				}
+			}
+			var _0x460cd2 = Board.tiles.filter(e => !!e).slice();
+			if (_0x460cd2.length <= Board.tileLimits[seat]) {
+				if (seat == 1) {
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0) {
+				if (seat == 1) {
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+				}
+				return 0;
+			}
+			var _0x1d32ab = Board.tiles.filter(e => e != '').slice();
+			if (_0x1d32ab.length < 3) {
+				this.markIt(seat);
+				return 0;
+			}
+			if (openStatusDouble.indexOf(1) > -1) {
+				Board.doubleHandleTo = openStatusDouble.indexOf(1);
+				Board.handleDouble = 0;
+				this.checkWinDouble();
+				if (UserTotalDouble > 0) {
+					this.popMessage(users[seat] + " cift isledi!");
+					Board.handleDouble = 1;
+					this.putToTable(activePlayer, 2);
+				}
+			}
+		},
+		checkHandle(seat, num=0) {
+			var _0x3c5f2e = [];
+			Tiles.handleItems = [];
+			if (seat == 1) {
+				Board.tiles = Board.tiles1.slice();
+				// boardPlaces = boardPlaces1.slice();
+				_0x3c5f2e = Board.User1Seri.slice();
+				Board.UserTotal = Board.User1Total;
+			}
+			if (seat == 2) {
+				Board.tiles = Board.tiles2.slice();
+				// boardPlaces = boardPlaces2.slice();
+				_0x3c5f2e = Board.User2Seri.slice();
+				Board.UserTotal = Board.User2Total;
+			}
+			if (seat == 3) {
+				Board.tiles = Board.tiles3.slice();
+				// boardPlaces = boardPlaces3.slice();
+				_0x3c5f2e = Board.User3Seri.slice();
+				Board.UserTotal = Board.User3Total;
+			}
+			if (seat == 4) {
+				Board.tiles = Board.tiles4.slice();
+				// boardPlaces = boardPlaces4.slice();
+				_0x3c5f2e = User4Seri.slice();
+				Board.UserTotal = Board.User4Total;
+			}
+			var _0x1fc99b = Board.tiles.filter(e => e != '').slice();
+			if (_0x1fc99b.length <= Board.tileLimits[seat] && num == 0) {
+				if (seat == 1 && Tiles.markCont == 0) {
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0 && num == 0) {
+				if (seat == 1) {
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+				}
+				return 0;
+			}
+			if (seat == 1 && num == 0) {
+				if (this.getOkeyFromTable(1, 1)) {
+					return 0;
+				}
+			}
+			if (!Board.collect[0] && num == 0) {
+				Board.collect = [];
+				// collectPlaces = boardPlaces.slice();
+				Board.collectTiles = Board.tiles.slice();
+			}
+			var _0x364dc5 = [0, 0, 0, 0, 0];
+			var _0x2bbb42 = 0;
+			for (let i=0; i<Board.tiles.length; i++) {
+				var _0x5e0d4d = Board.tiles.filter(e => e != '').slice();
+				if (_0x5e0d4d.length == 1 && num == 0) {
+					this.markIt(seat);
+					if (seat == 1) {
+						this.popMessage("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
+					}
+					return 0;
+				}
+				if (Board.tiles[i]) {
+					// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
+					// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
+					var _0x1fc99b;
+					if (Board.tiles[i] == "000") {
+						_0x1fc99b = Tiles.okey;
+					} else {
+						_0x1fc99b = Board.tiles[i];
+					}
+					for (let j=0; j<7; j++) {
+						for (let k=0; k<=13; k++) {
+							if (Board.tiles[i] && Board.tiles[i] != Tiles.okey) {
+								var _0x49f720 = 0;
+								var _0x2fc30f = 0;
+								var _0x46b158;
+								var _0x3a83d2;
+								var _0x34dbca;
+								var _0x29577e;
+								var _0x4935d9;
+								if (Board.tableUser1[j][k] > 0) {
+									_0x46b158 = Board.tableUser1[j][k];
+									_0x3a83d2 = Board.tableUser1[j][k - 1];
+									_0x34dbca = Board.tableUser1[j][k * 1 + 1];
+									_0x29577e = Board.tableUser1[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser1[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) _0x46b158 = _0x3a83d2 * 1 + 1;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) _0x46b158 = _0x34dbca - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) _0x3a83d2 = _0x46b158 - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) _0x3a83d2 = _0x34dbca - 2;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) _0x34dbca = _0x46b158 * 1 + 1;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) _0x34dbca = _0x3a83d2 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) _0x29577e = _0x46b158 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) _0x29577e = _0x3a83d2 * 1 + 3;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) _0x4935d9 = _0x46b158 - 2;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) _0x4935d9 = _0x3a83d2 - 1;
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 1;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 1;
+									}
+									_0x46b158 = Board.tableUser1[j][k];
+									_0x3a83d2 = Board.tableUser1[j][k - 1];
+									_0x34dbca = Board.tableUser1[j][k * 1 + 1];
+									_0x29577e = Board.tableUser1[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser1[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser1[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 1;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser1[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 1;
+									}
+								}
+								if (Board.tableUser2[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = Board.tableUser2[j][k];
+									_0x3a83d2 = Board.tableUser2[j][k - 1];
+									_0x34dbca = Board.tableUser2[j][k * 1 + 1];
+									_0x29577e = Board.tableUser2[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser2[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) _0x46b158 = _0x3a83d2 * 1 + 1;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) _0x46b158 = _0x34dbca - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) _0x3a83d2 = _0x46b158 - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) _0x3a83d2 = _0x34dbca - 2;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) _0x34dbca = _0x46b158 * 1 + 1;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) _0x34dbca = _0x3a83d2 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) _0x29577e = _0x46b158 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) _0x29577e = _0x3a83d2 * 1 + 3;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) _0x4935d9 = _0x46b158 - 2;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) _0x4935d9 = _0x3a83d2 - 1;
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 2;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 2;
+									}
+									_0x46b158 = Board.tableUser2[j][k];
+									_0x3a83d2 = Board.tableUser2[j][k - 1];
+									_0x34dbca = Board.tableUser2[j][k * 1 + 1];
+									_0x29577e = Board.tableUser2[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser2[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser2[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 2;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser2[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 2;
+									}
+								}
+								if (Board.tableUser3[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = Board.tableUser3[j][k];
+									_0x3a83d2 = Board.tableUser3[j][k - 1];
+									_0x34dbca = Board.tableUser3[j][k * 1 + 1];
+									_0x29577e = Board.tableUser3[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser3[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) _0x46b158 = _0x3a83d2 * 1 + 1;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) _0x46b158 = _0x34dbca - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) _0x3a83d2 = _0x46b158 - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) _0x3a83d2 = _0x34dbca - 2;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) _0x34dbca = _0x46b158 * 1 + 1;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) _0x34dbca = _0x3a83d2 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) _0x29577e = _0x46b158 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) _0x29577e = _0x3a83d2 * 1 + 3;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) _0x4935d9 = _0x46b158 - 2;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) _0x4935d9 = _0x3a83d2 - 1;
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 3;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 3;
+									}
+									_0x46b158 = Board.tableUser3[j][k];
+									_0x3a83d2 = Board.tableUser3[j][k - 1];
+									_0x34dbca = Board.tableUser3[j][k * 1 + 1];
+									_0x29577e = Board.tableUser3[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser3[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser3[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 3;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser3[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 3;
+									}
+								}
+								if (Board.tableUser4[j][k] > 0 && _0x49f720 == 0) {
+									_0x46b158 = Board.tableUser4[j][k];
+									_0x3a83d2 = Board.tableUser4[j][k - 1];
+									_0x34dbca = Board.tableUser4[j][k * 1 + 1];
+									_0x29577e = Board.tableUser4[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser4[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x3a83d2) _0x46b158 = _0x3a83d2 * 1 + 1;
+									if (_0x46b158 - _0x46b158 % 100 == 900 && _0x34dbca) _0x46b158 = _0x34dbca - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x46b158) _0x3a83d2 = _0x46b158 - 1;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 900 && _0x34dbca) _0x3a83d2 = _0x34dbca - 2;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x46b158) _0x34dbca = _0x46b158 * 1 + 1;
+									if (_0x34dbca - _0x34dbca % 100 == 900 && _0x3a83d2) _0x34dbca = _0x3a83d2 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x46b158) _0x29577e = _0x46b158 * 1 + 2;
+									if (_0x29577e - _0x29577e % 100 == 900 && _0x3a83d2) _0x29577e = _0x3a83d2 * 1 + 3;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x46b158) _0x4935d9 = _0x46b158 - 2;
+									if (_0x4935d9 - _0x4935d9 % 100 == 900 && _0x3a83d2) _0x4935d9 = _0x3a83d2 - 1;
+									if (_0x46b158 - _0x3a83d2 == 1 && _0x3a83d2 - _0x4935d9 == 1 && _0x34dbca == 0 && _0x1fc99b - _0x46b158 == 1) {
+										_0x2fc30f = k * 1 + 1;
+										_0x49f720 = 4;
+									}
+									if (_0x34dbca - _0x46b158 == 1 && _0x29577e - _0x34dbca == 1 && _0x3a83d2 == 0 && _0x46b158 - _0x1fc99b == 1) {
+										_0x2fc30f = k - 1;
+										_0x49f720 = 4;
+									}
+									_0x46b158 = Board.tableUser4[j][k];
+									_0x3a83d2 = Board.tableUser4[j][k - 1];
+									_0x34dbca = Board.tableUser4[j][k * 1 + 1];
+									_0x29577e = Board.tableUser4[j][k * 1 + 2];
+									_0x4935d9 = Board.tableUser4[j][k - 2];
+									if (_0x46b158 - _0x46b158 % 100 == 800) _0x46b158 = Tiles.okey;
+									if (_0x3a83d2 - _0x3a83d2 % 100 == 800) _0x3a83d2 = Tiles.okey;
+									if (_0x34dbca - _0x34dbca % 100 == 800) _0x34dbca = Tiles.okey;
+									if (_0x29577e - _0x29577e % 100 == 800) _0x29577e = Tiles.okey;
+									if (_0x4935d9 - _0x4935d9 % 100 == 800) _0x4935d9 = Tiles.okey;
+									if (_0x46b158 % 100 == _0x3a83d2 % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser4[j][k - 3] == 0 && (_0x34dbca == 0 || !_0x34dbca) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x3a83d2 && _0x1fc99b != _0x4935d9) {
+										_0x2fc30f = k - 3;
+										_0x49f720 = 4;
+									}
+									if (_0x46b158 % 100 == _0x34dbca % 100 && _0x46b158 % 100 == _0x1fc99b % 100 && Board.tableUser4[j][k * 1 + 3] == 0 && (_0x3a83d2 == 0 || !_0x3a83d2) && _0x1fc99b != _0x46b158 && _0x1fc99b != _0x34dbca && _0x1fc99b != _0x29577e) {
+										_0x2fc30f = k * 1 + 3;
+										_0x49f720 = 4;
+									}
+								}
+								if (_0x49f720 > 0) {
+									if (num == 0) {
+										if (_0x1fc99b == Tiles.okey) _0x1fc99b = Tiles.okey % 100 + 800;
+										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
+										this.popMessage(users[seat] + " seri isledi!");
+										Board.tileLimits[seat]--;
+										if (activePlayer != _0x49f720) {
+											_0x364dc5[_0x49f720] += _0x1fc99b % 100 * 10;
+										}
+										var _0xaf41f9 = activePlayer;
+										activePlayer = seat;
+										this.updateBoard();
+										activePlayer = _0xaf41f9;
+										_0x2bbb42 = 1;
+									} else {
+										Tiles.handleItems.push(Board.tiles[i]);
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			if (_0x2bbb42 == 0 && num == 0) this.putOkeyToTable(seat);
+			if (num == 0) this.markIt(seat);
+			this.checkWin();
+			if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+				if (_0x364dc5[1] > 0) {
+					this.changePoint(_0x364dc5[1], 1, 1);
+					_0x364dc5[1] = 0;
+				}
+				if (_0x364dc5[2] > 0) {
+					this.changePoint(_0x364dc5[2], 2, 1);
+					_0x364dc5[2] = 0;
+				}
+				if (_0x364dc5[3] > 0) {
+					this.changePoint(_0x364dc5[3], 3, 1);
+					_0x364dc5[3] = 0;
+				}
+				if (_0x364dc5[4] > 0) {
+					this.changePoint(_0x364dc5[4], 4, 1);
+					_0x364dc5[4] = 0;
+				}
+			}
+		},
+		getOkeyFromTable(seat, num=0) {
+			Board.getOkeyKont = 0;
+			var _0x108f0b = 0;
+			var _0x495ad6 = [];
+			if (seat == 1) _0x495ad6 = Board.tiles1.slice();
+			if (seat == 2) _0x495ad6 = Board.tiles2.slice();
+			if (seat == 3) _0x495ad6 = Board.tiles3.slice();
+			if (seat == 4) _0x495ad6 = Board.tiles4.slice();
+			var _0x194228 = 0;
+			var _0x3dd017 = 0;
+			var _0x43a6ba = [];
+			var _0x24fcc5 = [1, 2, 3, 4];
+			for (let i=0; i<_0x495ad6.length; i++) {
+				if (_0x495ad6[i]) {
+					if (num == 1 || num == 0) {
+						if (Board.tiles[i] == "000") {
+							_0x495ad6[i] = okey;
+						}
+						for (let j=0; j<7; j++) {
+							for (let k=0; k<13; k++) {
+								_0x194228 = 0;
+								_0x3dd017 = 0;
+								_0x43a6ba = [];
+								if (Board.tableUser1[j][k] - Board.tableUser1[j][k] % 100 == 900) {
+									if (Board.tableUser1[j][k - 1] - Board.tableUser1[j][k - 2] == 1) {
+										_0x194228 = Board.tableUser1[j][k - 1] * 1 + 1;
+									}
+									if (Board.tableUser1[j][k * 1 + 2] - Board.tableUser1[j][k * 1 + 1] == 1) {
+										_0x194228 = Board.tableUser1[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser1[j][k * 1 + 1] - Board.tableUser1[j][k - 1] == 2) {
+										_0x194228 = Board.tableUser1[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser1[j][k] != 0 && _0x495ad6[i] != (Board.tableUser1[j - 1] && Board.tableUser1[j - 2] && Board.tableUser1[j - 3] && Board.tableUser1[j][k * 1 + 1] && Board.tableUser1[j][k * 1 + 2] && Board.tableUser1[j][k * 1 + 3])) {
+										if (Board.tableUser1[j][k * 1 + 1] % 100 == (Board.tableUser1[j][k * 1 + 2] % 100 && Board.tableUser1[j][k * 1 + 3] % 100) && (Board.tableUser1[j][k * 1 + 1] % 100 && Board.tableUser1[j][k * 1 + 2] % 100 && Board.tableUser1[j][k * 1 + 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 3] / 100));
+											let _0x131561 = _0x24fcc5.filter(_0x1a3ffa => !_0x43a6ba.includes(_0x1a3ffa));
+											_0x194228 = _0x131561 * 100 + Board.tableUser1[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser1[j][k - 1] % 100 == (Board.tableUser1[j][k * 1 + 1] % 100 && Board.tableUser1[j][k * 1 + 2] % 100) && (Board.tableUser1[j][k - 1] % 100 && Board.tableUser1[j][k * 1 + 1] % 100 && Board.tableUser1[j][k * 1 + 2] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 2] / 100));
+											let _0x3b764f = _0x24fcc5.filter(_0x4e5b23 => !_0x43a6ba.includes(_0x4e5b23));
+											_0x194228 = _0x3b764f * 100 + Board.tableUser1[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser1[j][k - 1] % 100 == (Board.tableUser1[j][k - 2] % 100 && Board.tableUser1[j][k * 1 + 1] % 100) && (Board.tableUser1[j][k - 1] % 100 && Board.tableUser1[j][k - 2] % 100 && Board.tableUser1[j][k * 1 + 1] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k * 1 + 1] / 100));
+											let _0x5bfb63 = _0x24fcc5.filter(_0x3831c7 => !_0x43a6ba.includes(_0x3831c7));
+											_0x194228 = _0x5bfb63 * 100 + Board.tableUser1[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser1[j][k - 1] % 100 == (Board.tableUser1[j][k - 2] % 100 && Board.tableUser1[j][k - 3] % 100) && (Board.tableUser1[j][k - 1] % 100 && Board.tableUser1[j][k - 2] % 100 && Board.tableUser1[j][k - 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser1[j][k - 3] / 100));
+											let _0x5191b4 = _0x24fcc5.filter(_0x3b90f8 => !_0x43a6ba.includes(_0x3b90f8));
+											_0x194228 = _0x5191b4 * 100 + Board.tableUser1[j][k - 1] % 100;
+										}
+									}
+									_0x3dd017 = 1;
+								}
+								if (Board.tableUser2[j][k] - Board.tableUser2[j][k] % 100 == 900) {
+									if (Board.tableUser2[j][k - 1] - Board.tableUser2[j][k - 2] == 1) {
+										_0x194228 = Board.tableUser2[j][k - 1] * 1 + 1;
+									}
+									if (Board.tableUser2[j][k * 1 + 2] - Board.tableUser2[j][k * 1 + 1] == 1) {
+										_0x194228 = Board.tableUser2[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser2[j][k * 1 + 1] - Board.tableUser2[j][k - 1] == 2) {
+										_0x194228 = Board.tableUser2[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser2[j][k] != 0 && _0x495ad6[i] != (Board.tableUser2[j - 1] && Board.tableUser2[j - 2] && Board.tableUser2[j - 3] && Board.tableUser2[j][k * 1 + 1] && Board.tableUser2[j][k * 1 + 2] && Board.tableUser2[j][k * 1 + 3])) {
+										if (Board.tableUser2[j][k * 1 + 1] % 100 == (Board.tableUser2[j][k * 1 + 2] % 100 && Board.tableUser2[j][k * 1 + 3] % 100) && (Board.tableUser2[j][k * 1 + 1] % 100 && Board.tableUser2[j][k * 1 + 2] % 100 && Board.tableUser2[j][k * 1 + 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 3] / 100));
+											let _0x4cb701 = _0x24fcc5.filter(_0x340063 => !_0x43a6ba.includes(_0x340063));
+											_0x194228 = _0x4cb701 * 100 + Board.tableUser2[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser2[j][k - 1] % 100 == (Board.tableUser2[j][k * 1 + 1] % 100 && Board.tableUser2[j][k * 1 + 2] % 100) && (Board.tableUser2[j][k - 1] % 100 && Board.tableUser2[j][k * 1 + 1] % 100 && Board.tableUser2[j][k * 1 + 2] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 2] / 100));
+											let _0x56af68 = _0x24fcc5.filter(_0x10de9e => !_0x43a6ba.includes(_0x10de9e));
+											_0x194228 = _0x56af68 * 100 + Board.tableUser2[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser2[j][k - 1] % 100 == (Board.tableUser2[j][k - 2] % 100 && Board.tableUser2[j][k * 1 + 1] % 100) && (Board.tableUser2[j][k - 1] % 100 && Board.tableUser2[j][k - 2] % 100 && Board.tableUser2[j][k * 1 + 1] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k * 1 + 1] / 100));
+											let _0x5317c7 = _0x24fcc5.filter(_0x47dc25 => !_0x43a6ba.includes(_0x47dc25));
+											_0x194228 = _0x5317c7 * 100 + Board.tableUser2[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser2[j][k - 1] % 100 == (Board.tableUser2[j][k - 2] % 100 && Board.tableUser2[j][k - 3] % 100) && (Board.tableUser2[j][k - 1] % 100 && Board.tableUser2[j][k - 2] % 100 && Board.tableUser2[j][k - 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser2[j][k - 3] / 100));
+											let _0x17162a = _0x24fcc5.filter(_0x1a5d20 => !_0x43a6ba.includes(_0x1a5d20));
+											_0x194228 = _0x17162a * 100 + Board.tableUser2[j][k - 1] % 100;
+										}
+									}
+									_0x3dd017 = 2;
+								}
+								if (Board.tableUser3[j][k] - Board.tableUser3[j][k] % 100 == 900) {
+									if (Board.tableUser3[j][k - 1] - Board.tableUser3[j][k - 2] == 1) {
+										_0x194228 = Board.tableUser3[j][k - 1] * 1 + 1;
+									}
+									if (Board.tableUser3[j][k * 1 + 2] - Board.tableUser3[j][k * 1 + 1] == 1) {
+										_0x194228 = Board.tableUser3[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser3[j][k * 1 + 1] - Board.tableUser3[j][k - 1] == 2) {
+										_0x194228 = Board.tableUser3[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser3[j][k] != 0 && _0x495ad6[i] != (Board.tableUser3[j - 1] && Board.tableUser3[j - 2] && Board.tableUser3[j - 3] && Board.tableUser3[j][k * 1 + 1] && Board.tableUser3[j][k * 1 + 2] && Board.tableUser3[j][k * 1 + 3])) {
+										if (Board.tableUser3[j][k * 1 + 1] % 100 == (Board.tableUser3[j][k * 1 + 2] % 100 && Board.tableUser3[j][k * 1 + 3] % 100) && (Board.tableUser3[j][k * 1 + 1] % 100 && Board.tableUser3[j][k * 1 + 2] % 100 && Board.tableUser3[j][k * 1 + 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 3] / 100));
+											let _0x16a071 = _0x24fcc5.filter(_0x440e48 => !_0x43a6ba.includes(_0x440e48));
+											_0x194228 = _0x16a071 * 100 + Board.tableUser3[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser3[j][k - 1] % 100 == (Board.tableUser3[j][k * 1 + 1] % 100 && Board.tableUser3[j][k * 1 + 2] % 100) && (Board.tableUser3[j][k - 1] % 100 && Board.tableUser3[j][k * 1 + 1] % 100 && Board.tableUser3[j][k * 1 + 2] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 2] / 100));
+											let _0x939e30 = _0x24fcc5.filter(_0x5725e2 => !_0x43a6ba.includes(_0x5725e2));
+											_0x194228 = _0x939e30 * 100 + Board.tableUser3[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser3[j][k - 1] % 100 == (Board.tableUser3[j][k - 2] % 100 && Board.tableUser3[j][k * 1 + 1] % 100) && (Board.tableUser3[j][k - 1] % 100 && Board.tableUser3[j][k - 2] % 100 && Board.tableUser3[j][k * 1 + 1] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k * 1 + 1] / 100));
+											let _0x21f921 = _0x24fcc5.filter(_0x19b7d7 => !_0x43a6ba.includes(_0x19b7d7));
+											_0x194228 = _0x21f921 * 100 + Board.tableUser3[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser3[j][k - 1] % 100 == (Board.tableUser3[j][k - 2] % 100 && Board.tableUser3[j][k - 3] % 100) && (Board.tableUser3[j][k - 1] % 100 && Board.tableUser3[j][k - 2] % 100 && Board.tableUser3[j][k - 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser3[j][k - 3] / 100));
+											let _0x55d72b = _0x24fcc5.filter(_0x40cdf5 => !_0x43a6ba.includes(_0x40cdf5));
+											_0x194228 = _0x55d72b * 100 + Board.tableUser3[j][k - 1] % 100;
+										}
+									}
+									_0x3dd017 = 3;
+								}
+								if (Board.tableUser4[j][k] - Board.tableUser4[j][k] % 100 == 900) {
+									if (Board.tableUser4[j][k - 1] - Board.tableUser4[j][k - 2] == 1) {
+										_0x194228 = Board.tableUser4[j][k - 1] * 1 + 1;
+									}
+									if (Board.tableUser4[j][k * 1 + 2] - Board.tableUser4[j][k * 1 + 1] == 1) {
+										_0x194228 = Board.tableUser4[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser4[j][k * 1 + 1] - Board.tableUser4[j][k - 1] == 2) {
+										_0x194228 = Board.tableUser4[j][k * 1 + 1] - 1;
+									}
+									if (Board.tableUser4[j][k] != 0 && _0x495ad6[i] != (Board.tableUser4[j - 1] && Board.tableUser4[j - 2] && Board.tableUser4[j - 3] && Board.tableUser4[j][k * 1 + 1] && Board.tableUser4[j][k * 1 + 2] && Board.tableUser4[j][k * 1 + 3])) {
+										if (Board.tableUser4[j][k * 1 + 1] % 100 == (Board.tableUser4[j][k * 1 + 2] % 100 && Board.tableUser4[j][k * 1 + 3] % 100) && (Board.tableUser4[j][k * 1 + 1] % 100 && Board.tableUser4[j][k * 1 + 2] % 100 && Board.tableUser4[j][k * 1 + 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 3] / 100));
+											let _0x55b1ae = _0x24fcc5.filter(_0x43b955 => !_0x43a6ba.includes(_0x43b955));
+											_0x194228 = _0x55b1ae * 100 + Board.tableUser4[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser4[j][k - 1] % 100 == (Board.tableUser4[j][k * 1 + 1] % 100 && Board.tableUser4[j][k * 1 + 2] % 100) && (Board.tableUser4[j][k - 1] % 100 && Board.tableUser4[j][k * 1 + 1] % 100 && Board.tableUser4[j][k * 1 + 2] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 2] / 100));
+											let _0x2bf494 = _0x24fcc5.filter(_0x375208 => !_0x43a6ba.includes(_0x375208));
+											_0x194228 = _0x2bf494 * 100 + Board.tableUser4[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser4[j][k - 1] % 100 == (Board.tableUser4[j][k - 2] % 100 && Board.tableUser4[j][k * 1 + 1] % 100) && (Board.tableUser4[j][k - 1] % 100 && Board.tableUser4[j][k - 2] % 100 && Board.tableUser4[j][k * 1 + 1] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k * 1 + 1] / 100));
+											let _0x4247b3 = _0x24fcc5.filter(_0x3efb35 => !_0x43a6ba.includes(_0x3efb35));
+											_0x194228 = _0x4247b3 * 100 + Board.tableUser4[j][k * 1 + 1] % 100;
+										}
+										if (Board.tableUser4[j][k - 1] % 100 == (Board.tableUser4[j][k - 2] % 100 && Board.tableUser4[j][k - 3] % 100) && (Board.tableUser4[j][k - 1] % 100 && Board.tableUser4[j][k - 2] % 100 && Board.tableUser4[j][k - 3] % 100) != 0) {
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 1] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 2] / 100));
+											_0x43a6ba.push(Math.floor(Board.tableUser4[j][k - 3] / 100));
+											let _0x5b9599 = _0x24fcc5.filter(_0x2720e2 => !_0x43a6ba.includes(_0x2720e2));
+											_0x194228 = _0x5b9599 * 100 + Board.tableUser4[j][k - 1] % 100;
+										}
+									}
+									_0x3dd017 = 4;
+								}
+								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
+									if (Tiles.markCont == 0) {
+										if (Board.tiles[i] == "000") {
+											Board.tiles[i] = okey % 100 + 800;
+										}
+										Board.getOkeyKont = 1;
+										this.moveToTable(_0x3dd017, Board.tiles[i], k, j, 1);
+										Board.getOkeyKont = 0;
+										if (markOkey == 1) {
+											// $(boardPlaces[i * 1 + 1]).children[0].style.display = "none";
+										}
+										// $(boardPlaces[i * 1 + 1]).classList.remove(color[1]);
+										// $(boardPlaces[i * 1 + 1]).classList.remove(color[2]);
+										// $(boardPlaces[i * 1 + 1]).classList.remove(color[3]);
+										// $(boardPlaces[i * 1 + 1]).classList.remove(color[4]);
+										// $(boardPlaces[i * 1 + 1]).classList.add(color[Math.floor(okey / 100)]);
+										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = okey % 100;
+										Board.tiles[i] = okey;
+										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
+										_0x1b0a1e = _0x1b0a1e[1] - 1;
+										data[_0x1b0a1e] = okey;
+										var _0x559c6d = activePlayer;
+										activePlayer = seat;
+										update_boards();
+										activePlayer = _0x559c6d;
+										_0x108f0b = 1;
+										popMessage(users[activePlayer] + " yerden okey aldi!");
+									} else {
+										Tiles.handleItems.push(Board.tiles[i]);
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
+									}
+								}
+							}
+						}
+					}
+					if (num == 2 || num == 0) {
+						if (Board.tiles[i] == "000") {
+							_0x495ad6[i] = okey % 100 + 800;
+						}
+						for (let j=0; j<14; j++) {
+							for (let k=0; k<2; k++) {
+								Board.tableDoubleUser1[j][k];
+								_0x194228 = 0;
+								_0x3dd017 = 0;
+								if (Board.tableDoubleUser1[j][k] - Board.tableDoubleUser1[j][k] % 100 == 900) {
+									if (k == 0) _0x194228 = Board.tableDoubleUser1[j][k * 1 + 1];
+									if (k == 1) _0x194228 = Board.tableDoubleUser1[j][k - 1];
+									_0x3dd017 = 1;
+								}
+								if (Board.tableDoubleUser2[j][k] - Board.tableDoubleUser2[j][k] % 100 == 900) {
+									if (k == 0) _0x194228 = Board.tableDoubleUser2[j][k * 1 + 1];
+									if (k == 1) _0x194228 = Board.tableDoubleUser2[j][k - 1];
+									_0x3dd017 = 2;
+								}
+								if (Board.tableDoubleUser3[j][k] - Board.tableDoubleUser3[j][k] % 100 == 900) {
+									if (k == 0) _0x194228 = Board.tableDoubleUser3[j][k * 1 + 1];
+									if (k == 1) _0x194228 = Board.tableDoubleUser3[j][k - 1];
+									_0x3dd017 = 3;
+								}
+								if (Board.tableDoubleUser4[j][k] - Board.tableDoubleUser4[j][k] % 100 == 900) {
+									if (k == 0) _0x194228 = Board.tableDoubleUser4[j][k * 1 + 1];
+									if (k == 1) _0x194228 = Board.tableDoubleUser4[j][k - 1];
+									_0x3dd017 = 4;
+								}
+								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
+									if (Tiles.markCont == 0) {
+										if (Board.tiles[i] == "000") {
+											Board.tiles[i] = okey % 100 + 800;
+										}
+										this.popMessage("yerden okey aliniyor!");
+										Board.getOkeyKont = 1;
+										this.moveToTable(_0x3dd017, _0x495ad6[i], k, j, 2);
+										Board.getOkeyKont = 0;
+										if (markOkey == 1) {
+											// $(boardPlaces[i * 1 + 1]).children[0].style.display = 'none';
+										}
+										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = okey % 100;
+										Board.tiles[i] = okey;
+										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
+										_0x1b0a1e = _0x1b0a1e[1] - 1;
+										data[_0x1b0a1e] = okey;
+										var _0x559c6d = activePlayer;
+										activePlayer = seat;
+										this.update_boards();
+										activePlayer = _0x559c6d;
+										_0x108f0b = 1;
+									} else {
+										Tiles.handleItems.push(Board.tiles[i]);
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
+										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return _0x108f0b;
+		},
+		moveToTable(seat, _0x315c85, _0x5f22f9, _0x4693ec, _0x14df73, _0x5486c5) {
+			var _0x2a961e = String(_0x315c85);
+			var _0x4295dd;
+			let stone = parseInt(_0x2a961e.substr(1, 2));
+			let color1 = _0x2a961e.substr(0, 1);
+			var _0xf1fecf = Board.tiles.findIndex(e => e.value == String(_0x315c85));
+			var _0x5b13d2 = 0;
+			if (_0x315c85 - _0x315c85 % 100 == 900) {
+				_0xf1fecf = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
+			}
+			if (_0x315c85 - _0x315c85 % 100 == 800) {
+				_0xf1fecf = Board.tiles.findIndex(e => e.value == "000");
+				_0x5b13d2 = 1;
+			}
+			if (Board.getOkeyKont == 0) {
+				// _0x4295dd = boardPlaces[_0xf1fecf * 1 + 1];
+				// boardPlaces[_0xf1fecf * 1 + 1] = 0;
+				Board.tiles[_0xf1fecf] = '';
+			}
+			if (_0x5486c5) {
+				Board.sayTableTilesTemp = Board.sayTableTiles;
+				Board.sayTableTiles = _0x5486c5;
+				_0x4295dd = 0;
+			} else {
+				Board.sayTableTiles++;
+			}
+			if (_0x315c85 == Board.leftHandCont || Board.leftHandCont == "000" && _0x5b13d2 == 1) {
+				var _0x57b199 = Board.leftHandCont % 100;
+				_0x57b199 = _0x57b199 * 10;
+				Board.leftHandContTemp = Board.leftHandCont;
+				Board.leftHandTileTemp = Board.leftHandTile;
+				Board.leftHandCont = 0;
+				Board.leftHandTile = 0;
+				if (activePlayer == 1) {
+					if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+						this.changePoint(_0x57b199, 4, 1);
+					}
+					// $("area-4").innerHTML = '';
+					// $("area-4").classList.remove("drop");
+				}
+			}
+			
+			let diff = 0;
+			var tileW = 1;
+			var tileH = 1;
+			var _0x383df0 = tileW * 0.54;
+			var _0x3af68e = tileH * 0.54;
+			var _0x2378b2 = _0x383df0 * 0.04;
+			var _0x29cbcd = _0x3af68e * 0.04;
+			if (Board.stone == Board.lastStone) {
+				if (Board.stone > 10 && _0x14df73 == 1) {
+					diff--;
+				} else {
+					diff++;
+				}
+			}
+			var _0x51fce2;
+			var _0x5a1841;
+			if (_0x14df73 == 1) {
+				_0x51fce2 = Board.stone - 1 + diff * 1;
+				_0x5a1841 = Board.tableH[seat];
+			}
+			if (_0x14df73 == 2) {
+				_0x51fce2 = diff * 1;
+				_0x5a1841 = Board.tableHdouble[seat];
+			}
+			if (_0x5f22f9 > -1) {
+				_0x51fce2 = _0x5f22f9;
+			}
+			if (_0x4693ec > -1) {
+				_0x5a1841 = _0x4693ec;
+			}
+			if (seat == 1) {
+				if (_0x14df73 == 1) {
+					Board.tableUser1[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableUserTiles1[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					Board.tableDoubleUser1[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableDoubleUserTiles1[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+			}
+			if (seat == 2) {
+				if (_0x14df73 == 1) {
+					Board.tableUser2[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableUserTiles2[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					Board.tableDoubleUser2[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableDoubleUserTiles2[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+			}
+			if (seat == 3) {
+				if (_0x14df73 == 1) {
+					Board.tableUser3[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableUserTiles3[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					Board.tableDoubleUser3[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableDoubleUserTiles3[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+			}
+			if (seat == 4) {
+				if (_0x14df73 == 1) {
+					Board.tableUser4[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableUserTiles4[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+				if (_0x14df73 == 2) {
+					Board.tableDoubleUser4[_0x5a1841][_0x51fce2] = _0x315c85;
+					Board.tableDoubleUserTiles4[_0x5a1841][_0x51fce2] = Board.sayTableTiles;
+				}
+			}
+			if (Board.getOkeyKont == 0) {
+				if (!_0x5486c5) {
+					Board.collect.push(seat + ',' + "tile-mini2-" + Board.sayTableTiles + ',' + _0x5a1841 + ',' + _0x51fce2 + ',' + _0x14df73);
+					if (activePlayer == 1) {
+						this.buttonActivePassive("collect", 1);
+					}
+				}
+				// this.moveTile(_0x4295dd, seat, _0x383df0 * 0.7 * _0x5a1841, _0x383df0 * 0.49 * _0x51fce2, _0x14df73, "tile-mini2-" + Board.sayTableTiles);
+			}
+			var _0x4d23cf = null;
+			if (_0x315c85 - _0x315c85 % 100 == 800) {
+				_0x4d23cf = Board.stone;
+				Board.stone = 'R';
+				Board.color1 = 0;
+			}
+			var _0x469b85;
+			if (_0x14df73 == 1) {
+				_0x469b85 = "sort";
+			}
+			if (_0x14df73 == 2) {
+				_0x469b85 = "double";
+			}
+			if (!_0x5486c5) {
+				// $("user" + seat + "-table-" + _0x469b85).innerHTML += "<div id=\"tile-mini2-" + sayTableTiles + "\" class=\"tile " + color[color1] + "\">" + sayTableTiles + "</div>";
+			}
+			// $("tile-mini2-" + sayTableTiles).style.left = _0x2378b2 * 1 + _0x383df0 * 0.49 * _0x51fce2 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.top = _0x29cbcd * 1 + _0x383df0 * 0.7 * _0x5a1841 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.width = _0x383df0 * 0.45 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.height = _0x3af68e * 0.45 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.lineHeight = _0x3af68e * 0.28 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.fontSize = _0x383df0 * 0.35 + 'px';
+			// $("tile-mini2-" + sayTableTiles).style.borderRadius = _0x383df0 * 0.05 + 'px';
+			;
+			if (Board.getOkeyKont == 0) {
+				// $("tile-mini2-" + sayTableTiles).style.visibility = "hidden";
+			}
+			// $("tile-mini2-" + sayTableTiles).innerHTML = "<div id='face-mini2-" + sayTableTiles + "' style='display:block'><div class='point2-mini'>" + "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart2-mini\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>" + "</div><div id='Letter-mini2-" + j + '-' + i + "'>" + stone + "</div></div>";
+			if (_0x315c85 - _0x315c85 % 100 == 900) {
+				// $("face-mini2-" + sayTableTiles).style.display = "none";
+			}
+			if (_0x4d23cf) {
+				Board.stone = _0x4d23cf;
+			}
+			Board.lastStone = Board.stone;
+			if (_0x5486c5) {
+				Board.sayTableTiles = Board.sayTableTilesTemp;
+			}
+		},
+
 	};
 
 	return { Engine, Board, Tiles, AI };

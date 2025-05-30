@@ -132,6 +132,7 @@ let state = {
 		player: [
 			{ seat: 1, name: "Hakan",
 				discard: [
+					{ uid: 10, value: "201" },
 				],
 				rack: [
 					{ uid: 16, value: "211" },
@@ -147,7 +148,6 @@ let state = {
 					{ uid: 15, value: "304" },
 					{ uid: 6, value: "306" },
 					{ uid: 21, value: "104" },
-					{ uid: 10, value: "201" },
 					{ uid: 18, value: "403" },
 					{ uid: 1, value: "405" },
 					{ uid: 22, value: "209" },
