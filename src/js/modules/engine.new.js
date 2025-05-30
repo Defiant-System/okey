@@ -757,7 +757,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					// UI update
 					APP.game.dispatch({ type: "user-initial-meld", seat, total: Board.UserTotal });
 
-					console.log(seat + " seri acti: " + UserTotal);
+					console.log(seat + " seri acti: " + Board.UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;
 						openLimit = Board.UserTotal * 1 + 1;
@@ -852,6 +852,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";
+			console.log( setTiles );
 			return APP.game.dispatch({ type, from: seat, setTiles });
 		},
 		markIt(seat) {

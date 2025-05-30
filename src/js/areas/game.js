@@ -148,7 +148,7 @@
 					setTimeout(() => {
 						pEl.cssSequence("dealing", "transitionend", el => {
 							el.removeClass("dealing").find(".tile.deal").remove();
-							resolve();
+							setTimeout(() => resolve(), 500);
 						});
 					}, 100);
 				});
@@ -181,7 +181,7 @@
 								// update style + clean up css properties
 								tile.css({ top, left, "--tY": "", "--tX": "", "--sY": "", "--sX": "" });
 							});
-							resolve();
+							setTimeout(() => resolve(), 500);
 						});
 					}, 100);
 				});
@@ -225,22 +225,26 @@
 				let eventTile = Tiles.parse(event.tile.value);
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("discard-tile");
 				el = pEl.find(".tile").removeClass("blank").addClass(eventTile.clr).data({ v: eventTile.num });
-				setTimeout(() => {
-					pEl.cssSequence("discard-anim", "transitionend", elem => {
-						elem.removeClass("discard-tile discard-anim");
-						// insert tile into discard hole
-						let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
-						// reset original tile
-						el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
+				return new Promise(resolve => {
+					setTimeout(() => {
+						pEl.cssSequence("discard-anim", "transitionend", elem => {
+							elem.removeClass("discard-tile discard-anim");
+							// insert tile into discard hole
+							let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
+							// reset original tile
+							el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
 
-						if (event.seat === 4) {
-							// make last tile draggable
-							clone.addClass("draggable");
-							// make tile stack draggable
-							Self.els.common.info.find(".left .tile").addClass("draggable");
-						}
-					});
-				}, 10);
+							if (event.seat === 4) {
+								// make last tile draggable
+								clone.addClass("draggable");
+								// make tile stack draggable
+								Self.els.common.info.find(".left .tile").addClass("draggable");
+							}
+
+							setTimeout(() => resolve(), 500);
+						});
+					}, 10);
+				});
 				break;
 			case "get-discarded-tile":
 				el = Self.els.discard[`player${event.from}`].find(".tile").get(0);
@@ -319,7 +323,7 @@
 					setTimeout(() =>
 						Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
 							el.removeClass("anim-start anim-end").css({ "--aT": "" });
-							resolve();
+							setTimeout(() => resolve(), 500);
 						}), 100);
 				});
 				break;
@@ -356,7 +360,7 @@
 					setTimeout(() =>
 						Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
 							el.removeClass("anim-start anim-end").css({ "--aT": "" });
-							resolve();
+							setTimeout(() => resolve(), 500);
 						}), 100);
 				});
 				break;

@@ -5,19 +5,19 @@ let AI = {
 	},
 	async think(seat) {
 		// move tile data to Board primary
-		Engine.getRack(activePlayer);
+		Engine.getRack(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
+		// console.log(seat, aiTiles.map(e => e ? e.value : e));
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
 			await this.makeMove(seat);
 		} else {
 			this.evalDiscarded(seat);
-
 			// if (seat === 3) return;
-			// return console.log("AI again");
 
-			// clearTimeout(Engine.timerAI);
-
+			// clear time out
+			clearTimeout(Engine.timerAI);
+			// set time out
 			Engine.timerAI = setTimeout(() => {
 				if (Engine._gameOver == 1) return 0;
 				Engine.arrange(seat);
@@ -101,13 +101,13 @@ let AI = {
 		// console.log(selectedTile);
 		// let index = boardPlaces.indexOf(selectedTile),
 		// 	tile = Board.tiles[index - 1];
-		APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
-
-		// Engine.checkThrow();
-		Engine.arrange(seat);
-		Engine.markIt(1);
+		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
 
 		activePlayer = (activePlayer + 1) % 4;
+
+		Engine.checkThrow();
+		Engine.arrange(seat);
+		Engine.markIt(1);
 
 		if (Engine._gameOver == 1 && tilesLeft.length > 0) {
 			if (settingsType == 1) Engine.gameOver(1);
@@ -115,8 +115,8 @@ let AI = {
 			return 0;
 		}
 
-		// stop timeout
-		Engine._gameOver = 1;
+		// // stop timeout
+		// Engine._gameOver = 1;
 	},
 	evalDiscarded(seat) {
 		var discard;
@@ -126,7 +126,7 @@ let AI = {
 		if (seat == 4) discard = 3;
 
 		if (Engine.checkLeft(discard) == 1) {
-			var _0x54fe2a = Board.tiles.lastIndexOf("") * 1 + 1;
+			var slot = Board.tiles.lastIndexOf("") * 1 + 1;
 			if (seat == 1) {
 				var _0x727da6 = area4items[area4items.length - 1].split('-');
 				_0x727da6 = data[_0x727da6[1] - 1] % 100;
@@ -134,7 +134,7 @@ let AI = {
 				if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
 					Engine.changePoint(_0x727da6, 4, 1);
 				}
-				Engine.place(area4items[area4items.length - 1], _0x54fe2a);
+				Engine.place(area4items[area4items.length - 1], slot);
 				area4items = Tiles.removeArrayItem(area4items, area4items[area4items.length - 1]);
 			}
 			if (seat == 2) {
@@ -147,7 +147,7 @@ let AI = {
 				// smooth animation
 				APP.game.dispatch({ type: "get-discarded-tile", seat, from: 1 });
 
-				Engine.place(area1items[area1items.length - 1], _0x54fe2a);
+				Engine.place(area1items[area1items.length - 1], slot);
 				area1items = Tiles.removeArrayItem(area1items, area1items[area1items.length - 1]);
 			}
 			if (seat == 3) {
@@ -160,7 +160,7 @@ let AI = {
 				// smooth animation
 				APP.game.dispatch({ type: "get-discarded-tile", seat, from: 2 });
 
-				Engine.place(area2items[area2items.length - 1], _0x54fe2a);
+				Engine.place(area2items[area2items.length - 1], slot);
 				area2items = Tiles.removeArrayItem(area2items, area2items[area2items.length - 1]);
 			}
 			if (seat == 4) {
@@ -173,7 +173,7 @@ let AI = {
 				// smooth animation
 				APP.game.dispatch({ type: "get-discarded-tile", seat, from: 3 });
 
-				Engine.place(area3items[area3items.length - 1], _0x54fe2a);
+				Engine.place(area3items[area3items.length - 1], slot);
 				area3items = Tiles.removeArrayItem(area3items, area3items[area3items.length - 1]);
 			}
 		} else {
