@@ -54,7 +54,6 @@ let AI = {
 				Engine.arrange(seat, 2);
 			}
 			if (aiTiles.length > 1) {
-			console.log("putToTable");
 				// opens
 				await Engine.putToTable(seat, 1);
 			}
@@ -73,7 +72,9 @@ let AI = {
 			}
 			Engine.markIt(seat);
 		}
-		Engine.arrange(seat);
+		console.log(5, Board.tiles.slice().map(e => e ? e.value : e));
+		Engine.arrange(seat, 1, 77);
+		// console.log(2222, Board.tiles.slice().map(e => e ? e.value : e));
 
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
@@ -99,7 +100,7 @@ let AI = {
 		// 	console.log("tas bitti - 1");
 		// }
 
-		console.log(selectedTile);
+		// console.log(selectedTile);
 		// let index = boardPlaces.indexOf(selectedTile),
 		// 	tile = Board.tiles[index - 1];
 		APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });

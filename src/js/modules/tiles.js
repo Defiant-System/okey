@@ -171,8 +171,9 @@ let Tiles = {
 		}
 		return arr;
 	},
-	sortTiles(num, sort) {
-		Board.virtualTiles = Board.tiles.slice().sort((a, b) => a.value - b.value);
+	sortTiles(num, sort, arr) {
+		if (arr) Board.tiles = arr;
+		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
 		Board.tiles.sort((a, b) => a.value - b.value);
 		let asc = [];
 		let sorted = [];
@@ -204,7 +205,6 @@ let Tiles = {
 				asc.push(Board.virtualTiles[i]);
 			}
 			if (asc.length == num || value2 == 2) {
-				// console.log(4444, num, sort, asc.slice().map(e => e ? e.value : ""));
 				if (asc.length == num) {
 					if (asc[0].value == max.value) {
 						max = { value: "999" };
@@ -231,7 +231,7 @@ let Tiles = {
 		if (sort == 1) return sorted;
 	},
 	sortTilesByColor(num, type) {
-		Board.virtualTiles = Board.tiles.slice().sort((a, b) => a.value - b.value);
+		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
 		Board.virtualTiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];

@@ -12,6 +12,14 @@ let Test = {
 		// console.log( Tiles.sortDouble(0, 1).map(e => e ? e.value : "") );
 		// return;
 
+
+		// let tmp = ['303', '303', '', '404', '404', '', '407', '407', '', '112', '112', '', '', '', '', '', '', '', '105', '201', '202', '203', '208', '209', '301', '304', '305', '310', '311', '402', '409', '410'],
+		// 	arr = tmp.map(e => {
+		// 		if (e) return { value: e };
+		// 		else return e;
+		// 	});
+		// return console.log( Tiles.sortTiles(3, 1, arr) );
+
 		APP.game.dispatch({ type: "restore-state", state });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		

@@ -161,7 +161,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					break;
 			}
 		},
-		arrange(seat, type=1) {
+		arrange(seat, type=1, arr) {
 			this.getRack(seat);
 
 			let arr1 = [];
@@ -201,7 +201,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
+					// if (arr == 77) console.log(Board.tiles.slice().map(e => e ? e.value : e));
 					arr1 = Tiles.sortTiles(3, 1);
+					if (arr == 77) console.log(21, arr1.slice().map(e => e ? e.value : e));
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 					arr1 = Tiles.sortTilesByColor(3, 1);
@@ -296,6 +298,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
+			// console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 
 			this.updateBoard();
 
@@ -702,17 +705,16 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				return 0;
 			}
-			// console.log(seat, UserTotal, sortType);
 
-			var _0x488971 = Board.UserSeri.filter(e => e != '').slice();
-			var _0x5869f9 = Board.tiles.filter(e => e != '').slice();
-			if (_0x5869f9.length <= Board.tileLimits[seat]) {
+			var seriTiles = Board.UserSeri.filter(e => !!e).slice();
+			var boardTiles = Board.tiles.filter(e => !!e).slice();
+			if (boardTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
 					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
-			if (_0x488971.length > Tiles.tileLimit) {
+			if (seriTiles.length > Tiles.tileLimit) {
 				this.popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
 			}
 			if (sortType == 1 && openStatusDouble[seat] == 1) {
@@ -737,7 +739,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					return 0;
 				}
 			}
-			console.log( Board.UserTotalDouble , openLimitDouble, openStatusDouble[seat], Board.handleDouble );
 			if (sortType == 2 && Board.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
 					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
@@ -863,13 +864,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkHandleDouble(seat) {
 			// if (activePlayer == 1 && true) {}
-			if (seat == 1) {
-				if (this.getOkeyFromTable(1, 2)) {
-					return 0;
-				}
-			}
-			var _0x460cd2 = Board.tiles.filter(e => !!e).slice();
-			if (_0x460cd2.length <= Board.tileLimits[seat]) {
+			if (seat == 1 && this.getOkeyFromTable(1, 2)) return 0;
+			
+			var bTiles = Board.tiles.filter(e => !!e).slice();
+			if (bTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
 					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
@@ -881,8 +879,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 				return 0;
 			}
-			var _0x1d32ab = Board.tiles.filter(e => e != '').slice();
-			if (_0x1d32ab.length < 3) {
+			bTiles = Board.tiles.filter(e => !!e).slice();
+			if (bTiles.length < 3) {
 				this.markIt(seat);
 				return 0;
 			}
@@ -898,34 +896,34 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		checkHandle(seat, num=0) {
-			var _0x3c5f2e = [];
+			// var _0x3c5f2e = [];
 			Tiles.handleItems = [];
 			if (seat == 1) {
 				Board.tiles = Board.tiles1.slice();
 				// boardPlaces = boardPlaces1.slice();
-				_0x3c5f2e = Board.User1Seri.slice();
+				// _0x3c5f2e = Board.User1Seri.slice();
 				Board.UserTotal = Board.User1Total;
 			}
 			if (seat == 2) {
 				Board.tiles = Board.tiles2.slice();
 				// boardPlaces = boardPlaces2.slice();
-				_0x3c5f2e = Board.User2Seri.slice();
+				// _0x3c5f2e = Board.User2Seri.slice();
 				Board.UserTotal = Board.User2Total;
 			}
 			if (seat == 3) {
 				Board.tiles = Board.tiles3.slice();
 				// boardPlaces = boardPlaces3.slice();
-				_0x3c5f2e = Board.User3Seri.slice();
+				// _0x3c5f2e = Board.User3Seri.slice();
 				Board.UserTotal = Board.User3Total;
 			}
 			if (seat == 4) {
 				Board.tiles = Board.tiles4.slice();
 				// boardPlaces = boardPlaces4.slice();
-				_0x3c5f2e = User4Seri.slice();
+				// _0x3c5f2e = User4Seri.slice();
 				Board.UserTotal = Board.User4Total;
 			}
-			var _0x1fc99b = Board.tiles.filter(e => e != '').slice();
-			if (_0x1fc99b.length <= Board.tileLimits[seat] && num == 0) {
+			var bTiles = Board.tiles.filter(e => !!e).slice();
+			if (bTiles.length <= Board.tileLimits[seat] && num == 0) {
 				if (seat == 1 && Tiles.markCont == 0) {
 					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
