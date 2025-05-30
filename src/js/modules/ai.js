@@ -72,9 +72,7 @@ let AI = {
 			}
 			Engine.markIt(seat);
 		}
-		console.log(5, Board.tiles.slice().map(e => e ? e.value : e));
-		Engine.arrange(seat, 1, 77);
-		// console.log(2222, Board.tiles.slice().map(e => e ? e.value : e));
+		Engine.arrange(seat);
 
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];

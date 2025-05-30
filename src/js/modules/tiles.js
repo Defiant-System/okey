@@ -162,7 +162,7 @@ let Tiles = {
 	},
 	removeArrayItem(arr, item, fromEnd) {
 		let index;
-		let fn = typeof item === "string" ? e => e.value == item : e => e == item;
+		let fn = typeof item === "string" ? e => e.value == item : e => e.value == item.value;
 		if (fromEnd != 1) index = arr.findIndex(fn);
 		if (fromEnd == 1) index = arr.findLastIndex(fn);
 		if (index > -1) {
@@ -230,8 +230,9 @@ let Tiles = {
 		}
 		if (sort == 1) return sorted;
 	},
-	sortTilesByColor(num, type) {
-		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
+	sortTilesByColor(num, type, arr) {
+		if (arr) Board.tiles = arr.slice();
+		Board.virtualTiles = Board.tiles.slice().sort();
 		Board.virtualTiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
@@ -269,7 +270,6 @@ let Tiles = {
 	},
 	sortDouble(seat, asc) {
 		Board.virtualTiles = Board.tiles.slice().filter(e => e !== "").sort((a, b) => a.value - b.value);
-		// console.log(seat, asc, Board.virtualTiles.slice().map(e => e ? e.value : e));
 		Board.virtualTiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];
@@ -622,6 +622,7 @@ let Tiles = {
 	},
 	priority() {
 		// Board.tiles.sort();
+		Board.tiles.sort();
 		Board.tiles.sort((a, b) => a.value - b.value);
 		Board.virtualTiles = Board.tiles.slice();
 		for (let i=1; i<Board.tiles.length; i++) {

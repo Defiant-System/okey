@@ -12,13 +12,24 @@ let Test = {
 		// console.log( Tiles.sortDouble(0, 1).map(e => e ? e.value : "") );
 		// return;
 
+		// let vt = [{value: "301"}, {value: "402"}, {value: "404"}, {value: "303"}, {value: "105"}, {value: "112"}, {value: "112"}, {value: "404"}, {value: "407"}, {value: "407"}];
+		// let tile = {value: '407'};
+
+		// console.log(1, vt.map(e => e ? e.value : e));
+		// vt = Tiles.removeArrayItem(vt, tile);
+		// // vt.unshift(tile);
+		// console.log(2, vt.map(e => e ? e.value : e));
+		// return;
+
+
+		// Tiles.okey = "213";
 
 		// let tmp = ['303', '303', '', '404', '404', '', '407', '407', '', '112', '112', '', '', '', '', '', '', '', '105', '201', '202', '203', '208', '209', '301', '304', '305', '310', '311', '402', '409', '410'],
 		// 	arr = tmp.map(e => {
 		// 		if (e) return { value: e };
 		// 		else return e;
 		// 	});
-		// return console.log( Tiles.sortTiles(3, 1, arr) );
+		// return Engine.arrange(2, 1, arr);
 
 		APP.game.dispatch({ type: "restore-state", state });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });

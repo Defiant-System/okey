@@ -163,6 +163,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		arrange(seat, type=1, arr) {
 			this.getRack(seat);
+			// if (arr) Board.tiles = arr.slice();
 
 			let arr1 = [];
 			let arr2 = [];
@@ -174,7 +175,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			okeyCont = 0;
 			if (activePlayer == 1) min = 1;
 
-			// back value of "replacement"
+			// backup value of "replacement"
 			Board.tiles.map(tile => (tile.value === "000") ? tile._value = tile.value : void(0));
 			
 			if (settingsGameLevel > 1 || min == 1) {
@@ -201,9 +202,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
-					// if (arr == 77) console.log(Board.tiles.slice().map(e => e ? e.value : e));
 					arr1 = Tiles.sortTiles(3, 1);
-					if (arr == 77) console.log(21, arr1.slice().map(e => e ? e.value : e));
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 					arr1 = Tiles.sortTilesByColor(3, 1);
@@ -298,7 +297,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			// console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 
 			this.updateBoard();
 
