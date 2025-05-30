@@ -852,7 +852,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";
-			console.log( setTiles );
 			return APP.game.dispatch({ type, from: seat, setTiles });
 		},
 		markIt(seat) {
@@ -1427,7 +1426,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										data[_0x1b0a1e] = okey;
 										var _0x559c6d = activePlayer;
 										activePlayer = seat;
-										update_boards();
+										this.updateBoard();
 										activePlayer = _0x559c6d;
 										_0x108f0b = 1;
 										popMessage(users[activePlayer] + " yerden okey aldi!");
@@ -1488,7 +1487,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										data[_0x1b0a1e] = okey;
 										var _0x559c6d = activePlayer;
 										activePlayer = seat;
-										this.update_boards();
+										this.updateBoard();
 										activePlayer = _0x559c6d;
 										_0x108f0b = 1;
 									} else {
@@ -1664,7 +1663,148 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.sayTableTiles = Board.sayTableTilesTemp;
 			}
 		},
-
+		putOkeyToTable(seat) {
+			let oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
+			if (oI == -1) return 0;
+			
+			var _0xecd2ba;
+			var _0x2f62c4;
+			var _0x3b82ff = 0;
+			for (let k=12; k>=0; k--) {
+				for (let j=0; j<7; j++) {
+					_0xecd2ba = j;
+					_0x2f62c4 = k;
+					if (Board.tableUser1[j][k] == 0 && Board.tableUser1[j][k - 1] && Board.tableUser1[j][k - 1] % 100 - Board.tableUser1[j][k - 2] % 100 == 1) {
+						_0x3b82ff = Board.tableUser1[j][k - 1] % 100 + 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser1[j][k] == 0 && Board.tableUser1[j][k * 1 + 1] && Board.tableUser1[j][k * 1 + 2] % 100 - Board.tableUser1[j][k * 1 + 1] % 100 == 1) {
+						_0x3b82ff = Board.tableUser1[j][k * 1 + 1] % 100 - 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser1[j][k] == 0 && Board.tableUser1[j][k - 4] == 0 && Board.tableUser1[j][k - 1] && Board.tableUser1[j][k - 1] % 100 == Board.tableUser1[j][k - 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser1[j][k - 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser1[j][k] == 0 && Board.tableUser1[j][k * 1 + 4] == 0 && Board.tableUser1[j][k * 1 + 1] && Board.tableUser1[j][k * 1 + 1] % 100 == Board.tableUser1[j][k * 1 + 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser1[j][k * 1 + 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser2[j][k] == 0 && Board.tableUser2[j][k - 1] && Board.tableUser2[j][k - 1] % 100 - Board.tableUser2[j][k - 2] % 100 == 1) {
+						_0x3b82ff = Board.tableUser2[j][k - 1] % 100 + 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser2[j][k] == 0 && Board.tableUser2[j][k * 1 + 1] && Board.tableUser2[j][k * 1 + 2] % 100 - Board.tableUser2[j][k * 1 + 1] % 100 == 1) {
+						_0x3b82ff = Board.tableUser2[j][k * 1 + 1] % 100 - 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser2[j][k] == 0 && Board.tableUser2[j][k - 4] == 0 && Board.tableUser2[j][k - 1] && Board.tableUser2[j][k - 1] % 100 == Board.tableUser2[j][k - 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser2[j][k - 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser2[j][k] == 0 && Board.tableUser2[j][k * 1 + 4] == 0 && Board.tableUser2[j][k * 1 + 1] && Board.tableUser2[j][k * 1 + 1] % 100 == Board.tableUser2[j][k * 1 + 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser2[j][k * 1 + 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser3[j][k] == 0 && Board.tableUser3[j][k - 1] && Board.tableUser3[j][k - 1] % 100 - Board.tableUser3[j][k - 2] % 100 == 1) {
+						_0x3b82ff = Board.tableUser3[j][k - 1] % 100 + 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser3[j][k] == 0 && Board.tableUser3[j][k * 1 + 1] && Board.tableUser3[j][k * 1 + 2] % 100 - Board.tableUser3[j][k * 1 + 1] % 100 == 1) {
+						_0x3b82ff = Board.tableUser3[j][k * 1 + 1] % 100 - 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser3[j][k] == 0 && Board.tableUser3[j][k - 4] == 0 && Board.tableUser3[j][k - 1] && Board.tableUser3[j][k - 1] % 100 == Board.tableUser3[j][k - 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser3[j][k - 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser3[j][k] == 0 && Board.tableUser3[j][k * 1 + 4] == 0 && Board.tableUser3[j][k * 1 + 1] && Board.tableUser3[j][k * 1 + 1] % 100 == Board.tableUser3[j][k * 1 + 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser3[j][k * 1 + 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser4[j][k] == 0 && Board.tableUser4[j][k - 1] && Board.tableUser4[j][k - 1] % 100 - Board.tableUser4[j][k - 2] % 100 == 1) {
+						_0x3b82ff = Board.tableUser4[j][k - 1] % 100 + 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser4[j][k] == 0 && Board.tableUser4[j][k * 1 + 1] && Board.tableUser4[j][k * 1 + 2] % 100 - Board.tableUser4[j][k * 1 + 1] % 100 == 1) {
+						_0x3b82ff = Board.tableUser4[j][k * 1 + 1] % 100 - 1;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser4[j][k] == 0 && Board.tableUser4[j][k - 4] == 0 && Board.tableUser4[j][k - 1] && Board.tableUser4[j][k - 1] % 100 == Board.tableUser4[j][k - 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser4[j][k - 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+					if (Board.tableUser4[j][k] == 0 && Board.tableUser4[j][k * 1 + 4] == 0 && Board.tableUser4[j][k * 1 + 1] && Board.tableUser4[j][k * 1 + 1] % 100 == Board.tableUser4[j][k * 1 + 3] % 100 == 1) {
+						_0x3b82ff = Board.tableUser4[j][k * 1 + 1] % 100;
+						_0x3b82ff = _0x3b82ff % 100 + 900;
+						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
+						tileLimits[seat]--;
+						this.updateBoard();
+						return 0;
+					}
+				}
+			}
+		}
 	};
 
 	return { Engine, Board, Tiles, AI };

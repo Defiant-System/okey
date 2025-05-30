@@ -291,7 +291,7 @@
 
 				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item);
+					else rows[rows.length-1].push(item.toString());
 				});
 				// remove empty arrays
 				rows = rows.filter(r => r.length);
@@ -302,7 +302,7 @@
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
-						let { id, clr, num } = Tiles.parse(col.value);
+						let { id, clr, num } = Tiles.parse(col);
 						if (!i) {
 							switch (num) {
 								case 10: i = 9-(il>>1); break;
@@ -316,7 +316,7 @@
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: event.set.length })
+					.data({ rows: event.setTiles.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
@@ -346,14 +346,14 @@
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((col, x) => {
-						let { id, clr, num } = Tiles.parse(col.value);
+						let { id, clr, num } = Tiles.parse(col);
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
 				Self.els.common.doubles
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: event.set.length })
+					.data({ rows: event.setTiles.length })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim

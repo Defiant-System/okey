@@ -30,7 +30,8 @@ let AI = {
 		if (settingsType == 2 || settingsType == 3) { // 51 or 101
 			if (openStatusDouble[seat] == 0) {
 				Engine.arrange(seat);
-				// opens
+				// opens series
+				if (seat == 3) console.log( Board.tiles.slice().map(e => e ? e.value : e) );
 				await Engine.putToTable(seat, 1);
 			}
 			if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
@@ -54,7 +55,7 @@ let AI = {
 				Engine.arrange(seat, 2);
 			}
 			if (aiTiles.length > 1) {
-				// opens
+				// opens series
 				await Engine.putToTable(seat, 1);
 			}
 			aiTiles = Board.tiles.filter(e => !!e).slice();
@@ -63,7 +64,7 @@ let AI = {
 			}
 			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length > 1) {
-				// opens
+				// opens doubles
 				await Engine.putToTable(seat, 2);
 			}
 			aiTiles = Board.tiles.filter(e => !!e).slice();
@@ -116,7 +117,7 @@ let AI = {
 		}
 
 		// // stop timeout
-		// Engine._gameOver = 1;
+		if (activePlayer == 4) Engine._gameOver = 1;
 	},
 	evalDiscarded(seat) {
 		var discard;
