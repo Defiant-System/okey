@@ -8,7 +8,8 @@ let AI = {
 		Engine.getRack(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
-		// console.log(seat, aiTiles.map(e => e ? e.value : e));
+		// console.log(aiTiles.map(e => e ? e.value : e));
+		// console.log(seat, aiTiles.length, Board.tileLimits);
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
 			// if (seat == 3) console.log( aiTiles.slice().map(e => e ? e.value : e) );
 			await this.makeMove(seat);
@@ -20,7 +21,7 @@ let AI = {
 			clearTimeout(Engine.timerAI);
 			// set time out
 			Engine.timerAI = setTimeout(() => {
-				if (Engine._gameOver == 1) return 0;
+				if (Board.gameOver == 1) return 0;
 				Engine.arrange(seat);
 				this.think(seat);
 			}, 1000);
@@ -104,20 +105,20 @@ let AI = {
 		// 	tile = Board.tiles[index - 1];
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
 
-		activePlayer = (activePlayer + 1) % 4;
+		// activePlayer = (activePlayer + 1) % 4;
 
 		Engine.checkThrow(seat);
 		Engine.arrange(seat);
 		Engine.markIt(1);
 
-		if (Engine._gameOver == 1 && tilesLeft.length > 0) {
+		if (Board.gameOver == 1 && tilesLeft.length > 0) {
 			if (settingsType == 1) Engine.gameOver(1);
 			if (settingsType == 2 || settingsType == 3) {}
 			return 0;
 		}
 
 		// // stop timeout
-		if (activePlayer == 4) Engine._gameOver = 1;
+		if (activePlayer == 3) Board.gameOver = 1;
 	},
 	evalDiscarded(seat) {
 		var discard;
@@ -183,7 +184,10 @@ let AI = {
 			// Engine.removeStampfromCenter();
 
 			let tile = Tiles.draw();
+			// console.log(Board.tiles.map(e => e ? e.value : e));
 			Board.tiles.push(tile);
+			Engine.updateBoard();
+			// console.log(Board.tiles.map(e => e ? e.value : e));
 			Engine.updateLeftTiles(tile);
 
 			// UI animation

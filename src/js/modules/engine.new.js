@@ -34,6 +34,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			tiles2: [],
 			tiles3: [],
 			tiles4: [],
+			gameOver: 0,
 			winWithOkey: 0,
 			winWithDouble: 0,
 			handleDouble: 0,
@@ -186,7 +187,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// 	}
 			// 	boardPlaces[_0x17313c] = 0;
 			// 	Board.tiles[_0x17313c - 1] = '';
-			// 	this.movetoArea(tile, seat);
+				this.movetoArea(tile, seat);
 			// }
 			// var _0x335bad = Board.tiles.filter(e => !!e).slice();
 			if (_0x335bad.length == 0) {
@@ -201,41 +202,41 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		movetoArea(tile, seat, _0x1c04c4) {
-			var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
-			var _0x536f0b = tile.split('-');
-			if (handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
-				console.log(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
-				// this.changePoint(punishOffset, activePlayer, 1);
-			}
-			if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
-				if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
-					console.log(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
-					// this.changePoint(punishOffset, activePlayer, 1);
-				} else {
-					console.log(users[activePlayer] + " yana OKEY atti!");
-					PointOkeyCont = 1;
-				}
-			}
+			// var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
+			// var _0x536f0b = tile.split('-');
+			// if (handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
+			// 	console.log(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
+			// 	// this.changePoint(punishOffset, activePlayer, 1);
+			// }
+			// if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
+			// 	if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
+			// 		console.log(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
+			// 		// this.changePoint(punishOffset, activePlayer, 1);
+			// 	} else {
+			// 		console.log(users[activePlayer] + " yana OKEY atti!");
+			// 		PointOkeyCont = 1;
+			// 	}
+			// }
 			var _0x2cd34c = 0;
 			if (seat == 1) {
-				area1Count++;
-				_0x2cd34c = area1items.length;
-				_0x2cd34c = area1Count;
+				Board.area1Count++;
+				_0x2cd34c = Board.area1items.length;
+				_0x2cd34c = Board.area1Count;
 			}
 			if (seat == 2) {
-				area2Count++;
-				_0x2cd34c = area2items.length;
-				_0x2cd34c = area2Count;
+				Board.area2Count++;
+				_0x2cd34c = Board.area2items.length;
+				_0x2cd34c = Board.area2Count;
 			}
 			if (seat == 3) {
-				area3Count++;
-				_0x2cd34c = area3items.length;
-				_0x2cd34c = area3Count;
+				Board.area3Count++;
+				_0x2cd34c = Board.area3items.length;
+				_0x2cd34c = Board.area3Count;
 			}
 			if (seat == 4) {
-				area4Count++;
-				_0x2cd34c = area4items.length;
-				_0x2cd34c = area4Count;
+				Board.area4Count++;
+				_0x2cd34c = Board.area4items.length;
+				_0x2cd34c = Board.area4Count;
 			}
 			// var _0x150c8a = $("area-" + seat).offsetLeft;
 			// var _0x10c455 = $("area-" + seat).offsetTop;
@@ -247,9 +248,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// $(tile).style.top = _0x10c455 * 1 + _0x4025c6 * 0.09 + 'px';
 			// $(tile).style.display = "block";
 			// $(tile).children[0].style.display = 'block';
-			if (tilesLeft.length == 0) {
+			if (Tiles.tilesLeft.length == 0) {
 				console.log("Oyun Bitti: Ortada Cekecek Tas kalmadi");
-				gameOver = 1;
+				Board.gameOver = 1;
 				if (settingsType == 1) {
 					this.message(2);
 				}
@@ -259,53 +260,42 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			if (seat == 1 && _0x1c04c4 != 1) {
 				laps++;
-				if (area1items.length == 0) {
+				if (Board.area1items.length == 0) {
 					this.playAudio(3);
 				} else {
 					this.playAudio(1);
 				}
-				area1items.push(tile);
+				Board.area1items.push(tile);
 			}
-			if (seat == 2 && _0x1c04c4 != 1) {
-				area2items.push(tile);
-			}
-			if (seat == 3 && _0x1c04c4 != 1) {
-				area3items.push(tile);
-			}
-			if (seat == 4 && _0x1c04c4 != 1) {
-				area4items.push(tile);
-			}
-			if (_0x1c04c4 != 1 && gameOver == 0) {
-				gameMoveCont = 0;
-				timmerNextPlayer = setTimeout(() => {
-					if (gameOver == 1) {
-						return 0;
-					}
-					if (seat == 1) {
-						this.AI(2);
-					}
-					if (seat == 2) {
-						this.AI(3);
-					}
-					if (seat == 3) {
-						this.AI(4);
-					}
+			if (seat == 2 && _0x1c04c4 != 1) Board.area2items.push(tile);
+			if (seat == 3 && _0x1c04c4 != 1) Board.area3items.push(tile);
+			if (seat == 4 && _0x1c04c4 != 1) Board.area4items.push(tile);
+
+			if (_0x1c04c4 != 1 && Board.gameOver == 0) {
+				Board.gameMoveCont = 0;
+				Board.timmerNextPlayer = setTimeout(() => {
+					if (Board.gameOver == 1) return 0;
+					
+					if (seat == 1) AI.think(2);
+					if (seat == 2) AI.think(3);
+					if (seat == 3) AI.think(4);
+
 					if (seat == 4) {
 						activePlayer = 1;
 						this.getBoard(activePlayer);
 						if (AIStatus == 1) {
-							this.AI(1);
+							AI.think(1);
 						} else {
 							AIcont = 0;
 							this.changePlayer(1);
 						}
 					}
-					gameMoveCont = 1;
+					Board.gameMoveCont = 1;
 					return 0;
 				}, 1000);
 			}
 			this.updateBoard();
-			if (gameOver == 1 && settingsType == 1) {
+			if (Board.gameOver == 1 && settingsType == 1) {
 				this.gameOver(1);
 			}
 		},
@@ -489,31 +479,23 @@ let { Engine, Board, Tiles, AI } = (() => {
 					if (t2v == "000") {
 						t1v = String(Tiles.okey - 1);
 					} else {
-						if (t2v % 100 == 1) {
-							t1v = String(t2v * 1 + 12);
-						} else {
-							t1v = String(t2v - 1);
-						}
+						if (t2v % 100 == 1) t1v = String(t2v * 1 + 12);
+						else t1v = String(t2v - 1);
 					}
 				}
 				if (t1v == Tiles.okey && Board.virtualTiles[i - 1].value && (Board.virtualTiles[i - 1].value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
 					_0x9497e = 1;
-					if (Board.virtualTiles[i - 1].value == "000") {
-						t1v = String(Tiles.okey * 1 + 1);
-					} else {
-						t1v = String(Board.virtualTiles[i - 1].value * 1 + 1);
-					}
+					if (Board.virtualTiles[i - 1].value == "000") t1v = String(Tiles.okey * 1 + 1);
+					else t1v = String(Board.virtualTiles[i - 1].value * 1 + 1);
 				}
-				if (t1v == "000") {
-					t1v = String(Tiles.okey);
-				}
+				if (t1v == "000") t1v = String(Tiles.okey);
+				
 				var _0x3c1af0 = 0;
 				var _0x510804 = parseInt(t1v);
 				if (Board.virtualTiles[i]) {
 					temp.push(_0x510804);
-					if (_0x9497e == 1) {
-						_0x2b6e63.push(temp.length - 1);
-					}
+					if (_0x9497e == 1) _0x2b6e63.push(temp.length - 1);
+					
 					_0x9497e = 0;
 					_0x3c1af0 = 1;
 				}
@@ -534,18 +516,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 							_0x257872 += _0x5b3924;
 							for (let k=0; k<temp.length; k++) {
 								for (let l=0; l<_0x2b6e63.length; l++) {
-									if (_0x2b6e63[l] == k) {
-										temp[k] = temp[k] % 100 + 900;
-									}
+									if (_0x2b6e63[l] == k) temp[k] = temp[k] % 100 + 900;
 								}
 								if (temp[k] == Tiles.okey) {
 									temp[k] = temp[k] % 100 + 800;
 								}
 								temp2.push(temp[k]);
-								var _0x4b310e = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k]);
-								if (_0x4b310e != -1) {
-									Board.virtualTiles[_0x4b310e] = "";
-								}
+								var bvLen = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k]);
+								if (bvLen != -1) Board.virtualTiles[bvLen] = "";
 							}
 							temp2.push("");
 						}
@@ -568,23 +546,16 @@ let { Engine, Board, Tiles, AI } = (() => {
 				let t2v = Board.virtualTiles[i+1]; t2v = t2v ? t2v.value : "";
 				if (t1v == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
-					if (t2v == "000") {
-						t1v = String(Tiles.okey % 100 + 900);
-					} else {
-						t1v = String(t2v % 100 + 900);
-					}
+					if (t2v == "000") t1v = String(Tiles.okey % 100 + 900);
+					else t1v = String(t2v % 100 + 900);
 				}
 				if (t1v == Tiles.okey && Board.virtualTiles[i - 1].value) {
 					_0x9497e = 1;
-					if (Board.virtualTiles[i - 1].value == "000") {
-						t1v = String(Tiles.okey % 100 + 900);
-					} else {
-						t1v = String(Board.virtualTiles[i - 1].value % 100 + 900);
-					}
+					if (Board.virtualTiles[i - 1].value == "000") t1v = String(Tiles.okey % 100 + 900);
+					else t1v = String(Board.virtualTiles[i - 1].value % 100 + 900);
 				}
-				if (t1v == "000") {
-					t1v = String(Tiles.okey % 100 + 800);
-				}
+				if (t1v == "000") t1v = String(Tiles.okey % 100 + 800);
+				
 				var _0x3c1af0 = 0;
 				var _0x510804 = parseInt(t1v);
 				if (Board.virtualTiles[i]) {
@@ -779,9 +750,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.checkWin();
 			
 			var seatTotal = Board[`User${seat}Total`];
-			var _0x19ab28 = areaItemLast.split('-');
-			_0x19ab28 = _0x19ab28[1] - 1;
-			_0x19ab28 = data[_0x19ab28];
+			var _0x19ab28 = areaItemLast.value; // areaItemLast.split('-');
+			// _0x19ab28 = _0x19ab28[1] - 1;
+			// _0x19ab28 = data[_0x19ab28];
 
 			if (perFull.length > pfl && (openStatusSort[activePlayer] == 0 && seatTotal > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
 				Board.tiles = tilesCopy.slice();
@@ -794,6 +765,22 @@ let { Engine, Board, Tiles, AI } = (() => {
 				this.updateBoard();
 				this.arrange(activePlayer);
 				return 0;
+			}
+		},
+		place(tileId, pos, seat) {
+			if (!seat) seat = activePlayer;
+			
+			try {
+				// var _0x363bc5 = tileId.split("-");
+				// _0x363bc5 = _0x363bc5[1] - 1;
+				
+				// boardPlaces[pos] = tileId;
+				// boardTiles[pos-1] = data[_0x363bc5];
+				this.updateBoard();
+			} catch {
+				console.log("hata:" + tileId);
+				console.log("Hata-boardTiles");
+				console.log(boardTiles);
 			}
 		},
 		putToTable(seat, sortType) {
@@ -956,14 +943,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
-					var _0x897419 = Board.tiles.findIndex(e => e.value == String(setTiles[i]));
+					var index = Board.tiles.findIndex(e => e.value == String(setTiles[i]));
 					if (setTiles[i] - setTiles[i] % 100 == 900) {
-						_0x897419 = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
+						index = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
 					}
 					if (setTiles[i] - setTiles[i] % 100 == 800) {
-						_0x897419 = Board.tiles.findIndex(e => e.value == "000");
+						index = Board.tiles.findIndex(e => e.value == "000");
 					}
-					if (_0x897419 !== -1) {
+					if (index !== -1) {
 						this.moveToTable(_0x484f1e, setTiles[i], -1, -1, sortType);
 						Board.tileLimits[seat]--;
 					}

@@ -96,7 +96,7 @@ let Tiles = {
 				let discards = state.player
 									.map(player => ({ s: player.seat, l: player.discard.length }))
 									.filter(e => e.l == 0);
-				activePlayer = 5 - discards.length;
+				activePlayer = 4 - discards.length;
 			}
 			activePlayer = (activePlayer) % 4;
 		} else {
@@ -113,7 +113,7 @@ let Tiles = {
 		let id = tile.toString(),
 			clr = Colors[+id.slice(0,1)],
 			num = new Number(id.slice(1)) * 1;
-		if (+id.slice(0,1) == "0" || tile._value === "000") {
+		if (+id.slice(0,1) == 8 || +id.slice(0,1) == "0" || tile._value === "000") {
 			clr = Colors[0];
 			num = "j";
 		}
