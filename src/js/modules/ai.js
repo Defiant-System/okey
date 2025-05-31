@@ -8,10 +8,7 @@ let AI = {
 		Engine.getRack(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
-		// console.log(aiTiles.map(e => e ? e.value : e));
-		// console.log(seat, aiTiles.length, Board.tileLimits);
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
-			// if (seat == 3) console.log( aiTiles.slice().map(e => e ? e.value : e) );
 			await this.makeMove(seat);
 		} else {
 			this.evalDiscarded(seat);

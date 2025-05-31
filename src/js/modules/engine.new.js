@@ -439,7 +439,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			this.updateBoard();
 
-			/* */
+			/* 
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
@@ -455,6 +455,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					this.gameOver(1);
 				}
 			}
+			*/
 		},
 		checkWin() {
 			Board.virtualTiles = Board.tiles.slice();
@@ -493,7 +494,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				var _0x3c1af0 = 0;
 				var _0x510804 = parseInt(t1v);
 				if (Board.virtualTiles[i]) {
-					temp.push(_0x510804);
+					temp.push(Board.virtualTiles[i]);
 					if (_0x9497e == 1) _0x2b6e63.push(temp.length - 1);
 					
 					_0x9497e = 0;
@@ -504,7 +505,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x5b3924 = 1;
 						for (let j=0; j<temp.length; j++) {
 							if (j > 0) {
-								if (temp[j] - temp[j - 1] == 1 || j == temp.length - 1 && (temp[j - 1] - temp[j] == 12 || temp[j - 1] == Tiles.okey) && settingsType == 1) {
+								if (temp[j].value - temp[j-1].value == 1 
+									|| j == temp.length - 1 
+									&& (temp[j-1].value - temp[j].value == 12 
+									|| temp[j-1].value == Tiles.okey) && settingsType == 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -516,13 +520,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 							_0x257872 += _0x5b3924;
 							for (let k=0; k<temp.length; k++) {
 								for (let l=0; l<_0x2b6e63.length; l++) {
-									if (_0x2b6e63[l] == k) temp[k] = temp[k] % 100 + 900;
+									if (_0x2b6e63[l] == k) temp[k].value = temp[k].value % 100 + 900;
 								}
-								if (temp[k] == Tiles.okey) {
-									temp[k] = temp[k] % 100 + 800;
+								if (temp[k].value == Tiles.okey) {
+									temp[k].value = temp[k].value % 100 + 800;
 								}
 								temp2.push(temp[k]);
-								var bvLen = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k]);
+								var bvLen = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k].value);
 								if (bvLen != -1) Board.virtualTiles[bvLen] = "";
 							}
 							temp2.push("");
@@ -532,7 +536,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					_0x2b6e63 = [];
 					_0x47dfb5 = null;
 					if (i == 15 && Board.virtualTiles[i]) {
-						temp.push(_0x510804);
+						temp.push(Board.virtualTiles[i]);
 					}
 				}
 			}
@@ -559,7 +563,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				var _0x3c1af0 = 0;
 				var _0x510804 = parseInt(t1v);
 				if (Board.virtualTiles[i]) {
-					temp.push(_0x510804);
+					temp.push(Board.virtualTiles[i]);
 					_0x3c1af0 = 1;
 				}
 				if (_0x3c1af0 == 0 || i == 15) {
@@ -568,7 +572,16 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x5b3924 = 1;
 						for (let j=0; j<temp.length; j++) {
 							if (j > 0) {
-								if (temp[j] % 100 == temp[j - 1] % 100 && (temp[j] != temp[j - 1] || (temp[j] / 900 > 1 && temp[j - 1] / 900) > 1) && (temp[j] != temp[j - 2] || (temp[j] / 900 > 1 && temp[j - 2] / 900) > 1) && temp[j] != temp[j - 3] || (temp[j] / 900 > 1 && temp[j - 3] / 900) > 1) {
+								if (temp[j].value % 100 == temp[j-1].value % 100
+									&& (temp[j].value != temp[j-1].value
+									|| (temp[j].value / 900 > 1
+									&& temp[j-1].value / 900) > 1)
+									&& (temp[j].value != temp[j-2]?.value
+									|| (temp[j].value / 900 > 1
+									&& temp[j-2].value / 900) > 1)
+									&& temp[j].value != temp[j-3]?.value
+									|| (temp[j].value / 900 > 1
+									&& temp[j-3].value / 900) > 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -589,10 +602,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 					_0x2b6e63 = null;
 					_0x47dfb5 = null;
 					if (i == 15 && Board.virtualTiles[i]) {
-						temp.push(_0x510804);
+						temp.push(Board.virtualTiles[i]);
 					}
 				}
 			}
+			// let org = [210, 211, 212, '', 106, 206, 406, '', 113, 913, 313, 413, ''];
+			// if (!openStatusSort[3]) console.log(org, temp2);
 			Board.User1Seri = [];
 			Board.User2Seri = [];
 			Board.User3Seri = [];
@@ -601,23 +616,23 @@ let { Engine, Board, Tiles, AI } = (() => {
 				switch (activePlayer) {
 					case 1:
 						Board.User1Seri.push(temp2[i]);
-						if (temp2[i]) Board.User1Total += temp2[i] % 100;
+						if (temp2[i]) Board.User1Total += temp2[i].value % 100;
 						break;
 					case 2:
 						Board.User2Seri.push(temp2[i]);
-						if (temp2[i]) Board.User2Total += temp2[i] % 100;
+						if (temp2[i]) Board.User2Total += temp2[i].value % 100;
 						break;
 					case 3:
 						Board.User3Seri.push(temp2[i]);
-						if (temp2[i]) Board.User3Total += temp2[i] % 100;
+						if (temp2[i]) Board.User3Total += temp2[i].value % 100;
 						break;
 					case 4:
 						Board.User4Seri.push(temp2[i]);
-						if (temp2[i]) Board.User4Total += temp2[i] % 100;
+						if (temp2[i]) Board.User4Total += temp2[i].value % 100;
 						break;
 				}
 			}
-			if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice());
+			// if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice());
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
@@ -980,12 +995,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board.handleDouble = 0;
 			if (seat == 1) {
 				this.markIt(1);
-				if (sortType == 1) {
-					this.checkWin();
-				}
-				if (sortType == 2) {
-					this.checkWinDouble();
-				}
+				if (sortType == 1) this.checkWin();
+				if (sortType == 2) this.checkWinDouble();
 			}
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";

@@ -291,7 +291,7 @@
 
 				event.setTiles.map(item => {
 					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item.toString());
+					else rows[rows.length-1].push(item);
 				});
 				// remove empty arrays
 				rows = rows.filter(r => r.length);
@@ -301,8 +301,9 @@
 						il = row.length,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
-					row.map((col, x) => {
-						let { id, clr, num } = Tiles.parse(col);
+					row.map((tile, x) => {
+						let col = tile._value || tile.value,
+							{ id, clr, num } = Tiles.parse(col);
 						if (!i) {
 							switch (num) {
 								case 10: i = 9-(il>>1); break;
@@ -345,8 +346,9 @@
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
-					row.map((col, x) => {
-						let { id, clr, num } = Tiles.parse(col);
+					row.map((tile, x) => {
+						let col = tile._value || tile.value,
+							{ id, clr, num } = Tiles.parse(col);
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
@@ -588,7 +590,6 @@
 						}
 						// update game engine
 						Engine.dragStop(Drag);
-						// if (Drag.hover.hasClass("rack")) Engine.checkWin();
 					})
 					.css(css);
 				break;
