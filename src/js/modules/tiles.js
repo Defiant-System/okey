@@ -74,6 +74,8 @@ let Tiles = {
 				APP.game.els.el.find(`.discard .player-${player.seat}`).html(str.join(""));
 			});
 
+			// console.log( Board.tiles3.slice().map(e => e ? e.value : e) );
+
 			Object.keys(state.melded).map(what => {
 				if (state.melded[what].length) {
 					APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
@@ -93,8 +95,8 @@ let Tiles = {
 			if (activePlayer === 0) {
 				let discards = state.player
 									.map(player => ({ s: player.seat, l: player.discard.length }))
-									.sort((a, b) => b.l - a.l);
-				activePlayer = discards[0].s + 1;
+									.filter(e => e.l == 0);
+				activePlayer = 5 - discards.length;
 			}
 			activePlayer = (activePlayer) % 4;
 		} else {

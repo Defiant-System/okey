@@ -25,7 +25,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 		openLimitLast = openLimitG,
 		openLimitDoubleLast = openLimitD,
 		openStatusSort = [0, 0, 0, 0, 0],
-		openStatusDouble = [0, 0, 0, 0, 0];
+		openStatusDouble = [0, 0, 0, 0, 0],
+		openPunish = [0, 0, 0, 0, 0];
 
 	let Board = {
 			tiles: [],
@@ -103,7 +104,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// restore Tiles object
 			Tiles.restore(state);
 
-			this.checkThrow();
+			this.checkThrow(activePlayer);
 		},
 		updateLeftTiles(item) {
 			if (item) Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
@@ -141,7 +142,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			if (Drag.isThrow) {
 				activePlayer = (activePlayer + 1) % 4;
-				this.checkThrow();
+				this.checkThrow(activePlayer);
 			} else {
 				// if not throw tile, anything to do?
 			}
@@ -149,21 +150,169 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// update value
 			this.checkWin();
 		},
-		checkThrow() {
-			switch (activePlayer) {
-				case 1:
-					// user
-					break;
-				case 2:
-				case 3:
-				case 4:
-					AI.think(activePlayer);
-					break;
+		checkThrow(seat) {
+			let discard = APP.game.els.discard[`player${(seat-1) || 4}`].find(".tile").get(0);
+			let tile = { uid: discard.data("uid"), value: discard.data("id") };
+
+			if (Board.leftHandCont) {
+				console.log("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
+				// this.moveBack(tile);
+				return;
+			}
+			var _0x335bad = Board.tiles.filter(e => !!e).slice();
+			// if (_0x335bad.length <= Board.tileLimits[seat]) {
+			// 	console.log("Istakanizda " + Board.tileLimits[seat] + " tas var, önce tas almaniz gerekiyor.");
+			// 	// this.moveBack(tile);
+			// 	return;
+			// }
+			if (openPunish[seat] == 2) {
+				console.log("Elinizi acmaniz ya da taslarinizi toplamaniz gerekiyor.");
+				// this.moveBack(tile);
+				return;
+			}
+			if (openPunish[seat] == 1 && _0x335bad.length > 1) {
+				openPunish[seat] = 2;
+				// this.changePoint(punishOffset, seat, 1);
+				console.log("Yanlis el actiniz " + punishOffset + " puan ceza yediniz.");
+				// this.moveBack(tile);
+				return;
+			}
+			// var _0x17313c = boardPlaces.indexOf(tile);
+			// if (_0x17313c !== -1) {
+			// 	if (activePlayer == 1) {
+			// 		activePlayerCont = 0;
+			// 		this.buttonActivePassive("collect", 0);
+			// 		firstOpenCont = 0;
+			// 	}
+			// 	boardPlaces[_0x17313c] = 0;
+			// 	Board.tiles[_0x17313c - 1] = '';
+			// 	this.movetoArea(tile, seat);
+			// }
+			// var _0x335bad = Board.tiles.filter(e => !!e).slice();
+			if (_0x335bad.length == 0) {
+				if (collect.length == 21) {
+					console.log("Oyuncu elden bitti!");
+					openAllHand = 1;
+				} else {
+					console.log("Oyun Bitti: Istakada Tas kalmadi");
+				}
+				winnerPlayer = activePlayer;
+				this.gameOver(1);
+			}
+		},
+		movetoArea(tile, seat, _0x1c04c4) {
+			var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
+			var _0x536f0b = tile.split('-');
+			if (handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
+				console.log(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
+				// this.changePoint(punishOffset, activePlayer, 1);
+			}
+			if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
+				if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
+					console.log(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
+					// this.changePoint(punishOffset, activePlayer, 1);
+				} else {
+					console.log(users[activePlayer] + " yana OKEY atti!");
+					PointOkeyCont = 1;
+				}
+			}
+			var _0x2cd34c = 0;
+			if (seat == 1) {
+				area1Count++;
+				_0x2cd34c = area1items.length;
+				_0x2cd34c = area1Count;
+			}
+			if (seat == 2) {
+				area2Count++;
+				_0x2cd34c = area2items.length;
+				_0x2cd34c = area2Count;
+			}
+			if (seat == 3) {
+				area3Count++;
+				_0x2cd34c = area3items.length;
+				_0x2cd34c = area3Count;
+			}
+			if (seat == 4) {
+				area4Count++;
+				_0x2cd34c = area4items.length;
+				_0x2cd34c = area4Count;
+			}
+			// var _0x150c8a = $("area-" + seat).offsetLeft;
+			// var _0x10c455 = $("area-" + seat).offsetTop;
+			// var _0x4025c6 = $("area-" + seat).offsetHeight;
+			// var _0x22e686 = $("area-" + seat).offsetWidth;
+			// $(tile).style.transition = "all 0.5s";
+			// $(tile).style.zIndex = _0x2cd34c * 1 + 1;
+			// $(tile).style.left = _0x150c8a * 1 + _0x22e686 * 0.09 + 'px';
+			// $(tile).style.top = _0x10c455 * 1 + _0x4025c6 * 0.09 + 'px';
+			// $(tile).style.display = "block";
+			// $(tile).children[0].style.display = 'block';
+			if (tilesLeft.length == 0) {
+				console.log("Oyun Bitti: Ortada Cekecek Tas kalmadi");
+				gameOver = 1;
+				if (settingsType == 1) {
+					this.message(2);
+				}
+				if (settingsType == 2 || settingsType == 3) {
+					this.gameOver(1);
+				}
+			}
+			if (seat == 1 && _0x1c04c4 != 1) {
+				laps++;
+				if (area1items.length == 0) {
+					this.playAudio(3);
+				} else {
+					this.playAudio(1);
+				}
+				area1items.push(tile);
+			}
+			if (seat == 2 && _0x1c04c4 != 1) {
+				area2items.push(tile);
+			}
+			if (seat == 3 && _0x1c04c4 != 1) {
+				area3items.push(tile);
+			}
+			if (seat == 4 && _0x1c04c4 != 1) {
+				area4items.push(tile);
+			}
+			if (_0x1c04c4 != 1 && gameOver == 0) {
+				gameMoveCont = 0;
+				timmerNextPlayer = setTimeout(() => {
+					if (gameOver == 1) {
+						return 0;
+					}
+					if (seat == 1) {
+						this.AI(2);
+					}
+					if (seat == 2) {
+						this.AI(3);
+					}
+					if (seat == 3) {
+						this.AI(4);
+					}
+					if (seat == 4) {
+						activePlayer = 1;
+						this.getBoard(activePlayer);
+						if (AIStatus == 1) {
+							this.AI(1);
+						} else {
+							AIcont = 0;
+							this.changePlayer(1);
+						}
+					}
+					gameMoveCont = 1;
+					return 0;
+				}, 1000);
+			}
+			this.updateBoard();
+			if (gameOver == 1 && settingsType == 1) {
+				this.gameOver(1);
 			}
 		},
 		arrange(seat, type=1, arr) {
 			this.getRack(seat);
-			// if (arr) Board.tiles = arr.slice();
+			// if (seat == 3) console.log( 1111, Board.tiles.slice().map(e => e ? e.value : e) );
+			if (arr) Board.tiles = arr.slice();
 
 			let arr1 = [];
 			let arr2 = [];
@@ -497,6 +646,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						break;
 				}
 			}
+			if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice());
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
@@ -696,10 +846,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			if (Board.UserTotal == 0 && sortType == 1 || Board.UserTotalDouble == 0 && sortType == 2) {
 				if (sortType == 1 && seat == 1 && AIStatus == 0) {
-					this.popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
+					console.log("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
 				}
 				if (sortType == 2 && seat == 1 && AIStatus == 0) {
-					this.popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
+					console.log("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
 				}
 				return 0;
 			}
@@ -708,29 +858,29 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var boardTiles = Board.tiles.filter(e => !!e).slice();
 			if (boardTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
-					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+					console.log("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (seriTiles.length > Tiles.tileLimit) {
-				this.popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
+				console.log("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
 			}
 			if (sortType == 1 && openStatusDouble[seat] == 1) {
 				if (seat == 1 && AIStatus == 0) {
-					this.popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
+					console.log("Cift actiqiniz icin, artik seri acamazsiniz!");
 					openPunish[seat] = 0;
 				}
 				return 0;
 			}
 			if (sortType == 2 && openStatusSort[seat] == 1 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
+					console.log("Seri actiqiniz icin, artik cift acamazsiniz!");
 				}
 				return 0;
 			}
 			if (sortType == 1 && Board.UserTotal < openLimit && openStatusSort[seat] == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					this.popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
+					console.log("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
 					openPunish[seat] = 1;
 				}
 				if (seat != 1 || AIStatus == 1) {
@@ -739,7 +889,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			if (sortType == 2 && Board.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
+					console.log("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
 					openPunish[seat] = 1;
 				}
 				if (seat != 1 || AIStatus == 1) {
@@ -748,7 +898,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 
 			if (Board.UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
-				this.popMessage("Cift acabilecek tasiniz yok!");
+				console.log("Cift acabilecek tasiniz yok!");
 			}
 
 			var setTiles;
@@ -837,7 +987,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (seat != 1 || AIStatus == 1) {
 					this.collectItBack();
 				} else {
-					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
+					console.log("Istakanizsa saqa atabiceqiniz tas kalmadi.");
 				}
 			}
 			Board.handleDouble = 0;
@@ -867,13 +1017,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var bTiles = Board.tiles.filter(e => !!e).slice();
 			if (bTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
-					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+					console.log("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0) {
 				if (seat == 1) {
-					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+					console.log("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
 				}
 				return 0;
 			}
@@ -887,7 +1037,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.handleDouble = 0;
 				this.checkWinDouble();
 				if (UserTotalDouble > 0) {
-					this.popMessage(users[seat] + " cift isledi!");
+					console.log(users[seat] + " cift isledi!");
 					Board.handleDouble = 1;
 					this.putToTable(activePlayer, 2);
 				}
@@ -923,13 +1073,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var bTiles = Board.tiles.filter(e => !!e).slice();
 			if (bTiles.length <= Board.tileLimits[seat] && num == 0) {
 				if (seat == 1 && Tiles.markCont == 0) {
-					this.popMessage("Önce yerden tas almaniz gerekiyor!");
+					console.log("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0 && num == 0) {
 				if (seat == 1) {
-					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+					console.log("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
 				}
 				return 0;
 			}
@@ -950,7 +1100,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (_0x5e0d4d.length == 1 && num == 0) {
 					this.markIt(seat);
 					if (seat == 1) {
-						this.popMessage("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
+						console.log("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
 					}
 					return 0;
 				}
@@ -1169,7 +1319,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 									if (num == 0) {
 										if (_0x1fc99b == Tiles.okey) _0x1fc99b = Tiles.okey % 100 + 800;
 										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
-										this.popMessage(users[seat] + " seri isledi!");
+										console.log(users[seat] + " seri isledi!");
 										Board.tileLimits[seat]--;
 										if (activePlayer != _0x49f720) {
 											_0x364dc5[_0x49f720] += _0x1fc99b % 100 * 10;
@@ -1429,7 +1579,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										this.updateBoard();
 										activePlayer = _0x559c6d;
 										_0x108f0b = 1;
-										popMessage(users[activePlayer] + " yerden okey aldi!");
+										console.log(users[activePlayer] + " yerden okey aldi!");
 									} else {
 										Tiles.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
@@ -1473,7 +1623,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										if (Board.tiles[i] == "000") {
 											Board.tiles[i] = okey % 100 + 800;
 										}
-										this.popMessage("yerden okey aliniyor!");
+										console.log("yerden okey aliniyor!");
 										Board.getOkeyKont = 1;
 										this.moveToTable(_0x3dd017, _0x495ad6[i], k, j, 2);
 										Board.getOkeyKont = 0;
@@ -1678,7 +1828,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser1[j][k - 1] % 100 + 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1686,7 +1836,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser1[j][k * 1 + 1] % 100 - 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1694,7 +1844,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser1[j][k - 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1702,7 +1852,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser1[j][k * 1 + 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(1, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1710,7 +1860,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser2[j][k - 1] % 100 + 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1718,7 +1868,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser2[j][k * 1 + 1] % 100 - 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1726,7 +1876,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser2[j][k - 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1734,7 +1884,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser2[j][k * 1 + 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(2, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1742,7 +1892,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser3[j][k - 1] % 100 + 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1750,7 +1900,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser3[j][k * 1 + 1] % 100 - 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1758,7 +1908,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser3[j][k - 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1766,7 +1916,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser3[j][k * 1 + 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(3, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1774,7 +1924,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser4[j][k - 1] % 100 + 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1782,7 +1932,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser4[j][k * 1 + 1] % 100 - 1;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1790,7 +1940,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser4[j][k - 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}
@@ -1798,7 +1948,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x3b82ff = Board.tableUser4[j][k * 1 + 1] % 100;
 						_0x3b82ff = _0x3b82ff % 100 + 900;
 						this.moveToTable(4, _0x3b82ff, _0x2f62c4, _0xecd2ba, 1);
-						tileLimits[seat]--;
+						Board.tileLimits[seat]--;
 						this.updateBoard();
 						return 0;
 					}

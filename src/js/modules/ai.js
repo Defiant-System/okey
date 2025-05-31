@@ -10,6 +10,7 @@ let AI = {
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
 		// console.log(seat, aiTiles.map(e => e ? e.value : e));
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
+			// if (seat == 3) console.log( aiTiles.slice().map(e => e ? e.value : e) );
 			await this.makeMove(seat);
 		} else {
 			this.evalDiscarded(seat);
@@ -31,7 +32,6 @@ let AI = {
 			if (openStatusDouble[seat] == 0) {
 				Engine.arrange(seat);
 				// opens series
-				if (seat == 3) console.log( Board.tiles.slice().map(e => e ? e.value : e) );
 				await Engine.putToTable(seat, 1);
 			}
 			if (openStatusSort[seat] == 1 || openStatusDouble[seat] == 1) {
@@ -106,7 +106,7 @@ let AI = {
 
 		activePlayer = (activePlayer + 1) % 4;
 
-		Engine.checkThrow();
+		Engine.checkThrow(seat);
 		Engine.arrange(seat);
 		Engine.markIt(1);
 
