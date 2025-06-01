@@ -295,7 +295,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 					Board.gameMoveCont = 1;
 					return 0;
-				}, 1000);
+				}, 100);
 			}
 			this.updateBoard();
 			if (Board.gameOver == 1 && settingsType == 1) {
@@ -344,6 +344,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
+					if (seat === 4) console.log( JSON.stringify(Board.tiles) );
 					arr1 = Tiles.sortTiles(3, 1);
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();

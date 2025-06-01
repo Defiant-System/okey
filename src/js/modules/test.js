@@ -24,13 +24,13 @@ let Test = {
 
 		// Tiles.okey = "213";
 
-		// let arr = [{"uid":44,"value":"102"},{"uid":45,"value":"305"},{"uid":46,"value":"208"},{"uid":47,"value":"413"},{"uid":48,"value":"205"},{"uid":49,"value":"210"},{"uid":50,"value":"109"},{"uid":51,"value":"401"},{"uid":52,"value":"406"},{"uid":53,"value":"113"},{"uid":54,"value":"401"},{"uid":55,"value":"211"},{"uid":56,"value":"313"},{"uid":57,"value":"000"},{"uid":58,"value":"310"},{"uid":59,"value":"106"},{"uid":60,"value":"212"},{"uid":61,"value":"107"},{"uid":62,"value":"308"},{"uid":63,"value":"109"},{"uid":64,"value":"206"}];
-		// 	arr = tmp.map(e => {
+		// let tmp = ['101', '101', '', '307', '307', '', '', '', '', '', '', '', '', '', '108', '111', '204', '206', '207', '210', '306', '308', '309', '312', '402', '406', '409', '411', '412', '413', '800', '800'];
+		// let arr = tmp.map(e => {
 		// 		if (e) return { value: e };
 		// 		else return e;
 		// 	});
-		// Engine.arrange(3, 1, arr);
-		// console.log( Board.tiles.slice().map(e => e ? e.value : e) );
+		// let sorted = Tiles.sortTiles(3, 1, arr);
+		// console.log( sorted.map(e => e ? e.value : e) );
 		// return;
 
 		APP.game.dispatch({ type: "restore-state", state });

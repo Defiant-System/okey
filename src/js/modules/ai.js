@@ -182,10 +182,11 @@ let AI = {
 			// Engine.removeStampfromCenter();
 
 			let tile = Tiles.draw();
-			console.log(tile);
 			Board.tiles.push(tile);
 			Engine.updateBoard();
 			Engine.updateLeftTiles(tile);
+
+			if (seat == 4) console.log( Board.tiles.slice() );
 
 			// UI animation
 			APP.game.dispatch({ type: "draw-stack-tile", seat })

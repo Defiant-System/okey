@@ -176,7 +176,7 @@ let Tiles = {
 	sortTiles(num, sort, arr) {
 		if (arr) Board.tiles = arr;
 		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
-		Board.tiles.sort((a, b) => a.value - b.value);
+		Board.tiles.sort().sort((a, b) => a.value - b.value);
 		let asc = [];
 		let sorted = [];
 		let arr3 = 0;
@@ -234,7 +234,7 @@ let Tiles = {
 	},
 	sortTilesByColor(num, type, arr) {
 		if (arr) Board.tiles = arr.slice();
-		Board.virtualTiles = Board.tiles.slice().sort();
+		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
 		Board.virtualTiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let arr1 = [];
 		let arr2 = [];

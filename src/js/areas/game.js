@@ -323,7 +323,10 @@
 					// start anim
 					setTimeout(() =>
 						Self.els.common.series.cssSequence("anim-end", "transitionend", el => {
+							// reset table element
 							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							// reset table tiles
+							el.find(`.tile[style*="--fd:"]`).css({ "--fd": "", "--fy": "", "--fx": "" });
 							setTimeout(() => resolve(), 500);
 						}), 100);
 				});
@@ -361,7 +364,10 @@
 					// start anim
 					setTimeout(() =>
 						Self.els.common.doubles.cssSequence("anim-end", "transitionend", el => {
+							// reset table element
 							el.removeClass("anim-start anim-end").css({ "--aT": "" });
+							// reset table tiles
+							el.find(`.tile[style*="--fd:"]`).css({ "--fd": "", "--fy": "", "--fx": "" });
 							setTimeout(() => resolve(), 500);
 						}), 100);
 				});
