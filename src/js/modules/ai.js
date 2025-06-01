@@ -70,7 +70,7 @@ let AI = {
 			}
 			aiTiles = Board.tiles.filter(e => !!e).slice();
 			if (aiTiles.length < 1) {
-				console.log("tas bitti - 2");
+				Engine.popMessage("tas bitti - 2");
 			}
 			Engine.markIt(seat);
 		}
@@ -90,15 +90,14 @@ let AI = {
 			if (seat != 1) {
 				var _0x77769 = Math.ceil(Math.random() * 10);
 				if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
-					console.log("el bozuyor");
+					Engine.popMessage("el bozuyor");
 					selectedTile = aiTiles[0];
 				}
 			}
 		} else {
-			console.log("tas bitti - 1");
+			Engine.popMessage("tas bitti - 1");
 		}
 
-		// console.log(selectedTile);
 		// let index = boardPlaces.indexOf(selectedTile),
 		// 	tile = Board.tiles[index - 1];
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
@@ -177,16 +176,11 @@ let AI = {
 				area3items = Tiles.removeArrayItem(area3items, area3items[area3items.length - 1]);
 			}
 		} else {
-			// var _0x54fe2a = Board.tiles.lastIndexOf("") * 1 + 1;
-			// Engine.place('tile-' + tilesLast, _0x54fe2a);
-			// Engine.removeStampfromCenter();
-
+			
 			let tile = Tiles.draw();
 			Board.tiles.push(tile);
 			Engine.updateBoard();
 			Engine.updateLeftTiles(tile);
-
-			if (seat == 4) console.log( Board.tiles.slice() );
 
 			// UI animation
 			APP.game.dispatch({ type: "draw-stack-tile", seat })

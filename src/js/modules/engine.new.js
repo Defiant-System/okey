@@ -159,25 +159,25 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
 
 			if (Board.leftHandCont) {
-				console.log("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
+				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
 				// this.moveBack(tile);
 				return;
 			}
 			var _0x335bad = Board.tiles.filter(e => !!e).slice();
 			// if (_0x335bad.length <= Board.tileLimits[seat]) {
-			// 	console.log("Istakanizda " + Board.tileLimits[seat] + " tas var, önce tas almaniz gerekiyor.");
+			// 	this.popMessage("Istakanizda " + Board.tileLimits[seat] + " tas var, önce tas almaniz gerekiyor.");
 			// 	// this.moveBack(tile);
 			// 	return;
 			// }
 			if (openPunish[seat] == 2) {
-				console.log("Elinizi acmaniz ya da taslarinizi toplamaniz gerekiyor.");
+				this.popMessage("Elinizi acmaniz ya da taslarinizi toplamaniz gerekiyor.");
 				// this.moveBack(tile);
 				return;
 			}
 			if (openPunish[seat] == 1 && _0x335bad.length > 1) {
 				openPunish[seat] = 2;
 				// this.changePoint(punishOffset, seat, 1);
-				console.log("Yanlis el actiniz " + punishOffset + " puan ceza yediniz.");
+				this.popMessage("Yanlis el actiniz " + punishOffset + " puan ceza yediniz.");
 				// this.moveBack(tile);
 				return;
 			}
@@ -195,10 +195,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// var _0x335bad = Board.tiles.filter(e => !!e).slice();
 			if (_0x335bad.length == 0) {
 				if (collect.length == 21) {
-					console.log("Oyuncu elden bitti!");
+					this.popMessage("Oyuncu elden bitti!");
 					openAllHand = 1;
 				} else {
-					console.log("Oyun Bitti: Istakada Tas kalmadi");
+					this.popMessage("Oyun Bitti: Istakada Tas kalmadi");
 				}
 				winnerPlayer = activePlayer;
 				this.gameOver(1);
@@ -208,15 +208,15 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
 			// var _0x536f0b = tile.split('-');
 			// if (handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
-			// 	console.log(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
+			// 	this.popMessage(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
 			// 	// this.changePoint(punishOffset, activePlayer, 1);
 			// }
 			// if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
 			// 	if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
-			// 		console.log(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
+			// 		this.popMessage(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
 			// 		// this.changePoint(punishOffset, activePlayer, 1);
 			// 	} else {
-			// 		console.log(users[activePlayer] + " yana OKEY atti!");
+			// 		this.popMessage(users[activePlayer] + " yana OKEY atti!");
 			// 		PointOkeyCont = 1;
 			// 	}
 			// }
@@ -252,7 +252,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// $(tile).style.display = "block";
 			// $(tile).children[0].style.display = 'block';
 			if (Tiles.tilesLeft.length == 0) {
-				console.log("Oyun Bitti: Ortada Cekecek Tas kalmadi");
+				this.popMessage("Oyun Bitti: Ortada Cekecek Tas kalmadi");
 				Board.gameOver = 1;
 				if (settingsType == 1) {
 					this.message(2);
@@ -304,7 +304,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		arrange(seat, type=1, arr) {
 			this.getRack(seat);
-			// if (seat == 3) console.log( 1111, Board.tiles.slice().map(e => e ? e.value : e) );
 			if (arr) Board.tiles = arr.slice();
 
 			let arr1 = [];
@@ -344,7 +343,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
-					if (seat === 4) console.log( JSON.stringify(Board.tiles) );
 					arr1 = Tiles.sortTiles(3, 1);
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
@@ -446,7 +444,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			/* */
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
-					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
+					this.popMessage("Oyun Bitti: " + users[activePlayer] + " Seri acti");
 					winnerPlayer = activePlayer;
 					this.gameOver(1);
 				}
@@ -454,7 +452,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			
 			if (type == 2 && this.checkWinDouble()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
-					console.log("Oyun Bitti: " + users[activePlayer] + " cift acti");
+					this.popMessage("Oyun Bitti: " + users[activePlayer] + " cift acti");
 					winnerPlayer = activePlayer;
 					this.gameOver(1);
 				}
@@ -609,8 +607,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			// let org = [210, 211, 212, '', 106, 206, 406, '', 113, 913, 313, 413, ''];
-			// if (!openStatusSort[3]) console.log(org, temp2);
 			Board.User1Seri = [];
 			Board.User2Seri = [];
 			Board.User3Seri = [];
@@ -635,7 +631,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 						break;
 				}
 			}
-			// if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice().map(e => e ? e.value : e));
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
@@ -816,9 +811,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 				// boardTiles[pos-1] = data[_0x363bc5];
 				this.updateBoard();
 			} catch {
-				console.log("hata:" + tileId);
-				console.log("Hata-boardTiles");
-				console.log(boardTiles);
+				this.popMessage("hata:" + tileId);
+				this.popMessage("Hata-boardTiles");
+				this.popMessage(boardTiles);
 			}
 		},
 		putToTable(seat, sortType) {
@@ -871,10 +866,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			if (Board.UserTotal == 0 && sortType == 1 || Board.UserTotalDouble == 0 && sortType == 2) {
 				if (sortType == 1 && seat == 1 && AIStatus == 0) {
-					console.log("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
+					this.popMessage("El acabilmeniz icin elinizde en az 1 per olmasi gerkiyor!");
 				}
 				if (sortType == 2 && seat == 1 && AIStatus == 0) {
-					console.log("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
+					this.popMessage("El acabilmeniz icin elinizde en az 1 cift olmasi gerkiyor!");
 				}
 				return 0;
 			}
@@ -883,29 +878,29 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var boardTiles = Board.tiles.filter(e => !!e).slice();
 			if (boardTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
-					console.log("Önce yerden tas almaniz gerekiyor!");
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (seriTiles.length > Tiles.tileLimit) {
-				console.log("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
+				this.popMessage("Istakanizda saqa atacak tas kalmadiqi icin taslarinizi geri toplamaniz gerekiyor");
 			}
 			if (sortType == 1 && openStatusDouble[seat] == 1) {
 				if (seat == 1 && AIStatus == 0) {
-					console.log("Cift actiqiniz icin, artik seri acamazsiniz!");
+					this.popMessage("Cift actiqiniz icin, artik seri acamazsiniz!");
 					openPunish[seat] = 0;
 				}
 				return 0;
 			}
 			if (sortType == 2 && openStatusSort[seat] == 1 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					console.log("Seri actiqiniz icin, artik cift acamazsiniz!");
+					this.popMessage("Seri actiqiniz icin, artik cift acamazsiniz!");
 				}
 				return 0;
 			}
 			if (sortType == 1 && Board.UserTotal < openLimit && openStatusSort[seat] == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					console.log("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
+					this.popMessage("Seri acabilmeniz icin toplam " + openLimit + " puana ulasmasi gerekiyor!");
 					openPunish[seat] = 1;
 				}
 				if (seat != 1 || AIStatus == 1) {
@@ -914,7 +909,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			if (sortType == 2 && Board.UserTotalDouble < openLimitDouble && openStatusDouble[seat] == 0 && Board.handleDouble == 0) {
 				if (seat == 1 && AIStatus == 0) {
-					console.log("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
+					this.popMessage("Cift acabilmeniz icin toplam en az " + openLimitDouble + " seriniz olmasi gerekiyor!");
 					openPunish[seat] = 1;
 				}
 				if (seat != 1 || AIStatus == 1) {
@@ -923,16 +918,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 
 			if (Board.UserTotalDouble == 0 && sortType == 2 && seat == 1 && AIStatus == 0) {
-				console.log("Cift acabilecek tasiniz yok!");
+				this.popMessage("Cift acabilecek tasiniz yok!");
 			}
 
 			var setTiles;
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
-					// UI update
-					APP.game.dispatch({ type: "user-initial-meld", seat, total: Board.UserTotal });
-
-					console.log(seat + " seri acti: " + Board.UserTotal);
+					this.popMessage(seat + " seri acti: " + Board.UserTotal);
 					if (settingsIncrease == 1) {
 						openLimitLast = openLimit;
 						openLimit = Board.UserTotal * 1 + 1;
@@ -950,7 +942,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (sortType == 2) {
 				if (openStatusDouble[seat] == 0) {
 					let userName = APP.game.els.el.find(`.player .seat[data-seat="${seat}"] .name`).data("name");
-					console.log(userName + " cift acti : " + Board.UserTotalDouble);
+					this.popMessage(userName + " cift acti : " + Board.UserTotalDouble);
 					if (settingsIncrease == 1 && Board.UserTotalDouble >= openLimitDouble) {
 						openLimitDoubleLast = openLimitDouble;
 						openLimitDouble = Board.UserTotalDouble * 1 + 1;
@@ -1012,7 +1004,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (seat != 1 || AIStatus == 1) {
 					this.collectItBack();
 				} else {
-					console.log("Istakanizsa saqa atabiceqiniz tas kalmadi.");
+					this.popMessage("Istakanizsa saqa atabiceqiniz tas kalmadi.");
 				}
 			}
 			Board.handleDouble = 0;
@@ -1027,7 +1019,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";
-			return APP.game.dispatch({ type, from: seat, setTiles });
+			return APP.game.dispatch({ type, from: seat, setTiles, total: Board.UserTotal });
 		},
 		markIt(seat) {
 			Tiles.markCont = 1;
@@ -1042,13 +1034,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var bTiles = Board.tiles.filter(e => !!e).slice();
 			if (bTiles.length <= Board.tileLimits[seat]) {
 				if (seat == 1) {
-					console.log("Önce yerden tas almaniz gerekiyor!");
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0) {
 				if (seat == 1) {
-					console.log("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
 				}
 				return 0;
 			}
@@ -1062,7 +1054,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.handleDouble = 0;
 				this.checkWinDouble();
 				if (UserTotalDouble > 0) {
-					console.log(users[seat] + " cift isledi!");
+					this.popMessage(users[seat] + " cift isledi!");
 					Board.handleDouble = 1;
 					this.putToTable(activePlayer, 2);
 				}
@@ -1098,13 +1090,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var bTiles = Board.tiles.filter(e => !!e).slice();
 			if (bTiles.length <= Board.tileLimits[seat] && num == 0) {
 				if (seat == 1 && Tiles.markCont == 0) {
-					console.log("Önce yerden tas almaniz gerekiyor!");
+					this.popMessage("Önce yerden tas almaniz gerekiyor!");
 				}
 				return 0;
 			}
 			if (openStatusSort[seat] == 0 && openStatusDouble[seat] == 0 && num == 0) {
 				if (seat == 1) {
-					console.log("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
+					this.popMessage("Tas iseleyebilmeniz icin el acmaniz gerekiyor!");
 				}
 				return 0;
 			}
@@ -1125,7 +1117,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (_0x5e0d4d.length == 1 && num == 0) {
 					this.markIt(seat);
 					if (seat == 1) {
-						console.log("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
+						this.popMessage("Son tasi isleyemezsiniz, saqa atmaniz gerekiyor.");
 					}
 					return 0;
 				}
@@ -1344,7 +1336,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 									if (num == 0) {
 										if (_0x1fc99b == Tiles.okey) _0x1fc99b = Tiles.okey % 100 + 800;
 										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
-										console.log(users[seat] + " seri isledi!");
+										this.popMessage(users[seat] + " seri isledi!");
 										Board.tileLimits[seat]--;
 										if (activePlayer != _0x49f720) {
 											_0x364dc5[_0x49f720] += _0x1fc99b % 100 * 10;
@@ -1604,7 +1596,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										this.updateBoard();
 										activePlayer = _0x559c6d;
 										_0x108f0b = 1;
-										console.log(users[activePlayer] + " yerden okey aldi!");
+										this.popMessage(users[activePlayer] + " yerden okey aldi!");
 									} else {
 										Tiles.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
@@ -1648,7 +1640,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										if (Board.tiles[i] == "000") {
 											Board.tiles[i] = okey % 100 + 800;
 										}
-										console.log("yerden okey aliniyor!");
+										this.popMessage("yerden okey aliniyor!");
 										Board.getOkeyKont = 1;
 										this.moveToTable(_0x3dd017, _0x495ad6[i], k, j, 2);
 										Board.getOkeyKont = 0;
@@ -1979,6 +1971,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
+		},
+		popMessage(msg) {
+			console.log(msg);
 		}
 	};
 

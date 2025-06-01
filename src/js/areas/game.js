@@ -125,7 +125,6 @@
 				Engine.arrange(1, 1);
 				// update rack
 				Self.dispatch({ type: "update-user-rack" });
-				// console.log( JSON.stringify(Board.tiles1) );
 				break;
 			case "engine-sort-double":
 				Engine.arrange(1, 2);
@@ -327,7 +326,11 @@
 							el.removeClass("anim-start anim-end").css({ "--aT": "" });
 							// reset table tiles
 							el.find(`.tile[style*="--fd:"]`).css({ "--fd": "", "--fy": "", "--fx": "" });
-							setTimeout(() => resolve(), 500);
+
+							// UI update
+							Self.dispatch({ type: "user-initial-meld", seat: event.from, total: event.total });
+
+							setTimeout(() => resolve(), 1000);
 						}), 100);
 				});
 				break;
@@ -450,12 +453,10 @@
 					Drag.posY = pY;
 					Drag.posX = pX;
 					Self.els.rack.css({ "--posY": pY, "--posX": pX });
-					// console.log(Drag.posX);
 				}
 				break;
 			case "mouseover":
 				Drag.hover = $(event.srcElement);
-				// console.log(event.srcElement);
 				break;
 			case "mouseup":
 				// handle tile drag end
@@ -487,7 +488,6 @@
 
 					switch (true) {
 						case Drag.hover.hasClass("rack"):
-							console.log(1);
 							css = {
 								top: (pY * 78) + 5,
 								left: (pX * 56) + 21,
@@ -568,7 +568,6 @@
 							}
 							break;
 						case Drag.hover.hasClass("inset"):
-							console.log(2);
 							Drag.isThrow = true;
 							// sof land position
 							css = {
@@ -577,9 +576,7 @@
 							};
 							break;
 						case Drag.hover.hasClass("board"):
-							console.log(3);
 							if (Drag.el.hasClass("new-tile")) {
-							console.log(4);
 								css = Self.getEmptySlot();
 							}
 							break;
