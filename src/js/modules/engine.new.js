@@ -439,7 +439,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			this.updateBoard();
 
-			/* 
+			/* */
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					console.log("Oyun Bitti: " + users[activePlayer] + " Seri acti");
@@ -455,7 +455,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					this.gameOver(1);
 				}
 			}
-			*/
 		},
 		checkWin() {
 			Board.virtualTiles = Board.tiles.slice();
@@ -632,7 +631,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						break;
 				}
 			}
-			// if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice());
+			// if (activePlayer == 3) console.log(1111, Board.User3Total, Board.User3Seri.slice().map(e => e ? e.value : e));
 			if (activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
@@ -763,7 +762,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.place(areaItemLast, tiles);
 			this.arrange(activePlayer);
 			this.checkWin();
-			
+
 			var seatTotal = Board[`User${seat}Total`];
 			var _0x19ab28 = areaItemLast.value; // areaItemLast.split('-');
 			// _0x19ab28 = _0x19ab28[1] - 1;

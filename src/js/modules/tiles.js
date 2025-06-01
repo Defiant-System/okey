@@ -107,7 +107,7 @@ let Tiles = {
 		}
 	},
 	draw() {
-		return this.tilesLeft.shift();
+		return this.tilesLeft.pop();
 	},
 	parse(tile) {
 		let id = tile.toString(),

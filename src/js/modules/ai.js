@@ -181,7 +181,6 @@ let AI = {
 			// Engine.removeStampfromCenter();
 
 			let tile = Tiles.draw();
-			// console.log(Board.tiles.map(e => e ? e.value : e));
 			Board.tiles.push(tile);
 			Engine.updateBoard();
 			// console.log(Board.tiles.map(e => e ? e.value : e));
