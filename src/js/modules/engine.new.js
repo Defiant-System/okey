@@ -16,7 +16,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 		settingsPunish = 0,
 		AIcont = 0,
 		AIStatus = 0;
-	
+
 	let perFull = [];
 	let perHalf = [];
 
@@ -1020,6 +1020,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (sortType == 1) this.checkWin();
 				if (sortType == 2) this.checkWinDouble();
 			}
+
+			// remove tiles from active board rack
+			setTiles.filter(e => !!e).map(tile => Tiles.removeArrayItem(Board.tiles, tile));
+
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";
 			return APP.game.dispatch({ type, from: seat, setTiles });

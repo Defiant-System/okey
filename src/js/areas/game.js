@@ -67,7 +67,7 @@
 					});
 				});
 
-				// console.log(JSON.stringify(state));
+				console.log(JSON.stringify(state));
 				// console.log(state);
 				break;
 			case "show-settings":
@@ -382,7 +382,8 @@
 					rOffset = Self.els.rack.offset(".board"),
 					isNew;
 				if (el.parent().hasClass("left")) {
-					let { id, clr, num } = Engine.drawTile(),
+					let tile = Tiles.draw(),
+						{ id, clr, num } = Tiles.parse(tile.value),
 						lTiles = Self.els.el.find(".info .tiles.left"),
 						lOffset = lTiles.offset(".board"),
 						y = lOffset.top - rOffset.top + 5,
@@ -480,6 +481,7 @@
 
 					switch (true) {
 						case Drag.hover.hasClass("rack"):
+							console.log(1);
 							css = {
 								top: (pY * 78) + 5,
 								left: (pX * 56) + 21,
@@ -560,6 +562,7 @@
 							}
 							break;
 						case Drag.hover.hasClass("inset"):
+							console.log(2);
 							Drag.isThrow = true;
 							// sof land position
 							css = {
@@ -568,7 +571,9 @@
 							};
 							break;
 						case Drag.hover.hasClass("board"):
+							console.log(3);
 							if (Drag.el.hasClass("new-tile")) {
+							console.log(4);
 								css = Self.getEmptySlot();
 							}
 							break;

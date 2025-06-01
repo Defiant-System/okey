@@ -78,27 +78,25 @@ let AI = {
 
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
-		// if (aiTiles.length > 0) {
-		// 	var _0x280b69 = aiTiles.uid - 1;
-		// 	if (aiTiles.length > 0) {
-		// 		var _0x33ee = 0;
-		// 		while ((data[_0x280b69] == Tiles.okey || handleItems.indexOf(Board.tiles[boardPlaces.indexOf(selectedTile) - 1]) > -1) && aiTiles.length - _0x33ee > 0) {
-		// 			_0x33ee++;
-		// 			selectedTile = aiTiles[aiTiles.length - _0x33ee];
-		// 			var _0x280b69 = selectedTile.split('-');
-		// 			_0x280b69 = _0x280b69[1] - 1;
-		// 		}
-		// 	}
-		// 	if (seat != 1) {
-		// 		var _0x77769 = Math.ceil(Math.random() * 10);
-		// 		if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
-		// 			console.log("el bozuyor");
-		// 			selectedTile = aiTiles[0];
-		// 		}
-		// 	}
-		// } else {
-		// 	console.log("tas bitti - 1");
-		// }
+		if (aiTiles.length > 0) {
+			var _0x280b69 = selectedTile.uid;
+			if (aiTiles.length > 0) {
+				var _0x33ee = 0;
+				while ((selectedTile.value == Tiles.okey || Tiles.handleItems.findIndex(e => e.uid == selectedTile.uid) > -1) && aiTiles.length - _0x33ee > 0) {
+					_0x33ee++;
+					selectedTile = aiTiles[aiTiles.length - _0x33ee];
+				}
+			}
+			if (seat != 1) {
+				var _0x77769 = Math.ceil(Math.random() * 10);
+				if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
+					console.log("el bozuyor");
+					selectedTile = aiTiles[0];
+				}
+			}
+		} else {
+			console.log("tas bitti - 1");
+		}
 
 		// console.log(selectedTile);
 		// let index = boardPlaces.indexOf(selectedTile),
@@ -117,7 +115,7 @@ let AI = {
 			return 0;
 		}
 
-		// // stop timeout
+		// stop timeout
 		// if (activePlayer == 3) Board.gameOver = 1;
 	},
 	evalDiscarded(seat) {
@@ -184,9 +182,9 @@ let AI = {
 			// Engine.removeStampfromCenter();
 
 			let tile = Tiles.draw();
+			console.log(tile);
 			Board.tiles.push(tile);
 			Engine.updateBoard();
-			// console.log(Board.tiles.map(e => e ? e.value : e));
 			Engine.updateLeftTiles(tile);
 
 			// UI animation
