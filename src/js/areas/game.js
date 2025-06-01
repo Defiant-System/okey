@@ -112,7 +112,7 @@
 				APP.content.find(`.info .tiles.okey .tile`)
 					.removeClass("red yellow blue black green")
 					.addClass(iOkey.clr)
-					.data({ v: iOkey.num });
+					.data({ v: iOkey.num, id: iOkey.id });
 				break;
 			case "set-game-engine":
 				let types = ["51", "101", "okey"],

@@ -13,7 +13,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 		settingsIndicator = 1,
 		settingswithColors = 0,
 		settingsIncrease = 0,
-		settingsPunish = 0;
+		settingsPunish = 0,
+		AIcont = 0,
+		AIStatus = 0;
+	
 	let perFull = [];
 	let perHalf = [];
 
@@ -282,7 +285,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 					if (seat == 4) {
 						activePlayer = 1;
-						this.getBoard(activePlayer);
+						this.getRack(activePlayer);
 						if (AIStatus == 1) {
 							AI.think(1);
 						} else {
@@ -730,6 +733,26 @@ let { Engine, Board, Tiles, AI } = (() => {
 			} else {
 				return 0;
 			}
+		},
+		changePlayer(seat) {
+			activePlayer = seat;
+			// if (activePlayer == 4) activePlayerCont = 1;
+
+			APP.game.els.el.find(`.seat.highlight`).removeClass("highlight");
+			if (activePlayer === 1) {
+				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
+					.data({ status: "THINKING" })
+					.cssSequence("thinking", "transitionend", el => {
+						console.log("force move");
+					});
+			} else {
+				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
+					.addClass("highlight");
+			}
+
+			Board.collect = [];
+			Board.collectPlaces = [];
+			Board.collectTiles = [];
 		},
 		countBoard(seat) {
 			switch (seat) {

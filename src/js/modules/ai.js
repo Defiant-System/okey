@@ -7,6 +7,9 @@ let AI = {
 		// move tile data to Board primary
 		Engine.getRack(seat);
 
+		AIcont = 1;
+		Engine.changePlayer(seat);
+
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
 			await this.makeMove(seat);
@@ -115,7 +118,7 @@ let AI = {
 		}
 
 		// // stop timeout
-		if (activePlayer == 3) Board.gameOver = 1;
+		// if (activePlayer == 3) Board.gameOver = 1;
 	},
 	evalDiscarded(seat) {
 		var discard;
