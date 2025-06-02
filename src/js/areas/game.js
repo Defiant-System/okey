@@ -100,8 +100,6 @@
 				break;
 			case "restore-state":
 				Engine.restore(event.state);
-				// okey indicator
-				Self.dispatch({ type: "set-okey-indicator" });
 				// update user rack
 				Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1, noAnim: true });
 				break;

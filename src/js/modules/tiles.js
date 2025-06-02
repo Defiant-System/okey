@@ -105,9 +105,11 @@ let Tiles = {
 			this.tilesLeft = this.data.slice();
 			this.deliver();
 		}
+		// okey indicator
+		APP.game.dispatch({ type: "set-okey-indicator" });
 	},
-	draw() {
-		return this.tilesLeft.pop();
+	draw(fromStart) {
+		return fromStart ? this.tilesLeft.shift() : this.tilesLeft.pop();
 	},
 	parse(tile) {
 		let id = tile.toString(),
@@ -123,36 +125,25 @@ let Tiles = {
 		return { id, clr, num };
 	},
 	deliver() {
-		let tileIndex = 0;
-		for (let i=0; i<=this.tileLimit; i++) {
-			tiles1.push(this.data[this.tileIndex]);
-			updateLeftTiles(this.data[this.tileIndex]);
-			tileIndex++;
-		}
-		for (let i=0; i<this.tileLimit; i++) {
-			tiles2.push(this.data[this.tileIndex]);
-			updateLeftTiles(this.data[this.tileIndex]);
-			tileIndex++;
-		}
-		for (let i=0; i<this.tileLimit; i++) {
-			tiles3.push(this.data[this.tileIndex]);
-			updateLeftTiles(this.data[this.tileIndex]);
-			tileIndex++;
-		}
-		for (let i=0; i<this.tileLimit; i++) {
-			tiles4.push(this.data[this.tileIndex]);
-			updateLeftTiles(this.data[this.tileIndex]);
-			tileIndex++;
-		}
+		let dEl = APP.game.els.el.find(".dealer"),
+			dealer = +dEl.data("pos") || 4;
+		dealer = (dealer + 1) % 4;
 
-		let x = parseInt(this.data[105].value.substr(0, 1));
-		let y = parseInt(this.data[105].value.substr(1, 2));
-		Tiles.okey = y + 1;
-		if (Tiles.okey > 13) Tiles.okey = 1;
-		if (Tiles.okey < 10) Tiles.okey = "0"+ Tiles.okey;
-		Tiles.okey = ""+ x + Tiles.okey;
-		// console.log( Tiles.okey );
+		for (let i=0; i<Board.tileLimit; i++) { Board.tiles1.push(this.draw(1)); }
+		for (let i=0; i<Board.tileLimit; i++) { Board.tiles2.push(this.draw(1)); }
+		for (let i=0; i<Board.tileLimit; i++) { Board.tiles3.push(this.draw(1)); }
+		for (let i=0; i<Board.tileLimit; i++) { Board.tiles4.push(this.draw(1)); }
+		Board[`tiles${dealer}`].push(this.draw(1));
 
+		let okeyValue = this.tilesLeft[this.tilesLeft.length-1].value,
+			x = parseInt(okeyValue.substr(0,1),10),
+			y = parseInt(okeyValue.substr(1,2),10);
+		this.okey = y + 1;
+		if (this.okey > 13) this.okey = 1;
+		if (this.okey < 10) this.okey = "0"+ this.okey;
+		this.okey = ""+ x + this.okey;
+		// show how many tiles left
+		Engine.updateLeftTiles();
 		// auto arrange "series"
 		Engine.arrange(1, 1);
 	},

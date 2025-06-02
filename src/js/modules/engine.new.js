@@ -418,6 +418,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
+			console.log(Board.tiles.slice());
 
 			/* */
 			let arr7 = [];
