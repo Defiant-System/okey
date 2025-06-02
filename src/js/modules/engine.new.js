@@ -155,6 +155,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkThrow(seat) {
 			let discard = APP.game.els.discard[`player${(seat-1) || 4}`].find(".tile").get(0);
+			if (!discard.length) return;
+			
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
 
 			if (Board.leftHandCont) {

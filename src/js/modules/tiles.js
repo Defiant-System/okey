@@ -150,11 +150,9 @@ let Tiles = {
 		Engine._state.player.push({ seat: 2, name: oppo.pop(), discard: [], rack: [] });
 		Engine._state.player.push({ seat: 3, name: oppo.pop(), discard: [], rack: [] });
 		Engine._state.player.push({ seat: 4, name: oppo.pop(), discard: [], rack: [] });
-
-		Engine._state.player.map(player => {
-			let el = APP.game.els.el.find(`.player .seat[data-seat="${player.seat}"] .name`);
-			el.data({ name: player.name });
-		});
+		// set player names
+		Engine._state.player.map(player =>
+			APP.game.els.el.find(`.player .seat[data-seat="${player.seat}"] .name`).data({ name: player.name }));
 
 		// show how many tiles left
 		Engine.updateLeftTiles();
