@@ -127,7 +127,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					x = (offset.left - 21) / 56,
 					i = (y * 16) + x;
 				Board.virtualTiles[i] = { uid, value };
-				if (value === "000") Board.virtualTiles[i]._value = "000";
 				if (!Board.tiles.find(tile => tile.uid == uid)) throw "Rack is tampered with";
 			});
 			// console.log( Board.virtualTiles );
@@ -315,26 +314,23 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			okeyCont = 0;
 			if (activePlayer == 1) min = 1;
-
-			// backup value of "replacement"
-			Board.tiles.map(tile => (tile.value === "000") ? tile._value = tile.value : void(0));
 			
 			if (settingsGameLevel > 1 || min == 1) {
-				let oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
+				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
-				oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
+				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
-				oI = Board.tiles.findIndex(e => (e._value || e.value) == "000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				oI = Board.tiles.findIndex(e => (e._value || e.value) == "000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
@@ -527,7 +523,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 									temp[k].value = temp[k].value % 100 + 800;
 								}
 								temp2.push(temp[k]);
-								var bvLen = Board.virtualTiles.findIndex(e => (e._value || e.value) == temp[k].value);
+								var bvLen = Board.virtualTiles.findIndex(e => e.value == temp[k].value);
 								if (bvLen != -1) Board.virtualTiles[bvLen] = "";
 							}
 							temp2.push("");
@@ -1831,7 +1827,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		putOkeyToTable(seat) {
-			let oI = Board.tiles.findIndex(e => (e._value || e.value) == Tiles.okey);
+			let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 			if (oI == -1) return 0;
 			
 			var _0xecd2ba;

@@ -159,7 +159,7 @@
 				str = [];
 				event.tiles.map((tile, i) => {
 					if (tile) {
-						let { id, clr, num } = Tiles.parse(tile._value || tile.value),
+						let { id, clr, num } = Tiles.parse(tile.value),
 							tY = (parseInt(i / 16, 10) * 78) + 5,
 							tX = ((i % 16) * 56) + 21,
 							sY = sOffset.top - dOffset.top + 5,
@@ -223,7 +223,10 @@
 			case "discard-tile":
 				let eventTile = Tiles.parse(event.tile.value);
 				pEl = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).addClass("discard-tile");
-				el = pEl.find(".tile").removeClass("blank").addClass(eventTile.clr).data({ v: eventTile.num });
+				el = pEl.find(".tile")
+						.removeClass("blank")
+						.addClass(eventTile.clr)
+						.data({ v: eventTile.num, id: eventTile.id, uid: event.tile.uid });
 				return new Promise(resolve => {
 					setTimeout(() => {
 						pEl.cssSequence("discard-anim", "transitionend", elem => {
@@ -301,7 +304,7 @@
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((tile, x) => {
-						let col = tile._value || tile.value,
+						let col = tile.value,
 							{ id, clr, num } = Tiles.parse(col);
 						if (!i) {
 							switch (num) {
@@ -353,7 +356,7 @@
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((tile, x) => {
-						let col = tile._value || tile.value,
+						let col = tile.value,
 							{ id, clr, num } = Tiles.parse(col);
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
