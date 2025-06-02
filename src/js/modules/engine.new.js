@@ -37,6 +37,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			tiles2: [],
 			tiles3: [],
 			tiles4: [],
+			dealer: 4,
 			gameOver: 0,
 			winWithOkey: 0,
 			winWithDouble: 0,
@@ -107,6 +108,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this._state = state;
 			// restore Tiles object
 			Tiles.restore(state);
+			// dealer button
+			APP.game.dispatch({ type: "set-dealer-buttton" });
+			// okey indicator
+			APP.game.dispatch({ type: "set-okey-indicator" });
 
 			this.checkThrow(activePlayer);
 		},
@@ -144,7 +149,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.updateRack(Drag.rack);
 
 			if (Drag.isThrow) {
-				activePlayer = (activePlayer + 1) % 4;
+				// activePlayer = (activePlayer + 1) % 4;
 				this.checkThrow(activePlayer);
 			} else {
 				// if not throw tile, anything to do?
@@ -154,9 +159,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 			this.checkWin();
 		},
 		checkThrow(seat) {
-			let discard = APP.game.els.discard[`player${(seat-1) || 4}`].find(".tile").get(0);
+			let discard = APP.game.els.discard[`player${seat}`].find(".tile").get(0);
 			if (!discard.length) return;
-			
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
 
 			if (Board.leftHandCont) {
@@ -263,7 +267,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}
 			}
 			if (seat == 1 && _0x1c04c4 != 1) {
-				laps++;
 				if (Board.area1items.length == 0) {
 					this.playAudio(3);
 				} else {
@@ -279,7 +282,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.gameMoveCont = 0;
 				Board.timmerNextPlayer = setTimeout(() => {
 					if (Board.gameOver == 1) return 0;
-					
 					if (seat == 1) AI.think(2);
 					if (seat == 2) AI.think(3);
 					if (seat == 3) AI.think(4);
@@ -420,7 +422,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
-			console.log(Board.tiles.slice());
+			// console.log(Board.tiles.slice());
 
 			/* */
 			let arr7 = [];
@@ -1970,6 +1972,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
+		},
+		playAudio(num) {
+			console.log("play audio", num);
 		},
 		popMessage(msg) {
 			console.log(msg);

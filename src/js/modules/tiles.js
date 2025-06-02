@@ -74,8 +74,6 @@ let Tiles = {
 				APP.game.els.el.find(`.discard .player-${player.seat}`).html(str.join(""));
 			});
 
-			// console.log( Board.tiles3.slice().map(e => e ? e.value : e) );
-
 			Object.keys(state.melded).map(what => {
 				if (state.melded[what].length) {
 					APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
@@ -105,8 +103,6 @@ let Tiles = {
 			this.tilesLeft = this.data.slice();
 			this.deliver();
 		}
-		// okey indicator
-		APP.game.dispatch({ type: "set-okey-indicator" });
 	},
 	draw(fromStart) {
 		return fromStart ? this.tilesLeft.shift() : this.tilesLeft.pop();
@@ -126,7 +122,7 @@ let Tiles = {
 	},
 	deliver() {
 		let dEl = APP.game.els.el.find(".dealer"),
-			dealer = +dEl.data("pos") || 4;
+			dealer = +dEl.data("pos") || Board.dealer;
 		dealer = (dealer + 1) % 4;
 
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles1.push(this.draw(1)); }

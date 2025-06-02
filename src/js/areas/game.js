@@ -103,6 +103,10 @@
 				// update user rack
 				Self.dispatch({ type: "deal-user-tiles", tiles: Board.tiles1, noAnim: true });
 				break;
+			case "set-dealer-buttton":
+				// set dealer button
+				Self.els.el.find(".dealer").data({ pos: Board.dealer });
+				break;
 			case "set-okey-indicator":
 				// set okey indicator
 				let okeyNum = Tiles.okey - 1;
