@@ -142,6 +142,20 @@ let Tiles = {
 		if (this.okey > 13) this.okey = 1;
 		if (this.okey < 10) this.okey = "0"+ this.okey;
 		this.okey = ""+ x + this.okey;
+
+		// reset players
+		let oppo = Opponents.slice().sort(() => Math.random() - 0.5);
+		Engine._state.player = [];
+		Engine._state.player.push({ seat: 1, name: ME.firstName, discard: [], rack: [] });
+		Engine._state.player.push({ seat: 2, name: oppo.pop(), discard: [], rack: [] });
+		Engine._state.player.push({ seat: 3, name: oppo.pop(), discard: [], rack: [] });
+		Engine._state.player.push({ seat: 4, name: oppo.pop(), discard: [], rack: [] });
+
+		Engine._state.player.map(player => {
+			let el = APP.game.els.el.find(`.player .seat[data-seat="${player.seat}"] .name`);
+			el.data({ name: player.name });
+		});
+
 		// show how many tiles left
 		Engine.updateLeftTiles();
 		// auto arrange "series"
