@@ -360,41 +360,47 @@ let Tiles = {
 		}
 		return bTiles;
 	},
-	addOkey(seat) {
+	addOkey(seat, okeyCont) {
 		// Board.tiles.sort();
 		Board.tiles.sort((a, b) => a.value - b.value);
 		Board.virtualTiles = Board.tiles.slice();
 		if (seat == 1) {
 			let index;
 			for (let i=2; i<=Board.tiles.length * 1 + 3; i++) {
-				if (Board.tiles[i-1]?.value % 100 == 1 && settingsType == 1) {
+				let t0 = Board.tiles[i]   ? Board.tiles[i].value   : "";
+				let t1 = Board.tiles[i-1] ? Board.tiles[i-1].value : "";
+				let t2 = Board.tiles[i+1] ? Board.tiles[i+1].value : "";
+				let t3 = Board.tiles[i-2] ? Board.tiles[i-2].value : "";
+
+				if (t1 % 100 == 1 && settingsType == 1) {
 					index = i - 1;
 				}
-				if (index && Board.tiles[i].value - Board.tiles[i-1].value == 1 && Board.tiles[i+1].value - Board.tiles[i].value == 2 && Board.tiles[i+1].value - Board.tiles[index].value == 12 && settingsType == 1) {
+				if (index && t0 - t1 == 1 && t2 - t0 == 2 && t2 - Board.tiles[index].value == 12 && settingsType == 1) {
+					let oTile = okeyCont.pop();
 					perFull.push(Board.tiles[i-1]);
 					perFull.push(Board.tiles[i]);
-					perFull.push({ value: "800" });
+					perFull.push(oTile);
 					perFull.push(Board.tiles[i+1]);
 					perFull.push(Board.tiles[index]);
 					perFull.push("");
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-1]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i+1]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[index]);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
-				if (Board.tiles[i-1]?.value - Board.tiles[i-2]?.value == 2 && Board.tiles[i].value - Board.tiles[i-1].value == 1 && Board.tiles[i+1].value - Board.tiles[i].value == 1 || Board.tiles[i-1]?.value - Board.tiles[i-2]?.value == 1 && Board.tiles[i].value - Board.tiles[i-1].value == 2 && Board.tiles[i+1].value - Board.tiles[i].value == 1) {
+				if (t1 - t3 == 2 && t0 - t1 == 1 && t2 - t0 == 1 || t1 - t3 == 1 && t0 - t1 == 2 && t2 - t0 == 1) {
+					let oTile = okeyCont.pop();
+
 					perFull.push(Board.tiles[i-2]);
-					if (Board.tiles[i-1]?.value - Board.tiles[i-2]?.value > 1) {
-						perFull.push({ value: "800" });
-					}
+					if (t1 - t3 > 1) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[i-1]);
-					if (Board.tiles[i].value - Board.tiles[i-1].value > 1) {
-						perFull.push({ value: "800" });
-					}
+					if (t0 - t1 > 1) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[i]);
 					perFull.push(Board.tiles[i+1]);
 					perFull.push("");
@@ -402,188 +408,216 @@ let Tiles = {
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-1]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-2]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
-				if (index && (Board.tiles[i].value - Board.tiles[i-1].value == 1 && Board.tiles[i].value - Board.tiles[index].value == 11 || Board.tiles[i].value - Board.tiles[i-1].value == 2 && Board.tiles[i].value - Board.tiles[index].value == 12) && settingsType == 1) {
+				if (index && (t0 - t1 == 1 && t0 - Board.tiles[index].value == 11 || t0 - t1 == 2 && t0 - Board.tiles[index].value == 12) && settingsType == 1) {
+					let oTile = okeyCont.pop();
+
 					perFull.push(Board.tiles[i-1]);
-					if (Board.tiles[i].value - Board.tiles[i-1].value == 2) {
-						perFull.push({ value: "800" });
-					}
+					if (t0 - t1 == 2) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[i]);
-					if (Board.tiles[i].value - Board.tiles[i-1].value == 1) {
-						perFull.push({ value: "800" });
-					}
+					if (t0 - t1 == 1) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[index]);
 					perFull.push("");
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-1]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[index]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
-				if (Board.tiles[i-1]?.value - Board.tiles[i-2]?.value == 2 && Board.tiles[i].value - Board.tiles[i-1].value == 1 || Board.tiles[i-1]?.value - Board.tiles[i-2]?.value == 1 && Board.tiles[i].value - Board.tiles[i-1].value == 2) {
+				if (t1 - t3 == 2 && t0 - t1 == 1 || t1 - t3 == 1 && t0 - t1 == 2) {
+					let oTile = okeyCont.pop();
+
 					perFull.push(Board.tiles[i-2]);
-					if (Board.tiles[i-1]?.value - Board.tiles[i-2]?.value > 1) {
-						perFull.push({ value: "800" });
-					}
+					if (t1 - t3 > 1) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[i-1]);
-					if (Board.tiles[i].value - Board.tiles[i-1].value > 1) {
-						perFull.push({ value: "800" });
-					}
+					if (t0 - t1 > 1) perFull.push(oTile);
+					
 					perFull.push(Board.tiles[i]);
 					perFull.push("");
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-1]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-2]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
 			}
 		}
 		if (seat == 2) {
 			let index;
 			for (let i=1; i<Board.tiles.length; i++) {
-				if (Board.tiles[i].value - Board.tiles[i-1].value == 2) {
+				let t0 = Board.tiles[i]   ? Board.tiles[i].value   : "";
+				let t1 = Board.tiles[i-1] ? Board.tiles[i-1].value : "";
+				let t2 = Board.tiles[i+1] ? Board.tiles[i+1].value : "";
+				let t3 = Board.tiles[i-2] ? Board.tiles[i-2].value : "";
+
+				if (t0 - t1 == 2) {
+					let oTile = okeyCont.pop();
 					perHalf.push(Board.tiles[i-1]);
-					perHalf.push({ value: "800" });
+					perHalf.push(oTile);
 					perHalf.push(Board.tiles[i]);
 					perHalf.push("");
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i-1]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
-				if (Board.tiles[i-1]?.value % 100 == 1 && settingsType == 1) {
+				if (t1 % 100 == 1 && settingsType == 1) {
 					index = i - 1;
 				}
-				if (index && Board.tiles[i].value - Board.tiles[index].value == 11 && settingsType == 1) {
+				if (index && t0 - Board.tiles[index].value == 11 && settingsType == 1) {
+					let oTile = okeyCont.pop();
 					perHalf.push(Board.tiles[i]);
-					perHalf.push({ value: "800" });
+					perHalf.push(oTile);
 					perHalf.push(Board.tiles[index]);
 					perHalf.push("");
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[index]);
-					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+					Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 					Board.tiles = Board.virtualTiles.slice();
-					okeyCont--;
-					if (okeyCont == 0) return 0;
+					// okeyCont--;
+					if (!okeyCont.length) return 0;
 				}
 			}
 		}
 		if (seat == 3) {
 			for (let j=0; j<perHalf.length; j++) {
-				if (perHalf[j] == "" && ((settingsType == 2 || settingsType == 3) && perHalf[j-1].value % 100 != 13 || settingsType == 1)) {
-					if (perHalf[j-1].value - perHalf[j-2]?.value == 1) {
-						perHalf.splice(j, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+				let p1 = perHalf[j-1] ? perHalf[j-1].value : "";
+				let p2 = perHalf[j-2] ? perHalf[j-2].value : "";
+				if (perHalf[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+					if (p1 - p2 == 1) {
+						let oTile = okeyCont.pop();
+						perHalf.splice(j, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
-					if (perHalf[j-2]?.value - perHalf[j-1].value == 12 && settingsType == 1) {
-						perHalf.splice(j-2, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+					if (p2 - p1 == 12 && settingsType == 1) {
+						let oTile = okeyCont.pop();
+						perHalf.splice(j-2, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
 				}
 			}
 			for (let j=0; j<perHalf.length; j++) {
 				if (perHalf[j] == "") {
-					if (perHalf[j-1].value % 100 == perHalf[j-2]?.value % 100 && perHalf[j-1].value != perHalf[j-2]?.value) {
-						perHalf.splice(j, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+					let p1 = perHalf[j-1] ? perHalf[j-1].value : "";
+					let p2 = perHalf[j-2] ? perHalf[j-2].value : "";
+					if (p1 % 100 == p2 % 100 && p1 != p2) {
+						let oTile = okeyCont.pop();
+						perHalf.splice(j, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
 				}
 			}
 		}
 		if (seat == 4) {
 			for (let j=0; j<perFull.length; j++) {
-				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && perFull[j-1].value % 100 != 13 || settingsType == 1)) {
-					if (perFull[j-1].value - perFull[j-2]?.value == 1) {
+				let p1 = perFull[j-1] ? perFull[j-1].value : "";
+				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+					if (p1 - perFull[j-2]?.value == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
-							if (Board.tiles[i].value - perFull[j-1].value == 2) {
-								perFull.splice(j, 0, { value: "800" });
+							if (Board.tiles[i].value - p1 == 2) {
+								let oTile = okeyCont.pop();
+								perFull.splice(j, 0, oTile);
 								perFull.splice(j + 1, 0, Board.tiles[i]);
-								okeyCont--;
-								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-								Board.tiles = this.removeArrayItem(Board.tiles, "800");
+								// okeyCont--;
+								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+								Board.tiles = this.removeArrayItem(Board.tiles, oTile);
 								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
-								if (okeyCont == 0) return 0;
+								if (!okeyCont.length) return 0;
 							}
 						}
 					}
 				}
 			}
 			for (let j=0; j<perFull.length; j++) {
-				if ((perFull[j-1] == "" || j == 0) && perFull[j+1].value % 100 != 1) {
-					if (perFull[j+1].value - perFull[j].value == 1) {
+				let p0 = perFull[j].value;
+				let p1 = perFull[j+1].value;
+				if ((perFull[j-1] == "" || j == 0) && p1 % 100 != 1) {
+					if (p1 - p0 == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
-							if (perFull[j].value - Board.tiles[i].value == 2) {
-								perFull.splice(j, 0, { value: "800" });
+							if (p0 - Board.tiles[i].value == 2) {
+								let oTile = okeyCont.pop();
+								perFull.splice(j, 0, oTile);
 								perFull.splice(j, 0, Board.tiles[i]);
-								okeyCont--;
-								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-								Board.tiles = this.removeArrayItem(Board.tiles, "800");
+								// okeyCont--;
+								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+								Board.tiles = this.removeArrayItem(Board.tiles, oTile);
 								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
-								if (okeyCont == 0) return 0;
+								if (!okeyCont.length) return 0;
 							}
 						}
 					}
 				}
 			}
 			for (let j=0; j<perFull.length; j++) {
-				if (perFull[j] == "" && perFull[j-1].value % 100 == 12 && settingsType == 1) {
-					if (perFull[j-1].value - perFull[j-2]?.value == 1) {
+				let p1 = perFull[j-1] ? perFull[j-1].value : "";
+				let p2 = perFull[j-2] ? perFull[j-2].value : "";
+				if (perFull[j] == "" && p1 % 100 == 12 && settingsType == 1) {
+					if (p1 - p2 == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
-							if (perFull[j-1].value - Board.tiles[i].value == 11) {
+							if (p1 - Board.tiles[i].value == 11) {
+								let oTile = okeyCont.pop();
 								perFull.splice(j, 0, Board.tiles[i]);
-								perFull.splice(j, 0, { value: "800" });
-								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-								Board.tiles = this.removeArrayItem(Board.tiles, '800');
+								perFull.splice(j, 0, oTile);
+								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+								Board.tiles = this.removeArrayItem(Board.tiles, oTile);
 								Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
 								Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
-								okeyCont--;
-								if (okeyCont == 0) return 0;
+								// okeyCont--;
+								if (!okeyCont.length) return 0;
 							}
 						}
 					}
 				}
 			}
 			for (let j=0; j<perFull.length; j++) {
-				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && perFull[j-1].value % 100 != 13 || settingsType == 1)) {
-					if (perFull[j-1].value - perFull[j-2]?.value == 1) {
-						perFull.splice(j, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, '800');
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+				let p1 = perFull[j-1] ? perFull[j-1].value : "";
+				let p2 = perFull[j-2] ? perFull[j-2].value : "";
+				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+					if (p1 - p2 == 1) {
+						let oTile = okeyCont.pop();
+						perFull.splice(j, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
 				}
 			}
 			for (let j=0; j<perFull.length; j++) {
-				if ((perFull[j - 1] == "" || j == 0) && perFull[j+1].value % 100 != 1) {
-					if (perFull[j+2].value - perFull[j+1].value == 1) {
-						perFull.splice(j, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+				let p1 = perFull[j+1] ? perFull[j+1].value : "";
+				let p2 = perFull[j+2] ? perFull[j+2].value : "";
+				if ((perFull[j-1] == "" || j == 0) && p1 % 100 != 1) {
+					if (p2 - p1 == 1) {
+						let oTile = okeyCont.pop();
+						perFull.splice(j, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
 				}
 			}
@@ -591,33 +625,37 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				_0x2c0168++;
 				if (perFull[j] == "") {
-					if (perFull[j-1].value % 100 == perFull[j-2]?.value % 100 && perFull[j-1].value != perFull[j-2]?.value && _0x2c0168 < 5) {
-						perFull.splice(j, 0, { value: "800" });
-						okeyCont--;
-						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
-						Board.tiles = this.removeArrayItem(Board.tiles, "800");
-						if (okeyCont == 0) return 0;
+					let p1 = perFull[j-1] ? perFull[j-1].value : "";
+					let p2 = perFull[j-2] ? perFull[j-2].value : "";
+					if (p1 % 100 == p2 % 100 && p1 != p2 && _0x2c0168 < 5) {
+						let oTile = okeyCont.pop();
+						perFull.splice(j, 0, oTile);
+						// okeyCont--;
+						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
+						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+						if (!okeyCont.length) return 0;
 					}
 					_0x2c0168 = 0;
 				}
 			}
 		}
 	},
-	addOkeyDouble() {
+	addOkeyDouble(okeyCont) {
 		// Board.tiles.sort();
 		Board.tiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		Board.tiles.reverse();
 		for (let i=0; i<=Board.tiles.length; i++) {
 			if (Board.tiles[i].value != "800") {
+				let oTile = okeyCont.pop();
 				perFull.push(Board.tiles[i]);
-				perFull.push({ value: "800" });
+				perFull.push(oTile);
 				perFull.push("");
 				Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[i]);
-				Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, "800");
+				Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, oTile);
 				Board.tiles = this.removeArrayItem(Board.tiles, Board.tiles[i]);
-				Board.tiles = this.removeArrayItem(Board.tiles, "800");
-				okeyCont--;
-				if (okeyCont == 0) return 0;
+				Board.tiles = this.removeArrayItem(Board.tiles, oTile);
+				// okeyCont--;
+				if (!okeyCont.length) return 0;
 			}
 		}
 	},

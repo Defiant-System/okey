@@ -100,6 +100,7 @@ let AI = {
 
 		// let index = boardPlaces.indexOf(selectedTile),
 		// 	tile = Board.tiles[index - 1];
+		console.log(selectedTile);
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
 
 		// activePlayer = (activePlayer + 1) % 4;

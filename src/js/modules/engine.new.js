@@ -88,8 +88,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 			tableDoubleUserTiles4: new Array(14).fill(0).map(() => new Array(2).fill(0)),
 		};
 
-	let okeyCont = 0;
-
 	
 	@import "./tiles.js"
 	@import "./ai.js"
@@ -314,9 +312,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let arr3 = [];
 			let arr4 = [];
 			let arr5 = [];
+			let okeyCont = [];
 			let min = 0;
 
-			okeyCont = 0;
 			if (activePlayer == 1) min = 1;
 			
 			if (settingsGameLevel > 1 || min == 1) {
@@ -324,13 +322,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
-					okeyCont++;
+					okeyCont.push(Board.tiles[oI]);
 				}
 				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
-					okeyCont++;
+					okeyCont.push(Board.tiles[oI]);
 				}
 				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
@@ -364,7 +362,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr2.push.apply(arr2, arr3);
 				perFull = arr2.slice();
 				Tiles.addFourth();
-				if (okeyCont > 0) Tiles.addOkey(1);
+				if (okeyCont.length) Tiles.addOkey(1, okeyCont);
 				
 				arr2 = perFull.slice();
 				if (Tiles.checkPer(2) || settingsGameLevel < 3 && min == 0) {
@@ -385,14 +383,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr4.push.apply(arr4, arr5);
 				perHalf = arr4.slice();
 				
-				if (okeyCont > 0) {
-					Tiles.addOkey(2);
+				if (okeyCont.length) {
+					Tiles.addOkey(2, okeyCont);
 				}
-				if (okeyCont > 0) {
-					Tiles.addOkey(3);
+				if (okeyCont.length) {
+					Tiles.addOkey(3, okeyCont);
 				}
-				if (okeyCont > 0) {
-					Tiles.addOkey(4);
+				if (okeyCont.length) {
+					Tiles.addOkey(4, okeyCont);
 					arr2 = perFull.slice();
 				}
 				arr4 = perHalf.slice();
@@ -402,7 +400,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				arr2 = arr1.slice();
 				perFull = arr2.slice();
 				Board.tiles = Board.virtualTiles.slice();
-				if (okeyCont > 0) Tiles.addOkeyDouble();
+				if (okeyCont.length) Tiles.addOkeyDouble(okeyCont);
 				Board.tiles = Board.virtualTiles.slice();
 				arr2 = perFull.slice();
 			}
