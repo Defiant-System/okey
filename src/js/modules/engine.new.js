@@ -316,7 +316,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let min = 0;
 
 			if (activePlayer == 1) min = 1;
-			
+			// console.log(seat, type, Board.tiles.slice().map(e => e ? e.value : e));
 			if (settingsGameLevel > 1 || min == 1) {
 				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
@@ -340,6 +340,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
+				console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 			}
 			let arr6 = Board.tiles.slice();
 			
@@ -348,6 +349,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					arr1 = Tiles.sortTiles(3, 1);
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
+					if (arr) console.log(2222, Board.tiles.slice().map(e => e ? e.value : e));
 					arr1 = Tiles.sortTilesByColor(3, 1);
 					arr3 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
@@ -424,7 +426,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
-			// console.log(Board.tiles.slice());
+			
+			if (arr) return console.log(Board.tiles.slice().map(e => e ? e.value : e));
 
 			/* */
 			let arr7 = [];
@@ -576,16 +579,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x5b3924 = 1;
 						for (let j=0; j<temp.length; j++) {
 							if (j > 0) {
-								if (temp[j].value % 100 == temp[j-1].value % 100
-									&& (temp[j].value != temp[j-1].value
-									|| (temp[j].value / 900 > 1
-									&& temp[j-1].value / 900) > 1)
-									&& (temp[j].value != temp[j-2]?.value
-									|| (temp[j].value / 900 > 1
-									&& temp[j-2].value / 900) > 1)
-									&& temp[j].value != temp[j-3]?.value
-									|| (temp[j].value / 900 > 1
-									&& temp[j-3].value / 900) > 1) {
+								let t0 = temp[j].value;
+								let t1 = temp[j-1].value;
+								let t2 = temp[j-2] ? temp[j-2].value : "";
+								let t3 = temp[j-3] ? temp[j-3].value : "";
+								if (t0 % 100 == t1 % 100
+									&& (t0 != t1 || (t0 / 900 > 1 && t1 / 900) > 1)
+									&& (t0 != t2 || (t0 / 900 > 1 && t2 / 900) > 1)
+									&& t0 != t3 || (t0 / 900 > 1 && t3 / 900) > 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -666,18 +667,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 					var _0x5ad174;
 					_0xcba5d6 = t1v;
 					_0x5ad174 = t2v;
-					if (t1v == "000") {
-						_0xcba5d6 = Tiles.okey % 100 + 800;
-					}
-					if (t2v == "000") {
-						_0x5ad174 = Tiles.okey % 100 + 800;
-					}
-					if (t1v == Tiles.okey) {
-						_0xcba5d6 = _0x5ad174 % 100 + 900;
-					}
-					if (t2v == Tiles.okey) {
-						_0x5ad174 = _0xcba5d6 % 100 + 900;
-					}
+					
+					if (t1v == "000") _0xcba5d6 = Tiles.okey % 100 + 800;
+					if (t2v == "000") _0x5ad174 = Tiles.okey % 100 + 800;
+					if (t1v == Tiles.okey) _0xcba5d6 = _0x5ad174 % 100 + 900;
+					if (t2v == Tiles.okey) _0x5ad174 = _0xcba5d6 % 100 + 900;
+
 					_0x1290e9.push(String(_0xcba5d6));
 					_0x1290e9.push(String(_0x5ad174));
 					_0x1290e9.push("");

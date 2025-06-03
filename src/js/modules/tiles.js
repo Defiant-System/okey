@@ -175,7 +175,7 @@ let Tiles = {
 	sortTiles(num, sort, arr) {
 		if (arr) Board.tiles = arr;
 		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
-		Board.tiles.sort().sort((a, b) => a.value - b.value);
+		Board.tiles.sort((a, b) => a.value - b.value);
 		let asc = [];
 		let sorted = [];
 		let arr3 = 0;
@@ -233,41 +233,41 @@ let Tiles = {
 	},
 	sortTilesByColor(num, type, arr) {
 		if (arr) Board.tiles = arr.slice();
-		Board.virtualTiles = Board.tiles.slice().sort().sort((a, b) => a.value - b.value);
-		Board.virtualTiles.sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
-		let arr1 = [];
-		let arr2 = [];
+		Board.virtualTiles = Board.tiles.slice();
+		Board.virtualTiles.sort().sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
+		let asc = [];
+		let sorted = [];
 		let val1 = 0;
 		let val2 = 0;
 		let min = parseInt(Board.virtualTiles[0].value);
-		arr1.push(Board.virtualTiles[0]);
+		asc.push(Board.virtualTiles[0]);
 		for (let i=1; i<=Board.virtualTiles.length; i++) {
 			let tileValue = parseInt((Board.virtualTiles[i] || {}).value);
 			if (tileValue % 100 == min % 100 && tileValue != min) {
-				arr1.push(Board.virtualTiles[i]);
+				asc.push(Board.virtualTiles[i]);
 			} else if (tileValue != min) {
-				arr1 = [];
-				arr1.push(Board.virtualTiles[i]);
+				asc = [];
+				asc.push(Board.virtualTiles[i]);
 			}
-			if (arr1.length == num) {
-				arr2.push.apply(arr2, arr1);
-				arr2.push("");
-				arr1 = [];
+			if (asc.length == num) {
+				sorted.push.apply(sorted, asc);
+				sorted.push("");
+				asc = [];
 				val1++;
 			}
 			min = tileValue;
 		}
-		for (let i=0; i<=arr2.length; i++) {
-			if (arr2[i]) {
-				Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, arr2[i]);
-				val2 = val2 * 1 + arr2[i].value % 100;
+		for (let i=0; i<=sorted.length; i++) {
+			if (sorted[i]) {
+				Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, sorted[i]);
+				val2 = val2 * 1 + sorted[i].value % 100;
 			}
 		}
 		if (type == 0) {
 			if ([1].includes(settingsType)) return val1;
 			if ([2,3].includes(settingsType)) return val2;
 		}
-		if (type == 1) return arr2;
+		if (type == 1) return sorted;
 	},
 	sortDouble(seat, asc) {
 		Board.virtualTiles = Board.tiles.slice().filter(e => e !== "").sort((a, b) => a.value - b.value);
@@ -304,8 +304,13 @@ let Tiles = {
 		if (asc == 0 && ((settingsType == 1 || settingsType == 2 || settingsType == 3))) return index1;
 		if (asc == 1) return arr2;
 	},
-	checkPer(num) {
+	checkPer(num, tmp) {
 		let tiles = Board.tiles.slice();
+		if (tmp) {
+			tiles = tmp.slice();
+			Board.tiles = tiles.slice();
+			Board.virtualTiles = tiles.slice();
+		}
 		let arr = tiles.slice();
 		let sort1 = this.sortTiles(num, 0);
 		tiles = Board.virtualTiles.slice();
@@ -326,13 +331,16 @@ let Tiles = {
 			for (let i=0; i<bTiles.length; i++) {
 				for (let j=0; j<perFull.length; j++) {
 					if (perFull[j] == "") {
-						let _0x39a913 = bTiles[i].value;
+						let tile = bTiles[i].value;
 						if (settingsType == 1) {
 							if (bTiles[i] % 100 == 1) {
-								_0x39a913 = bTiles[i].value * 1 + 13;
+								tile = bTiles[i].value * 1 + 13;
 							}
 						}
-						if (perFull[j-1].value*1+1 == _0x39a913 && perFull[j-2]?.value*1+2 == _0x39a913 && perFull[j-3].value*1+3 == _0x39a913) {
+						let t1 = perFull[j-1] ? perFull[j-1].value * 1 : "";
+						let t2 = perFull[j-2] ? perFull[j-2].value * 1 : "";
+						let t3 = perFull[j-3] ? perFull[j-3].value * 1 : "";
+						if (t1+1 == tile && t2+2 == tile && t3+3 == tile) {
 							perFull.splice(j, 0, bTiles[i]);
 							Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, bTiles[i]);
 							bTiles = this.removeArrayItem(bTiles, bTiles[i]);
@@ -348,7 +356,11 @@ let Tiles = {
 				index++;
 				if (perFull[j] == "") {
 					if (index == 4) {
-						if (perFull[j-3].value % 100 == bTiles[i].value % 100 && perFull[j-2]?.value % 100 == bTiles[i].value % 100 && perFull[j-1].value % 100 == bTiles[i].value % 100 && perFull[j-1].value != bTiles[i].value && perFull[j-2]?.value != bTiles[i].value && perFull[j-3].value != bTiles[i].value) {
+						let t0 = bTiles[i].value;
+						let t1 = perFull[j-1] ? perFull[j-1].value : "";
+						let t2 = perFull[j-2] ? perFull[j-2].value : "";
+						let t3 = perFull[j-3] ? perFull[j-3].value : "";
+						if (t3 % 100 == t0 % 100 && t2 % 100 == t0 % 100 && t1 % 100 == t0 % 100 && t1 != t0 && t2 != t0 && t3 != t0) {
 							perFull.splice(j, 0, bTiles[i]);
 							Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, bTiles[i]);
 							bTiles = this.removeArrayItem(bTiles, bTiles[i]);
@@ -533,8 +545,9 @@ let Tiles = {
 		if (seat == 4) {
 			for (let j=0; j<perFull.length; j++) {
 				let p1 = perFull[j-1] ? perFull[j-1].value : "";
+				let p2 = perFull[j-2] ? perFull[j-2].value : "";
 				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
-					if (p1 - perFull[j-2]?.value == 1) {
+					if (p1 - p2 == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (Board.tiles[i].value - p1 == 2) {
 								let oTile = okeyCont.pop();
@@ -678,7 +691,12 @@ let Tiles = {
 			if (perFull[i] == "") {
 				if (index > 3) {
 					for (let j=0; j<Board.tiles.length; j++) {
-						if ((Board.tiles[j].value - perFull[i-1].value == 2 || perFull[i-index+1].value - Board.tiles[j].value == 2) && (Math.abs(perFull[i-1].value - perFull[i-2]?.value) == 1 || Math.abs(perFull[i-2]?.value - perFull[i-3].value) == 1)) {
+						let p0 = Board.tiles[j].value;
+						let p1 = perFull[i-1] ? perFull[i-1].value : "";
+						let p2 = perFull[i-2] ? perFull[i-2].value : "";
+						let p3 = perFull[i-3] ? perFull[i-3].value : "";
+						let t1 = perFull[i-index+1].value;
+						if ((p0 - p1 == 2 || t1 - p0 == 2) && (Math.abs(p1 - p2) == 1 || Math.abs(p2 - p3) == 1)) {
 							Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 							Board.virtualTiles.unshift(Board.tiles[j]);
 						}
@@ -693,7 +711,10 @@ let Tiles = {
 			if (perFull[i] == "") {
 				if (index > 4) {
 					for (let j=0; j<Board.tiles.length; j++) {
-						if (Board.tiles[j].value - perFull[i-1].value == 1 || perFull[i-index+1].value - Board.tiles[j].value == 1) {
+						let p0 = Board.tiles[j].value;
+						let p1 = perFull[i-1] ? perFull[i-1].value : "";
+						let t1 = perFull[i-index+1] ? perFull[i-index+1].value : "";
+						if (p0 - p1 == 1 || t1 - p0 == 1) {
 							Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 							Board.virtualTiles.unshift(Board.tiles[j]);
 						}
@@ -708,7 +729,10 @@ let Tiles = {
 			if (perFull[i] == "") {
 				if (index > 4) {
 					for (let j=0; j<Board.tiles.length; j++) {
-						if (Math.abs(Board.tiles[j].value - perFull[i-1].value) % 100 == 0 && Board.tiles[j].value - perFull[i-1].value != 0 || Math.abs(perFull[i-index+1].value - Board.tiles[j].value) % 100 == 0 && perFull[i-index+1].value - Board.tiles[j].value != 0) {
+						let t0 = Board.tiles[j].value;
+						let t1 = perFull[i-index+1].value;
+						let p1 = perFull[i-1].value;
+						if (Math.abs(t0 - p1) % 100 == 0 && t0 - p1 != 0 || Math.abs(t1 - t0) % 100 == 0 && t1 - t0 != 0) {
 							Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 							Board.virtualTiles.unshift(Board.tiles[j]);
 						}
@@ -721,7 +745,10 @@ let Tiles = {
 		for (let i=0; i<perHalf.length; i++) {
 			if (perHalf[i] == "") {
 				for (let j=0; j<Board.tiles.length; j++) {
-					if ((Math.abs(Board.tiles[j].value - perHalf[i-1].value) % 100 == 0 || Math.abs(Board.tiles[j].value - perHalf[i-2]?.value) % 100 == 0) && perHalf[i-1].value != Board.tiles[j].value && perHalf[i-2]?.value != Board.tiles[j].value) {
+					let t0 = Board.tiles[j].value;
+					let p1 = perHalf[i-1] ? perHalf[i-1].value : "";
+					let p2 = perHalf[i-2] ? perHalf[i-2].value : "";
+					if ((Math.abs(t0 - p1) % 100 == 0 || Math.abs(t0 - p2) % 100 == 0) && p1 != t0 && p2 != t0) {
 						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 						Board.virtualTiles.unshift(Board.tiles[j]);
 					}
@@ -732,7 +759,10 @@ let Tiles = {
 		for (let i=0; i<perHalf.length; i++) {
 			if (perHalf[i] == "") {
 				for (let j=0; j<Board.tiles.length; j++) {
-					if ((Math.abs(Board.tiles[j].value - perHalf[i-1].value) == 1 || Math.abs(perHalf[i-2]?.value - Board.tiles[j].value) == 1) && perHalf[i-1].value != Board.tiles[j].value && perHalf[i-2]?.value != Board.tiles[j].value) {
+					let t0 = Board.tiles[j].value;
+					let p1 = perHalf[i-1] ? perHalf[i-1].value : "";
+					let p2 = perHalf[i-2] ? perHalf[i-2].value : "";
+					if ((Math.abs(t0 - p1) == 1 || Math.abs(p2 - t0) == 1) && p1 != t0 && p2 != t0) {
 						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 						Board.virtualTiles.unshift(Board.tiles[j]);
 					}
@@ -743,7 +773,10 @@ let Tiles = {
 		for (let i=0; i<perHalf.length; i++) {
 			if (perHalf[i] == "") {
 				for (let j=0; j<Board.tiles.length; j++) {
-					if ((Math.abs(Board.tiles[j].value - perHalf[i-1].value) == 2 || Math.abs(perHalf[i-2]?.value - Board.tiles[j].value) == 2) && perHalf[i-1].value != Board.tiles[j].value && perHalf[i-2]?.value != Board.tiles[j].value) {
+					let t0 = Board.tiles[j].value;
+					let p1 = perHalf[i-1] ? perHalf[i-1].value : "";
+					let p2 = perHalf[i-2] ? perHalf[i-2].value : "";
+					if ((Math.abs(t0 - p1) == 2 || Math.abs(p2 - t0) == 2) && p1 != t0 && p2 != t0) {
 						Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, Board.tiles[j]);
 						Board.virtualTiles.unshift(Board.tiles[j]);
 					}

@@ -22,16 +22,42 @@ let Test = {
 		// return;
 
 
-		// Tiles.okey = "213";
+		Tiles.okey = "213";
 
-		// let tmp = ['101', '101', '', '307', '307', '', '', '', '', '', '', '', '', '', '108', '111', '204', '206', '207', '210', '306', '308', '309', '312', '402', '406', '409', '411', '412', '413', '800', '800'];
-		// let arr = tmp.map(e => {
+		let tiles = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
+		tiles = tiles.map(e => {
+				if (e) return { value: e };
+				else return e;
+			});
+		console.log( Tiles.checkPer(2, tiles) ); // 71 70
+		console.log( Tiles.checkPer(3, tiles) ); // 24 6
+		return;
+
+		// let tiles = ['401', '401', '102', '205', '305', '106', '206', '406', '107', '208', '308', '109', '109', '210', '310', '211', '212', '113', '213', '313', '413'];
+		// tiles = tiles.map(e => {
 		// 		if (e) return { value: e };
 		// 		else return e;
 		// 	});
-		// let sorted = Tiles.sortTiles(3, 1, arr);
-		// console.log( sorted.map(e => e ? e.value : e) );
+		// Tiles.sortTilesByColor(3, 1, tiles);
+
+
+		// let tiles = ['401', '401', '102', '205', '305', '106', '206', '406', '107', '208', '308', '109', '109', '210', '310', '211', '212', '113', '213', '313', '413'];
+		// tiles = tiles.map(e => {
+		// 		if (e) return { value: e };
+		// 		else return e;
+		// 	});
+		// Tiles.sortTiles(3, 1, tiles);
 		// return;
+
+		let tmp = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
+		let arr = tmp.map(e => {
+				if (e) return { value: e };
+				else return e;
+			});
+		// let sorted = Tiles.sortTiles(3, 1, arr);
+		Engine.arrange(3, 1, arr);
+		// console.log( Board.tiles.map(e => e ? e.value : e) );
+		return;
 
 		APP.game.dispatch({ type: "restore-state", state: state3 });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
