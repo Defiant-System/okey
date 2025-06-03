@@ -67,8 +67,8 @@
 					});
 				});
 
-				// console.log(JSON.stringify(state));
-				console.log(state);
+				console.log(JSON.stringify(state));
+				// console.log(state);
 				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");

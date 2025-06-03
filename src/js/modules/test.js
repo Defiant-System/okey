@@ -22,23 +22,25 @@ let Test = {
 		// return;
 
 
-		Tiles.okey = "213";
+		// Tiles.okey = "213";
 
-		let tiles = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
-		tiles = tiles.map(e => {
-				if (e) return { value: e };
-				else return e;
-			});
-		console.log( Tiles.checkPer(2, tiles) ); // 71 70
-		console.log( Tiles.checkPer(3, tiles) ); // 24 6
-		return;
+		// let tiles = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
+		// tiles = tiles.map((e, i) => {
+		// 		if (e) return { uid: i, value: e };
+		// 		else return e;
+		// 	});
+		// Tiles.checkPer(3, tiles);
+		// console.log( Board.tiles.slice().map(e => e ? e.value : e) );
+		// // Tiles.checkPer(3, tiles);
+		// return;
 
 		// let tiles = ['401', '401', '102', '205', '305', '106', '206', '406', '107', '208', '308', '109', '109', '210', '310', '211', '212', '113', '213', '313', '413'];
-		// tiles = tiles.map(e => {
-		// 		if (e) return { value: e };
+		// tiles = tiles.map((e, i) => {
+		// 		if (e) return { uid: i, value: e };
 		// 		else return e;
 		// 	});
 		// Tiles.sortTilesByColor(3, 1, tiles);
+		// return;
 
 
 		// let tiles = ['401', '401', '102', '205', '305', '106', '206', '406', '107', '208', '308', '109', '109', '210', '310', '211', '212', '113', '213', '313', '413'];
@@ -49,15 +51,15 @@ let Test = {
 		// Tiles.sortTiles(3, 1, tiles);
 		// return;
 
-		let tmp = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
-		let arr = tmp.map(e => {
-				if (e) return { value: e };
-				else return e;
-			});
-		// let sorted = Tiles.sortTiles(3, 1, arr);
-		Engine.arrange(3, 1, arr);
-		// console.log( Board.tiles.map(e => e ? e.value : e) );
-		return;
+		// let tmp = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
+		// let arr = tmp.map((e, i) => {
+		// 		if (e) return { uid: i, value: e };
+		// 		else return e;
+		// 	});
+		// // let sorted = Tiles.sortTiles(3, 1, arr);
+		// Engine.arrange(3, 1, arr);
+		// // console.log( Board.tiles.map(e => e ? e.value : e) );
+		// return;
 
 		APP.game.dispatch({ type: "restore-state", state: state3 });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
@@ -405,3 +407,223 @@ let state3 = {
 			] },
 		],
 	};
+
+let state4 = {
+	settings: {
+			solo: true,
+			assisted: true,
+			regular: true,
+			rounds: 1
+		},
+		table: {
+			data: ["405","104","000","301","106","306","311","411","302","201","107","408","113","412","304","211","313","403","403","405","104","209","402","208","303","105","305","410","202","209","201","311","407","304","404","310","404","409","301","112","407","303","112","102","305","208","413","205","210","109","401","406","113","401","211","313","000","310","106","212","107","308","109","206","308","413","406","412","204","206","207","411","306","210","312","402","213","409","101","101","309","111","307","307","108","203","312","302","410","103","205","202","207","105","309","110","408","102","111","110","204","103","213","108","203","212"],
+			left: [
+				{ "uid": 86, "value": "203" },
+	            { "uid": 87, "value": "312" },
+	            { "uid": 88, "value": "302" },
+	            { "uid": 89, "value": "410" },
+	            { "uid": 90, "value": "103" },
+	            { "uid": 91, "value": "205" },
+	            { "uid": 92, "value": "202" },
+	            { "uid": 93, "value": "207" },
+	            { "uid": 94, "value": "105" },
+	            { "uid": 95, "value": "309" },
+	            { "uid": 96, "value": "110" },
+	            { "uid": 97, "value": "408" },
+	            { "uid": 98, "value": "102" },
+	            { "uid": 99, "value": "111" },
+	            { "uid": 100, "value": "110" },
+	            { "uid": 101, "value": "204" },
+	            { "uid": 102, "value": "103" }
+			],
+			okey: 213,
+			dealer: 4,
+		},
+		melded: {
+			series: [
+				// [
+				// 	{ uid: 1, value: "102" },
+				// 	{ uid: 2, value: "103" },
+				// 	{ uid: 3, value: "104" },
+				// 	{ uid: 4, value: "105" },
+				// 	{ uid: 5, value: "106" }
+				// ],
+				// [
+				// 	{ uid: 6, value: "108" },
+				// 	{ uid: 7, value: "109" },
+				// 	{ uid: 8, value: "110" },
+				// ],
+			],
+			doubles: [
+				// [{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
+				// [{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
+			],
+		},
+		player: [
+        {
+            "seat": 1,
+            "name": "Hakan",
+            "discard": [
+                { "uid": "10", "value": "201" }
+            ],
+            "rack": [
+                { "uid": 16, "value": "211" },
+                { "uid": 7, "value": "311" },
+                { "uid": 8, "value": "411" },
+                "",
+                { "uid": 13, "value": "113" },
+                { "uid": 3, "value": "913", "_value": "000" },
+                { "uid": 17, "value": "313" },
+                "",
+                { "uid": 5, "value": "106" },
+                { "uid": 11, "value": "107" },
+                "",
+                { "uid": 4, "value": "301" },
+                { "uid": 9, "value": "302" },
+                "",
+                { "uid": 2, "value": "104" },
+                { "uid": 15, "value": "304" },
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                { "uid": 6, "value": "306" },
+                { "uid": 21, "value": "104" },
+                { "uid": 19, "value": "403" },
+                { "uid": 1, "value": "405" },
+                { "uid": 22, "value": "209" },
+                { "uid": 19, "value": "403" },
+                { "uid": 20, "value": "405" },
+                { "uid": 12, "value": "408" },
+                { "uid": 14, "value": "412" }
+            ]
+        },
+        {
+            "seat": 2,
+            "name": "Denise",
+            "discard": [
+                { "uid": "33", "value": "407" }
+            ],
+            "rack": [
+                { "uid": 16, "value": "211" },
+                { "uid": 7, "value": "311" },
+                { "uid": 8, "value": "411" },
+                "",
+                { "uid": 13, "value": "113" },
+                { "uid": 3, "value": "913", "_value": "000" },
+                { "uid": 17, "value": "313" },
+                "",
+                { "uid": 5, "value": "106" },
+                { "uid": 11, "value": "107" },
+                "",
+                { "uid": 4, "value": "301" },
+                { "uid": 9, "value": "302" },
+                "",
+                { "uid": 2, "value": "104" },
+                { "uid": 15, "value": "304" },
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                { "uid": 6, "value": "306" },
+                { "uid": 21, "value": "104" },
+                { "uid": 19, "value": "403" },
+                { "uid": 1, "value": "405" },
+                { "uid": 22, "value": "209" },
+                { "uid": 19, "value": "403" },
+                { "uid": 20, "value": "405" },
+                { "uid": 12, "value": "408" },
+                { "uid": 14, "value": "412" }
+            ]
+        },
+        {
+            "seat": 3,
+            "name": "Ann",
+            "discard": [
+                { "uid": "48", "value": "205" }
+            ],
+            "rack": [
+                { "uid": 48, "value": "205" },
+                { "uid": 64, "value": "206" },
+                "",
+                { "uid": 46, "value": "208" },
+                { "uid": 62, "value": "308" },
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                { "uid": 58, "value": "310" },
+                { "uid": 52, "value": "406" },
+                { "uid": 45, "value": "305" },
+                { "uid": 44, "value": "102" },
+                { "uid": 63, "value": "109" },
+                { "uid": 51, "value": "401" },
+                { "uid": 54, "value": "401" }
+            ]
+        },
+        {
+            "seat": 4,
+            "name": "Yasmin",
+            "discard": [
+                { "uid": "103", "value": "800" }
+            ],
+            "rack": [
+                { "uid": 73, "value": "306" },
+                { "uid": 83, "value": "307" },
+                { "uid": 65, "value": "308" },
+                { "uid": 81, "value": "309" },
+                "",
+                { "uid": 72, "value": "411" },
+                { "uid": 68, "value": "412" },
+                { "uid": 66, "value": "413" },
+                "",
+                { "uid": 70, "value": "206" },
+                { "uid": 71, "value": "207" },
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                { "uid": 69, "value": "204" },
+                { "uid": 67, "value": "406" },
+                { "uid": 84, "value": "307" },
+                { "uid": 78, "value": "409" },
+                { "uid": 79, "value": "101" },
+                { "uid": 80, "value": "101" },
+                { "uid": 85, "value": "108" },
+                { "uid": 82, "value": "111" },
+                { "uid": 74, "value": "210" },
+                { "uid": 75, "value": "312" },
+                { "uid": 76, "value": "402" },
+                { "uid": 103, "value": "800", "_value": "213" },
+                { "uid": 103, "value": "800", "_value": "213" }
+            ]
+        }
+    ]
+};
+

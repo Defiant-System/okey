@@ -340,7 +340,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 			}
 			let arr6 = Board.tiles.slice();
 			
@@ -349,7 +348,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					arr1 = Tiles.sortTiles(3, 1);
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
-					if (arr) console.log(2222, Board.tiles.slice().map(e => e ? e.value : e));
 					arr1 = Tiles.sortTilesByColor(3, 1);
 					arr3 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
@@ -482,19 +480,20 @@ let { Engine, Board, Tiles, AI } = (() => {
 				var _0x9497e = 0;
 				let t1v = Board.virtualTiles[i]; t1v = t1v ? t1v.value : "";
 				let t2v = Board.virtualTiles[i+1]; t2v = t2v ? t2v.value : "";
+				let t3v = Board.virtualTiles[i-1]; t3v = t3v ? t3v.value : "";
 				if (t1v == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
 					if (t2v == "000") {
 						t1v = String(Tiles.okey - 1);
 					} else {
-						if (t2v % 100 == 1) t1v = String(t2v * 1 + 12);
+						if (t2v % 100 == 1) t1v = String(t2v*1 + 12);
 						else t1v = String(t2v - 1);
 					}
 				}
-				if (t1v == Tiles.okey && Board.virtualTiles[i - 1].value && (Board.virtualTiles[i - 1].value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
+				if (t1v == Tiles.okey && t3v && (t3v % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
 					_0x9497e = 1;
-					if (Board.virtualTiles[i - 1].value == "000") t1v = String(Tiles.okey * 1 + 1);
-					else t1v = String(Board.virtualTiles[i - 1].value * 1 + 1);
+					if (t3v == "000") t1v = String(Tiles.okey*1 + 1);
+					else t1v = String(t3v*1 + 1);
 				}
 				if (t1v == "000") t1v = String(Tiles.okey);
 				
@@ -553,19 +552,22 @@ let { Engine, Board, Tiles, AI } = (() => {
 			temp = [];
 			temp1 = [];
 			for (let i=0; i<=Board.virtualTiles.length; i++) {
-				let t1v = Board.virtualTiles[i]; t1v = t1v ? t1v.value : "";
-				let t2v = Board.virtualTiles[i+1]; t2v = t2v ? t2v.value : "";
-				if (t1v == Tiles.okey && t2v && i != 15) {
+				let t1v = Board.virtualTiles[i];
+				let t2v = Board.virtualTiles[i+1];
+				let t3v = Board.virtualTiles[i-1];
+				if (t1v && t1v.value == Tiles.okey && t2v && t2v.value && i != 15) {
 					_0x9497e = 1;
-					if (t2v == "000") t1v = String(Tiles.okey % 100 + 900);
-					else t1v = String(t2v % 100 + 900);
+					if (t2v && t2v.value == "000") t1v.value = String(Tiles.okey % 100 + 900);
+					else t1v.value = String(t2v.value % 100 + 900);
 				}
-				if (t1v == Tiles.okey && Board.virtualTiles[i - 1].value) {
+				if (t1v && t1v.value == Tiles.okey && t3v) {
 					_0x9497e = 1;
-					if (Board.virtualTiles[i - 1].value == "000") t1v = String(Tiles.okey % 100 + 900);
-					else t1v = String(Board.virtualTiles[i - 1].value % 100 + 900);
+					if (t3v && t3v.value == "000") t1v.value = String(Tiles.okey % 100 + 900);
+					else t1v.value = String(t3v.value % 100 + 900);
 				}
-				if (t1v == "000") t1v = String(Tiles.okey % 100 + 800);
+				if (t1v && t1v.value == "000") {
+					t1v.value = String(Tiles.okey % 100 + 800);
+				}
 				
 				var _0x3c1af0 = 0;
 				var _0x510804 = parseInt(t1v);
@@ -969,6 +971,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (Board.handleDouble == 1) {
 				_0x484f1e = Board.doubleHandleTo;
 			}
+
+			// return console.log( setTiles.slice().map(e => e ? e.value : e) );
+
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
 					var index = Board.tiles.findIndex(e => e.value == String(setTiles[i]));

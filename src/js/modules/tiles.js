@@ -163,7 +163,7 @@ let Tiles = {
 	},
 	removeArrayItem(arr, item, fromEnd) {
 		let index;
-		let fn = typeof item === "string" ? e => e.value == item : e => e.uid == item.uid || e.value == item.value;
+		let fn = typeof item === "string" ? e => e.value == item : e => e.uid == item.uid;
 		if (fromEnd != 1) index = arr.findIndex(fn);
 		if (fromEnd == 1) index = arr.findLastIndex(fn);
 		if (index > -1) {

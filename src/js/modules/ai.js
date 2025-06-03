@@ -98,10 +98,11 @@ let AI = {
 			Engine.popMessage("tas bitti - 1");
 		}
 
-		// let index = boardPlaces.indexOf(selectedTile),
-		// 	tile = Board.tiles[index - 1];
-		// console.log(selectedTile);
+		// remove discard tile from rack
+		Tiles.removeArrayItem(Board.tiles, selectedTile);
+		// tile animation
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
+		
 
 		// activePlayer = (activePlayer + 1) % 4;
 
@@ -116,7 +117,7 @@ let AI = {
 		}
 
 		// stop timeout
-		if (activePlayer == 3) Board.gameOver = 1;
+		// if (activePlayer == 3) Board.gameOver = 1;
 	},
 	evalDiscarded(seat) {
 		var discard;
