@@ -293,12 +293,16 @@
 				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
 
-				event.setTiles.map(item => {
-					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item);
-				});
-				// remove empty arrays
-				rows = rows.filter(r => r.length);
+				if (typeof event.setTiles[0] === "string") {
+					event.setTiles.map(item => {
+						if (item == "") rows.push([]);
+						else rows[rows.length-1].push(item);
+					});
+					// remove empty arrays
+					rows = rows.filter(r => r.length);
+				} else {
+					rows = event.setTiles.slice();
+				}
 
 				rows.map((row, y) => {
 					let i,
@@ -306,8 +310,7 @@
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((tile, x) => {
-						let col = tile.value,
-							{ id, clr, num } = Tiles.parse(col);
+						let { id, clr, num } = Tiles.parse(tile.value);
 						if (!i) {
 							switch (num) {
 								case 10: i = 9-(il>>1); break;
@@ -315,7 +318,7 @@
 								default: i = Math.min(13-il, num-1);
 							}
 						};
-						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
 				Self.els.common.series
@@ -346,21 +349,24 @@
 				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
 
-				event.setTiles.map(item => {
-					if (item == "") rows.push([]);
-					else rows[rows.length-1].push(item);
-				});
-				// remove empty arrays
-				rows = rows.filter(r => r.length);
+				if (typeof event.setTiles[0] === "string") {
+					event.setTiles.map(item => {
+						if (item == "") rows.push([]);
+						else rows[rows.length-1].push(item);
+					});
+					// remove empty arrays
+					rows = rows.filter(r => r.length);
+				} else {
+					rows = event.setTiles.slice();
+				}
 
 				rows.map((row, y) => {
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
 						fx = sOffset.left - dOffset.left;
 					row.map((tile, x) => {
-						let col = tile.value,
-							{ id, clr, num } = Tiles.parse(col);
-						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${col}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
+						let { id, clr, num } = Tiles.parse(tile.value);
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
 				Self.els.common.doubles

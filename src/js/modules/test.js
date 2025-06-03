@@ -61,7 +61,7 @@ let Test = {
 		// // console.log( Board.tiles.map(e => e ? e.value : e) );
 		// return;
 
-		APP.game.dispatch({ type: "restore-state", state: state3 });
+		APP.game.dispatch({ type: "restore-state", state: state4 });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
 
@@ -434,29 +434,35 @@ let state4 = {
 	            { "uid": 99, "value": "111" },
 	            { "uid": 100, "value": "110" },
 	            { "uid": 101, "value": "204" },
-	            { "uid": 102, "value": "103" }
+	            { "uid": 102, "value": "103" },
+                { "uid": 103, "value": "213" }
 			],
 			okey: 213,
 			dealer: 4,
 		},
 		melded: {
 			series: [
-				// [
-				// 	{ uid: 1, value: "102" },
-				// 	{ uid: 2, value: "103" },
-				// 	{ uid: 3, value: "104" },
-				// 	{ uid: 4, value: "105" },
-				// 	{ uid: 5, value: "106" }
-				// ],
-				// [
-				// 	{ uid: 6, value: "108" },
-				// 	{ uid: 7, value: "109" },
-				// 	{ uid: 8, value: "110" },
-				// ],
+				[
+					{ uid: 59, value: "106" },
+					{ uid: 61, value: "107" },
+					{ uid: 104, value: "108" },
+					{ uid: 50, value: "109" },
+				],
+				[
+					{ uid: 49, value: "210" },
+					{ uid: 55, value: "211" },
+					{ uid: 60, value: "212" },
+				],
+				[
+					{ uid: 53, value: "113" },
+					{ uid: 56, value: "313" },
+					{ uid: 47, value: "413" },
+					{ uid: 57, value: "913" },
+				],
 			],
 			doubles: [
-				// [{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
-				// [{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
+				[{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
+				[{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
 			],
 		},
 		player: [
@@ -545,6 +551,7 @@ let state4 = {
         {
             "seat": 3,
             "name": "Ann",
+            "melded": 115,
             "discard": [
                 { "uid": "48", "value": "205" }
             ],
@@ -587,7 +594,6 @@ let state4 = {
             "seat": 4,
             "name": "Yasmin",
             "discard": [
-                { "uid": "103", "value": "800" }
             ],
             "rack": [
                 { "uid": 73, "value": "306" },
@@ -620,8 +626,7 @@ let state4 = {
                 { "uid": 74, "value": "210" },
                 { "uid": 75, "value": "312" },
                 { "uid": 76, "value": "402" },
-                { "uid": 103, "value": "800", "_value": "213" },
-                { "uid": 103, "value": "800", "_value": "213" }
+                { "uid": 77, "value": "213" },
             ]
         }
     ]

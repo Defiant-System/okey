@@ -65,6 +65,10 @@ let Tiles = {
 				Board[`tiles${player.seat}`] = player.rack;
 				// player names
 				APP.game.els.el.find(`.player .seat[data-seat="${player.seat}"] .name`).data({ name: player.name });
+				// if player already melded
+				if (player.melded) {
+					APP.game.dispatch({ type: "user-initial-meld", seat: player.seat, total: player.melded });
+				}
 				// player discards
 				let str = [];
 				player.discard.map(tile => {
@@ -76,7 +80,8 @@ let Tiles = {
 
 			Object.keys(state.melded).map(what => {
 				if (state.melded[what].length) {
-					APP.game.dispatch({ type: `meld-${what}`, set: state.melded[what] });
+					// return APP.game.dispatch({ type, from: seat, setTiles, total: Board.UserTotal });
+					APP.game.dispatch({ type: `meld-${what}`, setTiles: state.melded[what] });
 				}
 			});
 
