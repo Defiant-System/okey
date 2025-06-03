@@ -61,7 +61,7 @@ let Test = {
 		// // console.log( Board.tiles.map(e => e ? e.value : e) );
 		// return;
 
-		APP.game.dispatch({ type: "restore-state", state: state4 });
+		APP.game.dispatch({ type: "restore-state", state: state3 });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
 
@@ -276,24 +276,8 @@ let state3 = {
 			dealer: 4,
 		},
 		melded: {
-			series: [
-				// [
-				// 	{ uid: 1, value: "102" },
-				// 	{ uid: 2, value: "103" },
-				// 	{ uid: 3, value: "104" },
-				// 	{ uid: 4, value: "105" },
-				// 	{ uid: 5, value: "106" }
-				// ],
-				// [
-				// 	{ uid: 6, value: "108" },
-				// 	{ uid: 7, value: "109" },
-				// 	{ uid: 8, value: "110" },
-				// ],
-			],
-			doubles: [
-				// [{ uid: 16, value: "211" }, { uid: 16, value: "211" }],
-				// [{ uid: 18, value: "301" }, { uid: 19, value: "301" }],
-			],
+			series: [],
+			doubles: [],
 		},
 		player: [
 			{ seat: 1, name: "Hakan",
@@ -457,7 +441,7 @@ let state4 = {
 					{ uid: 53, value: "113" },
 					{ uid: 56, value: "313" },
 					{ uid: 47, value: "413" },
-					{ uid: 57, value: "913" },
+					{ uid: 57, value: "800" },
 				],
 			],
 			doubles: [

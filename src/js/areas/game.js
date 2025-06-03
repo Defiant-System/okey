@@ -293,7 +293,7 @@
 				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
 
-				if (typeof event.setTiles[0] === "string") {
+				if (event.setTiles[0].constructor === Object) {
 					event.setTiles.map(item => {
 						if (item == "") rows.push([]);
 						else rows[rows.length-1].push(item);
@@ -349,7 +349,7 @@
 				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
 
-				if (typeof event.setTiles[0] === "string") {
+				if (event.setTiles[0].constructor === Object) {
 					event.setTiles.map(item => {
 						if (item == "") rows.push([]);
 						else rows[rows.length-1].push(item);
