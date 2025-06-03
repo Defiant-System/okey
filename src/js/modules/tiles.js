@@ -129,7 +129,7 @@ let Tiles = {
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles2.push(this.draw(1)); }
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles3.push(this.draw(1)); }
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles4.push(this.draw(1)); }
-		Board[`tiles${dealer}`].push(this.draw(1));
+		Board[`tiles${dealer}`].push(this.draw());
 
 		let okeyValue = this.tilesLeft[this.tilesLeft.length-1].value,
 			x = parseInt(okeyValue.substr(0,1),10),

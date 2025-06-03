@@ -176,7 +176,7 @@ let AI = {
 				area3items = Tiles.removeArrayItem(area3items, area3items[area3items.length - 1]);
 			}
 		} else {
-			
+
 			let tile = Tiles.draw();
 			Board.tiles.push(tile);
 			Engine.updateBoard();

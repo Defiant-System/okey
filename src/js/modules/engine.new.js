@@ -322,20 +322,24 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (settingsGameLevel > 1 || min == 1) {
 				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
+					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
 				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
+					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont++;
 				}
 				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
+					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
 				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
+					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
 			}
@@ -1017,6 +1021,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			// remove tiles from active board rack
 			setTiles.filter(e => !!e).map(tile => Tiles.removeArrayItem(Board.tiles, tile));
+
+			this.updateBoard();
 
 			// animate set of tiles
 			let type = sortType === 1 ? "meld-series" : "meld-doubles";
