@@ -160,6 +160,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let discard = APP.game.els.discard[`player${seat}`].find(".tile").get(0);
 			if (!discard.length) return;
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
+			this.movetoArea(tile, seat);
+
+			return;
 
 			if (Board.leftHandCont) {
 				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
@@ -193,17 +196,17 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// 	}
 			// 	boardPlaces[_0x17313c] = 0;
 			// 	Board.tiles[_0x17313c - 1] = '';
-				this.movetoArea(tile, seat);
+			// 	this.movetoArea(tile, seat);
 			// }
 			// var _0x335bad = Board.tiles.filter(e => !!e).slice();
 			if (_0x335bad.length == 0) {
-				if (collect.length == 21) {
+				if (Board.collect.length == 21) {
 					this.popMessage("Oyuncu elden bitti!");
-					openAllHand = 1;
+					// Board.openAllHand = 1;
 				} else {
 					this.popMessage("Oyun Bitti: Istakada Tas kalmadi");
 				}
-				winnerPlayer = activePlayer;
+				Board.winnerPlayer = activePlayer;
 				this.gameOver(1);
 			}
 		},
@@ -330,12 +333,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 					Board.tiles[oI].value = "800";
 					okeyCont.push(Board.tiles[oI]);
 				}
-				oI = Board.tiles.findIndex(e => e.value == "000");
+				oI = Board.tiles.findIndex(e => e._value == "000");
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				oI = Board.tiles.findIndex(e => e.value == "000");
+				oI = Board.tiles.findIndex(e => e._value == "000");
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
@@ -449,7 +452,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (type == 1 && this.checkWin()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					this.popMessage("Oyun Bitti: " + users[activePlayer] + " Seri acti");
-					winnerPlayer = activePlayer;
+					Board.winnerPlayer = activePlayer;
 					this.gameOver(1);
 				}
 			}
@@ -457,7 +460,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (type == 2 && this.checkWinDouble()) {
 				if (AIStatus == 0 && activePlayer == 1) {} else {
 					this.popMessage("Oyun Bitti: " + users[activePlayer] + " cift acti");
-					winnerPlayer = activePlayer;
+					Board.winnerPlayer = activePlayer;
 					this.gameOver(1);
 				}
 			}
@@ -478,27 +481,35 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let  _0x47dfb5 = null;
 			for (let i=0; i<=Board.virtualTiles.length; i++) {
 				var _0x9497e = 0;
-				let t1v = Board.virtualTiles[i]; t1v = t1v ? t1v.value : "";
-				let t2v = Board.virtualTiles[i+1]; t2v = t2v ? t2v.value : "";
-				let t3v = Board.virtualTiles[i-1]; t3v = t3v ? t3v.value : "";
-				if (t1v == Tiles.okey && t2v && i != 15) {
+				let t1v = Board.virtualTiles[i];
+				let t2v = Board.virtualTiles[i+1];
+				let t3v = Board.virtualTiles[i-1];
+				if (t1v && t1v.value == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
-					if (t2v == "000") {
-						t1v = String(Tiles.okey - 1);
+					if (t2v._value == "000") {
+						t1v.value = String(Tiles.okey - 1);
 					} else {
-						if (t2v % 100 == 1) t1v = String(t2v*1 + 12);
-						else t1v = String(t2v - 1);
+						if (t2v.value % 100 == 1) {
+							t1v.value = String(t2v.value*1 + 12);
+						} else {
+							t1v.value = String(t2v.value - 1);
+						}
 					}
 				}
-				if (t1v == Tiles.okey && t3v && (t3v % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
+				if (t1v && t1v.value == Tiles.okey && t3v && (t3v.value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
 					_0x9497e = 1;
-					if (t3v == "000") t1v = String(Tiles.okey*1 + 1);
-					else t1v = String(t3v*1 + 1);
+					if (t3v._value == "000") {
+						t1v.value = String(Tiles.okey*1 + 1);
+					} else {
+						t1v.value = String(t3v.value*1 + 1);
+					}
 				}
-				if (t1v == "000") t1v = String(Tiles.okey);
+				if (t1v && t1v._value == "000") {
+					t1v.value = String(Tiles.okey);
+				}
 				
 				var _0x3c1af0 = 0;
-				var _0x510804 = parseInt(t1v);
+				// var _0x510804 = parseInt(t1v.value);
 				if (Board.virtualTiles[i]) {
 					temp.push(Board.virtualTiles[i]);
 					if (_0x9497e == 1) _0x2b6e63.push(temp.length - 1);
@@ -511,10 +522,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 						_0x5b3924 = 1;
 						for (let j=0; j<temp.length; j++) {
 							if (j > 0) {
-								if (temp[j].value - temp[j-1].value == 1 
-									|| j == temp.length - 1 
-									&& (temp[j-1].value - temp[j].value == 12 
-									|| temp[j-1].value == Tiles.okey) && settingsType == 1) {
+								let t0 = temp[j].value;
+								let t1 = temp[j-1].value;
+								if (t0 - t1 == 1 || j == temp.length - 1 && (t1 - t0 == 12 || t1 == Tiles.okey) && settingsType == 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -526,7 +536,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 							_0x257872 += _0x5b3924;
 							for (let k=0; k<temp.length; k++) {
 								for (let l=0; l<_0x2b6e63.length; l++) {
-									if (_0x2b6e63[l] == k) temp[k].value = temp[k].value % 100 + 900;
+									if (_0x2b6e63[l] == k) {
+										temp[k].value = temp[k].value % 100 + 900;
+									}
 								}
 								if (temp[k].value == Tiles.okey) {
 									temp[k].value = temp[k].value % 100 + 800;
@@ -546,6 +558,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
+			// console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 			Board.virtualTiles = Board.tiles.slice();
 			_0x2b6e63 = null;
 			_0x47dfb5 = null;
@@ -555,22 +568,28 @@ let { Engine, Board, Tiles, AI } = (() => {
 				let t1v = Board.virtualTiles[i];
 				let t2v = Board.virtualTiles[i+1];
 				let t3v = Board.virtualTiles[i-1];
-				if (t1v && t1v.value == Tiles.okey && t2v && t2v.value && i != 15) {
+				if (t1v && t1v.value == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
-					if (t2v && t2v.value == "000") t1v.value = String(Tiles.okey % 100 + 900);
-					else t1v.value = String(t2v.value % 100 + 900);
+					if (t2v && t2v.value == "000") {
+						t1v.value = String(Tiles.okey % 100 + 900);
+					} else {
+						t1v.value = String(t2v.value % 100 + 900);
+					}
 				}
 				if (t1v && t1v.value == Tiles.okey && t3v) {
 					_0x9497e = 1;
-					if (t3v && t3v.value == "000") t1v.value = String(Tiles.okey % 100 + 900);
-					else t1v.value = String(t3v.value % 100 + 900);
+					if (t3v && t3v.value == "000") {
+						t1v.value = String(Tiles.okey % 100 + 900);
+					} else {
+						t1v.value = String(t3v.value % 100 + 900);
+					}
 				}
 				if (t1v && t1v.value == "000") {
 					t1v.value = String(Tiles.okey % 100 + 800);
 				}
 				
 				var _0x3c1af0 = 0;
-				var _0x510804 = parseInt(t1v);
+				// var _0x510804 = parseInt(t1v.value);
 				if (Board.virtualTiles[i]) {
 					temp.push(Board.virtualTiles[i]);
 					_0x3c1af0 = 1;
@@ -972,8 +991,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 				_0x484f1e = Board.doubleHandleTo;
 			}
 
-			// return console.log( setTiles.slice().map(e => e ? e.value : e) );
-
 			for (let i=0; i<setTiles.length; i++) {
 				if (setTiles[i] != '') {
 					var index = Board.tiles.findIndex(e => e.value == String(setTiles[i]));
@@ -988,12 +1005,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 						Board.tileLimits[seat]--;
 					}
 				} else {
-					if (sortType == 1) {
-						Board.tableH[_0x484f1e]++;
-					}
-					if (sortType == 2) {
-						Board.tableHdouble[_0x484f1e]++;
-					}
+					if (sortType == 1) Board.tableH[_0x484f1e]++;
+					if (sortType == 2) Board.tableHdouble[_0x484f1e]++;
 					diff = 0;
 					Board.lastStone = '';
 				}
@@ -1019,7 +1032,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			// remove tiles from active board rack
 			setTiles.filter(e => !!e).map(tile => Tiles.removeArrayItem(Board.tiles, tile));
-
+			// update active player rack
 			this.updateBoard();
 
 			// animate set of tiles
@@ -1130,7 +1143,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
 					// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
 					var _0x1fc99b;
-					if (Board.tiles[i] == "000") {
+					if (Board.tiles[i]._value == "000") {
 						_0x1fc99b = Tiles.okey;
 					} else {
 						_0x1fc99b = Board.tiles[i];
@@ -1399,7 +1412,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			for (let i=0; i<_0x495ad6.length; i++) {
 				if (_0x495ad6[i]) {
 					if (num == 1 || num == 0) {
-						if (Board.tiles[i] == "000") {
+						if (Board.tiles[i]._value == "000") {
 							_0x495ad6[i] = okey;
 						}
 						for (let j=0; j<7; j++) {
@@ -1577,8 +1590,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 								}
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
-										if (Board.tiles[i] == "000") {
-											Board.tiles[i] = okey % 100 + 800;
+										if (Board.tiles[i]._value == "000") {
+											Board.tiles[i]._value = okey % 100 + 800;
 										}
 										Board.getOkeyKont = 1;
 										this.moveToTable(_0x3dd017, Board.tiles[i], k, j, 1);
@@ -1642,8 +1655,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 								}
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
-										if (Board.tiles[i] == "000") {
-											Board.tiles[i] = okey % 100 + 800;
+										if (Board.tiles[i]._value == "000") {
+											Board.tiles[i]._value = okey % 100 + 800;
 										}
 										this.popMessage("yerden okey aliniyor!");
 										Board.getOkeyKont = 1;
@@ -1686,7 +1699,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				_0xf1fecf = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
 			}
 			if (_0x315c85 - _0x315c85 % 100 == 800) {
-				_0xf1fecf = Board.tiles.findIndex(e => e.value == "000");
+				_0xf1fecf = Board.tiles.findIndex(e => e._value == "000");
 				_0x5b13d2 = 1;
 			}
 			if (Board.getOkeyKont == 0) {
@@ -1725,11 +1738,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 			var _0x2378b2 = _0x383df0 * 0.04;
 			var _0x29cbcd = _0x3af68e * 0.04;
 			if (Board.stone == Board.lastStone) {
-				if (Board.stone > 10 && _0x14df73 == 1) {
-					diff--;
-				} else {
-					diff++;
-				}
+				if (Board.stone > 10 && _0x14df73 == 1) diff--;
+				else diff++;
 			}
 			var _0x51fce2;
 			var _0x5a1841;
@@ -1976,6 +1986,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
+		},
+		gameOver() {
+			console.log("function gameOver");
 		},
 		playAudio(num) {
 			console.log("play audio", num);

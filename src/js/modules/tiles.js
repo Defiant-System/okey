@@ -88,7 +88,6 @@ let Tiles = {
 			// table UI update
 			Engine.updateLeftTiles();
 			// auto arrange user tiles
-			Engine.arrange(1, 1);
 
 			// restore game state
 			let rackTiles = state.player
