@@ -4,10 +4,11 @@ let AI = {
 		
 	},
 	async think(seat) {
-		// move tile data to Board primary
-		Engine.getRack(seat);
+		if (Board.gameOver == 1) return 0;
 
 		AIcont = 1;
+		// move tile data to Board primary
+		Engine.getRack(seat);
 		Engine.changePlayer(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
@@ -15,7 +16,6 @@ let AI = {
 			await this.makeMove(seat);
 		} else {
 			this.evalDiscarded(seat);
-			// if (seat === 3) return;
 
 			// clear time out
 			clearTimeout(Engine.timerAI);

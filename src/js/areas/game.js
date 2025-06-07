@@ -154,6 +154,21 @@
 					}, 100);
 				});
 				break;
+			case "temp-tiles-to-rack":
+				pEl = Self.els.rack;
+				str = [];
+				event.tiles.map((tile, i) => {
+					if (tile) {
+						let { id, clr, num } = Tiles.parse(tile.value),
+							tY = (parseInt(i / 16, 10) * 78) + 5,
+							tX = ((i % 16) * 56) + 21;
+						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}" style="top: ${tY}px; left: ${tX}px;"></span>`);
+					}
+				});
+				pEl.append(str.join(""));
+				// UI okey indicator
+				Self.dispatch({ type: "set-okey-indicator" });
+				break;
 			case "deal-user-tiles":
 				pEl = Self.els.rack.addClass("dealing "+ (event.noAnim ? "no-anim" : ""));
 				dOffset = pEl.offset(".board");

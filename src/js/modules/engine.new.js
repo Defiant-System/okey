@@ -162,7 +162,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
 			this.movetoArea(tile, seat);
 
-			return;
+			return; // TODO
 
 			if (Board.leftHandCont) {
 				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
@@ -321,24 +321,24 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (activePlayer == 1) min = 1;
 			// console.log(seat, type, Board.tiles.slice().map(e => e ? e.value : e));
 			if (settingsGameLevel > 1 || min == 1) {
-				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
+				let oI = Board.tiles.findIndex(e => !e._value && e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont.push(Board.tiles[oI]);
 				}
-				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
+				oI = Board.tiles.findIndex(e => !e._value && e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont.push(Board.tiles[oI]);
 				}
-				oI = Board.tiles.findIndex(e => e._value == "000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
-				oI = Board.tiles.findIndex(e => e._value == "000");
+				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
 					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
@@ -409,7 +409,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 
 			arr2.push.apply(arr2, arr4);
-			Board.tiles = Board.tiles.filter(e => e != "");
+			Board.tiles = Board.tiles.filter(e => !!e);
 			let _0x17aa37 = arr2.length;
 			let _0x52b171 = arr2.length;
 			if (arr2[16] == "") {
@@ -428,7 +428,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
 			
-			if (arr) return console.log(Board.tiles.slice().map(e => e ? e.value : e));
+			if (arr) return;
 
 			/* */
 			let arr7 = [];
@@ -479,29 +479,30 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let temp2 = [];
 			let  _0x2b6e63 = [];
 			let  _0x47dfb5 = null;
+			// if (activePlayer == 4) console.log(1111, Board.virtualTiles.slice().map(e => e ? e.value : e));
 			for (let i=0; i<=Board.virtualTiles.length; i++) {
 				var _0x9497e = 0;
 				let t1v = Board.virtualTiles[i];
 				let t2v = Board.virtualTiles[i+1];
 				let t3v = Board.virtualTiles[i-1];
-				if (t1v && t1v.value == Tiles.okey && t2v && i != 15) {
+				if (t1v && t1v._value == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
 					if (t2v._value == "000") {
 						t1v.value = String(Tiles.okey - 1);
 					} else {
-						if (t2v.value % 100 == 1) {
+						if (t2v._value % 100 == 1) {
 							t1v.value = String(t2v.value*1 + 12);
 						} else {
 							t1v.value = String(t2v.value - 1);
 						}
 					}
 				}
-				if (t1v && t1v.value == Tiles.okey && t3v && (t3v.value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
+				if (t1v && t1v.value == Tiles.okey && t3v && (t3v._value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
 					_0x9497e = 1;
 					if (t3v._value == "000") {
 						t1v.value = String(Tiles.okey*1 + 1);
 					} else {
-						t1v.value = String(t3v.value*1 + 1);
+						t1v.value = String(t3v._value*1 + 1);
 					}
 				}
 				if (t1v && t1v._value == "000") {
@@ -537,11 +538,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 							for (let k=0; k<temp.length; k++) {
 								for (let l=0; l<_0x2b6e63.length; l++) {
 									if (_0x2b6e63[l] == k) {
-										temp[k].value = temp[k].value % 100 + 900;
+										temp[k].value = (temp[k].value % 100 + 900) + "";
 									}
 								}
 								if (temp[k].value == Tiles.okey) {
-									temp[k].value = temp[k].value % 100 + 800;
+									temp[k].value = (temp[k].value % 100 + 800) + "";
 								}
 								temp2.push(temp[k]);
 								var bvLen = Board.virtualTiles.findIndex(e => e.value == temp[k].value);
@@ -558,7 +559,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			// console.log(1111, Board.tiles.slice().map(e => e ? e.value : e));
 			Board.virtualTiles = Board.tiles.slice();
 			_0x2b6e63 = null;
 			_0x47dfb5 = null;

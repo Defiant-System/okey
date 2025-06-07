@@ -88,6 +88,7 @@ let Tiles = {
 			// table UI update
 			Engine.updateLeftTiles();
 			// auto arrange user tiles
+			// Engine.arrange(1, 1);
 
 			// restore game state
 			let rackTiles = state.player
@@ -119,7 +120,8 @@ let Tiles = {
 			clr = Colors[0];
 			num = "j";
 		}
-		if (+id.slice(0,1) > 8) {
+		// if (+id.slice(0,1) > 8) {
+		if (id == this.okey) {
 			clr = "okey";
 		}
 		return { id, clr, num };
@@ -130,10 +132,13 @@ let Tiles = {
 		dealer = (dealer + 1) % 4;
 
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles1.push(this.draw(1)); }
+		if (dealer == 4) Board[`tiles${Board.dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles2.push(this.draw(1)); }
+		if (dealer == 1) Board[`tiles${Board.dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles3.push(this.draw(1)); }
+		if (dealer == 2) Board[`tiles${Board.dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles4.push(this.draw(1)); }
-		Board[`tiles${dealer}`].push(this.draw());
+		if (dealer == 3) Board[`tiles${Board.dealer}`].push(this.draw(1));
 
 		let okeyValue = this.tilesLeft[this.tilesLeft.length-1].value,
 			x = parseInt(okeyValue.substr(0,1),10),
@@ -237,6 +242,7 @@ let Tiles = {
 	},
 	sortTilesByColor(num, type, arr) {
 		if (arr) Board.tiles = arr.slice();
+		// console.log( 3333, Board.tiles.slice().map(e => e ? e.value: e) );
 		Board.virtualTiles = Board.tiles.slice();
 		Board.virtualTiles.sort().sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let asc = [];
