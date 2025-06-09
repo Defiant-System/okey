@@ -98,6 +98,8 @@ let AI = {
 			Engine.popMessage("tas bitti - 1");
 		}
 
+		console.log(selectedTile);
+
 		// remove discard tile from rack
 		Tiles.removeArrayItem(Board.tiles, selectedTile);
 		// tile animation

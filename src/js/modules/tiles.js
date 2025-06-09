@@ -8,17 +8,17 @@ let Tiles = {
 			for (let i=1; i<=13; i++) {
 				let x = String(i);
 				if (i < 10) x = "0" + x;
-				this.data.push({ uid: index++, value: j + x });
+				this.data.push({ uid: index++, value: j + x, _val: j + x });
 			}
 			for (let i=1; i<=13; i++) {
 				let x = String(i);
 				if (i < 10) x = "0" + x;
-				this.data.push({ uid: index++, value: j + x });
+				this.data.push({ uid: index++, value: j + x, _val: j + x });
 			}
 		}
 		// jokers
-		this.data.push({ uid: index++, value: "000" });
-		this.data.push({ uid: index++, value: "000" });
+		this.data.push({ uid: index++, value: "000", _val: "000" });
+		this.data.push({ uid: index++, value: "000", _val: "000" });
 		// this.shuffle();
 	},
 	reset() {
@@ -54,13 +54,19 @@ let Tiles = {
 	},
 	restore(state) {		
 		if (state.table.left) {
-			// okey tile + tiles left
-			this.okey = state.table.okey;
-			this.tilesLeft = state.table.left;
-			// dealer position
-			APP.game.els.el.find(".dealer").data({ pos: state.table.dealer });
+			// parse table tiles
+			state.table.data = state.table.data.map((value, i) => ({ uid: i+1, value, _val: value }));
+
+			let i = 1;
+			state.table.left = state.table.left.map(value => ({ uid: i++, value, _val: value }));
+			state.melded.series = state.melded.series.map(value => ({ uid: i++, value, _val: value }));
+			state.melded.doubles = state.melded.doubles.map(value => ({ uid: i++, value, _val: value }));
+
 			// loop players
 			state.player.map(player => {
+				player.rack = player.rack.map(value => ({ uid: i++, value, _val: value }));
+				player.discard = player.discard.map(value => ({ uid: i++, value, _val: value }));
+
 				// player racks
 				Board[`tiles${player.seat}`] = player.rack;
 				// player names
@@ -78,6 +84,12 @@ let Tiles = {
 				APP.game.els.el.find(`.discard .player-${player.seat}`).html(str.join(""));
 			});
 
+			// okey tile + tiles left
+			this.okey = state.table.okey;
+			this.tilesLeft = state.table.left;
+			// dealer position
+			APP.game.els.el.find(".dealer").data({ pos: state.table.dealer });
+
 			Object.keys(state.melded).map(what => {
 				if (state.melded[what].length) {
 					// return APP.game.dispatch({ type, from: seat, setTiles, total: Board.UserTotal });
@@ -88,7 +100,7 @@ let Tiles = {
 			// table UI update
 			Engine.updateLeftTiles();
 			// auto arrange user tiles
-			// Engine.arrange(1, 1);
+			Engine.arrange(1, 1);
 
 			// restore game state
 			let rackTiles = state.player
@@ -104,10 +116,11 @@ let Tiles = {
 			activePlayer = (activePlayer) % 4;
 		} else {
 			// restore simple tile array
-			this.data = state.table.data.map((value, i) => ({ uid: i+1, value }));
+			this.data = state.table.data.map((value, i) => ({ uid: i+1, value, _val: value }));
 			this.tilesLeft = this.data.slice();
 			this.deliver();
 		}
+		console.log(Board);
 	},
 	draw(fromStart) {
 		return fromStart ? this.tilesLeft.shift() : this.tilesLeft.pop();
@@ -120,8 +133,7 @@ let Tiles = {
 			clr = Colors[0];
 			num = "j";
 		}
-		// if (+id.slice(0,1) > 8) {
-		if (id == this.okey) {
+		if (id == this.okey || +id.slice(0,1) > 8) {
 			clr = "okey";
 		}
 		return { id, clr, num };
@@ -132,13 +144,13 @@ let Tiles = {
 		dealer = (dealer + 1) % 4;
 
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles1.push(this.draw(1)); }
-		if (dealer == 4) Board[`tiles${Board.dealer}`].push(this.draw(1));
+		if (dealer == 1) Board[`tiles${dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles2.push(this.draw(1)); }
-		if (dealer == 1) Board[`tiles${Board.dealer}`].push(this.draw(1));
+		if (dealer == 2) Board[`tiles${dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles3.push(this.draw(1)); }
-		if (dealer == 2) Board[`tiles${Board.dealer}`].push(this.draw(1));
+		if (dealer == 3) Board[`tiles${dealer}`].push(this.draw(1));
 		for (let i=0; i<Board.tileLimit; i++) { Board.tiles4.push(this.draw(1)); }
-		if (dealer == 3) Board[`tiles${Board.dealer}`].push(this.draw(1));
+		if (dealer == 4) Board[`tiles${dealer}`].push(this.draw(1));
 
 		let okeyValue = this.tilesLeft[this.tilesLeft.length-1].value,
 			x = parseInt(okeyValue.substr(0,1),10),
@@ -242,7 +254,6 @@ let Tiles = {
 	},
 	sortTilesByColor(num, type, arr) {
 		if (arr) Board.tiles = arr.slice();
-		// console.log( 3333, Board.tiles.slice().map(e => e ? e.value: e) );
 		Board.virtualTiles = Board.tiles.slice();
 		Board.virtualTiles.sort().sort((a, b) => a.value % 100 > b.value % 100 ? 1 : b.value % 100 > a.value % 100 ? -1 : 0);
 		let asc = [];

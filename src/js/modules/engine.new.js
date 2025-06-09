@@ -120,7 +120,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		updateRack(rack) {
 			Board.virtualTiles = [...Array(32)].map(e => "");
-			// console.log(Board.tiles);
 			rack.find(".tile").map(elem => {
 				let el = $(elem),
 					uid = +el.data("uid"),
@@ -129,10 +128,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 					y = (offset.top - 5) / 78,
 					x = (offset.left - 21) / 56,
 					i = (y * 16) + x;
-				Board.virtualTiles[i] = { uid, value };
+				Board.virtualTiles[i] = { uid, value, _val: value };
 				if (!Board.tiles.find(tile => tile.uid == uid)) throw "Rack is tampered with";
 			});
-			// console.log( Board.virtualTiles );
 			Board.tiles = Board.virtualTiles;
 		},
 		getRack(seat) {
@@ -319,33 +317,27 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let min = 0;
 
 			if (activePlayer == 1) min = 1;
-			// console.log(seat, type, Board.tiles.slice().map(e => e ? e.value : e));
 			if (settingsGameLevel > 1 || min == 1) {
-				let oI = Board.tiles.findIndex(e => !e._value && e.value == Tiles.okey);
+				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
-					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont.push(Board.tiles[oI]);
 				}
-				oI = Board.tiles.findIndex(e => !e._value && e.value == Tiles.okey);
+				oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
-					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = "800";
 					okeyCont.push(Board.tiles[oI]);
 				}
 				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
-					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
 				oI = Board.tiles.findIndex(e => e.value == "000");
 				if (oI != -1) {
-					Board.tiles[oI]._value = Board.tiles[oI].value;
 					Board.tiles[oI].value = String(Tiles.okey);
 				}
 			}
 			let arr6 = Board.tiles.slice();
-			
 			if (type == 1) {
 				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
 					arr1 = Tiles.sortTiles(3, 1);
@@ -428,23 +420,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}
 			
-			if (arr) return;
+			// if (arr) return;
 
-			/* */
-			let arr7 = [];
-			let _0x3509bd = 0;
-			for (let i=0; i<Board.tiles.length; i++) {
-				let pos = i + 1;
-				if (Board.tiles[i] != "") {
-					let index = arr6.indexOf(Board.tiles[i]);
-					arr6[index] = "";
-					index++;
-					if (Board.tiles[i] != "") {
-						arr7[_0x3509bd] = Board.tiles[i];
-						_0x3509bd++;
-					}
-				}
-			}
+			Board.tiles.filter(e => !!e).map(tile => {
+				if (tile._val === "000") tile.value = tile._val;
+				if (tile.value >= 800) tile.value = tile._val;
+			});
 
 			this.updateBoard();
 
@@ -479,34 +460,33 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let temp2 = [];
 			let  _0x2b6e63 = [];
 			let  _0x47dfb5 = null;
-			// if (activePlayer == 4) console.log(1111, Board.virtualTiles.slice().map(e => e ? e.value : e));
 			for (let i=0; i<=Board.virtualTiles.length; i++) {
 				var _0x9497e = 0;
 				let t1v = Board.virtualTiles[i];
 				let t2v = Board.virtualTiles[i+1];
 				let t3v = Board.virtualTiles[i-1];
-				if (t1v && t1v._value == Tiles.okey && t2v && i != 15) {
+				if (t1v && t1v._val == Tiles.okey && t2v && i != 15) {
 					_0x9497e = 1;
-					if (t2v._value == "000") {
+					if (t2v._val == "000") {
 						t1v.value = String(Tiles.okey - 1);
 					} else {
-						if (t2v._value % 100 == 1) {
+						if (t2v._val % 100 == 1) {
 							t1v.value = String(t2v.value*1 + 12);
 						} else {
 							t1v.value = String(t2v.value - 1);
 						}
 					}
 				}
-				if (t1v && t1v.value == Tiles.okey && t3v && (t3v._value % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
+				if (t1v && t1v.value == Tiles.okey && t3v && (t3v._val % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
 					_0x9497e = 1;
-					if (t3v._value == "000") {
+					if (t3v._val == "000") {
 						t1v.value = String(Tiles.okey*1 + 1);
 					} else {
-						t1v.value = String(t3v._value*1 + 1);
+						t1v.value = String(t3v._val*1 + 1);
 					}
 				}
-				if (t1v && t1v._value == "000") {
-					t1v.value = String(Tiles.okey);
+				if (t1v && t1v._val == "000") {
+					// t1v.value = String(Tiles.okey);
 				}
 				
 				var _0x3c1af0 = 0;
@@ -1143,7 +1123,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.remove("marked");
 					// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = "<svg xmlns=\"http://www.w3.org/2000/svg\" fill=\"currentColor\" class=\"heart\" viewBox=\"0 0 16 16\"> <path fill-rule=\"evenodd\" d=\"M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z\"/> </svg>";
 					var _0x1fc99b;
-					if (Board.tiles[i]._value == "000") {
+					if (Board.tiles[i]._val == "000") {
 						_0x1fc99b = Tiles.okey;
 					} else {
 						_0x1fc99b = Board.tiles[i];
@@ -1412,7 +1392,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			for (let i=0; i<_0x495ad6.length; i++) {
 				if (_0x495ad6[i]) {
 					if (num == 1 || num == 0) {
-						if (Board.tiles[i]._value == "000") {
+						if (Board.tiles[i]._val == "000") {
 							_0x495ad6[i] = okey;
 						}
 						for (let j=0; j<7; j++) {
@@ -1590,8 +1570,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 								}
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
-										if (Board.tiles[i]._value == "000") {
-											Board.tiles[i]._value = okey % 100 + 800;
+										if (Board.tiles[i]._val == "000") {
+											Board.tiles[i]._val = okey % 100 + 800;
 										}
 										Board.getOkeyKont = 1;
 										this.moveToTable(_0x3dd017, Board.tiles[i], k, j, 1);
@@ -1655,8 +1635,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 								}
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
-										if (Board.tiles[i]._value == "000") {
-											Board.tiles[i]._value = okey % 100 + 800;
+										if (Board.tiles[i]._val == "000") {
+											Board.tiles[i]._val = okey % 100 + 800;
 										}
 										this.popMessage("yerden okey aliniyor!");
 										Board.getOkeyKont = 1;
@@ -1699,7 +1679,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				_0xf1fecf = Board.tiles.findIndex(e => e.value == String(Tiles.okey));
 			}
 			if (_0x315c85 - _0x315c85 % 100 == 800) {
-				_0xf1fecf = Board.tiles.findIndex(e => e._value == "000");
+				_0xf1fecf = Board.tiles.findIndex(e => e._val == "000");
 				_0x5b13d2 = 1;
 			}
 			if (Board.getOkeyKont == 0) {

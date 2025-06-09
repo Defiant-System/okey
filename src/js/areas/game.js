@@ -110,7 +110,7 @@
 			case "set-okey-indicator":
 				// set okey indicator
 				let okeyNum = Tiles.okey - 1;
-				let iOkey = Tiles.parse(okeyNum);
+				let iOkey = Tiles.parse(okeyNum.toString());
 				APP.content.find(`.info .tiles.okey .tile`)
 					.removeClass("red yellow blue black green")
 					.addClass(iOkey.clr)
@@ -156,6 +156,7 @@
 				break;
 			case "temp-tiles-to-rack":
 				pEl = Self.els.rack;
+				pEl.find(".tile").remove();
 				str = [];
 				event.tiles.map((tile, i) => {
 					if (tile) {
