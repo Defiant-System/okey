@@ -5,7 +5,6 @@ let AI = {
 	},
 	async think(seat) {
 		if (Board.gameOver == 1) return 0;
-		return; // todo
 
 		AIcont = 1;
 		// move tile data to Board primary
