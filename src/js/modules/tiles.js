@@ -59,8 +59,12 @@ let Tiles = {
 
 			let i = 1;
 			state.table.left = state.table.left.map(value => ({ uid: i++, value, _val: value }));
-			state.melded.series = state.melded.series.map(value => ({ uid: i++, value, _val: value }));
-			state.melded.doubles = state.melded.doubles.map(value => ({ uid: i++, value, _val: value }));
+			state.melded.series = state.melded.series.map(row => {
+				return row.map(value => ({ uid: i++, value, _val: value }));
+			});
+			state.melded.doubles = state.melded.doubles.map(row => {
+				return row.map(value => ({ uid: i++, value, _val: value }));
+			});
 
 			// loop players
 			state.player.map(player => {
@@ -120,7 +124,6 @@ let Tiles = {
 			this.tilesLeft = this.data.slice();
 			this.deliver();
 		}
-		console.log(Board);
 	},
 	draw(fromStart) {
 		return fromStart ? this.tilesLeft.shift() : this.tilesLeft.pop();
