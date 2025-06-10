@@ -73,7 +73,8 @@ let Tiles = {
 			state.player.map(player => {
 				player.rack = player.rack.filter(e => !!e).map(value => ({ uid: i++, value, _val: value }));
 				player.discard = player.discard.map(value => ({ uid: i++, value, _val: value }));
-
+				// tile limits for every player
+				Board.tileLimits[player.seat] = player.rack.length;
 				// player racks
 				Board[`tiles${player.seat}`] = player.rack;
 				// player names
