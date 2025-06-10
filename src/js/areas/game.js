@@ -84,6 +84,9 @@
 				// console.log(JSON.stringify(state));
 				console.log(state);
 				break;
+			case "show-all-racks":
+				Engine.showAllRacks();
+				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");
 				APP.content.find(".dialog.settings").removeClass("hidden");
@@ -633,6 +636,14 @@
 								top: Drag.dOffset.top - Drag.rOffset.top + 5,
 								left: Drag.dOffset.left - Drag.rOffset.left + 5,
 							};
+							// user has not drawn tile yet - return to origin
+							if (Self.els.rack.find(".tile").length <= Board.tileLimit) {
+								Drag.isThrow = false;
+								css = {
+									top: Drag.drop.top,
+									left: Drag.drop.left
+								};
+							}
 							break;
 						case Drag.hover.hasClass("board"):
 							if (Drag.el.hasClass("new-tile")) {

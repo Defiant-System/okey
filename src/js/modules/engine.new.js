@@ -153,6 +153,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 		dragStop(Drag) {
 			this.updateRack(Drag.rack);
 
+			APP.game.els.el.find(`.seat[data-seat="1"]`)
+				.removeClass("thinking")
+				.removeAttr("data-status");
+
 			if (Drag.isThrow) {
 				// activePlayer = (activePlayer + 1) % 4;
 				this.checkThrow(activePlayer);

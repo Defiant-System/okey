@@ -12,6 +12,7 @@
 		<Menu name="Sort Serial" click="engine-sort-serial"/>
 		<Menu name="Sort Double" click="engine-sort-double"/>
 		<Menu type="divider"/>
+		<Menu name="Show All Racks" click="show-all-racks"/>
 		<Menu name="Output PGN" click="output-pgn"/>
 	</Menu>
 	<Menu name="Help">

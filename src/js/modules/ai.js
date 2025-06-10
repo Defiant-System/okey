@@ -76,10 +76,6 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
-		if (activePlayer == 2) {
-			Engine.showAllRacks();
-		}
-
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
 		if (aiTiles.length > 0) {
@@ -119,7 +115,7 @@ let AI = {
 
 		// stop timeout
 		if (activePlayer == 3) {
-			// Board.gameOver = 1;
+			Board.gameOver = 1;
 			// APP.game.dispatch({ type: "output-pgn" });
 		}
 	},
@@ -185,7 +181,6 @@ let AI = {
 
 			let tile = Tiles.draw(1);
 			Board.tiles.push(tile);
-			// console.log(seat, Board.tiles4.slice(), tile);
 			Engine.updateBoard();
 			Engine.updateLeftTiles(tile);
 
