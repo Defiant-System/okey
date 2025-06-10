@@ -65,6 +65,12 @@
 					player.rack = Board[`tiles${player.seat}`].slice().map(e => e ? e._val : e);
 					player.name = Self.els.el.find(`.seat[data-seat="${player.seat}"] .name`).data("name");
 					player.discard = Self.els.el.find(`.discard .player-${player.seat} .tile`).map(elem => elem.getAttribute("data-id"));
+
+					let scored = Self.els.el.find(`.seat[data-seat="${player.seat}"] .scored`);
+					if (scored.hasClass("pop-tiles")) {
+						player.melded = scored.find(".tile").map(e => e.getAttribute("data-v")).join("");
+						console.log(player.melded);
+					}
 				});
 
 				Self.els.common.series.find(".tile").map(elem => {
@@ -267,7 +273,7 @@
 						pEl.cssSequence("discard-anim", "transitionend", elem => {
 							elem.removeClass("discard-tile discard-anim");
 							// insert tile into discard hole
-							let clone = Self.els.discard[`player${event.seat}`].append(el.clone(true));
+							Self.els.discard[`player${event.seat}`].append(el.clone(true));
 							// reset original tile
 							el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
 
@@ -282,6 +288,12 @@
 						});
 					}, 10);
 				});
+				break;
+			case "enable-draggable-for-user":
+				// make last tile draggable
+				Self.els.discard.player4.find(".tile:last").addClass("draggable");
+				// make tile stack draggable
+				Self.els.common.info.find(".left .tile").addClass("draggable");
 				break;
 			case "get-discarded-tile":
 				el = Self.els.discard[`player${event.from}`].find(".tile").get(0);

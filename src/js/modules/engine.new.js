@@ -112,7 +112,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 			APP.game.dispatch({ type: "set-okey-indicator" });
 
 			// gameplay continue
-			setTimeout(() => this.checkThrow(activePlayer), 100);
+			setTimeout(() => {
+				if (activePlayer > 1) this.checkThrow(activePlayer);
+				else this.changePlayer(1);
+			}, 100);
 		},
 		showAllRacks() {
 			// console.log("Okey:", Tiles.okey);
@@ -153,15 +156,15 @@ let { Engine, Board, Tiles, AI } = (() => {
 		dragStop(Drag) {
 			this.updateRack(Drag.rack);
 
-			APP.game.els.el.find(`.seat[data-seat="1"]`)
-				.removeClass("thinking")
-				.removeAttr("data-status");
-
 			if (Drag.isThrow) {
 				// activePlayer = (activePlayer + 1) % 4;
 				this.checkThrow(activePlayer);
+				// stop thinking
+				APP.game.els.el.find(`.seat[data-seat="1"]`)
+					.removeClass("thinking")
+					.removeAttr("data-status");
 			} else {
-				// if not throw tile, anything to do?
+				// if meldning stop "thinking"
 			}
 
 			// update value
@@ -751,6 +754,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			APP.game.els.el.find(`.seat.highlight`).removeClass("highlight");
 			if (activePlayer === 1) {
+				
+				APP.game.dispatch({ type: "enable-draggable-for-user" });
+
 				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
 					.data({ status: "THINKING" })
 					.cssSequence("thinking", "transitionend", el => {
