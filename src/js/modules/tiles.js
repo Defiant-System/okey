@@ -104,6 +104,8 @@ let Tiles = {
 				}
 			});
 
+			// APP.game.els.common.series.find(`.tile[style*="--fd:"]`).css({ "--fd": "", "--fy": "", "--fx": "" });
+
 			// table UI update
 			Engine.updateLeftTiles();
 			// auto arrange user tiles

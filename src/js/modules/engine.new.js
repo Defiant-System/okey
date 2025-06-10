@@ -111,7 +111,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// okey indicator
 			APP.game.dispatch({ type: "set-okey-indicator" });
 
-			this.checkThrow(activePlayer);
+			setTimeout(() => this.checkThrow(activePlayer), 1000);
 		},
 		showAllRacks() {
 			// console.log("Okey:", Tiles.okey);

@@ -352,14 +352,16 @@
 					});
 				});
 
-				total = (Self.els.common.series.data("rows") || 0) + rows.length;
+				total = +(Self.els.common.series.data("rows") || 0) + rows.length;
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: total })
 					.append(str.join(""));
 				if (event.noAnim) {
-					return Self.els.common.series.removeClass("anim-start").css({ "--aT": "" });
+					Self.els.common.series.find(`.tile`).css({ "--fd": "", "--fy": "", "--fx": "" });
+					Self.els.common.series.removeClass("anim-start anim-end").css({ "--aT": 0 });
+					return;
 				}
 				return new Promise(resolve => {
 					// start anim
@@ -404,14 +406,16 @@
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
-				total = (Self.els.common.doubles.data("rows") || 0) + rows.length;
+				total = +(Self.els.common.doubles.data("rows") || 0) + rows.length;
 				Self.els.common.doubles
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: total })
 					.append(str.join(""));
 				if (event.noAnim) {
-					return Self.els.common.doubles.removeClass("anim-start").css({ "--aT": "" });
+					Self.els.common.doubles.find(`.tile`).css({ "--fd": "", "--fy": "", "--fx": "" });
+					Self.els.common.doubles.removeClass("anim-start anim-end").css({ "--aT": 0 });
+					return;
 				}
 				return new Promise(resolve => {
 					// start anim
