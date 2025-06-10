@@ -307,6 +307,8 @@
 						el.removeClass("smooth discard-loan").addClass("draggable").css({ top: "", left: "" });
 						// update DOM
 						Self.els.el.find(".discard .player-4").append(el);
+						// enable draggability from stack
+						Self.els.common.info.find(".tile").addClass("draggable");
 					})
 					.css(css);
 				break;
@@ -450,8 +452,10 @@
 						lOffset = lTiles.offset(".board"),
 						y = lOffset.top - rOffset.top + 5,
 						x = lOffset.left - rOffset.left + 5;
-					//disable draggablity
+					// disable draggablity
 					Self.els.common.info.find(".tile.draggable").removeClass("draggable");
+					// disable draggability from discard
+					Self.els.discard.player4.find(".tile.draggable").removeClass("draggable");
 					// insert new tile as dragged element
 					el = Self.els.rack.append(`<span class="tile ${clr} new-tile" data-v="${num}" data-id="${id}" style="top: ${y}px; left: ${x}px;"></span>`);
 				}
@@ -476,6 +480,8 @@
 				if (isDiscard) {
 					drop = el.offset();
 					diff.y -= 73;
+					// disable draggability from stack
+					Self.els.common.info.find(".tile.draggable").removeClass("draggable");
 				}
 				if (!drop) {
 					drop = el.offset();
