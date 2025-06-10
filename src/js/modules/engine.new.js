@@ -113,6 +113,14 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			this.checkThrow(activePlayer);
 		},
+		showAllRacks() {
+			// console.log("Okey:", Tiles.okey);
+			[...Array(4)].map((e, i) => {
+				let seat = i + 1,
+					num = Board[`tiles${seat}`].slice().filter(e => !!e).length;
+				console.log(`${seat} (${num})`, Board[`tiles${seat}`].slice().map(e => e ? e.value : e).join(","));
+			});
+		},
 		updateLeftTiles(item) {
 			if (item) Tiles.tilesLeft = Tiles.removeArrayItem(Tiles.tilesLeft, item);
 			// update table tiles left
@@ -160,7 +168,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let tile = { uid: discard.data("uid"), value: discard.data("id") };
 			this.movetoArea(tile, seat);
 
-			return; // TODO
+			// return; // TODO
 
 			if (Board.leftHandCont) {
 				this.popMessage("Soldan aldiqiniz tasi kullanmadan tas atamazsiniz.");
@@ -307,6 +315,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 		arrange(seat, type=1, arr) {
 			this.getRack(seat);
 			if (arr) Board.tiles = arr.slice();
+
+			// reset tile values
+			Board.tiles.map(e => e ? (e.value = e._val) : void(0));
 
 			let arr1 = [];
 			let arr2 = [];

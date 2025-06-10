@@ -57,8 +57,11 @@ let Tiles = {
 			// parse table tiles
 			state.table.data = state.table.data.map((value, i) => ({ uid: i+1, value, _val: value }));
 
-			let i = 1;
-			state.table.left = state.table.left.map(value => ({ uid: i++, value, _val: value }));
+			let i = 1,
+				tmp = state.table.left.map(value => ({ uid: i++, value, _val: value })),
+				arr = [tmp.pop()];
+			arr.unshift(...tmp.reverse());
+			state.table.left = arr;
 			state.melded.series = state.melded.series.map(row => {
 				return row.map(value => ({ uid: i++, value, _val: value }));
 			});
@@ -118,6 +121,10 @@ let Tiles = {
 				activePlayer = 4 - discards.length;
 			}
 			activePlayer = (activePlayer) % 4;
+			// make sure active player rack is focused
+			Engine.getRack(activePlayer);
+			// temp
+			// Engine.showAllRacks();
 		} else {
 			// restore simple tile array
 			this.data = state.table.data.map((value, i) => ({ uid: i+1, value, _val: value }));

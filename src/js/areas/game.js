@@ -29,6 +29,7 @@
 			Self = APP.game,
 			sOffset,
 			dOffset,
+			total,
 			rows,
 			rI,
 			css,
@@ -337,10 +338,11 @@
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
+				total = (Self.els.common.series.data("rows") || 0) + rows.length;
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: event.setTiles.length })
+					.data({ rows: total })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim
@@ -375,7 +377,7 @@
 				} else {
 					rows = event.setTiles.slice();
 				}
-				
+
 				rows.map((row, y) => {
 					let i = 0,
 						fy = sOffset.top - dOffset.top,
@@ -385,10 +387,11 @@
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px""></span>`);
 					});
 				});
+				total = (Self.els.common.doubles.data("rows") || 0) + rows.length;
 				Self.els.common.doubles
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
-					.data({ rows: event.setTiles.length })
+					.data({ rows: total })
 					.append(str.join(""));
 				return new Promise(resolve => {
 					// start anim

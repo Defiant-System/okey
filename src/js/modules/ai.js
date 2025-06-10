@@ -76,6 +76,10 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
+		if (activePlayer == 4) {
+			Engine.showAllRacks();
+		}
+
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];
 		if (aiTiles.length > 0) {
@@ -98,16 +102,14 @@ let AI = {
 			Engine.popMessage("tas bitti - 1");
 		}
 
-		console.log(selectedTile);
-
 		// remove discard tile from rack
 		Tiles.removeArrayItem(Board.tiles, selectedTile);
 		// tile animation
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
 		
+		// Engine.updateBoard();
 
 		// activePlayer = (activePlayer + 1) % 4;
-
 		Engine.checkThrow(seat);
 		Engine.arrange(seat);
 		Engine.markIt(1);
@@ -181,8 +183,9 @@ let AI = {
 			}
 		} else {
 
-			let tile = Tiles.draw();
+			let tile = Tiles.draw(1);
 			Board.tiles.push(tile);
+			// console.log(seat, Board.tiles4.slice(), tile);
 			Engine.updateBoard();
 			Engine.updateLeftTiles(tile);
 
