@@ -121,7 +121,10 @@ let AI = {
 		}
 
 		// stop timeout
-		// if (activePlayer == 3) Board.gameOver = 1;
+		if (activePlayer == 3) {
+			// Board.gameOver = 1;
+			// APP.game.dispatch({ type: "output-pgn" });
+		}
 	},
 	evalDiscarded(seat) {
 		var discard;

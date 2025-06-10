@@ -71,7 +71,7 @@ let Tiles = {
 
 			// loop players
 			state.player.map(player => {
-				player.rack = player.rack.map(value => ({ uid: i++, value, _val: value }));
+				player.rack = player.rack.filter(e => !!e).map(value => ({ uid: i++, value, _val: value }));
 				player.discard = player.discard.map(value => ({ uid: i++, value, _val: value }));
 
 				// player racks
@@ -100,7 +100,7 @@ let Tiles = {
 			Object.keys(state.melded).map(what => {
 				if (state.melded[what].length) {
 					// return APP.game.dispatch({ type, from: seat, setTiles, total: Board.UserTotal });
-					APP.game.dispatch({ type: `meld-${what}`, setTiles: state.melded[what] });
+					APP.game.dispatch({ type: `meld-${what}`, setTiles: state.melded[what], noAnim: true });
 				}
 			});
 

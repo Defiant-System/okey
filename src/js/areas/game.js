@@ -43,9 +43,9 @@
 				let state = {
 						settings: {},
 						table: {
-							data: Tiles.data,
+							data: Tiles.data.slice().map(e => e ? e._val : e),
+							left: Tiles.tilesLeft.slice().map(e => e ? e._val : e).reverse(),
 							okey: Tiles.okey,
-							left: Tiles.tilesLeft,
 						},
 						melded: {
 							series: [],
@@ -58,14 +58,27 @@
 							{ seat: 4, discard: [], rack: [] }
 						]
 					};
+				// put "gösterge" to the end of "left" tiles
+				state.table.left.push(state.table.left.shift());
 				// loop players
 				state.player.map(player => {
-					player.rack = Board[`tiles${player.seat}`];
+					player.rack = Board[`tiles${player.seat}`].slice().map(e => e ? e._val : e);
 					player.name = Self.els.el.find(`.seat[data-seat="${player.seat}"] .name`).data("name");
-					player.discard = Self.els.el.find(`.discard .player-${player.seat} .tile`).map(elem => {
-						let el = $(elem);
-						return { uid: el.data("uid"), value: el.data("id") }
-					});
+					player.discard = Self.els.el.find(`.discard .player-${player.seat} .tile`).map(elem => elem.getAttribute("data-id"));
+				});
+
+				Self.els.common.series.find(".tile").map(elem => {
+					let el = $(elem),
+						row = +el.cssProp("--y");
+					if (!state.melded.series[row]) state.melded.series[row] = [];
+					state.melded.series[row].push(el.data("id"));
+				});
+
+				Self.els.common.doubles.find(".tile").map(elem => {
+					let el = $(elem),
+						row = +el.cssProp("--y");
+					if (!state.melded.doubles[row]) state.melded.doubles[row] = [];
+					state.melded.doubles[row].push(el.data("id"));
 				});
 
 				console.log(JSON.stringify(state));
@@ -338,12 +351,16 @@
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
+
 				total = (Self.els.common.series.data("rows") || 0) + rows.length;
 				Self.els.common.series
 					.addClass("anim-start")
 					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: total })
 					.append(str.join(""));
+				if (event.noAnim) {
+					return Self.els.common.series.removeClass("anim-start").css({ "--aT": "" });
+				}
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
@@ -393,6 +410,9 @@
 					.css({ "--aT": event.from ? str.length : 0 })
 					.data({ rows: total })
 					.append(str.join(""));
+				if (event.noAnim) {
+					return Self.els.common.doubles.removeClass("anim-start").css({ "--aT": "" });
+				}
 				return new Promise(resolve => {
 					// start anim
 					setTimeout(() =>
