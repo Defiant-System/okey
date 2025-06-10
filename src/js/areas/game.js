@@ -351,7 +351,6 @@
 						str.push(`<span class="tile ${clr}" data-v="${num}" data-id="${tile.value}" data-uid="${tile.uid}" style="--y: ${y+rI}; --x: ${x+i}; --fd: ${str.length}; --fy: ${fy}px; --fx: ${fx}px"></span>`);
 					});
 				});
-
 				total = +(Self.els.common.series.data("rows") || 0) + rows.length;
 				Self.els.common.series
 					.addClass("anim-start")

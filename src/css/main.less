@@ -169,7 +169,7 @@ content {
 				min-height: 0;
 				transition: min-height calc( calc( var( --aT ) * var( --aD ) ) + var( --aF ) );
 
-				.tile {
+				.tile[style*="--fy"] {
 					opacity: 0;
 					top: var( --fy );
 					left: var( --fx );
@@ -183,7 +183,7 @@ content {
 			&.anim-end {
 				min-height: 1px;
 
-				.tile {
+				.tile[style*="--fy"] {
 					opacity: 1;
 					top: calc( calc( var( --y ) * var( --h ) ) + 1px );
 					left: calc( var( --x ) * var( --w ) );
