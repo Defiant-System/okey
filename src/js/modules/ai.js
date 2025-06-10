@@ -106,10 +106,7 @@ let AI = {
 		Tiles.removeArrayItem(Board.tiles, selectedTile);
 		// tile animation
 		await APP.game.dispatch({ type: "discard-tile", seat, tile: selectedTile });
-		
-		// Engine.updateBoard();
 
-		// activePlayer = (activePlayer + 1) % 4;
 		Engine.checkThrow(seat);
 		Engine.arrange(seat);
 		Engine.markIt(1);

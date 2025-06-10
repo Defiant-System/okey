@@ -45,9 +45,10 @@ let Test = {
 		// APP.game.dispatch({ type: "temp-tiles-to-rack", tiles: Board.tiles.slice() });
 		// return;
 
-		APP.game.dispatch({ type: "restore-state", state: state4 });
+		APP.game.dispatch({ type: "restore-state", state: state1 });
 		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
+		setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 100);
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-double"]`).trigger("click"), 500);
 
