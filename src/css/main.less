@@ -93,7 +93,7 @@ content {
 		// background: #198719 radial-gradient(circle at 50% 50%, #fbaa6a4f, #2011004f);
 
 		&.drop {
-			* {
+			*, .discard .inset .tile.dragging {
 				pointer-events: none;
 			}
 
@@ -1612,6 +1612,7 @@ content {
 				position: relative;
 				z-index: 2;
 				font-size: 20px;
+				margin-bottom: 1px;
 			}
 
 			.dlg-arrow {

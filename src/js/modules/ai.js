@@ -76,9 +76,9 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
-		// if (activePlayer == 4) {
-		// 	Engine.showAllRacks();
-		// }
+		if (activePlayer == 2) {
+			Engine.showAllRacks();
+		}
 
 		aiTiles = Board.tiles.filter(e => !!e).slice();
 		let selectedTile = aiTiles[aiTiles.length - 1];

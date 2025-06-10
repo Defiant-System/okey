@@ -81,8 +81,8 @@
 					state.melded.doubles[row].push(el.data("id"));
 				});
 
-				console.log(JSON.stringify(state));
-				// console.log(state);
+				// console.log(JSON.stringify(state));
+				console.log(state);
 				break;
 			case "show-settings":
 				APP.content.addClass("show-dialog");
@@ -293,10 +293,10 @@
 				break;
 			case "put-tile-back":
 				dOffset = Self.els.el.find(".discard .player-4").offset(".board");
-				rOffset = Self.els.rack.offset(".board");
+				sOffset = Self.els.rack.offset(".board");
 				css = {
-					top: dOffset.top - rOffset.top + 5,
-					left: dOffset.left - rOffset.left + 5,
+					top: dOffset.top - sOffset.top + 5,
+					left: dOffset.left - sOffset.left + 5,
 				}
 				// hide button
 				event.el.addClass("hidden");
@@ -304,7 +304,7 @@
 				Self.els.rack.find(".discard-loan")
 					.cssSequence("smooth", "transitionend", el => {
 						// reset element
-						el.removeClass("smooth discard-loan").css({ top: "", left: "" });
+						el.removeClass("smooth discard-loan").addClass("draggable").css({ top: "", left: "" });
 						// update DOM
 						Self.els.el.find(".discard .player-4").append(el);
 					})
@@ -640,7 +640,8 @@
 					.removeClass("dragging new-tile")
 					.cssSequence("smooth", "transitionend", el => {
 						// reset dragged element
-						el.removeClass("smooth draggable");
+						el.removeClass("smooth");
+						if (!el.parents(".discard").length) el.removeClass("draggable");
 						// reset drop zones
 						Self.els.el.removeClass("drop");
 						Self.els.el.find(".drop").removeClass("drop");

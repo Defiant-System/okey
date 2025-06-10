@@ -130,6 +130,10 @@ let Tiles = {
 			this.data = state.table.data.map((value, i) => ({ uid: i+1, value, _val: value }));
 			this.tilesLeft = this.data.slice();
 			this.deliver();
+			let tmp = this.tilesLeft.slice(),
+				arr = [tmp.pop()];
+			arr.unshift(...tmp.reverse());
+			this.tilesLeft = arr;
 		}
 	},
 	draw(fromStart) {

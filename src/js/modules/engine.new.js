@@ -138,7 +138,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					x = (offset.left - 21) / 56,
 					i = (y * 16) + x;
 				Board.virtualTiles[i] = { uid, value, _val: value };
-				if (!Board.tiles.find(tile => tile.uid == uid)) throw "Rack is tampered with";
+				// if (!Board.tiles.find(tile => tile.uid == uid)) console.log("Rack is tampered with !?");
 			});
 			Board.tiles = Board.virtualTiles;
 		},
