@@ -96,7 +96,7 @@ let AI = {
 		}
 
 		// stop timeout
-		if (activePlayer == 3) {
+		if (Board.activePlayer == 3) {
 			// Board.gameOver = 1;
 			// APP.game.dispatch({ type: "output-pgn" });
 		}

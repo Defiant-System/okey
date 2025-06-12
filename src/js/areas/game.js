@@ -46,6 +46,7 @@
 							data: Tiles.data.slice().map(e => e ? e._val : e),
 							left: Tiles.tilesLeft.slice().map(e => e ? e._val : e).reverse(),
 							okey: Tiles.okey,
+							activePlayer: Board.activePlayer,
 						},
 						melded: {
 							series: [],

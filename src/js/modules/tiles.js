@@ -30,7 +30,7 @@ let Tiles = {
 		Board.tiles3 = [];
 		Board.tiles4 = [];
 
-		activePlayer = 1;
+		Board.activePlayer = 1;
 
 		if (settingsType == 1) Board.tileLimit = 14;
 		if (settingsType == 2) Board.tileLimit = 21;
@@ -111,13 +111,13 @@ let Tiles = {
 			Engine.arrange(1, 1);
 
 			// restore game state
-			activePlayer = state.table.activePlayer || 1;
+			Board.activePlayer = state.table.activePlayer || 1;
 
-			if (activePlayer == 1) {
+			if (Board.activePlayer == 1) {
 				// make sure active player rack is focused
-				Engine.getRack(activePlayer);
+				Engine.getRack(Board.activePlayer);
 			} else {
-				AI.think(activePlayer);
+				AI.think(Board.activePlayer);
 			}
 			// temp
 			// Engine.showAllRacks();

@@ -3,7 +3,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 	let APP;
 
-	let activePlayer = 1;
 	let settingsType = 2;
 	
 	let settingsCont = 0,
@@ -32,6 +31,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 		openPunish = [0, 0, 0, 0, 0];
 
 	let Board = {
+			activePlayer: 1,
 			tiles: [],
 			tiles1: [],
 			tiles2: [],
@@ -113,7 +113,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			// gameplay continue
 			setTimeout(() => {
-				if (activePlayer > 1) this.checkThrow(activePlayer);
+				if (Board.activePlayer > 1) this.checkThrow(Board.activePlayer);
 				else this.changePlayer(1);
 			}, 100);
 		},
@@ -146,19 +146,19 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board.tiles = Board.virtualTiles;
 		},
 		getRack(seat) {
-			activePlayer = seat;
+			Board.activePlayer = seat;
 			Board.tiles = Board["tiles"+ seat];
 		},
 		updateBoard() {
-			let seat = activePlayer;
+			let seat = Board.activePlayer;
 			Board["tiles"+ seat] = Board.tiles.slice();
 		},
 		dragStop(Drag) {
 			this.updateRack(Drag.rack);
 
 			if (Drag.isThrow) {
-				// activePlayer = (activePlayer + 1) % 4;
-				this.checkThrow(activePlayer);
+				// Board.activePlayer = (Board.activePlayer + 1) % 4;
+				this.checkThrow(Board.activePlayer);
 				// stop thinking
 				APP.game.els.el.find(`.seat[data-seat="1"]`)
 					.removeClass("thinking")
@@ -203,7 +203,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			// var _0x17313c = boardPlaces.indexOf(tile);
 			// if (_0x17313c !== -1) {
-			// 	if (activePlayer == 1) {
+			// 	if (Board.activePlayer == 1) {
 			// 		activePlayerCont = 0;
 			// 		this.buttonActivePassive("collect", 0);
 			// 		firstOpenCont = 0;
@@ -220,7 +220,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				} else {
 					this.popMessage("Oyun Bitti: Istakada Tas kalmadi");
 				}
-				Board.winnerPlayer = activePlayer;
+				Board.winnerPlayer = Board.activePlayer;
 				this.gameOver(1);
 			}
 		},
@@ -228,15 +228,15 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
 			// var _0x536f0b = tile.split('-');
 			// if (Board.handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
-			// 	this.popMessage(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
-			// 	// this.changePoint(punishOffset, activePlayer, 1);
+			// 	this.popMessage(users[Board.activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
+			// 	// this.changePoint(punishOffset, Board.activePlayer, 1);
 			// }
 			// if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
 			// 	if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
-			// 		this.popMessage(users[activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
-			// 		// this.changePoint(punishOffset, activePlayer, 1);
+			// 		this.popMessage(users[Board.activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
+			// 		// this.changePoint(punishOffset, Board.activePlayer, 1);
 			// 	} else {
-			// 		this.popMessage(users[activePlayer] + " yana OKEY atti!");
+			// 		this.popMessage(users[Board.activePlayer] + " yana OKEY atti!");
 			// 		PointOkeyCont = 1;
 			// 	}
 			// }
@@ -302,8 +302,8 @@ let { Engine, Board, Tiles, AI } = (() => {
 					if (seat == 3) AI.think(4);
 
 					if (seat == 4) {
-						activePlayer = 1;
-						this.getRack(activePlayer);
+						Board.activePlayer = 1;
+						this.getRack(Board.activePlayer);
 						if (AIStatus == 1) {
 							AI.think(1);
 						} else {
@@ -335,7 +335,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let okeyCont = [];
 			let min = 0;
 
-			if (activePlayer == 1) min = 1;
+			if (Board.activePlayer == 1) min = 1;
 			if (settingsGameLevel > 1 || min == 1) {
 				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
@@ -450,17 +450,17 @@ let { Engine, Board, Tiles, AI } = (() => {
 
 			/* */
 			if (type == 1 && this.checkWin()) {
-				if (AIStatus == 0 && activePlayer == 1) {} else {
-					this.popMessage("Oyun Bitti: " + users[activePlayer] + " Seri acti");
-					Board.winnerPlayer = activePlayer;
+				if (AIStatus == 0 && Board.activePlayer == 1) {} else {
+					this.popMessage("Oyun Bitti: " + users[Board.activePlayer] + " Seri acti");
+					Board.winnerPlayer = Board.activePlayer;
 					this.gameOver(1);
 				}
 			}
 			
 			if (type == 2 && this.checkWinDouble()) {
-				if (AIStatus == 0 && activePlayer == 1) {} else {
-					this.popMessage("Oyun Bitti: " + users[activePlayer] + " cift acti");
-					Board.winnerPlayer = activePlayer;
+				if (AIStatus == 0 && Board.activePlayer == 1) {} else {
+					this.popMessage("Oyun Bitti: " + users[Board.activePlayer] + " cift acti");
+					Board.winnerPlayer = Board.activePlayer;
 					this.gameOver(1);
 				}
 			}
@@ -636,7 +636,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board.User3Seri = [];
 			Board.User4Seri = [];
 			for (let i=0; i<temp2.length; i++) {
-				switch (activePlayer) {
+				switch (Board.activePlayer) {
 					case 1:
 						Board.User1Seri.push(temp2[i]);
 						if (temp2[i]) Board.User1Total += temp2[i].value % 100;
@@ -655,7 +655,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						break;
 				}
 			}
-			if (activePlayer == 1) {
+			if (Board.activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
 					sign.removeClass("hidden").find("h4").html(Board.User1Total);
@@ -707,24 +707,26 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Board.User3Double = [];
 			Board.User4Double = [];
 			for (let i=0; i<_0x1290e9.length; i++) {
-				if (activePlayer == 1) {
-					Board.User1TotalDouble = Board.UserTotalDouble;
-					Board.User1Double.push(_0x1290e9[i]);
-				}
-				if (activePlayer == 2) {
-					Board.User2TotalDouble = Board.UserTotalDouble;
-					Board.User2Double.push(_0x1290e9[i]);
-				}
-				if (activePlayer == 3) {
-					Board.User3TotalDouble = Board.UserTotalDouble;
-					Board.User3Double.push(_0x1290e9[i]);
-				}
-				if (activePlayer == 4) {
-					Board.User4TotalDouble = Board.UserTotalDouble;
-					Board.User4Double.push(_0x1290e9[i]);
+				switch (Board.activePlayer) {
+					case 1:
+						Board.User1TotalDouble = Board.UserTotalDouble;
+						Board.User1Double.push(_0x1290e9[i]);
+						break;
+					case 2:
+						Board.User2TotalDouble = Board.UserTotalDouble;
+						Board.User2Double.push(_0x1290e9[i]);
+						break;
+					case 3:
+						Board.User3TotalDouble = Board.UserTotalDouble;
+						Board.User3Double.push(_0x1290e9[i]);
+						break;
+					case 4:
+						Board.User4TotalDouble = Board.UserTotalDouble;
+						Board.User4Double.push(_0x1290e9[i]);
+						break;
 				}
 			}
-			if (activePlayer == 1) {
+			if (Board.activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
 				if (settingsType == 2 || settingsType == 1) {
 					sign.removeClass("hidden").find("h4").html(this.countBoard(1));
@@ -749,10 +751,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		changePlayer(seat) {
-			activePlayer = seat;
-			// if (activePlayer == 4) activePlayerCont = 1;
+			Board.activePlayer = seat;
+			// if (Board.activePlayer == 4) activePlayerCont = 1;
 
-			APP.game.dispatch({ type: "change-player", activePlayer });
+			APP.game.dispatch({ type: "change-player", activePlayer: Board.activePlayer });
 
 			Board.collect = [];
 			Board.collectPlaces = [];
@@ -787,7 +789,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let areaSeat = seat;
 
 			this.place(areaItemLast, tiles);
-			this.arrange(activePlayer);
+			this.arrange(Board.activePlayer);
 			this.checkWin();
 
 			var seatTotal = Board[`User${seat}Total`];
@@ -795,21 +797,21 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// _0x19ab28 = _0x19ab28[1] - 1;
 			// _0x19ab28 = data[_0x19ab28];
 
-			if (perFull.length > pfl && (openStatusSort[activePlayer] == 0 && seatTotal > openLimit || openStatusSort[activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
+			if (perFull.length > pfl && (openStatusSort[Board.activePlayer] == 0 && seatTotal > openLimit || openStatusSort[Board.activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
 				Board.tiles = tilesCopy.slice();
 				this.updateBoard();
-				this.arrange(activePlayer);
+				this.arrange(Board.activePlayer);
 				return 1;
 			} else {
 				this.movetoArea(areaItemLast, areaSeat, 1);
 				Board.tiles = tilesCopy.slice();
 				this.updateBoard();
-				this.arrange(activePlayer);
+				this.arrange(Board.activePlayer);
 				return 0;
 			}
 		},
 		place(tileId, pos, seat) {
-			if (!seat) seat = activePlayer;
+			if (!seat) seat = Board.activePlayer;
 			
 			try {
 				// var _0x363bc5 = tileId.split("-");
@@ -999,10 +1001,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 					diff = 0;
 					Board.lastStone = '';
 				}
-				var _0x4fe46a = activePlayer;
-				activePlayer = seat;
+				var _0x4fe46a = Board.activePlayer;
+				Board.activePlayer = seat;
 				this.updateBoard();
-				activePlayer = _0x4fe46a;
+				Board.activePlayer = _0x4fe46a;
 			}
 			var _0x2c9a7e = Board.tiles.filter(e => !!e).slice();
 			if (_0x2c9a7e.length == 0) {
@@ -1035,7 +1037,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			Tiles.markCont = 0;
 		},
 		checkHandleDouble(seat) {
-			// if (activePlayer == 1 && true) {}
+			// if (Board.activePlayer == 1 && true) {}
 			if (seat == 1 && this.getOkeyFromTable(1, 2)) return 0;
 			
 			var bTiles = Board.tiles.filter(e => !!e).slice();
@@ -1063,7 +1065,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (UserTotalDouble > 0) {
 					this.popMessage(users[seat] + " cift isledi!");
 					Board.handleDouble = 1;
-					this.putToTable(activePlayer, 2);
+					this.putToTable(Board.activePlayer, 2);
 				}
 			}
 		},
@@ -1345,13 +1347,13 @@ let { Engine, Board, Tiles, AI } = (() => {
 										this.moveToTable(_0x49f720, _0x1fc99b, _0x2fc30f, j, 1);
 										this.popMessage(users[seat] + " seri isledi!");
 										Board.tileLimits[seat]--;
-										if (activePlayer != _0x49f720) {
+										if (Board.activePlayer != _0x49f720) {
 											_0x364dc5[_0x49f720] += _0x1fc99b % 100 * 10;
 										}
-										var _0xaf41f9 = activePlayer;
-										activePlayer = seat;
+										var _0xaf41f9 = Board.activePlayer;
+										Board.activePlayer = seat;
 										this.updateBoard();
-										activePlayer = _0xaf41f9;
+										Board.activePlayer = _0xaf41f9;
 										_0x2bbb42 = 1;
 									} else {
 										Board.handleItems.push(Board.tiles[i]);
@@ -1598,12 +1600,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
 										_0x1b0a1e = _0x1b0a1e[1] - 1;
 										data[_0x1b0a1e] = Tiles.okey;
-										var _0x559c6d = activePlayer;
-										activePlayer = seat;
+										var _0x559c6d = Board.activePlayer;
+										Board.activePlayer = seat;
 										this.updateBoard();
-										activePlayer = _0x559c6d;
+										Board.activePlayer = _0x559c6d;
 										_0x108f0b = 1;
-										this.popMessage(users[activePlayer] + " yerden okey aldi!");
+										this.popMessage(users[Board.activePlayer] + " yerden okey aldi!");
 									} else {
 										Board.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
@@ -1659,10 +1661,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
 										_0x1b0a1e = _0x1b0a1e[1] - 1;
 										data[_0x1b0a1e] = Tiles.okey;
-										var _0x559c6d = activePlayer;
-										activePlayer = seat;
+										var _0x559c6d = Board.activePlayer;
+										Board.activePlayer = seat;
 										this.updateBoard();
-										activePlayer = _0x559c6d;
+										Board.activePlayer = _0x559c6d;
 										_0x108f0b = 1;
 									} else {
 										Board.handleItems.push(Board.tiles[i]);
@@ -1710,7 +1712,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.leftHandTileTemp = Board.leftHandTile;
 				Board.leftHandCont = 0;
 				Board.leftHandTile = 0;
-				if (activePlayer == 1) {
+				if (Board.activePlayer == 1) {
 					if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
 						this.changePoint(_0x57b199, 4, 1);
 					}
@@ -1789,7 +1791,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (Board.getOkeyKont == 0) {
 				if (!_0x5486c5) {
 					Board.collect.push(seat + ',' + "tile-mini2-" + Board.sayTableTiles + ',' + _0x5a1841 + ',' + _0x51fce2 + ',' + _0x14df73);
-					if (activePlayer == 1) {
+					if (Board.activePlayer == 1) {
 						this.buttonActivePassive("collect", 1);
 					}
 				}
