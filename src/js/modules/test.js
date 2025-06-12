@@ -46,7 +46,6 @@ let Test = {
 		// return;
 
 		APP.game.dispatch({ type: "restore-state", state: state5 });
-		// APP.game.dispatch({ type: "start-game", dealer: 4, noAnim: true });
 		
 		// setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 100);
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);

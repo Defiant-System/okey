@@ -227,7 +227,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 		movetoArea(tile, seat, _0x1c04c4) {
 			// var _0x10dd5c = Board.tiles.filter(e => !!e).slice();
 			// var _0x536f0b = tile.split('-');
-			// if (handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
+			// if (Board.handleItems.indexOf(data[_0x536f0b[1] - 1]) > -1 && _0x10dd5c.length > 0 && _0x1c04c4 != 1) {
 			// 	this.popMessage(users[activePlayer] + " islek tas atti, " + punishOffset + " ceza puani yedi!");
 			// 	// this.changePoint(punishOffset, activePlayer, 1);
 			// }
@@ -662,7 +662,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					sign.toggleClass("red", Board.User1Total < openLimitG);
 				}
 				if (openStatusSort[1] == 1 || openStatusDouble[1] == 1) {
-					sign.removeClass("hidden").find("h4").html(countBoard(1));
+					sign.removeClass("hidden").find("h4").html(this.countBoard(1));
 					sign.addClass("red");
 				}
 			}
@@ -752,20 +752,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			activePlayer = seat;
 			// if (activePlayer == 4) activePlayerCont = 1;
 
-			APP.game.els.el.find(`.seat.highlight`).removeClass("highlight");
-			if (activePlayer === 1) {
-				
-				APP.game.dispatch({ type: "enable-draggable-for-user" });
-
-				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
-					.data({ status: "THINKING" })
-					.cssSequence("thinking", "transitionend", el => {
-						console.log("force move");
-					});
-			} else {
-				APP.game.els.el.find(`.seat[data-seat="${activePlayer}"]`)
-					.addClass("highlight");
-			}
+			APP.game.dispatch({ type: "change-player", activePlayer });
 
 			Board.collect = [];
 			Board.collectPlaces = [];
@@ -1082,7 +1069,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 		},
 		checkHandle(seat, num=0) {
 			// var _0x3c5f2e = [];
-			Tiles.handleItems = [];
+			Board.handleItems = [];
 			if (seat == 1) {
 				Board.tiles = Board.tiles1.slice();
 				// boardPlaces = boardPlaces1.slice();
@@ -1367,7 +1354,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										activePlayer = _0xaf41f9;
 										_0x2bbb42 = 1;
 									} else {
-										Tiles.handleItems.push(Board.tiles[i]);
+										Board.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
 									}
@@ -1618,7 +1605,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										_0x108f0b = 1;
 										this.popMessage(users[activePlayer] + " yerden okey aldi!");
 									} else {
-										Tiles.handleItems.push(Board.tiles[i]);
+										Board.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
 									}
@@ -1630,7 +1617,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						if (Board.tiles[i] == "000") {
 							_0x495ad6[i] = okey % 100 + 800;
 						}
-						for (let j=0; j<14; j++) {
+						for (let j=0; j<15; j++) {
 							for (let k=0; k<2; k++) {
 								Board.tableDoubleUser1[j][k];
 								_0x194228 = 0;
@@ -1678,7 +1665,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 										activePlayer = _0x559c6d;
 										_0x108f0b = 1;
 									} else {
-										Tiles.handleItems.push(Board.tiles[i]);
+										Board.handleItems.push(Board.tiles[i]);
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].innerHTML = '';
 										// $(boardPlaces[i * 1 + 1]).children[0].children[0].classList.add("marked");
 									}

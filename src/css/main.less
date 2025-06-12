@@ -978,6 +978,35 @@ content {
 			}
 		}
 
+		&.discard-tile:not(.anim-draw) {
+			.tile {
+				top: var( --sY );
+				left: var( --sX );
+			}
+		}
+
+		&.draw-anim {
+			min-height: 0px;
+			transition: min-height 300ms;
+
+			.tile {
+				top: var( --sY );
+				left: var( --sX );
+				transition: top 300ms ease-in-out,
+							left 300ms ease-in-out;
+			}
+
+			&.discard-tile,
+			&.anim-draw {
+				min-height: 1px;
+
+				.tile {
+					top: var( --tY );
+					left: var( --tX );
+				}
+			}
+		}
+
 		.tile-arrow {
 			display: none;
 			position: absolute;
@@ -1213,7 +1242,7 @@ content {
 		}
 
 		&.thinking {
-			--thinkTime: 19s;
+			--thinkTime: 1s;
 			min-height: 1px;
 			transition: min-height var( --thinkTime ) linear;
 		}

@@ -156,6 +156,84 @@
 				// update rack
 				Self.dispatch({ type: "update-user-rack" });
 				break;
+			case "change-player":
+				Self.els.el.find(`.seat.highlight`).removeClass("highlight");
+				if (event.activePlayer === 1) {
+					// enabled draggable tiles
+					Self.dispatch({ type: "enable-draggable-for-user" });
+					// thinking UI animation / countdown
+					Self.els.el.find(`.seat[data-seat="${event.activePlayer}"]`)
+						.data({ status: "THINKING" })
+						// player has not reacted - auto move for player
+						.cssSequence("thinking", "transitionend", el => {
+							// focus on user rack
+							Engine.getRack(1);
+							// draw tile
+							let tile = Tiles.draw(1);
+							Board.tiles.push(tile);
+							Engine.updateBoard();
+							Engine.updateLeftTiles(tile);
+							// UI animation
+							let { id, clr, num } = Tiles.parse(tile.value),
+								dOffset = Self.els.rack.offset(".board"),
+								sOffset = Self.els.common.info.find(".inset.left").offset(".board"),
+								sY = sOffset.top - dOffset.top + 5,
+								sX = sOffset.left - dOffset.left + 5;
+								css = Self.getEmptySlot(),
+								str = `<span class="tile ${clr}" data-v="${num}" data-id="${id}" data-uid="${tile.uid}" style="--tY: ${css.top}px; --tX: ${css.left}px; --sY: ${sY}px; --sX: ${sX}px;"></span>`;
+							// insert new tile
+							Self.els.rack.addClass("draw-anim").append(str);
+							// trigger animation
+							setTimeout(() => {
+								Self.els.rack.cssSequence("anim-draw", "transitionend", el => {
+									// reset rack
+									el.removeClass("anim-draw draw-anim");
+									// reset new tile
+									let seat = 1,
+										tileEl = el.find(".tile:last"),
+										top = tileEl.cssProp("--tY"),
+										left = tileEl.cssProp("--tX");
+									// update style + clean up css properties
+									tileEl.css({ top, left, "--tY": "", "--tX": "", "--sY": "", "--sX": "" });
+									// temp re-arange to get least wanted tile
+									Engine.arrange(seat);
+
+									// select tile to discard
+									let tiles = Board.tiles.filter(e => !!e).slice(),
+										selectedTile = AI.getDiscardTile(seat, tiles),
+										selEl = el.find(`.tile[data-uid="${selectedTile.uid}"]`),
+										sY = selEl.prop("offsetTop") +"px",
+										sX = selEl.prop("offsetLeft") +"px",
+										sOffset = Self.els.rack.offset(".board"),
+										dOffset = Self.els.discard.player1.offset(".board"),
+										tY = (dOffset.top - sOffset.top + 5) +"px",
+										tX = (dOffset.left - sOffset.left + 5) +"px";
+									// remove discard tile from rack
+									Tiles.removeArrayItem(Board.tiles, selectedTile);
+									// setup discard animation
+									el.addClass("draw-anim discard-tile");
+									// tile animation
+									selEl.css({ top: "", left: "", "--tY": tY, "--tX": tX, "--sY": sY, "--sX": sX });
+									// start animation
+									el.cssSequence("anim-draw", "transitionend", el => {
+										// reset tile element
+										selEl.css({ top: "", left: "", "--tY": "", "--tX": "", "--sY": "", "--sX": "" });
+										Self.els.discard.player1.append(selEl);
+										// reset rack
+										el.removeClass("discard-tile anim-draw draw-anim");
+										// re-arrange rack
+										Engine.arrange(seat);
+										// update rack
+										setTimeout(() => Self.dispatch({ type: "update-user-rack" }), 100);
+									});
+								});
+							}, 100);
+						});
+				} else {
+					// AI seats
+					Self.els.el.find(`.seat[data-seat="${event.activePlayer}"]`).addClass("highlight");
+				}
+				break;
 			case "deal-tiles-to":
 				pEl = Self.els.common.info.find(".inset.left");
 				dOffset = pEl.offset(".board");
@@ -278,10 +356,7 @@
 							el.addClass("blank").removeClass(eventTile.clr).removeAttr("data-v");
 
 							if (event.seat === 4) {
-								// make last tile draggable
-								clone.addClass("draggable");
-								// make tile stack draggable
-								Self.els.common.info.find(".left .tile").addClass("draggable");
+								Self.dispatch({ type: "enable-draggable-for-user" });
 							}
 
 							setTimeout(() => resolve(), 500);
@@ -689,7 +764,7 @@
 	getEmptySlot() {
 		let slot = {},
 			row;
-		if (this.drag.posY === 0) {
+		if (this.drag && this.drag.posY === 0) {
 			slot.top = 83;
 			row = this.els.rack.find(".tile").filter(tile => +tile.offsetTop === 83);
 		} else {

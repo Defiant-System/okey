@@ -76,27 +76,9 @@ let AI = {
 		}
 		Engine.arrange(seat);
 
-		aiTiles = Board.tiles.filter(e => !!e).slice();
-		let selectedTile = aiTiles[aiTiles.length - 1];
-		if (aiTiles.length > 0) {
-			var _0x280b69 = selectedTile.uid;
-			if (aiTiles.length > 0) {
-				var _0x33ee = 0;
-				while ((selectedTile.value == Tiles.okey || Tiles.handleItems.findIndex(e => e.uid == selectedTile.uid) > -1) && aiTiles.length - _0x33ee > 0) {
-					_0x33ee++;
-					selectedTile = aiTiles[aiTiles.length - _0x33ee];
-				}
-			}
-			if (seat != 1) {
-				var _0x77769 = Math.ceil(Math.random() * 10);
-				if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
-					Engine.popMessage("el bozuyor");
-					selectedTile = aiTiles[0];
-				}
-			}
-		} else {
-			Engine.popMessage("tas bitti - 1");
-		}
+		// select tile to discard
+		let tiles = Board.tiles.filter(e => !!e).slice();
+		let selectedTile = this.getDiscardTile(seat, tiles);
 
 		// remove discard tile from rack
 		Tiles.removeArrayItem(Board.tiles, selectedTile);
@@ -185,7 +167,30 @@ let AI = {
 			Engine.updateLeftTiles(tile);
 
 			// UI animation
-			APP.game.dispatch({ type: "draw-stack-tile", seat })
+			APP.game.dispatch({ type: "draw-stack-tile", seat });
 		}
+	},
+	getDiscardTile(seat, aiTiles) {
+		let selectedTile = aiTiles[aiTiles.length - 1];
+		if (aiTiles.length > 0) {
+			var _0x280b69 = selectedTile.uid;
+			if (aiTiles.length > 0) {
+				var _0x33ee = 0;
+				while ((selectedTile.value == Tiles.okey || Board.handleItems.findIndex(e => e.uid == selectedTile.uid) > -1) && aiTiles.length - _0x33ee > 0) {
+					_0x33ee++;
+					selectedTile = aiTiles[aiTiles.length - _0x33ee];
+				}
+			}
+			if (seat != 1) {
+				var _0x77769 = Math.ceil(Math.random() * 10);
+				if (_0x77769 < 2 && settingsGameLevel == 2 || _0x77769 < 4 && settingsGameLevel == 1) {
+					Engine.popMessage("el bozuyor");
+					selectedTile = aiTiles[0];
+				}
+			}
+		} else {
+			Engine.popMessage("tas bitti - 1");
+		}
+		return selectedTile;
 	}
 };
