@@ -12,6 +12,9 @@ let AI = {
 		Engine.changePlayer(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
+
+		console.log(seat, aiTiles.length - 1 , Board.tileLimits[seat]);
+
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
 			await this.makeMove(seat);
 		} else {
@@ -95,10 +98,9 @@ let AI = {
 			return 0;
 		}
 
-			console.log(Board.activePlayer);
 		// stop timeout
 		if (Board.activePlayer == 4) {
-			Board.gameOver = 1;
+			// Board.gameOver = 1;
 			// APP.game.dispatch({ type: "output-pgn" });
 		}
 	},

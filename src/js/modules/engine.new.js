@@ -754,7 +754,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		changePlayer(seat) {
-			Board.activePlayer = seat % 4;
+			Board.activePlayer = seat;
 			// if (Board.activePlayer == 4) activePlayerCont = 1;
 
 			APP.game.dispatch({ type: "change-player", activePlayer: Board.activePlayer });
