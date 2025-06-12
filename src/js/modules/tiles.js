@@ -111,19 +111,14 @@ let Tiles = {
 			Engine.arrange(1, 1);
 
 			// restore game state
-			let rackTiles = state.player
-									.map(player => ({ s: player.seat, l: player.rack.slice().filter(e => !!e).length }))
-									.sort((a, b) => b.l - a.l);
-			activePlayer = rackTiles[0].l === 22 ? rackTiles[0].s : 0;
-			if (activePlayer === 0) {
-				let discards = state.player
-									.map(player => ({ s: player.seat, l: player.discard.length }))
-									.filter(e => e.l == 0);
-				activePlayer = 4 - discards.length;
+			activePlayer = state.table.activePlayer || 1;
+
+			if (activePlayer == 1) {
+				// make sure active player rack is focused
+				Engine.getRack(activePlayer);
+			} else {
+				AI.think(activePlayer);
 			}
-			activePlayer = (activePlayer) % 4;
-			// make sure active player rack is focused
-			Engine.getRack(activePlayer);
 			// temp
 			// Engine.showAllRacks();
 		} else {

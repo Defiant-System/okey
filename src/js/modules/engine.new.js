@@ -1402,7 +1402,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (_0x495ad6[i]) {
 					if (num == 1 || num == 0) {
 						if (Board.tiles[i]._val == "000") {
-							_0x495ad6[i] = okey;
+							_0x495ad6[i] = Tiles.okey;
 						}
 						for (let j=0; j<7; j++) {
 							for (let k=0; k<13; k++) {
@@ -1580,7 +1580,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
 										if (Board.tiles[i]._val == "000") {
-											Board.tiles[i]._val = okey % 100 + 800;
+											Board.tiles[i]._val = Tiles.okey % 100 + 800;
 										}
 										Board.getOkeyKont = 1;
 										this.moveToTable(_0x3dd017, Board.tiles[i], k, j, 1);
@@ -1592,12 +1592,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 										// $(boardPlaces[i * 1 + 1]).classList.remove(color[2]);
 										// $(boardPlaces[i * 1 + 1]).classList.remove(color[3]);
 										// $(boardPlaces[i * 1 + 1]).classList.remove(color[4]);
-										// $(boardPlaces[i * 1 + 1]).classList.add(color[Math.floor(okey / 100)]);
-										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = okey % 100;
-										Board.tiles[i] = okey;
+										// $(boardPlaces[i * 1 + 1]).classList.add(color[Math.floor(Tiles.okey / 100)]);
+										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = Tiles.okey % 100;
+										Board.tiles[i] = Tiles.okey;
 										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
 										_0x1b0a1e = _0x1b0a1e[1] - 1;
-										data[_0x1b0a1e] = okey;
+										data[_0x1b0a1e] = Tiles.okey;
 										var _0x559c6d = activePlayer;
 										activePlayer = seat;
 										this.updateBoard();
@@ -1614,12 +1614,12 @@ let { Engine, Board, Tiles, AI } = (() => {
 						}
 					}
 					if (num == 2 || num == 0) {
-						if (Board.tiles[i] == "000") {
-							_0x495ad6[i] = okey % 100 + 800;
+						if (Board.tiles[i]._val == "000") {
+							_0x495ad6[i] = Tiles.okey % 100 + 800;
 						}
-						for (let j=0; j<15; j++) {
+						for (let j=0; j<14; j++) {
 							for (let k=0; k<2; k++) {
-								Board.tableDoubleUser1[j][k];
+								// Board.tableDoubleUser1[j][k];
 								_0x194228 = 0;
 								_0x3dd017 = 0;
 								if (Board.tableDoubleUser1[j][k] - Board.tableDoubleUser1[j][k] % 100 == 900) {
@@ -1645,7 +1645,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 								if (_0x194228 != 0 && _0x495ad6[i] == _0x194228) {
 									if (Tiles.markCont == 0) {
 										if (Board.tiles[i]._val == "000") {
-											Board.tiles[i]._val = okey % 100 + 800;
+											Board.tiles[i]._val = Tiles.okey % 100 + 800;
 										}
 										this.popMessage("yerden okey aliniyor!");
 										Board.getOkeyKont = 1;
@@ -1654,11 +1654,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 										if (markOkey == 1) {
 											// $(boardPlaces[i * 1 + 1]).children[0].style.display = 'none';
 										}
-										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = okey % 100;
-										Board.tiles[i] = okey;
+										// $(boardPlaces[i * 1 + 1]).children[0].children[1].innerHTML = Tiles.okey % 100;
+										Board.tiles[i] = Tiles.okey;
 										// var _0x1b0a1e = boardPlaces[i * 1 + 1].split('-');
 										_0x1b0a1e = _0x1b0a1e[1] - 1;
-										data[_0x1b0a1e] = okey;
+										data[_0x1b0a1e] = Tiles.okey;
 										var _0x559c6d = activePlayer;
 										activePlayer = seat;
 										this.updateBoard();
