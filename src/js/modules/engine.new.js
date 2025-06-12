@@ -432,6 +432,9 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (type == 1) {
 				Tiles.priority();
 			}
+			// sorts left overs from high to low - TEMP
+			Board.tiles.sort((a,b) => b.value - a.value);
+			// concat sorted tiles
 			arr2.push.apply(arr2, Board.tiles);
 			
 			Board.tiles = arr2.slice();
@@ -751,7 +754,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 		},
 		changePlayer(seat) {
-			Board.activePlayer = seat;
+			Board.activePlayer = seat % 4;
 			// if (Board.activePlayer == 4) activePlayerCont = 1;
 
 			APP.game.dispatch({ type: "change-player", activePlayer: Board.activePlayer });

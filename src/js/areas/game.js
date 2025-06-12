@@ -70,7 +70,6 @@
 					let scored = Self.els.el.find(`.seat[data-seat="${player.seat}"] .scored`);
 					if (scored.hasClass("pop-tiles")) {
 						player.melded = scored.find(".tile").map(e => e.getAttribute("data-v")).join("");
-						console.log(player.melded);
 					}
 				});
 
@@ -166,7 +165,7 @@
 					Self.els.el.find(`.seat[data-seat="${event.activePlayer}"]`)
 						.data({ status: "THINKING" })
 						// player has not reacted - auto move for player
-						.cssSequence("thinking", "transitionend", el => {
+						.cssSequence("thinking", "transitionend", seatEl => {
 							// focus on user rack
 							Engine.getRack(1);
 							// draw tile
@@ -224,6 +223,8 @@
 										el.removeClass("discard-tile anim-draw draw-anim");
 										// re-arrange rack
 										Engine.arrange(seat);
+										// continue game flow
+										Engine.dragStop({ rack: Self.els.rack, isThrow: true });
 										// update rack
 										setTimeout(() => Self.dispatch({ type: "update-user-rack" }), 100);
 									});

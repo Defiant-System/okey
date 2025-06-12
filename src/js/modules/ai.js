@@ -95,9 +95,10 @@ let AI = {
 			return 0;
 		}
 
+			console.log(Board.activePlayer);
 		// stop timeout
-		if (Board.activePlayer == 3) {
-			// Board.gameOver = 1;
+		if (Board.activePlayer == 4) {
+			Board.gameOver = 1;
 			// APP.game.dispatch({ type: "output-pgn" });
 		}
 	},
