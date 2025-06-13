@@ -59,6 +59,8 @@
 							{ seat: 4, discard: [], rack: [] }
 						]
 					};
+				// make sure current board is synced internally
+				Engine.updateBoard();
 				// put "gösterge" to the end of "left" tiles
 				state.table.left.push(state.table.left.shift());
 				// loop players
@@ -87,8 +89,8 @@
 					state.melded.doubles[row].push(el.data("id"));
 				});
 
-				// console.log(JSON.stringify(state));
-				console.log(state);
+				console.log(JSON.stringify(state));
+				// console.log(state);
 				break;
 			case "show-all-racks":
 				Engine.showAllRacks();

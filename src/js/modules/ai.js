@@ -12,9 +12,6 @@ let AI = {
 		Engine.changePlayer(seat);
 
 		let aiTiles = Board.tiles.filter(e => !!e).slice();
-
-		console.log(seat, aiTiles.length - 1 , Board.tileLimits[seat]);
-
 		if (aiTiles.length - 1 == Board.tileLimits[seat]) {
 			await this.makeMove(seat);
 		} else {
@@ -92,7 +89,7 @@ let AI = {
 		Engine.arrange(seat);
 		Engine.markIt(1);
 
-		if (Board.gameOver == 1 && tilesLeft.length > 0) {
+		if (Board.gameOver == 1 && Tiles.tilesLeft.length > 0) {
 			if (settingsType == 1) Engine.gameOver(1);
 			if (settingsType == 2 || settingsType == 3) {}
 			return 0;
