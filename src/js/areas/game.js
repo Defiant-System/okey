@@ -163,6 +163,9 @@
 				if (event.activePlayer === 1) {
 					// enabled draggable tiles
 					Self.dispatch({ type: "enable-draggable-for-user" });
+					// if autoplay not on, exit
+					if (!Settings.Autoplay) return;
+
 					// thinking UI animation / countdown
 					Self.els.el.find(`.seat[data-seat="${event.activePlayer}"]`)
 						.data({ status: "THINKING" })

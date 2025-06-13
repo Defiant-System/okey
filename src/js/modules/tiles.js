@@ -32,9 +32,9 @@ let Tiles = {
 
 		Board.activePlayer = 1;
 
-		if (settingsType == 1) Board.tileLimit = 14;
-		if (settingsType == 2) Board.tileLimit = 21;
-		if (settingsType == 3) Board.tileLimit = 14;
+		if (Settings.Type == 1) Board.tileLimit = 14;
+		if (Settings.Type == 2) Board.tileLimit = 21;
+		if (Settings.Type == 3) Board.tileLimit = 14;
 
 		Board.tileLimits = [0, Board.tileLimit, Board.tileLimit, Board.tileLimit, Board.tileLimit];
 		Board.handleItems = [];
@@ -222,7 +222,7 @@ let Tiles = {
 				asc.push(Board.virtualTiles[i]);
 				value2 = 1;
 			}
-			if (settingsType == 1) {
+			if (Settings.Type == 1) {
 				if (min % 100 == 1) {
 					max = { value: String(min) };
 				}
@@ -257,8 +257,8 @@ let Tiles = {
 			if (sorted[i]) arr4 = arr4 * 1 + sorted[i].value % 100;
 		}
 		if (sort == 0) {
-			if (settingsType == 1) return arr3;
-			if (settingsType == 2 || settingsType == 3) return arr4;
+			if (Settings.Type == 1) return arr3;
+			if (Settings.Type == 2 || Settings.Type == 3) return arr4;
 		}
 		if (sort == 1) return sorted;
 	},
@@ -295,8 +295,8 @@ let Tiles = {
 			}
 		}
 		if (type == 0) {
-			if ([1].includes(settingsType)) return val1;
-			if ([2,3].includes(settingsType)) return val2;
+			if ([1].includes(Settings.Type)) return val1;
+			if ([2,3].includes(Settings.Type)) return val2;
 		}
 		if (type == 1) return sorted;
 	},
@@ -332,7 +332,7 @@ let Tiles = {
 			Board.virtualTiles = this.removeArrayItem(Board.virtualTiles, arr2[i]);
 			index2 = index2 * 1 + arr2[i].value % 100;
 		}
-		if (asc == 0 && ((settingsType == 1 || settingsType == 2 || settingsType == 3))) return index1;
+		if (asc == 0 && ((Settings.Type == 1 || Settings.Type == 2 || Settings.Type == 3))) return index1;
 		if (asc == 1) return arr2;
 	},
 	checkPer(num, tmp) {
@@ -363,7 +363,7 @@ let Tiles = {
 				for (let j=0; j<perFull.length; j++) {
 					if (perFull[j] == "") {
 						let tile = bTiles[i].value;
-						if (settingsType == 1) {
+						if (Settings.Type == 1) {
 							if (bTiles[i] % 100 == 1) {
 								tile = bTiles[i].value * 1 + 13;
 							}
@@ -415,10 +415,10 @@ let Tiles = {
 				let t2 = Board.tiles[i+1] ? Board.tiles[i+1].value : "";
 				let t3 = Board.tiles[i-2] ? Board.tiles[i-2].value : "";
 
-				if (t1 % 100 == 1 && settingsType == 1) {
+				if (t1 % 100 == 1 && Settings.Type == 1) {
 					index = i - 1;
 				}
-				if (index && t0 - t1 == 1 && t2 - t0 == 2 && t2 - Board.tiles[index].value == 12 && settingsType == 1) {
+				if (index && t0 - t1 == 1 && t2 - t0 == 2 && t2 - Board.tiles[index].value == 12 && Settings.Type == 1) {
 					let oTile = okeyCont.pop();
 					perFull.push(Board.tiles[i-1]);
 					perFull.push(Board.tiles[i]);
@@ -456,7 +456,7 @@ let Tiles = {
 					// okeyCont--;
 					if (!okeyCont.length) return 0;
 				}
-				if (index && (t0 - t1 == 1 && t0 - Board.tiles[index].value == 11 || t0 - t1 == 2 && t0 - Board.tiles[index].value == 12) && settingsType == 1) {
+				if (index && (t0 - t1 == 1 && t0 - Board.tiles[index].value == 11 || t0 - t1 == 2 && t0 - Board.tiles[index].value == 12) && Settings.Type == 1) {
 					let oTile = okeyCont.pop();
 
 					perFull.push(Board.tiles[i-1]);
@@ -517,10 +517,10 @@ let Tiles = {
 					// okeyCont--;
 					if (!okeyCont.length) return 0;
 				}
-				if (t1 % 100 == 1 && settingsType == 1) {
+				if (t1 % 100 == 1 && Settings.Type == 1) {
 					index = i - 1;
 				}
-				if (index && t0 - Board.tiles[index].value == 11 && settingsType == 1) {
+				if (index && t0 - Board.tiles[index].value == 11 && Settings.Type == 1) {
 					let oTile = okeyCont.pop();
 					perHalf.push(Board.tiles[i]);
 					perHalf.push(oTile);
@@ -539,7 +539,7 @@ let Tiles = {
 			for (let j=0; j<perHalf.length; j++) {
 				let p1 = perHalf[j-1] ? perHalf[j-1].value : "";
 				let p2 = perHalf[j-2] ? perHalf[j-2].value : "";
-				if (perHalf[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+				if (perHalf[j] == "" && ((Settings.Type == 2 || Settings.Type == 3) && p1 % 100 != 13 || Settings.Type == 1)) {
 					if (p1 - p2 == 1) {
 						let oTile = okeyCont.pop();
 						perHalf.splice(j, 0, oTile);
@@ -548,7 +548,7 @@ let Tiles = {
 						Board.tiles = this.removeArrayItem(Board.tiles, oTile);
 						if (!okeyCont.length) return 0;
 					}
-					if (p2 - p1 == 12 && settingsType == 1) {
+					if (p2 - p1 == 12 && Settings.Type == 1) {
 						let oTile = okeyCont.pop();
 						perHalf.splice(j-2, 0, oTile);
 						// okeyCont--;
@@ -577,7 +577,7 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				let p1 = perFull[j-1] ? perFull[j-1].value : "";
 				let p2 = perFull[j-2] ? perFull[j-2].value : "";
-				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+				if (perFull[j] == "" && ((Settings.Type == 2 || Settings.Type == 3) && p1 % 100 != 13 || Settings.Type == 1)) {
 					if (p1 - p2 == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (Board.tiles[i].value - p1 == 2) {
@@ -619,7 +619,7 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				let p1 = perFull[j-1] ? perFull[j-1].value : "";
 				let p2 = perFull[j-2] ? perFull[j-2].value : "";
-				if (perFull[j] == "" && p1 % 100 == 12 && settingsType == 1) {
+				if (perFull[j] == "" && p1 % 100 == 12 && Settings.Type == 1) {
 					if (p1 - p2 == 1) {
 						for (let i=0; i<Board.tiles.length; i++) {
 							if (p1 - Board.tiles[i].value == 11) {
@@ -640,7 +640,7 @@ let Tiles = {
 			for (let j=0; j<perFull.length; j++) {
 				let p1 = perFull[j-1] ? perFull[j-1].value : "";
 				let p2 = perFull[j-2] ? perFull[j-2].value : "";
-				if (perFull[j] == "" && ((settingsType == 2 || settingsType == 3) && p1 % 100 != 13 || settingsType == 1)) {
+				if (perFull[j] == "" && ((Settings.Type == 2 || Settings.Type == 3) && p1 % 100 != 13 || Settings.Type == 1)) {
 					if (p1 - p2 == 1) {
 						let oTile = okeyCont.pop();
 						perFull.splice(j, 0, oTile);

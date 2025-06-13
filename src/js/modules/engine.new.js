@@ -1,19 +1,22 @@
 
-let { Engine, Board, Tiles, AI } = (() => {
+let { Engine, Board, Tiles, Settings, AI } = (() => {
 
 	let APP;
 
-	let settingsType = 2;
-	
-	let settingsCont = 0,
-		settingsGameLevel = 2,
-		settingsSound = 1,
-		settingsHelp = 1,
-		settingsIndicator = 1,
-		settingswithColors = 0,
-		settingsIncrease = 0,
-		settingsPunish = 0,
-		AIcont = 0,
+	let Settings = {
+			Autoplay: 0,
+			Type: 2,
+			Cont: 0,
+			GameLevel: 2,
+			Sound: 1,
+			Help: 1,
+			Indicator: 1,
+			withColors: 0,
+			Increase: 0,
+			Punish: 0,
+		};
+
+	let AIcont = 0,
 		AIStatus = 0;
 
 	let perFull = [];
@@ -232,7 +235,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// 	// this.changePoint(punishOffset, Board.activePlayer, 1);
 			// }
 			// if (Tiles.okey == data[_0x536f0b[1] - 1] && _0x1c04c4 != 1) {
-			// 	if (_0x10dd5c.length > 0 && (settingsType == 2 || settingsType == 3)) {
+			// 	if (_0x10dd5c.length > 0 && (Settings.Type == 2 || Settings.Type == 3)) {
 			// 		this.popMessage(users[Board.activePlayer] + " yana okey atti, " + punishOffset + " ceza puani yedi!");
 			// 		// this.changePoint(punishOffset, Board.activePlayer, 1);
 			// 	} else {
@@ -274,10 +277,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (Tiles.tilesLeft.length == 0) {
 				this.popMessage("Oyun Bitti: Ortada Cekecek Tas kalmadi");
 				Board.gameOver = 1;
-				if (settingsType == 1) {
+				if (Settings.Type == 1) {
 					this.message(2);
 				}
-				if (settingsType == 2 || settingsType == 3) {
+				if (Settings.Type == 2 || Settings.Type == 3) {
 					this.gameOver(1);
 				}
 			}
@@ -316,7 +319,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				}, 100);
 			}
 			this.updateBoard();
-			if (Board.gameOver == 1 && settingsType == 1) {
+			if (Board.gameOver == 1 && Settings.Type == 1) {
 				this.gameOver(1);
 			}
 		},
@@ -336,7 +339,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			let min = 0;
 
 			if (Board.activePlayer == 1) min = 1;
-			if (settingsGameLevel > 1 || min == 1) {
+			if (Settings.GameLevel > 1 || min == 1) {
 				let oI = Board.tiles.findIndex(e => e.value == Tiles.okey);
 				if (oI != -1) {
 					Board.tiles[oI].value = "800";
@@ -358,7 +361,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			let arr6 = Board.tiles.slice();
 			if (type == 1) {
-				if (Tiles.checkPer(3) || settingsGameLevel < 3 && min == 0) {
+				if (Tiles.checkPer(3) || Settings.GameLevel < 3 && min == 0) {
 					arr1 = Tiles.sortTiles(3, 1);
 					arr2 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
@@ -379,7 +382,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (okeyCont.length) Tiles.addOkey(1, okeyCont);
 				
 				arr2 = perFull.slice();
-				if (Tiles.checkPer(2) || settingsGameLevel < 3 && min == 0) {
+				if (Tiles.checkPer(2) || Settings.GameLevel < 3 && min == 0) {
 					arr1 = Tiles.sortTiles(2, 1);
 					arr4 = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
@@ -499,7 +502,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 						}
 					}
 				}
-				if (t1v && t1v.value == Tiles.okey && t3v && (t3v._val % 100 != 13 && (settingsType == 2 || settingsType == 3) || settingsType == 1)) {
+				if (t1v && t1v.value == Tiles.okey && t3v && (t3v._val % 100 != 13 && (Settings.Type == 2 || Settings.Type == 3) || Settings.Type == 1)) {
 					_0x9497e = 1;
 					if (t3v._val == "000") {
 						t1v.value = String(Tiles.okey*1 + 1);
@@ -527,7 +530,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 							if (j > 0) {
 								let t0 = temp[j].value;
 								let t1 = temp[j-1].value;
-								if (t0 - t1 == 1 || j == temp.length - 1 && (t1 - t0 == 12 || t1 == Tiles.okey) && settingsType == 1) {
+								if (t0 - t1 == 1 || j == temp.length - 1 && (t1 - t0 == 12 || t1 == Tiles.okey) && Settings.Type == 1) {
 									_0x5b3924++;
 								} else {
 									_0x5b3924 = 1;
@@ -700,7 +703,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					_0x1290e9.push(String(_0x5ad174));
 					_0x1290e9.push("");
 					i++;
-					if (settingsType == 1 || settingsType == 2 || settingsType == 3) {
+					if (Settings.Type == 1 || Settings.Type == 2 || Settings.Type == 3) {
 						Board.UserTotalDouble++;
 					}
 				}
@@ -731,11 +734,11 @@ let { Engine, Board, Tiles, AI } = (() => {
 			}
 			if (Board.activePlayer == 1) {
 				let sign = APP.content.find(`.player.user .melded`);
-				if (settingsType == 2 || settingsType == 1) {
+				if (Settings.Type == 2 || Settings.Type == 1) {
 					sign.removeClass("hidden").find("h4").html(this.countBoard(1));
 					sign.addClass("red");
 				}
-				if (settingsType == 3) {
+				if (Settings.Type == 3) {
 					if (openStatusSort[1] == 0 && openStatusDouble[1] == 0) {
 						sign.removeClass("hidden").find("h4").html(Board.User1TotalDouble);
 						sign.toggleClass("red", Board.User1TotalDouble < openLimitDouble);
@@ -746,7 +749,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 					}
 				}
 			}
-			if (_0x481582 == 7 && settingsType == 1) {
+			if (_0x481582 == 7 && Settings.Type == 1) {
 				winWithDouble = 1;
 				return 1;
 			} else {
@@ -800,7 +803,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			// _0x19ab28 = _0x19ab28[1] - 1;
 			// _0x19ab28 = data[_0x19ab28];
 
-			if (perFull.length > pfl && (openStatusSort[Board.activePlayer] == 0 && seatTotal > openLimit || openStatusSort[Board.activePlayer] == 1 || settingsType == 1) || _0x19ab28 == Tiles.okey && settingsType == 1) {
+			if (perFull.length > pfl && (openStatusSort[Board.activePlayer] == 0 && seatTotal > openLimit || openStatusSort[Board.activePlayer] == 1 || Settings.Type == 1) || _0x19ab28 == Tiles.okey && Settings.Type == 1) {
 				Board.tiles = tilesCopy.slice();
 				this.updateBoard();
 				this.arrange(Board.activePlayer);
@@ -938,7 +941,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (sortType == 1) {
 				if (openStatusSort[seat] == 0) {
 					this.popMessage(seat + " seri acti: " + Board.UserTotal);
-					if (settingsIncrease == 1) {
+					if (Settings.Increase == 1) {
 						openLimitLast = openLimit;
 						openLimit = Board.UserTotal * 1 + 1;
 						// $("table-sort-score").innerHTML = openLimit;
@@ -956,10 +959,10 @@ let { Engine, Board, Tiles, AI } = (() => {
 				if (openStatusDouble[seat] == 0) {
 					let userName = APP.game.els.el.find(`.player .seat[data-seat="${seat}"] .name`).data("name");
 					this.popMessage(userName + " cift acti : " + Board.UserTotalDouble);
-					if (settingsIncrease == 1 && Board.UserTotalDouble >= openLimitDouble) {
+					if (Settings.Increase == 1 && Board.UserTotalDouble >= openLimitDouble) {
 						openLimitDoubleLast = openLimitDouble;
 						openLimitDouble = Board.UserTotalDouble * 1 + 1;
-						if (settingsType == 3) {
+						if (Settings.Type == 3) {
 							openLimitDouble = openLimitD;
 						}
 						// $("table-double-score").innerHTML = openLimitDouble;
@@ -1372,7 +1375,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 			if (_0x2bbb42 == 0 && num == 0) this.putOkeyToTable(seat);
 			if (num == 0) this.markIt(seat);
 			this.checkWin();
-			if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+			if (Settings.Punish == 1 && (Settings.Type == 2 || Settings.Type == 3)) {
 				if (_0x364dc5[1] > 0) {
 					this.changePoint(_0x364dc5[1], 1, 1);
 					_0x364dc5[1] = 0;
@@ -1716,7 +1719,7 @@ let { Engine, Board, Tiles, AI } = (() => {
 				Board.leftHandCont = 0;
 				Board.leftHandTile = 0;
 				if (Board.activePlayer == 1) {
-					if (settingsPunish == 1 && (settingsType == 2 || settingsType == 3)) {
+					if (Settings.Punish == 1 && (Settings.Type == 2 || Settings.Type == 3)) {
 						this.changePoint(_0x57b199, 4, 1);
 					}
 					// $("area-4").innerHTML = '';
@@ -1992,6 +1995,6 @@ let { Engine, Board, Tiles, AI } = (() => {
 		}
 	};
 
-	return { Engine, Board, Tiles, AI };
+	return { Engine, Board, Tiles, Settings, AI };
 
 })();
