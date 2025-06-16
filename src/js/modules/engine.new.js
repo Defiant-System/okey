@@ -331,8 +331,8 @@ let { Engine, Board, Tiles, Settings, AI } = (() => {
 			Board.tiles.map(e => e ? (e.value = e._val) : void(0));
 
 			let arr1 = [];
-			let arr2 = [];
-			let arr3 = [];
+			let runs = [];
+			let sets = [];
 			let arr4 = [];
 			let arr5 = [];
 			let okeyCont = [];
@@ -363,25 +363,25 @@ let { Engine, Board, Tiles, Settings, AI } = (() => {
 			if (type == 1) {
 				if (Tiles.checkPer(3) || Settings.GameLevel < 3 && min == 0) {
 					arr1 = Tiles.sortTiles(3, 1);
-					arr2 = arr1.slice();
+					runs = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 					arr1 = Tiles.sortTilesByColor(3, 1);
-					arr3 = arr1.slice();
+					sets = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 				} else {
 					arr1 = Tiles.sortTilesByColor(3, 1);
-					arr3 = arr1.slice();
+					sets = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 					arr1 = Tiles.sortTiles(3, 1);
-					arr2 = arr1.slice();
+					runs = arr1.slice();
 					Board.tiles = Board.virtualTiles.slice();
 				}
-				arr2.push.apply(arr2, arr3);
-				perFull = arr2.slice();
+				runs.push.apply(runs, sets);
+				perFull = runs.slice();
 				Tiles.addFourth();
 				if (okeyCont.length) Tiles.addOkey(1, okeyCont);
 				
-				arr2 = perFull.slice();
+				runs = perFull.slice();
 				if (Tiles.checkPer(2) || Settings.GameLevel < 3 && min == 0) {
 					arr1 = Tiles.sortTiles(2, 1);
 					arr4 = arr1.slice();
@@ -408,39 +408,40 @@ let { Engine, Board, Tiles, Settings, AI } = (() => {
 				}
 				if (okeyCont.length) {
 					Tiles.addOkey(4, okeyCont);
-					arr2 = perFull.slice();
+					runs = perFull.slice();
 				}
 				arr4 = perHalf.slice();
 			}
 			if (type == 2) {
 				arr1 = Tiles.sortDouble(0, 1);
-				arr2 = arr1.slice();
-				perFull = arr2.slice();
+				runs = arr1.slice();
+				perFull = runs.slice();
 				Board.tiles = Board.virtualTiles.slice();
 				if (okeyCont.length) Tiles.addOkeyDouble(okeyCont);
 				Board.tiles = Board.virtualTiles.slice();
-				arr2 = perFull.slice();
+				runs = perFull.slice();
 			}
 
-			arr2.push.apply(arr2, arr4);
+			runs.push.apply(runs, arr4);
 			Board.tiles = Board.tiles.filter(e => !!e);
-			let _0x17aa37 = arr2.length;
-			let _0x52b171 = arr2.length;
-			if (arr2[16] == "") {
-				arr2.splice(16, 1);
+			let _0x17aa37 = runs.length;
+			let _0x52b171 = runs.length;
+			if (runs[16] == "") {
+				runs.splice(16, 1);
 			}
-			for (let i=0, il=arr2.length + Board.tiles.length; i<32-il; i++) {
-				arr2.push("");
+			for (let i=0, il=runs.length + Board.tiles.length; i<32-il; i++) {
+				runs.push("");
 			}
-			if (type == 1) {
-				Tiles.priority();
-			}
-			// sorts left overs from high to low - TEMP
+			if (type == 1) Tiles.priority();
+			
+			// sorts "deadwood" left overs from high to low - TEMP
 			Board.tiles.sort((a,b) => b.value - a.value);
 			// concat sorted tiles
-			arr2.push.apply(arr2, Board.tiles);
+			runs.push.apply(runs, Board.tiles);
 			
-			Board.tiles = arr2.slice();
+			// console.log(runs.slice().map(e => e ? e.value : e));
+			
+			Board.tiles = runs.slice();
 			for (let i=32, il=Board.tiles.length; i<il; i++) {
 				Board.tiles = Tiles.removeArrayItem(Board.tiles, "", 1);
 			}

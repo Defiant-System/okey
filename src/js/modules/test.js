@@ -4,7 +4,18 @@ let Test = {
 
 		// return;
 
-		Tiles.okey = "213";
+		Tiles.okey = "105";
+		let tiles = ["000","102","302","103","104","204","104","105","205","105","105","106","106","208","308","109","109","310","111","213","213"];
+		tiles = tiles.map((e, i) => {
+				return e ? { uid: i, value: e, _val: e } : e;
+			});
+		// Tiles.sortTiles(3, 1, tiles);
+		Engine.arrange(1, 1, tiles);
+		console.log( Board.tiles.slice().map(e => e ? e.value : e) );
+		// APP.game.dispatch({ type: "temp-tiles-to-rack", tiles: Board.tiles.slice() });
+		return;
+
+		// Tiles.okey = "213";
 
 		// let tiles = ['102', '305', '208', '413', '205', '210', '109', '401', '406', '113', '401', '211', '313', '000', '310', '106', '212', '107', '308', '109', '206'];
 		// tiles = tiles.map((e, i) => {
@@ -47,7 +58,7 @@ let Test = {
 		// APP.game.dispatch({ type: "temp-tiles-to-rack", tiles: Board.tiles.slice() });
 		// return;
 
-		APP.game.dispatch({ type: "restore-state", state: state6 });
+		APP.game.dispatch({ type: "restore-state", state: state5 });
 		
 		// setTimeout(() => APP.content.find(`.button[data-click="show-settings"]`).trigger("click"), 100);
 		// setTimeout(() => APP.content.find(`.button[data-click="engine-sort-serial"]`).trigger("click"), 500);
