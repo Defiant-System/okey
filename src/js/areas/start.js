@@ -16,7 +16,8 @@
 		// console.log(event);
 		switch (event.type) {
 			// custom events
-			case "set-opponents":
+			case "select-engine":
+				console.log(event);
 				break;
 		}
 	}
