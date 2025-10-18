@@ -6,6 +6,7 @@
 		// fast references
 		this.els = {
 			content: window.find("content"),
+			board: window.find(".board-view"),
 		};
 	},
 	dispatch(event) {
@@ -17,7 +18,13 @@
 		switch (event.type) {
 			// custom events
 			case "select-engine":
-				console.log(event);
+				// console.log(event);
+				Self.els.content.data({ show: "board" });
+				Self.els.board.data({ engine: event.arg })
+				break;
+			case "show-dialog":
+				APP.content.addClass("show-dialog");
+				APP.content.find(".dialog.settings").removeClass("hidden");
 				break;
 		}
 	}

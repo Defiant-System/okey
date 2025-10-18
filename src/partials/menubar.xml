@@ -13,11 +13,16 @@
 		<Menu name="Sort Double" click="engine-sort-double"/>
 		<Menu type="divider"/>
 		<Menu name="Show All Racks" click="show-all-racks"/>
+		<Menu name="Show Start" click="show-start-view"/>
 		<Menu name="Output PGN" click="output-pgn"/>
 	</Menu>
 	<Menu name="Help">
 		<Menu name="Help" click="open-help"/>
 		<Menu type="divider"/>
 		<Menu name="License" shell="win -al"/>
+	</Menu>
+
+	<Menu for="start-menus">
+		<Menu name="Show Dialog" click="show-dialog"/>
 	</Menu>
 </MenuBar>

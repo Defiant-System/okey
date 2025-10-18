@@ -104,7 +104,21 @@ content {
 		right: 0;
 		bottom: 0;
 		border-radius: inherit;
+		padding: 73px 0 0;
 		text-align: center;
+
+		h2,
+		h3 {
+			font-family: BebasNeueRegular, Arial, sans-serif;
+			font-size: 60px;
+			color: #222;
+			text-shadow: 0 1px 0 #fff3;
+		}
+
+		h3 {
+			margin-top: 43px;
+			font-size: 45px;
+		}
 
 		.logo {
 			position: relative;
@@ -113,7 +127,7 @@ content {
 
 			&:hover {
 				svg {
-					filter: drop-shadow(0 0 .5px #fff)
+					filter: drop-shadow(0 0 0 #fff)
 							drop-shadow(0 1px 0 hsl(15, 5%, 89%))
 							drop-shadow(0 2px 0 hsl(15, 5%, 87%))
 							drop-shadow(0 3px 0 hsl(15, 5%, 82%))
@@ -127,7 +141,7 @@ content {
 
 			&[data-arg="51"] { width: 200px; height: 150px; }
 			&[data-arg="101"] { width: 200px; height: 150px; }
-			&[data-arg="classic"] { width: 300px; height: 135px; }
+			&[data-arg="okey"] { width: 300px; height: 135px; }
 
 			svg {
 				// background: #0001;
@@ -136,12 +150,31 @@ content {
 				left: 0;
 				width: inherit;
 				height: inherit;
-				filter: drop-shadow(0 0 .5px #fff)
+				filter: drop-shadow(0 0 0 #fff)
 						drop-shadow(0 1px 0 hsl(15, 5%, 89%))
 						drop-shadow(0 2px 0 hsl(15, 5%, 87%))
 						drop-shadow(0 3px 0 hsl(15, 5%, 82%))
 						drop-shadow(0 4px 0 hsl(15, 5%, 79%))
-						drop-shadow(0 5px 3px #0002);
+						drop-shadow(0 5px 0 #0002);
+			}
+		}
+
+		.tile {
+			position: absolute;
+			top: 100px;
+			left: 100px;
+			display: inline-block;
+			width: 56px;
+			height: 73px;
+			margin-bottom: 5px;
+			box-shadow: 0 0 0 1px #0002,
+						0 1px 1px #0004,
+						inset 0 1px 0 #fff,
+						inset 0 -1px 0 #0002;
+				
+			&:after {
+				right: 7px;
+				letter-spacing: -3px;
 			}
 		}
 	}

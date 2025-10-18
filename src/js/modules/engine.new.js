@@ -104,6 +104,9 @@ let { Engine, Board, Tiles, Settings, AI } = (() => {
 			AI.init();
 			Tiles.init();
 		},
+		setEngine(num) {
+			Settings.Type = num + 1;
+		},
 		restore(state) {
 			// save state
 			this._state = state;

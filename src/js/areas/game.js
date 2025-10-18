@@ -5,7 +5,7 @@
 	init() {
 		// fast references
 		this.els = {
-			el: window.find(".board"),
+			el: window.find(".board-view"),
 			rack: window.find(".player.user .rack"),
 			content: window.find("content"),
 			common: {
@@ -92,6 +92,9 @@
 				console.log(JSON.stringify(state));
 				// console.log(state);
 				break;
+			case "show-start-view":
+				Self.els.content.data({ show: "start" });
+				break;
 			case "show-all-racks":
 				Engine.showAllRacks();
 				break;
@@ -146,7 +149,7 @@
 					num = types.indexOf(event.arg);
 				Engine.setEngine(num);
 				// update board attribute
-				Self.els.el.data({ engine: types[num] });
+				Self.els.el.data({ engine: event.arg });
 				break;
 			case "engine-sort-serial":
 				Engine.arrange(1, 1);
@@ -180,8 +183,8 @@
 							Engine.updateLeftTiles(tile);
 							// UI animation
 							let { id, clr, num } = Tiles.parse(tile.value),
-								dOffset = Self.els.rack.offset(".board"),
-								sOffset = Self.els.common.info.find(".inset.left").offset(".board"),
+								dOffset = Self.els.rack.offset(".board-view"),
+								sOffset = Self.els.common.info.find(".inset.left").offset(".board-view"),
 								sY = sOffset.top - dOffset.top + 5,
 								sX = sOffset.left - dOffset.left + 5;
 								css = Self.getEmptySlot(),
@@ -209,8 +212,8 @@
 										selEl = el.find(`.tile[data-uid="${selectedTile.uid}"]`),
 										sY = selEl.prop("offsetTop") +"px",
 										sX = selEl.prop("offsetLeft") +"px",
-										sOffset = Self.els.rack.offset(".board"),
-										dOffset = Self.els.discard.player1.offset(".board"),
+										sOffset = Self.els.rack.offset(".board-view"),
+										dOffset = Self.els.discard.player1.offset(".board-view"),
 										tY = (dOffset.top - sOffset.top + 5) +"px",
 										tX = (dOffset.left - sOffset.left + 5) +"px";
 									// remove discard tile from rack
@@ -243,8 +246,8 @@
 				break;
 			case "deal-tiles-to":
 				pEl = Self.els.common.info.find(".inset.left");
-				dOffset = pEl.offset(".board");
-				sOffset = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).offset(".board");
+				dOffset = pEl.offset(".board-view");
+				sOffset = Self.els.el.find(`.seat[data-seat="${event.seat}"] .hole`).offset(".board-view");
 				str = [];
 				[...Array(event.num)].map(n => {
 					let y = sOffset.top - dOffset.top,
@@ -280,8 +283,8 @@
 				break;
 			case "deal-user-tiles":
 				pEl = Self.els.rack.addClass("dealing "+ (event.noAnim ? "no-anim" : ""));
-				dOffset = pEl.offset(".board");
-				sOffset = Self.els.common.info.find(".inset.left").offset(".board");
+				dOffset = pEl.offset(".board-view");
+				sOffset = Self.els.common.info.find(".inset.left").offset(".board-view");
 				str = [];
 				event.tiles.map((tile, i) => {
 					if (tile) {
@@ -389,8 +392,8 @@
 				}, 10);
 				break;
 			case "put-tile-back":
-				dOffset = Self.els.el.find(".discard .player-4").offset(".board");
-				sOffset = Self.els.rack.offset(".board");
+				dOffset = Self.els.el.find(".discard .player-4").offset(".board-view");
+				sOffset = Self.els.rack.offset(".board-view");
 				css = {
 					top: dOffset.top - sOffset.top + 5,
 					left: dOffset.left - sOffset.left + 5,
@@ -416,8 +419,8 @@
 				pEl.removeClass("hidden").addClass("pop-tiles");
 				break;
 			case "meld-series":
-				dOffset = Self.els.common.series.offset(".board");
-				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
+				dOffset = Self.els.common.series.offset(".board-view");
+				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board-view") : { top: 0, left: 0 };
 				str = [];
 				rows = [[]];
 				rI = +(Self.els.common.series.data("rows") || 0);
@@ -478,8 +481,8 @@
 				});
 				break;
 			case "meld-doubles":
-				dOffset = Self.els.common.doubles.offset(".board");
-				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board") : { top: 0, left: 0 };
+				dOffset = Self.els.common.doubles.offset(".board-view");
+				sOffset = event.from ? Self.els.el.find(`.seat[data-seat="${event.from}"] .hole`).offset(".board-view") : { top: 0, left: 0 };
 				str = [];
 				rows = [[]];
 				rI = +(Self.els.common.doubles.data("rows") || 0);
@@ -540,13 +543,13 @@
 				event.preventDefault();
 
 				let el = $(event.target),
-					rOffset = Self.els.rack.offset(".board"),
+					rOffset = Self.els.rack.offset(".board-view"),
 					isNew;
 				if (el.parent().hasClass("left")) {
 					let tile = Tiles.draw(),
 						{ id, clr, num } = Tiles.parse(tile.value),
 						lTiles = Self.els.el.find(".info .tiles.left"),
-						lOffset = lTiles.offset(".board"),
+						lOffset = lTiles.offset(".board-view"),
 						y = lOffset.top - rOffset.top + 5,
 						x = lOffset.left - rOffset.left + 5;
 					// disable draggablity
@@ -562,8 +565,8 @@
 				let doc = $(document),
 					rack = Self.els.rack,
 					drop = el.offset(".rack"),
-					tOffset = el.offset(".board"),
-					dOffset = Self.els.discard.player1.offset(".board"),
+					tOffset = el.offset(".board-view"),
+					dOffset = Self.els.discard.player1.offset(".board-view"),
 					isDiscard = el.parent().hasClass("player-4"),
 					diff = { x: 0, y: 0 },
 					offset = {
@@ -632,7 +635,7 @@
 
 				if (Drag.hover.hasClass("drop")) {
 					if (Drag.isDiscard) {
-						let pEl = Drag.el.parent().offset(".board"),
+						let pEl = Drag.el.parent().offset(".board-view"),
 							dOffset = Drag.el.offset();
 						Self.els.el.find(".dialog.put-back").removeClass("hidden");
 						Drag.el = Self.els.rack.append(Drag.el).addClass("discard-loan");
