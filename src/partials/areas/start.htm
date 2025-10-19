@@ -1,6 +1,6 @@
 <div class="start-view" data-area="start" data-context="start-menus">
 
-	<h2>Choose Game</h2>
+	<h2>Choose Game <i class="icon-gear" data-click="show-dialog" data-arg="settings"></i></h2>
 
 	<div class="logo" data-click="select-engine" data-arg="51">
 		<svg><use xlink:href="#logo-51"></use></svg>
@@ -14,32 +14,47 @@
 	</div>
 
 	<h3>Opponents</h3>
-	<ul class="players">
+	<ul class="opponents">
 		<li>
-			<div data-name="Yasmin"></div>
-			<span>If you got the money, I got the time.</span>
+			<div class="player">
+				<div class="photo" data-name="Yasmin"></div>
+			</div>
+			<span class="quote">If you got money, I got time honey</span>
 		</li>
 		<li>
-			<div data-name="Sean"></div>
-			<span>Give me your money.</span>
+			<div class="player">
+				<div class="photo" data-name="Sean"></div>
+			</div>
+			<span class="quote">This is my house</span>
 		</li>
 		<li>
-			<div data-name="Ann"></div>
-			<span>I will buy new shoes with your money.</span>
+			<div class="player">
+				<div class="photo" data-name="Ann"></div>
+			</div>
+			<span class="quote">I will buy new shoes with your money</span>
 		</li>
 		<li>
-			<div data-name="Denise"></div>
-			<span>Just save your time - hand over your wallet.</span>
+			<div class="player">
+				<div class="photo" data-name="Denise"></div>
+			</div>
+			<span class="quote">Save your time - hand over your wallet now</span>
 		</li>
 		<li>
-			<div data-name="Adam"></div>
-			<span>This is my house.</span>
+			<div class="player">
+				<div class="photo" data-name="Adam"></div>
+			</div>
+			<span class="quote">Give me all your money</span>
 		</li>
 		<li>
-			<div data-name="Ali"></div>
-			<span>Play big...play hard.</span>
+			<div class="player">
+				<div class="photo" data-name="Ali"></div>
+			</div>
+			<span class="quote">Go hard or go home</span>
 		</li>
 	</ul>
+
+	<h4>How to play</h4>
+	<h4>Settings</h4>
 
 	<div class="tiles">
 		<span class="tile red" data-v="1"></span>
@@ -56,7 +71,5 @@
 		<span class="tile red" data-v="12"></span>
 		<span class="tile red" data-v="13"></span>
 	</div>
-
-	<span class="button" data-click="show-dialog" data-arg="settings">Settings</span>
 
 </div>
