@@ -26,6 +26,9 @@
 				APP.content.addClass("show-dialog");
 				APP.content.find(".dialog.settings").removeClass("hidden");
 				break;
+			case "open-help":
+				APP.dispatch(event);
+				break;
 		}
 	}
 }
