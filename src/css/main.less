@@ -104,20 +104,26 @@ content {
 		right: 0;
 		bottom: 0;
 		border-radius: inherit;
-		padding: 73px 0 0;
+		padding: 53px 0 0;
 		text-align: center;
 
 		h2,
-		h3 {
+		h3,
+		h4 {
 			font-family: BebasNeueRegular, Arial, sans-serif;
-			font-size: 60px;
+			font-size: 43px;
 			color: #222;
 			text-shadow: 0 1px 0 #fff3;
 		}
 
 		h3 {
-			margin-top: 43px;
-			font-size: 45px;
+			margin-top: 37px;
+			font-size: 35px;
+		}
+
+		h4 {
+			margin-top: 23px;
+			font-size: 25px;
 		}
 
 		.logo {
@@ -157,6 +163,128 @@ content {
 						drop-shadow(0 4px 0 hsl(15, 5%, 79%))
 						drop-shadow(0 5px 0 #0002);
 			}
+		}
+
+		.tiles {
+			display: none;
+			position: relative;
+			width: 200px;
+			height: 100px;
+			// background: #0001;
+			// display: block;
+			margin: 5px auto 19px;
+
+			.tile {
+				top: 0;
+				left: 0;
+				animation: hMove 9s ease-out infinite,
+							rMove 17s ease-in-out infinite;
+				.tileAnim(14);
+			}
+		}
+
+		.players {
+			position: relative;
+			display: block;
+			height: 180px;
+			padding: 10px 0 0;
+			margin: 5px auto 19px;
+			transform: translateX(17px);
+			font-size: 0;
+			list-style: none;
+
+			&:hover {
+				li {
+					div:before {
+						filter: grayscale(1) blur(2px);
+					}
+
+					&:hover {
+						div:before {
+							filter: none;
+						}
+					}
+				}
+			}
+
+			li {
+				position: relative;
+				display: inline-block;
+				vertical-align: top;
+				width: 120px;
+				height: 120px;
+				overflow: hidden;
+				margin: 0 -9px 0 -9px;
+				clip-path: polygon(0 0, 80% 0, 100% 100%, 20% 100%);
+				transition: all 80ms ease-in-out;
+
+				&:hover {
+					width: 180px;
+					height: 150px;
+					margin: -15px -15px 0;
+					// clip-path: polygon(0 0, 82% 0, 100% 100%, 18% 100%);
+				}
+
+				&:before {
+					content: "";
+					position: absolute;
+					top: 0;
+					left: 9%;
+					height: 100%;
+					width: 82%;
+					z-index: 2;
+					transform: skew(12deg);
+					box-shadow: inset 0 0 3px rgba(#000,.5),
+								inset 0 0 7px rgba(#000,.75),
+								inset 0 0 11px rgba(#000,.85);
+				}
+
+				div {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					z-index: 1;
+
+					&:before {
+						content: "";
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 100%;
+						width: 100%;
+						background: 50% 50% no-repeat;
+						background-size: auto 100%;
+					}
+
+					&:after {
+						content: attr(data-name);
+						background: #0004;
+						backdrop-filter: blur(3px);
+						position: absolute;
+						bottom: 5px;
+						left: 10px;
+						right: -5px;
+						padding: 3px 0;
+						text-align: center;
+						font-size: 13px;
+						color: #fff;
+						text-shadow: 0 1px 1px #0007;
+					}
+
+					&[data-name="Yasmin"]:before { background-image: url(~/gfx/yasmin.webp); }
+					&[data-name="Sean"]:before { background-image: url(~/gfx/sean.webp); }
+					&[data-name="Ann"]:before { background-image: url(~/gfx/ann.webp); }
+					&[data-name="Denise"]:before { background-image: url(~/gfx/denise.webp); }
+					&[data-name="Adam"]:before { background-image: url(~/gfx/adam.webp); }
+					&[data-name="Ali"]:before { background-image: url(~/gfx/ali.webp); }
+				}
+			}
+		}
+
+		.button {
+			color: #fff;
 		}
 
 		.tile {
@@ -1740,6 +1868,7 @@ content {
 				position: relative;
 				z-index: 2;
 				font-size: 20px;
+				padding-top: 5px;
 				margin-bottom: 1px;
 			}
 
@@ -1765,7 +1894,7 @@ content {
 			top: 200px;
 			left: 330px;
 			width: 380px;
-			height: 210px;
+			// height: 210px;
 			padding-top: 5px;
 
 			.button {
@@ -2252,6 +2381,28 @@ content {
 @keyframes animOutline {
 	0%   { stroke-dashoffset: var( --outline ); }
 	100% { stroke-dashoffset: 0; }
+}
+
+@keyframes hMove {
+	0%   { left: -200px; }
+	50%  { left: 200px; }
+	100% { left: -200px; }
+}
+
+@keyframes rMove {
+	0%   { transform: translateY(-150px) rotate(360deg) scale(1) skewX(0deg) skewY(0deg); }
+	25%  { transform: translateY(150px) rotate(180deg) scale(.7) skewX(-20deg) skewY(15deg); }
+	50%  { transform: translateY(-150px) rotate(0deg) scale(1.1) skewX(0deg) skewY(0deg); }
+	75%  { transform: translateY(150px) rotate(180deg) scale(.8) skewX(-10deg) skewY(15deg); }
+	100% { transform: translateY(-150px) rotate(360deg) scale(1) skewX(0deg) skewY(0deg); }
+}
+
+.tileAnim(@count) when (@count > 0) {
+	.tileAnim(@count - 1);
+	&:nth-child(@{count}) {
+		animation-delay: (@count * 0.5s), (1s + (@count * 0.5s));
+		z-index: (14 - @count);
+	}
 }
 
 
